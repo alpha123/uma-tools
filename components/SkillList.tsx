@@ -496,7 +496,7 @@ export function SkillList(props) {
 	const [searchText, setSearchText] = useState('');
 
 	useEffect(function () {
-		if (props.isOpen && searchInput.current) searchInput.current.focus();
+		if (props.isOpen && searchInput.current) searchInput.current.select();
 	}, [props.isOpen]);
 	
 	const selectedMap = new Map(Array.from(props.selected).map(id => [skillmeta(id).groupId, id]));
