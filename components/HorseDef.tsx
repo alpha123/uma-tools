@@ -7,7 +7,7 @@ import { SkillList, Skill, ExpandedSkillDetails } from '../components/SkillList'
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
-import { SkillSet, HorseState } from './HorseDefTypes';
+import { SkillSet, HorseState, from_base64url, into_base64url, canonicalize_horse_state, horse_state_from_canonical, from_base64url_horse_state } from './HorseDefTypes';
 
 import './HorseDef.css';
 
@@ -297,10 +297,62 @@ export function HorseDef(props) {
 		);
 	}, [state.skills, umaId, expanded, props.courseDistance]);
 
+	const Base64HorseState = () => {
+		const [base64url, setBase64url] = useState('');
+		const [changingFromB64url, setChangingFromB64url] = useState(false);
+
+		useEffect(() => {
+			if (changingFromB64url) {return;}
+			// on state change, update base64url
+			const canon = canonicalize_horse_state(state);
+			into_base64url(canon).then((e) => {
+				setBase64url(e);
+			});
+		}, [state]);
+		const changeBase64Url = (b64url: string) => {
+			const existing = base64url;
+			if (existing === b64url) {return;}
+			setBase64url(b64url);
+			setChangingFromB64url(true);
+			from_base64url_horse_state(b64url).then(_state => {
+				setState(_state ?? state);
+			}).finally(() => {
+				setChangingFromB64url(false);
+			});
+		};
+		return <div id="base64urlsafe-copy" style={{display: 'flex', flexDirection: 'column', gap: '2px', maxWidth: '256px'}}>
+				<div style={{display: 'flex', flexDirection: 'row', margin: '0px', padding: '2px', borderRadius: '4px', backgroundColor: '#f0f0f0'}}>
+					<input 
+					style={{width: '100%'}}
+					type="text" 
+					value={base64url} 
+					onChange={(ev) => changeBase64Url((ev.currentTarget as HTMLInputElement).value)} 
+					/>
+				</div>
+				<div style={{
+					display: 'flex', flexDirection: 'row', gap: '2px', margin: '0px', padding: '2px', borderRadius: '4px', backgroundColor: '#f0f0f0',
+					justifyContent: 'space-between',
+				}}>
+					<button onClick={() => navigator.clipboard.writeText(base64url)}> 
+						<span role="img" aria-label="clipboard">📋</span>Copy
+					</button>
+					<button onClick={() => navigator.clipboard.readText().then(changeBase64Url)}>
+						<span role="img" aria-label="paste">⬇️</span>Paste
+					</button>
+					<button 
+					style={{color: '#aaaaaa', }}
+					onClick={() => changeBase64Url(base64url)}>
+						<span role="img" aria-label="reload">🔄</span>Update horse
+					</button>
+				</div>
+			</div>
+	}
+
 	return (
 		<div class="horseDef">
 			<div class="horseDefHeader">{props.children}</div>
 			<UmaSelector value={umaId} select={setUma} tabindex={tabnext()} />
+			<Base64HorseState />
 			<div class="horseParams">
 				<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span>Speed</span></div>
 				<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span>Stamina</span></div>
