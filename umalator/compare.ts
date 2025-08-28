@@ -10,6 +10,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		.seed(options.seed)
 		.course(course)
 		.mood(racedef.mood)
+		.guaranteeSkillActivation(options.guaranteeSkillActivation)
 		.ground(racedef.groundCondition)
 		.weather(racedef.weather)
 		.season(racedef.season)

@@ -421,6 +421,7 @@ function App(props) {
 	const [seed, setSeed] = useState(DEFAULT_SEED);
 	const [usePosKeep, togglePosKeep] = useReducer((b,_) => !b, true);
 	const [showHp, toggleShowHp] = useReducer((b,_) => !b, false);
+	const [guaranteeSkillActivation, toggleGuaranteeSkillActivation] = useReducer((b,_) => !b, true);
 	const [{courseId, results, runData, chartData, displaying}, setSimState] = useReducer(updateResultsState, EMPTY_RESULTS_STATE);
 	const setCourseId = setSimState;
 	const setResults = setSimState;
@@ -527,7 +528,7 @@ function App(props) {
 				racedef: racedefToParams(racedef),
 				uma1: uma1.toJS(),
 				uma2: uma2.toJS(),
-				options: {seed, usePosKeep}
+				options: {seed, usePosKeep, guaranteeSkillActivation}
 			}
 		});
 	}
@@ -735,6 +736,10 @@ function App(props) {
 						<div>
 							<label for="showhp">Show HP consumption</label>
 							<input type="checkbox" id="showhp" checked={showHp} onClick={toggleShowHp} />
+						</div>
+						<div>
+							<label for="guaranteeSkillActivation">Guarantee skill activation</label>
+							<input type="checkbox" id="guaranteeSkillActivation" checked={guaranteeSkillActivation} onClick={toggleGuaranteeSkillActivation} />
 						</div>
 						{
 							mode == Mode.Compare
