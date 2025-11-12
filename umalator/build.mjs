@@ -37,10 +37,10 @@ const redirectTable = {
 };
 
 await esbuild.build({
-	entryPoints: [{in: './app.tsx', out: 'bundle'}, './simulator.worker.ts'],
+	entryPoints: [{in: path.join(dirname, 'app.tsx'), out: 'bundle'}, path.join(dirname, 'simulator.worker.ts')],
 	bundle: true,
 	minify: !debug,
-	outdir: '.',
+	outdir: 'umalator',
 	define: {CC_DEBUG: debug.toString(), CC_GLOBAL: 'false'},
 	external: ['*.ttf'],
 	plugins: [mockAssert, redirectTable]

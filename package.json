@@ -8,7 +8,7 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "commander": "^13.1.0",
-    "esbuild": "^0.19.5"
+    "esbuild": "^0.19.12"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",

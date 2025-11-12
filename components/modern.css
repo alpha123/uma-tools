@@ -1,0 +1,29 @@
+:root {
+    --brand-hue: 100;
+    --brand-saturation: 80%;
+    --brand-lightness: 30%;
+
+    --brand-color: hsl(var(--brand-hue), var(--brand-saturation), var(--brand-lightness));
+    --brand-color-light: hsl(var(--brand-hue), var(--brand-saturation), calc(var(--brand-lightness) + 20%));
+    --brand-color-dark: hsl(var(--brand-hue), var(--brand-saturation), calc(var(--brand-lightness) - 10%));
+
+    --text-color: #333;
+    --text-color-light: #fff;
+    --background-color: #fff;
+    --background-color-dark: #333;
+    --border-color: #ccc;
+    --border-color-light: #eee;
+}
+
+.dark-mode {
+    --brand-lightness: 40%;
+    --text-color: #fff;
+    --background-color: #333;
+    --border-color: #666;
+    --border-color-light: #444;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}

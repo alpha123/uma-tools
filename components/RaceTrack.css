@@ -1,7 +1,7 @@
 .distanceMarker {
 	font-weight: 600;
 	paint-order: stroke;
-	stroke: white;
+	stroke: var(--background-color);
 	stroke-width: 2px;
 }
 
@@ -10,25 +10,40 @@
 	font-size: 12px;
 	font-weight: 600;
 	paint-order: stroke;
-	stroke: white;
+	stroke: var(--background-color);
 	stroke-width: 2px;
 	text-anchor: middle;
 }
 
 .racetrackName {
-	color: rgb(121,64,22);
+	color: var(--brand-color);
 	font: 22px bold sans-serif;
 	margin-bottom: 0.3em;
 	text-align: center;
-	text-stroke: 1px rgb(121,64,22);
-	-webkit-text-stroke: 1px rgb(121,64,22);
-	text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+	text-stroke: 1px var(--brand-color);
+	-webkit-text-stroke: 1px var(--brand-color);
+	text-shadow: -1px -1px 0 var(--background-color), 1px -1px 0 var(--background-color), -1px 1px 0 var(--background-color), 1px 1px 0 var(--background-color);
 }
 
 .mouseoverText {
 	font-size: 12px;
 	font-weight: 600;
 	paint-order: stroke;
-	stroke: white;
+	stroke: var(--background-color);
 	stroke-width: 2px;
+}
+
+.modern .racetrackWrapper {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.modern .racetrackName button {
+    margin-left: 1em;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
 }

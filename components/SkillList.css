@@ -1,227 +1,153 @@
-.filterButton {
-	background: rgb(214,207,231);
-	border: none;
-	box-shadow: 0 3px 0 rgb(180,178,192);
-	color: rgb(121,64,22);
-	padding: 0.8em;
-	margin: 10px 5px;
-	text-stroke: 1px rgb(121,64,22);
-	-webkit-text-stroke: 1px rgb(121,64,22);
-}
-
-.filterButton.active {
-	background: rgb(86,171,51);
-	box-shadow: 0 3px 0 rgb(86,171,51);
-	color: white;
-	text-stroke: 1px white;
-	-webkit-text-stroke: 1px white;
-}
-
-.iconFilterButton {
-	all: unset;
-	background-size: contain;
-	filter: grayscale(1);
-	height: 40px;
-	margin: 5px;
-	width: 40px;
-}
-
-.iconFilterButton.active {
-	filter: none;
-}
-
-.filterSearch {
-	margin: 3px 5px;
-	padding: 0.8em;
-	width: calc(100% - 26px);
-}
-
-.skillList {
-	display: grid;
-	font-size: 16px;
-	gap: 16px 0;
-	grid-template-columns: repeat(auto-fit, 300px);
-	list-style-type: none;
-	padding: 0;
-}
-
 .skill {
 	align-items: center;
-	border-radius: 8px;
-	border: 2px solid transparent;
-	box-shadow: 0 3px 0 rgb(180,178,192);
-	box-sizing: border-box;
+	background: var(--background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	color: var(--text-color);
+	cursor: pointer;
 	display: flex;
 	height: 3em;
+	margin: 1px;
 	overflow: hidden;
-	padding: 5px;
-	width: 18em;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
 
-.skill:active {
-	box-shadow: none;
-	filter: brightness(0.95);
+.skill.selected {
+	border: 2px solid var(--brand-color);
+	margin: 0;
 }
 
-.hidden, .skill.selected {
-	display: none;
+.skill.skill-gold {
+	border-color: gold;
 }
 
-.skillName {
-	color: rgb(121,64,22);
-	display: flex;
-	flex: 1;
-	overflow: hidden;
-	text-stroke: 1px rgb(121,64,22);
-	-webkit-text-stroke: 1px rgb(121,64,22);
-	text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
-	text-wrap: nowrap;
+.skill.skill-pink {
+	border-color: hotpink;
+}
+
+.skill.skill-unique {
+	border-color: darkorchid;
 }
 
 .skillIcon {
-	height: 2.2em;
-	margin: 0 8px 0 0;
-	width: 2.2em;
+	height: 100%;
+	margin-right: 0.5em;
+}
+
+.skillName {
+	font-size: 1.1em;
 }
 
 .skillDismiss {
-	color: rgb(121,64,22);
-	cursor: default;
-	padding: 0 7px;
-}
-
-.skill-white {
-	background: linear-gradient(90deg, rgb(255,243,247), rgb(181,178,198)) padding-box,
-							linear-gradient(90deg, rgb(214,207,231), rgb(148,150,189)) border-box;
-}
-
-.skill-gold {
-	background: linear-gradient(90deg, rgb(255,255,239), rgb(255,190,40)) padding-box,
-							linear-gradient(90deg, rgb(255,223,115), rgb(255,166,16)) border-box;
-}
-
-.skill-pink {
-	background: linear-gradient(90deg, rgb(255,238,239), rgb(255,155,211)) padding-box,
-							linear-gradient(90deg, rgb(255,142,198), rgb(255,89,173)) border-box;
-}
-
-.skill-unique {
-	background: linear-gradient(90deg, rgb(239,255,214), rgb(161,201,248), rgb(170,170,255), rgb(255,186,231)) padding-box,
-							linear-gradient(90deg, rgb(197,255,190), rgb(189,235,255), rgb(195,208,255), rgb(255,138,222)) border-box;
-}
-
-.skillDetailsList {
-	font-size: 16px;
-	list-style-type: none;
-}
-
-.skillDetailsList > li {
-	display: inline-block;
-	vertical-align: top;
+	background: rgba(0,0,0,0.4);
+	border-radius: 10px;
+	color: white;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 18px;
+	position: absolute;
+	right: 4px;
+	text-align: center;
+	top: 4px;
+	width: 20px;
 }
 
 .expandedSkill {
-	border-radius: 8px;
-	border: 2px solid transparent;
-	box-sizing: border-box;
-	overflow: hidden;
-	padding: 5px;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	cursor: pointer;
+	grid-column: 1 / 3;
 }
 
 .expandedSkillHeader {
 	align-items: center;
 	display: flex;
-	height: 2.1em;
-	margin-bottom: 5px;
+	height: 3em;
+	position: relative;
 }
 
 .skillDetails {
-	border-style: solid;
-	border-width: 2px 0 0 0;
-	color: rgb(121,64,22);
+	background: var(--background-color-dark);
+	padding: 0.5em;
 }
 
 .skillDetailsSection {
-	border-style: solid;
-	border-width: 0 0 1px 0; 
-	margin-bottom: 8px;
-	padding-bottom: 8px;
-}
-
-.skillDetailsSection:last-child {
-	border: none;
-	margin: 0;
-	padding: 0;
-}
-
-.skillDetailsSection:first-child {
-	border-width: 0;
-	margin: 0;
-	padding: 0;
-}
-
-.skill-white .skillDetails, .skill-white .skillDetailsSection {
-	border-image: linear-gradient(rgb(172,172,182), rgb(169,169,181)) 90;
-}
-
-.skill-gold .skillDetails, .skill-gold .skillDetailsSection {
-	border-image: linear-gradient(rgb(203,172,89), rgb(230,161,58)) 90;
-}
-
-.skill-pink .skillDetails, .skill-pink .skillDetailsSection {
-	border-image: linear-gradient(rgb(230,173,202), rgb(228,43,161)) 90;
-}
-
-.skill-unique .skillDetails, .skill-unique .skillDetailsSection {
-	border-image: linear-gradient(rgb(121,64,22), rgb(121,64,22)) 90;
+	border-bottom: 1px solid var(--border-color);
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
 }
 
 .skillConditions {
-	font-family: monospace;
-	margin: 0 0 0.5em 0.5em;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .condition {
-	margin-left: 0.7em;
+	background: var(--background-color);
+	border-radius: 4px;
+	margin: 0.2em;
+	padding: 0.2em 0.4em;
+}
+
+.conditionName {
+	font-weight: bold;
 }
 
 .conditionOp {
-	margin: 0 2px;
+	margin: 0 0.3em;
 }
 
-.conditionOp {
-	opacity: 0.6;
+.conditionArg {
+	color: var(--brand-color);
 }
 
-.operatorAnd {
-	float: left;
+.operatorAnd::before {
+	content: "and";
+	margin: 0 0.3em;
 }
 
-.operatorOrText {
-	font-style: italic;
-	margin-left: 10px;
-	opacity: 0.8;
+.operatorOr {
+	position: relative;
 }
 
-.skillEffects {
-	display: table;
-	margin-left: 0.5em;
+.operatorOr::before {
+	content: "or";
+	margin: 0 0.3em;
 }
 
-.skillEffect {
-	display: table-row;
+.filterGroups {
+	background: var(--background-color-dark);
+	padding: 0.5em;
 }
 
-.skillEffectType {
-	display: table-cell;
+.filterButton {
+	background: var(--background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	color: var(--text-color);
+	cursor: pointer;
+	margin: 0.2em;
+	padding: 0.5em 1em;
 }
 
-.skillEffectValue {
-	display: table-cell;
-	padding-left: 1em;
+.filterButton.active {
+	background: var(--brand-color);
+	color: var(--text-color-light);
 }
 
-.skillDuration {
-	display: inline-block;
-	margin-top: 0.5em;
+.iconFilterButton {
+	background-color: var(--background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	cursor: pointer;
+	height: 32px;
+	margin: 0.2em;
+	width: 32px;
+}
+
+.iconFilterButton.active {
+	background-color: var(--brand-color);
 }

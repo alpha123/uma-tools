@@ -604,7 +604,7 @@ export function SkillList(props) {
 
 	return (
 		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
-			<div class="filterGroups" onClick={updateFilters}>
+			<div class="filterGroups modern" onClick={updateFilters}>
 				<div data-filter-group="search">
 					<Localizer><input type="text" class="filterSearch" value={searchText} placeholder={<Text id="skillfilters.search" />} onInput={updateFilters} ref={searchInput} /></Localizer>
 				</div>
@@ -643,7 +643,7 @@ export function SkillList(props) {
 					<FilterButton filter="finalstraight" />
 				</FilterGroup>
 			</div>
-			<ul class="skillList" onClick={toggleSelected}>{items}</ul>
+			<ul class="skillList modern" onClick={toggleSelected}>{items}</ul>
 		</IntlProvider>
 	);
 }
