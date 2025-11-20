@@ -14,31 +14,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 13500,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 106,
-        "length": 132,
-        "slope": -13658.779454831994
-      },
-      {
-        "start": 297,
-        "length": 84,
-        "slope": 13697.022475759184
-      },
-      {
-        "start": 444,
-        "length": 105,
-        "slope": -13343.314315891834
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 400,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 950
       }
     ],
@@ -64,26 +53,20 @@
     "courseSetStatus": [],
     "distance": 1500,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 879000,
+    "laneMax": 13500,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 621,
-        "length": 27,
-        "slope": 10224.118405066165
-      },
-      {
-        "start": 726,
-        "length": 126,
-        "slope": -14747.959281922656
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 700,
+        "frontType": 2,
         "start": 425
       },
       {
         "end": 1500,
+        "frontType": 1,
         "start": 1250
       }
     ],
@@ -113,30 +96,25 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 13500,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 866,
-        "length": 102,
-        "slope": 16575.984653375035
-      },
-      {
-        "start": 1022,
-        "length": 125,
-        "slope": -14390.600844852579
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 175,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 2,
         "start": 725
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1550
       }
     ],
@@ -168,30 +146,25 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 13500,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 1075,
-        "length": 91,
-        "slope": 14837.395277821317
-      },
-      {
-        "start": 1227,
-        "length": 108,
-        "slope": -13319.853613322479
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 375,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 2,
         "start": 925
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1750
       }
     ],
@@ -231,54 +204,30 @@
     ],
     "distance": 2600,
     "distanceType": 4,
+    "finishTimeMax": 1650000,
+    "finishTimeMin": 1576000,
+    "laneMax": 13500,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 34,
-        "length": 37,
-        "slope": 12718.643363708981
-      },
-      {
-        "start": 92,
-        "length": 73,
-        "slope": 29058.64030040597
-      },
-      {
-        "start": 219,
-        "length": 55,
-        "slope": -10712.038794833159
-      },
-      {
-        "start": 850,
-        "length": 238,
-        "slope": -15575.624733528048
-      },
-      {
-        "start": 1675,
-        "length": 92,
-        "slope": 14780.173684557452
-      },
-      {
-        "start": 1827,
-        "length": 108,
-        "slope": -13318.094610903598
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 175,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 975,
+        "frontType": 1,
         "start": 725
       },
       {
         "end": 1800,
+        "frontType": 2,
         "start": 1525
       },
       {
         "end": 2600,
+        "frontType": 1,
         "start": 2350
       }
     ],
@@ -300,21 +249,20 @@
     "courseSetStatus": [],
     "distance": 1000,
     "distanceType": 1,
+    "finishTimeMax": 630000,
+    "finishTimeMin": 574000,
+    "laneMax": 11000,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 284,
-        "length": 95,
-        "slope": -21478.67570922132
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 280,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 1,
         "start": 740
       }
     ],
@@ -346,25 +294,25 @@
     ],
     "distance": 1700,
     "distanceType": 2,
+    "finishTimeMax": 1130000,
+    "finishTimeMin": 1014000,
+    "laneMax": 11000,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 990,
-        "length": 76,
-        "slope": -14737.568337609882
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 240,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 980,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1700,
+        "frontType": 1,
         "start": 1440
       }
     ],
@@ -402,39 +350,30 @@
     "courseSetStatus": [],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 11000,
     "raceTrackId": 10001,
-    "slopes": [
-      {
-        "start": 88,
-        "length": 65,
-        "slope": 11252.179456823753
-      },
-      {
-        "start": 213,
-        "length": 76,
-        "slope": -15695.36457816174
-      },
-      {
-        "start": 1689,
-        "length": 77,
-        "slope": -15620.212171927884
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 200,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 940,
+        "frontType": 1,
         "start": 660
       },
       {
         "end": 1680,
+        "frontType": 2,
         "start": 1408
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2140
       }
     ],
@@ -456,15 +395,26 @@
     "courseSetStatus": [],
     "distance": 1000,
     "distanceType": 1,
+    "finishTimeMax": 570000,
+    "finishTimeMin": 547000,
+    "laneMax": 14700,
     "raceTrackId": 10002,
-    "slopes": [],
+    "slopes": [
+      {
+        "length": 555,
+        "slope": 10000,
+        "start": 0
+      }
+    ],
     "straights": [
       {
         "end": 310,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 1,
         "start": 750
       }
     ],
@@ -486,21 +436,26 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 14700,
     "raceTrackId": 10002,
     "slopes": [
       {
-        "start": 88,
-        "length": 5,
-        "slope": 10377.779997982689
+        "length": 755,
+        "slope": 10000,
+        "start": 0
       }
     ],
     "straights": [
       {
         "end": 510,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 950
       }
     ],
@@ -532,35 +487,36 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 14700,
     "raceTrackId": 10002,
     "slopes": [
       {
-        "start": 269,
-        "length": 7,
-        "slope": -13677.714437123861
+        "length": 200,
+        "slope": -10000,
+        "start": 220
       },
       {
-        "start": 289,
-        "length": 24,
-        "slope": -13952.742703510228
-      },
-      {
-        "start": 327,
-        "length": 89,
-        "slope": -15080.236875794983
+        "length": 720,
+        "slope": 10000,
+        "start": 665
       }
     ],
     "straights": [
       {
         "end": 320,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1110,
+        "frontType": 2,
         "start": 760
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1550
       }
     ],
@@ -592,25 +548,36 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 14700,
     "raceTrackId": 10002,
     "slopes": [
       {
-        "start": 450,
-        "length": 55,
-        "slope": -15691.458160530909
+        "length": 200,
+        "slope": -10000,
+        "start": 420
+      },
+      {
+        "length": 720,
+        "slope": 10000,
+        "start": 865
       }
     ],
     "straights": [
       {
         "end": 520,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1310,
+        "frontType": 2,
         "start": 960
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1750
       }
     ],
@@ -650,29 +617,46 @@
     ],
     "distance": 2600,
     "distanceType": 4,
+    "finishTimeMax": 1650000,
+    "finishTimeMin": 1576000,
+    "laneMax": 14700,
     "raceTrackId": 10002,
     "slopes": [
       {
-        "start": 1023,
-        "length": 42,
-        "slope": -15505.457447491166
+        "length": 495,
+        "slope": 10000,
+        "start": 0
+      },
+      {
+        "length": 200,
+        "slope": -10000,
+        "start": 970
+      },
+      {
+        "length": 720,
+        "slope": 10000,
+        "start": 1425
       }
     ],
     "straights": [
       {
         "end": 240,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1070,
+        "frontType": 1,
         "start": 700
       },
       {
         "end": 1890,
+        "frontType": 2,
         "start": 1530
       },
       {
         "end": 2600,
+        "frontType": 1,
         "start": 2350
       }
     ],
@@ -694,21 +678,20 @@
     "courseSetStatus": [],
     "distance": 1000,
     "distanceType": 1,
+    "finishTimeMax": 630000,
+    "finishTimeMin": 574000,
+    "laneMax": 11000,
     "raceTrackId": 10002,
-    "slopes": [
-      {
-        "start": 175,
-        "length": 56,
-        "slope": 11946.848354586788
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 370,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 1,
         "start": 750
       }
     ],
@@ -738,30 +721,36 @@
     "courseSetStatus": [],
     "distance": 1700,
     "distanceType": 2,
+    "finishTimeMax": 1130000,
+    "finishTimeMin": 1014000,
+    "laneMax": 11000,
     "raceTrackId": 10002,
     "slopes": [
       {
-        "start": 300,
-        "length": 35,
-        "slope": -14669.526010262345
+        "length": 340,
+        "slope": -10000,
+        "start": 275
       },
       {
-        "start": 353,
-        "length": 7,
-        "slope": -17155.535634318738
+        "length": 670,
+        "slope": 10000,
+        "start": 615
       }
     ],
     "straights": [
       {
         "end": 350,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1070,
+        "frontType": 2,
         "start": 730
       },
       {
         "end": 1700,
+        "frontType": 1,
         "start": 1450
       }
     ],
@@ -801,44 +790,30 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 11000,
     "raceTrackId": 10002,
-    "slopes": [
-      {
-        "start": 682,
-        "length": 78,
-        "slope": -10820.432678147059
-      },
-      {
-        "start": 972,
-        "length": 5,
-        "slope": -10661.391551836306
-      },
-      {
-        "start": 1132,
-        "length": 17,
-        "slope": -10217.715231647
-      },
-      {
-        "start": 2157,
-        "length": 79,
-        "slope": -10809.526250175513
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 292,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1040,
+        "frontType": 1,
         "start": 672
       },
       {
         "end": 1770,
+        "frontType": 2,
         "start": 1420
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2150
       }
     ],
@@ -853,15 +828,20 @@
     ],
     "distance": 1000,
     "distanceType": 1,
+    "finishTimeMax": 570000,
+    "finishTimeMin": 547000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
-        "end": 649.9,
+        "end": 649.900024414062,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 1,
         "start": 650
       }
     ],
@@ -883,15 +863,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
         "end": 430,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 850
       }
     ],
@@ -913,15 +898,20 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
         "end": 650,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1050
       }
     ],
@@ -943,21 +933,31 @@
     "courseSetStatus": [],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [
       {
-        "start": 552,
-        "length": 16,
-        "slope": 10506.281405337562
+        "length": 350,
+        "slope": 10000,
+        "start": 250
+      },
+      {
+        "length": 300,
+        "slope": -15000,
+        "start": 600
       }
     ],
     "straights": [
       {
         "end": 550,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 950
       }
     ],
@@ -981,26 +981,31 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [
       {
-        "start": 977,
-        "length": 17,
-        "slope": 10412.324731852608
+        "length": 350,
+        "slope": 10000,
+        "start": 450
       },
       {
-        "start": 1308,
-        "length": 57,
-        "slope": -11611.562430774371
+        "length": 300,
+        "slope": -15000,
+        "start": 800
       }
     ],
     "straights": [
       {
         "end": 750,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1150
       }
     ],
@@ -1033,19 +1038,25 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
         "end": 420,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1250,
+        "frontType": 2,
         "start": 820
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1650
       }
     ],
@@ -1070,15 +1081,31 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
-    "slopes": [],
+    "slopes": [
+      {
+        "length": 350,
+        "slope": 10000,
+        "start": 650
+      },
+      {
+        "length": 300,
+        "slope": -15000,
+        "start": 1000
+      }
+    ],
     "straights": [
       {
         "end": 950,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1350
       }
     ],
@@ -1110,25 +1137,25 @@
     ],
     "distance": 2200,
     "distanceType": 3,
+    "finishTimeMax": 1350000,
+    "finishTimeMin": 1302000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
-    "slopes": [
-      {
-        "start": 1235,
-        "length": 237,
-        "slope": 14598.359171359483
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 650,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1450,
+        "frontType": 2,
         "start": 1050
       },
       {
         "end": 2200,
+        "frontType": 1,
         "start": 1850
       }
     ],
@@ -1158,19 +1185,25 @@
     "courseSetStatus": [],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1490000,
+    "finishTimeMin": 1416000,
+    "laneMax": 13500,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
         "end": 810,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1650,
+        "frontType": 2,
         "start": 1210
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2050
       }
     ],
@@ -1192,15 +1225,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 11000,
     "raceTrackId": 10003,
     "slopes": [],
     "straights": [
       {
         "end": 600,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 900
       }
     ],
@@ -1232,35 +1270,25 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 11000,
     "raceTrackId": 10003,
-    "slopes": [
-      {
-        "start": 727,
-        "length": 5,
-        "slope": 13123.952694019863
-      },
-      {
-        "start": 755,
-        "length": 31,
-        "slope": -11361.85097906242
-      },
-      {
-        "start": 1259,
-        "length": 121,
-        "slope": 15623.793490356129
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 400,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1140,
+        "frontType": 2,
         "start": 720
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1460
       }
     ],
@@ -1298,34 +1326,30 @@
     "courseSetStatus": [],
     "distance": 2500,
     "distanceType": 4,
+    "finishTimeMax": 1640000,
+    "finishTimeMin": 1591000,
+    "laneMax": 11000,
     "raceTrackId": 10003,
-    "slopes": [
-      {
-        "start": 502,
-        "length": 118,
-        "slope": 14686.274488490442
-      },
-      {
-        "start": 1968,
-        "length": 118,
-        "slope": 14729.297297497436
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 380,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1120,
+        "frontType": 1,
         "start": 700
       },
       {
         "end": 1850,
+        "frontType": 2,
         "start": 1440
       },
       {
         "end": 2500,
+        "frontType": 1,
         "start": 2170
       }
     ],
@@ -1347,21 +1371,26 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 13000,
     "raceTrackId": 10004,
     "slopes": [
       {
-        "start": 179,
-        "length": 110,
-        "slope": 14609.331905840907
+        "length": 100,
+        "slope": 15000,
+        "start": 180
       }
     ],
     "straights": [
       {
         "end": 420,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 920
       }
     ],
@@ -1393,40 +1422,31 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 13000,
     "raceTrackId": 10004,
     "slopes": [
       {
-        "start": 71,
-        "length": 52,
-        "slope": 11489.510495665016
-      },
-      {
-        "start": 790,
-        "length": 85,
-        "slope": 14877.228791094838
-      },
-      {
-        "start": 1656,
-        "length": 62,
-        "slope": 13596.2834521564
-      },
-      {
-        "start": 1744,
-        "length": 26,
-        "slope": 11639.332172552295
+        "length": 100,
+        "slope": 15000,
+        "start": 780
       }
     ],
     "straights": [
       {
         "end": 330,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1020,
+        "frontType": 2,
         "start": 730
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1520
       }
     ],
@@ -1458,50 +1478,31 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 13000,
     "raceTrackId": 10004,
     "slopes": [
       {
-        "start": 243,
-        "length": 7,
-        "slope": 10180.232873211338
-      },
-      {
-        "start": 258,
-        "length": 10,
-        "slope": 11189.921344335184
-      },
-      {
-        "start": 505,
-        "length": 34,
-        "slope": -10238.790853016375
-      },
-      {
-        "start": 989,
-        "length": 85,
-        "slope": 16947.568045831576
-      },
-      {
-        "start": 1829,
-        "length": 9,
-        "slope": 10567.632783605504
-      },
-      {
-        "start": 1939,
-        "length": 9,
-        "slope": 11232.61768948195
+        "length": 100,
+        "slope": 15000,
+        "start": 980
       }
     ],
     "straights": [
       {
         "end": 530,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1220,
+        "frontType": 2,
         "start": 930
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1720
       }
     ],
@@ -1539,44 +1540,41 @@
     "courseSetStatus": [],
     "distance": 2600,
     "distanceType": 4,
+    "finishTimeMax": 1650000,
+    "finishTimeMin": 1576000,
+    "laneMax": 13000,
     "raceTrackId": 10004,
     "slopes": [
       {
-        "start": 941,
-        "length": 8,
-        "slope": 10310.527598657683
+        "length": 80,
+        "slope": 15000,
+        "start": 0
       },
       {
-        "start": 1604,
-        "length": 62,
-        "slope": 14203.253242134619
-      },
-      {
-        "start": 1698,
-        "length": 32,
-        "slope": 11059.696039936845
-      },
-      {
-        "start": 2540,
-        "length": 32,
-        "slope": 12901.58900524055
+        "length": 100,
+        "slope": 15000,
+        "start": 1580
       }
     ],
     "straights": [
       {
         "end": 220,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1130,
+        "frontType": 1,
         "start": 720
       },
       {
         "end": 1820,
+        "frontType": 2,
         "start": 1530
       },
       {
         "end": 2600,
+        "frontType": 1,
         "start": 2320
       }
     ],
@@ -1598,26 +1596,20 @@
     "courseSetStatus": [],
     "distance": 1150,
     "distanceType": 1,
+    "finishTimeMax": 720000,
+    "finishTimeMin": 666000,
+    "laneMax": 11500,
     "raceTrackId": 10004,
-    "slopes": [
-      {
-        "start": 220,
-        "length": 34,
-        "slope": 10306.810108378832
-      },
-      {
-        "start": 899,
-        "length": 2,
-        "slope": -12164.854440936499
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1150,
+        "frontType": 1,
         "start": 870
       }
     ],
@@ -1649,30 +1641,31 @@
     ],
     "distance": 1700,
     "distanceType": 2,
+    "finishTimeMax": 1130000,
+    "finishTimeMin": 1014000,
+    "laneMax": 11500,
     "raceTrackId": 10004,
     "slopes": [
       {
-        "start": 1487,
-        "length": 37,
-        "slope": 14478.120247496146
-      },
-      {
-        "start": 1528,
-        "length": 85,
-        "slope": 16191.30014249566
+        "length": 320,
+        "slope": -10000,
+        "start": 285
       }
     ],
     "straights": [
       {
         "end": 360,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1050,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1700,
+        "frontType": 1,
         "start": 1420
       }
     ],
@@ -1712,49 +1705,30 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 11500,
     "raceTrackId": 10004,
-    "slopes": [
-      {
-        "start": 665,
-        "length": 41,
-        "slope": -12477.86502108696
-      },
-      {
-        "start": 715,
-        "length": 6,
-        "slope": 11548.05815701408
-      },
-      {
-        "start": 1065,
-        "length": 76,
-        "slope": -10974.069084446937
-      },
-      {
-        "start": 2104,
-        "length": 40,
-        "slope": -12086.188898846149
-      },
-      {
-        "start": 2153,
-        "length": 5,
-        "slope": 11312.290014552802
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 310,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1060,
+        "frontType": 1,
         "start": 680
       },
       {
         "end": 1750,
+        "frontType": 2,
         "start": 1400
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2120
       }
     ],
@@ -1776,22 +1750,26 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 989,
-        "length": 127,
-        "slope": 21088.359869318283
+        "length": 200,
+        "slope": -15000,
+        "start": 0
       },
       {
-        "start": 1136,
-        "length": 23,
-        "slope": -10863.028289065298
+        "length": 110,
+        "slope": 20000,
+        "start": 1025
       }
     ],
     "straights": [
       {
         "end": 1200,
+        "frontType": 1,
         "start": 900
       }
     ],
@@ -1819,32 +1797,26 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 428,
-        "length": 40,
-        "slope": -10211.174741836965
+        "length": 300,
+        "slope": -15000,
+        "start": 300
       },
       {
-        "start": 516,
-        "length": 120,
-        "slope": -10770.051474352502
-      },
-      {
-        "start": 1395,
-        "length": 123,
-        "slope": 20820.16482922678
-      },
-      {
-        "start": 1538,
-        "length": 21,
-        "slope": -10661.219913279016
+        "length": 110,
+        "slope": 20000,
+        "start": 1425
       }
     ],
     "straights": [
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1300
       }
     ],
@@ -1874,55 +1846,46 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 186,
-        "length": 153,
-        "slope": 17178.162093529507
+        "length": 35,
+        "slope": 20000,
+        "start": 1
       },
       {
-        "start": 584,
-        "length": 113,
-        "slope": -13456.321882282167
+        "length": 200,
+        "slope": 15000,
+        "start": 125
       },
       {
-        "start": 749,
-        "length": 61,
-        "slope": -12337.192424818626
+        "length": 400,
+        "slope": -15000,
+        "start": 425
       },
       {
-        "start": 820,
-        "length": 29,
-        "slope": -11079.98155362739
-      },
-      {
-        "start": 1087,
-        "length": 37,
-        "slope": -11428.502769869006
-      },
-      {
-        "start": 1594,
-        "length": 124,
-        "slope": 21005.444829378706
-      },
-      {
-        "start": 1738,
-        "length": 21,
-        "slope": -10668.27940380635
+        "length": 110,
+        "slope": 20000,
+        "start": 1625
       }
     ],
     "straights": [
       {
         "end": 175,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 2,
         "start": 675
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1500
       }
     ],
@@ -1954,60 +1917,46 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 122,
-        "length": 102,
-        "slope": 24991.80169399902
+        "length": 110,
+        "slope": 20000,
+        "start": 125
       },
       {
-        "start": 381,
-        "length": 154,
-        "slope": 17101.57810220412
+        "length": 200,
+        "slope": 15000,
+        "start": 325
       },
       {
-        "start": 781,
-        "length": 113,
-        "slope": -13464.950727730758
+        "length": 400,
+        "slope": -15000,
+        "start": 625
       },
       {
-        "start": 946,
-        "length": 62,
-        "slope": -12307.298449896116
-      },
-      {
-        "start": 1017,
-        "length": 29,
-        "slope": -11081.147406275955
-      },
-      {
-        "start": 1284,
-        "length": 39,
-        "slope": -11698.691455465854
-      },
-      {
-        "start": 1817,
-        "length": 100,
-        "slope": 25227.82430624795
-      },
-      {
-        "start": 1939,
-        "length": 18,
-        "slope": -10449.450456666505
+        "length": 110,
+        "slope": 20000,
+        "start": 1825
       }
     ],
     "straights": [
       {
         "end": 375,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 2,
         "start": 875
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1700
       }
     ],
@@ -2040,36 +1989,41 @@
     ],
     "distance": 2200,
     "distanceType": 3,
+    "finishTimeMax": 1350000,
+    "finishTimeMin": 1302000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 109,
-        "length": 127,
-        "slope": 21177.921222631485
+        "length": 110,
+        "slope": 20000,
+        "start": 153
       },
       {
-        "start": 392,
-        "length": 157,
-        "slope": 17810.87826031241
+        "length": 200,
+        "slope": 15000,
+        "start": 353
       },
       {
-        "start": 947,
-        "length": 93,
-        "slope": -11935.07078681866
+        "length": 300,
+        "slope": -15000,
+        "start": 900
       },
       {
-        "start": 1992,
-        "length": 127,
-        "slope": 20939.05549994928
+        "length": 110,
+        "slope": 20000,
+        "start": 2025
       }
     ],
     "straights": [
       {
         "end": 403,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 2200,
+        "frontType": 1,
         "start": 1900
       }
     ],
@@ -2110,60 +2064,46 @@
     ],
     "distance": 2500,
     "distanceType": 4,
+    "finishTimeMax": 1570000,
+    "finishTimeMin": 1487000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 592,
-        "length": 124,
-        "slope": 20789.01714546094
+        "length": 110,
+        "slope": 20000,
+        "start": 621
       },
       {
-        "start": 874,
-        "length": 154,
-        "slope": 17178.554916657224
+        "length": 200,
+        "slope": 15000,
+        "start": 825
       },
       {
-        "start": 1276,
-        "length": 113,
-        "slope": -13483.84892604748
+        "length": 400,
+        "slope": -15000,
+        "start": 1125
       },
       {
-        "start": 1441,
-        "length": 62,
-        "slope": -12319.3554708876
-      },
-      {
-        "start": 1513,
-        "length": 29,
-        "slope": -11084.328284107836
-      },
-      {
-        "start": 1782,
-        "length": 37,
-        "slope": -11435.820015580415
-      },
-      {
-        "start": 2293,
-        "length": 125,
-        "slope": 20876.64102975532
-      },
-      {
-        "start": 2436,
-        "length": 24,
-        "slope": -10877.243568300275
+        "length": 110,
+        "slope": 20000,
+        "start": 2325
       }
     ],
     "straights": [
       {
         "end": 875,
+        "frontType": 1,
         "start": 496
       },
       {
         "end": 1700,
+        "frontType": 2,
         "start": 1375
       },
       {
         "end": 2500,
+        "frontType": 1,
         "start": 2200
       }
     ],
@@ -2211,73 +2151,71 @@
     ],
     "distance": 3600,
     "distanceType": 4,
+    "finishTimeMax": 2270000,
+    "finishTimeMin": 2231000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 34,
-        "length": 120,
-        "slope": 20907.94986661872
+        "length": 110,
+        "slope": 20000,
+        "start": 40
       },
       {
-        "start": 309,
-        "length": 153,
-        "slope": 17050.3049029563
+        "length": 200,
+        "slope": 15000,
+        "start": 240
       },
       {
-        "start": 707,
-        "length": 258,
-        "slope": -12832.797942614407
+        "length": 400,
+        "slope": -15000,
+        "start": 540
       },
       {
-        "start": 1208,
-        "length": 36,
-        "slope": -11407.589618996573
+        "length": 110,
+        "slope": 20000,
+        "start": 1740
       },
       {
-        "start": 1712,
-        "length": 124,
-        "slope": 21086.575278375927
+        "length": 200,
+        "slope": 15000,
+        "start": 1925
       },
       {
-        "start": 1992,
-        "length": 152,
-        "slope": 17138.928331958945
+        "length": 400,
+        "slope": -15000,
+        "start": 2225
       },
       {
-        "start": 2389,
-        "length": 259,
-        "slope": -12814.961913313142
-      },
-      {
-        "start": 2890,
-        "length": 36,
-        "slope": -11327.3314124099
-      },
-      {
-        "start": 3395,
-        "length": 123,
-        "slope": 20504.585529266784
+        "length": 110,
+        "slope": 20000,
+        "start": 3425
       }
     ],
     "straights": [
       {
         "end": 290,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1115,
+        "frontType": 2,
         "start": 790
       },
       {
         "end": 1975,
+        "frontType": 1,
         "start": 1615
       },
       {
         "end": 2800,
+        "frontType": 2,
         "start": 2475
       },
       {
         "end": 3600,
+        "frontType": 1,
         "start": 3300
       }
     ],
@@ -2301,26 +2239,31 @@
     ],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 200,
-        "length": 188,
-        "slope": -16658.741932756773
+        "length": 175,
+        "slope": -15000,
+        "start": 175
       },
       {
-        "start": 989,
-        "length": 178,
-        "slope": 13644.799202773916
+        "length": 175,
+        "slope": 15000,
+        "start": 1000
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 900
       }
     ],
@@ -2352,40 +2295,46 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
     "slopes": [
       {
-        "start": 95,
-        "length": 182,
-        "slope": 13750.522418673829
+        "length": 175,
+        "slope": 15000,
+        "start": 100
       },
       {
-        "start": 386,
-        "length": 141,
-        "slope": 13674.023801983383
+        "length": 175,
+        "slope": 10000,
+        "start": 350
       },
       {
-        "start": 791,
-        "length": 173,
-        "slope": -17557.069258452273
+        "length": 175,
+        "slope": -15000,
+        "start": 775
       },
       {
-        "start": 1588,
-        "length": 186,
-        "slope": 14631.5895166099
+        "length": 175,
+        "slope": 15000,
+        "start": 1600
       }
     ],
     "straights": [
       {
         "end": 350,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1100,
+        "frontType": 1,
         "start": 750
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1500
       }
     ],
@@ -2425,54 +2374,30 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
-    "slopes": [
-      {
-        "start": 693,
-        "length": 160,
-        "slope": 12801.460196133356
-      },
-      {
-        "start": 858,
-        "length": 20,
-        "slope": 14167.694357850134
-      },
-      {
-        "start": 975,
-        "length": 149,
-        "slope": 13739.296337102467
-      },
-      {
-        "start": 1403,
-        "length": 163,
-        "slope": -16248.268907197978
-      },
-      {
-        "start": 2193,
-        "length": 158,
-        "slope": 12616.675797665748
-      },
-      {
-        "start": 2356,
-        "length": 19,
-        "slope": 15154.224425178587
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 200,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 950,
+        "frontType": 1,
         "start": 600
       },
       {
         "end": 1700,
+        "frontType": 2,
         "start": 1350
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2100
       }
     ],
@@ -2510,64 +2435,30 @@
     "courseSetStatus": [],
     "distance": 2500,
     "distanceType": 4,
+    "finishTimeMax": 1640000,
+    "finishTimeMin": 1591000,
+    "laneMax": 12000,
     "raceTrackId": 10005,
-    "slopes": [
-      {
-        "start": 791,
-        "length": 38,
-        "slope": 14279.710689290103
-      },
-      {
-        "start": 898,
-        "length": 53,
-        "slope": 10870.23074197992
-      },
-      {
-        "start": 959,
-        "length": 14,
-        "slope": 13258.41740015674
-      },
-      {
-        "start": 1075,
-        "length": 151,
-        "slope": 13643.745086074377
-      },
-      {
-        "start": 1502,
-        "length": 163,
-        "slope": -16335.193325639164
-      },
-      {
-        "start": 2289,
-        "length": 39,
-        "slope": 14160.295956105125
-      },
-      {
-        "start": 2397,
-        "length": 52,
-        "slope": 10883.997680788249
-      },
-      {
-        "start": 2456,
-        "length": 16,
-        "slope": 14207.004656244286
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 300,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1050,
+        "frontType": 1,
         "start": 700
       },
       {
         "end": 1800,
+        "frontType": 2,
         "start": 1450
       },
       {
         "end": 2500,
+        "frontType": 1,
         "start": 2200
       }
     ],
@@ -2592,41 +2483,36 @@
     ],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 134,
-        "length": 78,
-        "slope": 16252.76486295302
+        "length": 75,
+        "slope": 20000,
+        "start": 125
       },
       {
-        "start": 223,
-        "length": 4,
-        "slope": -11679.321268797421
+        "length": 250,
+        "slope": -15000,
+        "start": 250
       },
       {
-        "start": 360,
-        "length": 19,
-        "slope": -10067.625214670014
-      },
-      {
-        "start": 952,
-        "length": 37,
-        "slope": 11263.329810484904
-      },
-      {
-        "start": 995,
-        "length": 99,
-        "slope": 16911.94021152291
+        "length": 150,
+        "slope": 15000,
+        "start": 950
       }
     ],
     "straights": [
       {
         "end": 350,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 900
       }
     ],
@@ -2651,31 +2537,36 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 328,
-        "length": 73,
-        "slope": 17490.441706794456
+        "length": 75,
+        "slope": 20000,
+        "start": 325
       },
       {
-        "start": 450,
-        "length": 122,
-        "slope": -11228.133675293982
+        "length": 250,
+        "slope": -15000,
+        "start": 450
       },
       {
-        "start": 1155,
-        "length": 138,
-        "slope": 12640.092371723707
+        "length": 150,
+        "slope": 15000,
+        "start": 1150
       }
     ],
     "straights": [
       {
         "end": 550,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1100
       }
     ],
@@ -2703,36 +2594,36 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 534,
-        "length": 72,
-        "slope": 17328.546707114085
+        "length": 75,
+        "slope": 20000,
+        "start": 525
       },
       {
-        "start": 757,
-        "length": 20,
-        "slope": -10073.431791128573
+        "length": 250,
+        "slope": -15000,
+        "start": 650
       },
       {
-        "start": 1350,
-        "length": 38,
-        "slope": 11417.657312537089
-      },
-      {
-        "start": 1393,
-        "length": 100,
-        "slope": 16161.971741298941
+        "length": 150,
+        "slope": 15000,
+        "start": 1350
       }
     ],
     "straights": [
       {
         "end": 750,
+        "frontType": 2,
         "start": 325
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1300
       }
     ],
@@ -2758,41 +2649,36 @@
     "courseSetStatus": [],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 747,
-        "length": 65,
-        "slope": 17956.320511551166
+        "length": 75,
+        "slope": 20000,
+        "start": 725
       },
       {
-        "start": 861,
-        "length": 91,
-        "slope": -12077.455152130877
+        "length": 250,
+        "slope": -15000,
+        "start": 850
       },
       {
-        "start": 968,
-        "length": 20,
-        "slope": -10074.950449369784
-      },
-      {
-        "start": 1554,
-        "length": 38,
-        "slope": 11347.966396822732
-      },
-      {
-        "start": 1597,
-        "length": 100,
-        "slope": 16161.973838060941
+        "length": 150,
+        "slope": 15000,
+        "start": 1550
       }
     ],
     "straights": [
       {
         "end": 950,
+        "frontType": 2,
         "start": 400
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1500
       }
     ],
@@ -2824,40 +2710,41 @@
     ],
     "distance": 2300,
     "distanceType": 3,
+    "finishTimeMax": 1430000,
+    "finishTimeMin": 1393000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 1026,
-        "length": 70,
-        "slope": 16858.811068660074
+        "length": 75,
+        "slope": 20000,
+        "start": 1025
       },
       {
-        "start": 1251,
-        "length": 28,
-        "slope": -10111.945422491326
+        "length": 250,
+        "slope": -15000,
+        "start": 1150
       },
       {
-        "start": 1847,
-        "length": 39,
-        "slope": 11364.982475399444
-      },
-      {
-        "start": 1891,
-        "length": 100,
-        "slope": 16211.73161974994
+        "length": 150,
+        "slope": 15000,
+        "start": 1850
       }
     ],
     "straights": [
       {
         "end": 225,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1250,
+        "frontType": 2,
         "start": 800
       },
       {
         "end": 2300,
+        "frontType": 1,
         "start": 1800
       }
     ],
@@ -2887,45 +2774,46 @@
     "courseSetStatus": [],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1490000,
+    "finishTimeMin": 1416000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 1132,
-        "length": 15,
-        "slope": 14190.653298333791
+        "length": 40,
+        "slope": 15000,
+        "start": 0
       },
       {
-        "start": 1160,
-        "length": 42,
-        "slope": 16622.61793061984
+        "length": 75,
+        "slope": 20000,
+        "start": 1125
       },
       {
-        "start": 1337,
-        "length": 31,
-        "slope": -10124.287377321862
+        "length": 250,
+        "slope": -15000,
+        "start": 1250
       },
       {
-        "start": 1955,
-        "length": 37,
-        "slope": 11751.8422316221
-      },
-      {
-        "start": 2065,
-        "length": 28,
-        "slope": 11875.955106549252
+        "length": 150,
+        "slope": 15000,
+        "start": 1950
       }
     ],
     "straights": [
       {
         "end": 325,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1350,
+        "frontType": 2,
         "start": 900
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 1900
       }
     ],
@@ -2957,35 +2845,46 @@
     ],
     "distance": 2500,
     "distanceType": 4,
+    "finishTimeMax": 1570000,
+    "finishTimeMin": 1487000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 1216,
-        "length": 77,
-        "slope": 17393.801142259596
-      },
-      {
-        "start": 1450,
-        "length": 19,
-        "slope": -10073.908975056796
-      },
-      {
-        "start": 2051,
         "length": 140,
-        "slope": 12577.247887061416
+        "slope": 15000,
+        "start": 0
+      },
+      {
+        "length": 75,
+        "slope": 20000,
+        "start": 1225
+      },
+      {
+        "length": 250,
+        "slope": -15000,
+        "start": 1350
+      },
+      {
+        "length": 150,
+        "slope": 15000,
+        "start": 2050
       }
     ],
     "straights": [
       {
         "end": 425,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1450,
+        "frontType": 2,
         "start": 1000
       },
       {
         "end": 2500,
+        "frontType": 1,
         "start": 2000
       }
     ],
@@ -3023,69 +2922,61 @@
     "courseSetStatus": [],
     "distance": 3400,
     "distanceType": 4,
+    "finishTimeMax": 2140000,
+    "finishTimeMin": 2099000,
+    "laneMax": 15000,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 92,
-        "length": 72,
-        "slope": 17028.727375328952
+        "length": 75,
+        "slope": 20000,
+        "start": 67
       },
       {
-        "start": 212,
-        "length": 121,
-        "slope": -11222.218067109237
+        "length": 250,
+        "slope": -15000,
+        "start": 192
       },
       {
-        "start": 902,
-        "length": 36,
-        "slope": 11143.65733827984
+        "length": 150,
+        "slope": 15000,
+        "start": 892
       },
       {
-        "start": 985,
-        "length": 58,
-        "slope": 12006.668369294142
+        "length": 75,
+        "slope": 20000,
+        "start": 2125
       },
       {
-        "start": 1124,
-        "length": 190,
-        "slope": -12795.075362310912
+        "length": 250,
+        "slope": -15000,
+        "start": 2250
       },
       {
-        "start": 2150,
-        "length": 68,
-        "slope": 16553.02391927578
-      },
-      {
-        "start": 2266,
-        "length": 91,
-        "slope": -11557.651696046563
-      },
-      {
-        "start": 2957,
-        "length": 37,
-        "slope": 11116.114087213666
-      },
-      {
-        "start": 3040,
-        "length": 57,
-        "slope": 12037.68552168011
+        "length": 150,
+        "slope": 15000,
+        "start": 2950
       }
     ],
     "straights": [
       {
         "end": 292,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1325,
+        "frontType": 1,
         "start": 842
       },
       {
         "end": 2350,
+        "frontType": 2,
         "start": 1900
       },
       {
         "end": 3400,
+        "frontType": 1,
         "start": 2900
       }
     ],
@@ -3109,31 +3000,31 @@
     ],
     "distance": 1300,
     "distanceType": 1,
+    "finishTimeMax": 820000,
+    "finishTimeMin": 766000,
+    "laneMax": 12500,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 96,
-        "length": 115,
-        "slope": 15417.846813735092
+        "length": 200,
+        "slope": -10000,
+        "start": 275
       },
       {
-        "start": 249,
-        "length": 51,
-        "slope": -12300.76301477201
-      },
-      {
-        "start": 1028,
-        "length": 44,
-        "slope": 10727.418215656287
+        "length": 250,
+        "slope": 15000,
+        "start": 800
       }
     ],
     "straights": [
       {
         "end": 350,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1300,
+        "frontType": 1,
         "start": 800
       }
     ],
@@ -3157,31 +3048,31 @@
     ],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 940000,
+    "finishTimeMin": 808000,
+    "laneMax": 12500,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 175,
-        "length": 138,
-        "slope": 17718.49834324574
+        "length": 200,
+        "slope": -10000,
+        "start": 375
       },
       {
-        "start": 348,
-        "length": 53,
-        "slope": -12690.30714185386
-      },
-      {
-        "start": 1128,
-        "length": 44,
-        "slope": 10728.105987879035
+        "length": 250,
+        "slope": 15000,
+        "start": 900
       }
     ],
     "straights": [
       {
         "end": 450,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 900
       }
     ],
@@ -3206,41 +3097,31 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 1080000,
+    "finishTimeMin": 941000,
+    "laneMax": 12500,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 236,
-        "length": 3,
-        "slope": -10511.785963590699
+        "length": 200,
+        "slope": -10000,
+        "start": 575
       },
       {
-        "start": 252,
-        "length": 49,
-        "slope": 15125.233511295446
-      },
-      {
-        "start": 449,
-        "length": 64,
-        "slope": 12631.783723421648
-      },
-      {
-        "start": 549,
-        "length": 56,
-        "slope": -13231.896593164298
-      },
-      {
-        "start": 1277,
-        "length": 102,
-        "slope": 13785.63236277047
+        "length": 250,
+        "slope": 15000,
+        "start": 1100
       }
     ],
     "straights": [
       {
         "end": 650,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1100
       }
     ],
@@ -3270,40 +3151,36 @@
     "courseSetStatus": [],
     "distance": 2100,
     "distanceType": 3,
+    "finishTimeMax": 1330000,
+    "finishTimeMin": 1274000,
+    "laneMax": 12500,
     "raceTrackId": 10006,
     "slopes": [
       {
-        "start": 878,
-        "length": 138,
-        "slope": 13091.241290153857
+        "length": 200,
+        "slope": -10000,
+        "start": 1075
       },
       {
-        "start": 1052,
-        "length": 55,
-        "slope": -13047.081779551509
-      },
-      {
-        "start": 1752,
-        "length": 4,
-        "slope": 10004.647923211056
-      },
-      {
-        "start": 1877,
-        "length": 7,
-        "slope": 12648.028109330962
+        "length": 250,
+        "slope": 15000,
+        "start": 1600
       }
     ],
     "straights": [
       {
         "end": 200,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1150,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 2100,
+        "frontType": 1,
         "start": 1600
       }
     ],
@@ -3339,55 +3216,25 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 12500,
     "raceTrackId": 10006,
-    "slopes": [
-      {
-        "start": 57,
-        "length": 134,
-        "slope": 11963.901152971346
-      },
-      {
-        "start": 214,
-        "length": 104,
-        "slope": 42775.01098774477
-      },
-      {
-        "start": 362,
-        "length": 175,
-        "slope": 19727.53718117865
-      },
-      {
-        "start": 1345,
-        "length": 43,
-        "slope": -27742.670452214283
-      },
-      {
-        "start": 2021,
-        "length": 79,
-        "slope": 11496.402583043455
-      },
-      {
-        "start": 2193,
-        "length": 12,
-        "slope": 10085.87972959639
-      },
-      {
-        "start": 2252,
-        "length": 97,
-        "slope": -17081.25533433974
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 500,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1450,
+        "frontType": 2,
         "start": 1000
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 1900
       }
     ],
@@ -3409,26 +3256,31 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 14400,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 851,
-        "length": 114,
-        "slope": 18967.378896797658
+        "length": 775,
+        "slope": -10000,
+        "start": 100
       },
       {
-        "start": 1030,
-        "length": 74,
-        "slope": 11808.204199219508
+        "length": 100,
+        "slope": 20000,
+        "start": 875
       }
     ],
     "straights": [
       {
         "end": 300,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 800
       }
     ],
@@ -3450,26 +3302,31 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 14400,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 1062,
-        "length": 117,
-        "slope": 17747.3211292392
+        "length": 775,
+        "slope": -10000,
+        "start": 300
       },
       {
-        "start": 1201,
-        "length": 3,
-        "slope": -10216.939990390934
+        "length": 100,
+        "slope": 20000,
+        "start": 1075
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1000
       }
     ],
@@ -3497,26 +3354,31 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 14400,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 1250,
-        "length": 126,
-        "slope": 18870.494856212194
+        "length": 775,
+        "slope": -10000,
+        "start": 500
       },
       {
-        "start": 1400,
-        "length": 2,
-        "slope": -10980.51692662582
+        "length": 100,
+        "slope": 20000,
+        "start": 1275
       }
     ],
     "straights": [
       {
         "end": 700,
+        "frontType": 2,
         "start": 300
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1200
       }
     ],
@@ -3546,35 +3408,41 @@
     "courseSetStatus": [],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 14400,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 95,
-        "length": 3,
-        "slope": -10769.549305262555
+        "length": 50,
+        "slope": 20000,
+        "start": 0
       },
       {
-        "start": 138,
-        "length": 79,
-        "slope": 11627.438552024147
+        "length": 775,
+        "slope": -10000,
+        "start": 900
       },
       {
-        "start": 1654,
-        "length": 123,
-        "slope": 17676.625841099984
+        "length": 100,
+        "slope": 20000,
+        "start": 1675
       }
     ],
     "straights": [
       {
         "end": 300,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1100,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1600
       }
     ],
@@ -3606,30 +3474,46 @@
     ],
     "distance": 2200,
     "distanceType": 3,
+    "finishTimeMax": 1350000,
+    "finishTimeMin": 1302000,
+    "laneMax": 14400,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 160,
-        "length": 110,
-        "slope": 17500.122390925975
+        "length": 150,
+        "slope": -10000,
+        "start": 0
       },
       {
-        "start": 1862,
-        "length": 108,
-        "slope": 17326.651837121168
+        "length": 100,
+        "slope": 20000,
+        "start": 150
+      },
+      {
+        "length": 775,
+        "slope": -10000,
+        "start": 1100
+      },
+      {
+        "length": 100,
+        "slope": 20000,
+        "start": 1875
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1300,
+        "frontType": 2,
         "start": 900
       },
       {
         "end": 2200,
+        "frontType": 1,
         "start": 1800
       }
     ],
@@ -3651,26 +3535,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 13000,
     "raceTrackId": 10007,
-    "slopes": [
-      {
-        "start": 872,
-        "length": 108,
-        "slope": 15359.154913731463
-      },
-      {
-        "start": 989,
-        "length": 2,
-        "slope": 10054.117209159976
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 400,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 800
       }
     ],
@@ -3692,21 +3570,31 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 940000,
+    "finishTimeMin": 808000,
+    "laneMax": 13000,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 1082,
-        "length": 105,
-        "slope": 13865.05748983298
+        "length": 600,
+        "slope": -15000,
+        "start": 425
+      },
+      {
+        "length": 150,
+        "slope": 15000,
+        "start": 1025
       }
     ],
     "straights": [
       {
         "end": 600,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1000
       }
     ],
@@ -3738,25 +3626,41 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 13000,
     "raceTrackId": 10007,
     "slopes": [
       {
-        "start": 1481,
-        "length": 125,
-        "slope": 14447.7197419479
+        "length": 50,
+        "slope": 15000,
+        "start": 0
+      },
+      {
+        "length": 600,
+        "slope": -15000,
+        "start": 825
+      },
+      {
+        "length": 150,
+        "slope": 15000,
+        "start": 1425
       }
     ],
     "straights": [
       {
         "end": 270,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 2,
         "start": 600
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1400
       }
     ],
@@ -3786,35 +3690,25 @@
     "courseSetStatus": [],
     "distance": 1900,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1142000,
+    "laneMax": 13000,
     "raceTrackId": 10007,
-    "slopes": [
-      {
-        "start": 85,
-        "length": 75,
-        "slope": 10624.05137586846
-      },
-      {
-        "start": 261,
-        "length": 4,
-        "slope": 10530.987705161495
-      },
-      {
-        "start": 1571,
-        "length": 127,
-        "slope": 13501.579261859455
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 370,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1100,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1900,
+        "frontType": 1,
         "start": 1500
       }
     ],
@@ -3836,26 +3730,31 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 167,
-        "length": 152,
-        "slope": 19378.3025352294
+        "length": 175,
+        "slope": 15000,
+        "start": 120
       },
       {
-        "start": 446,
-        "length": 161,
-        "slope": -16243.640275019949
+        "length": 150,
+        "slope": -15000,
+        "start": 420
       }
     ],
     "straights": [
       {
         "end": 320,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 870
       }
     ],
@@ -3877,26 +3776,31 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 386,
-        "length": 131,
-        "slope": 14922.919527052434
+        "length": 175,
+        "slope": 15000,
+        "start": 320
       },
       {
-        "start": 645,
-        "length": 161,
-        "slope": -16245.26741271931
+        "length": 150,
+        "slope": -15000,
+        "start": 620
       }
     ],
     "straights": [
       {
         "end": 520,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1070
       }
     ],
@@ -3918,36 +3822,36 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 268,
-        "length": 142,
-        "slope": 15393.521819802356
+        "length": 100,
+        "slope": 20000,
+        "start": 250
       },
       {
-        "start": 489,
-        "length": 6,
-        "slope": -10249.801772385132
+        "length": 225,
+        "slope": 10000,
+        "start": 350
       },
       {
-        "start": 507,
-        "length": 39,
-        "slope": 22518.486356106492
-      },
-      {
-        "start": 573,
-        "length": 168,
-        "slope": -23433.120477758912
+        "length": 150,
+        "slope": -20000,
+        "start": 575
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1000
       }
     ],
@@ -3971,26 +3875,31 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 552,
-        "length": 128,
-        "slope": 14674.391739048284
+        "length": 175,
+        "slope": 15000,
+        "start": 520
       },
       {
-        "start": 813,
-        "length": 168,
-        "slope": -16234.227123305245
+        "length": 150,
+        "slope": -15000,
+        "start": 820
       }
     ],
     "straights": [
       {
         "end": 720,
+        "frontType": 2,
         "start": 200
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1270
       }
     ],
@@ -4014,36 +3923,36 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 463,
-        "length": 182,
-        "slope": 16543.713742138785
+        "length": 100,
+        "slope": 20000,
+        "start": 450
       },
       {
-        "start": 722,
-        "length": 4,
-        "slope": -10359.025326984814
+        "length": 225,
+        "slope": 10000,
+        "start": 550
       },
       {
-        "start": 739,
-        "length": 38,
-        "slope": 22643.04781754876
-      },
-      {
-        "start": 802,
-        "length": 162,
-        "slope": -23588.982173657412
+        "length": 150,
+        "slope": -20000,
+        "start": 775
       }
     ],
     "straights": [
       {
         "end": 700,
+        "frontType": 2,
         "start": 200
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1200
       }
     ],
@@ -4065,31 +3974,36 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 646,
-        "length": 182,
-        "slope": 16919.851977912487
+        "length": 100,
+        "slope": 20000,
+        "start": 650
       },
       {
-        "start": 923,
-        "length": 45,
-        "slope": 22187.46904941495
+        "length": 225,
+        "slope": 10000,
+        "start": 750
       },
       {
-        "start": 990,
-        "length": 164,
-        "slope": -23542.658605764354
+        "length": 150,
+        "slope": -20000,
+        "start": 975
       }
     ],
     "straights": [
       {
         "end": 900,
+        "frontType": 2,
         "start": 400
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1400
       }
     ],
@@ -4121,30 +4035,36 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 1045,
-        "length": 114,
-        "slope": 14977.787009357296
+        "length": 175,
+        "slope": 15000,
+        "start": 970
       },
       {
-        "start": 1280,
-        "length": 154,
-        "slope": -16493.81272702919
+        "length": 150,
+        "slope": -15000,
+        "start": 1270
       }
     ],
     "straights": [
       {
         "end": 400,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1170,
+        "frontType": 2,
         "start": 770
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1670
       }
     ],
@@ -4176,35 +4096,41 @@
     ],
     "distance": 2200,
     "distanceType": 3,
+    "finishTimeMax": 1350000,
+    "finishTimeMin": 1302000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 1038,
-        "length": 180,
-        "slope": 17169.220114259668
+        "length": 100,
+        "slope": 20000,
+        "start": 1050
       },
       {
-        "start": 1318,
-        "length": 47,
-        "slope": 20040.646584847855
+        "length": 225,
+        "slope": 10000,
+        "start": 1150
       },
       {
-        "start": 1383,
-        "length": 167,
-        "slope": -23602.339219520214
+        "length": 150,
+        "slope": -20000,
+        "start": 1375
       }
     ],
     "straights": [
       {
         "end": 400,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1300,
+        "frontType": 2,
         "start": 800
       },
       {
         "end": 2200,
+        "frontType": 1,
         "start": 1800
       }
     ],
@@ -4236,40 +4162,41 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1490000,
+    "finishTimeMin": 1416000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 1240,
-        "length": 182,
-        "slope": 16815.62933977
+        "length": 100,
+        "slope": 20000,
+        "start": 1250
       },
       {
-        "start": 1502,
-        "length": 7,
-        "slope": -10488.591385021755
+        "length": 225,
+        "slope": 10000,
+        "start": 1350
       },
       {
-        "start": 1521,
-        "length": 47,
-        "slope": 22704.71090978517
-      },
-      {
-        "start": 1585,
-        "length": 166,
-        "slope": -24025.448472426408
+        "length": 150,
+        "slope": -20000,
+        "start": 1575
       }
     ],
     "straights": [
       {
         "end": 600,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1500,
+        "frontType": 2,
         "start": 1000
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2000
       }
     ],
@@ -4310,64 +4237,61 @@
     ],
     "distance": 3000,
     "distanceType": 4,
+    "finishTimeMax": 1900000,
+    "finishTimeMin": 1815000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 21,
-        "length": 178,
-        "slope": 19798.18021261757
+        "length": 100,
+        "slope": 20000,
+        "start": 11
       },
       {
-        "start": 279,
-        "length": 5,
-        "slope": -10110.222966701731
+        "length": 225,
+        "slope": 10000,
+        "start": 111
       },
       {
-        "start": 297,
-        "length": 45,
-        "slope": 23107.50728706
+        "length": 150,
+        "slope": -20000,
+        "start": 336
       },
       {
-        "start": 361,
-        "length": 162,
-        "slope": -23628.24058720927
+        "length": 100,
+        "slope": 20000,
+        "start": 1850
       },
       {
-        "start": 1857,
-        "length": 179,
-        "slope": 16751.337046764864
+        "length": 225,
+        "slope": 10000,
+        "start": 1950
       },
       {
-        "start": 2117,
-        "length": 4,
-        "slope": -10128.53395171957
-      },
-      {
-        "start": 2134,
-        "length": 45,
-        "slope": 22550.316354863815
-      },
-      {
-        "start": 2198,
-        "length": 163,
-        "slope": -23576.572682858376
+        "length": 150,
+        "slope": -20000,
+        "start": 2175
       }
     ],
     "straights": [
       {
         "end": 261,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1250,
+        "frontType": 1,
         "start": 761
       },
       {
         "end": 2100,
+        "frontType": 2,
         "start": 1650
       },
       {
         "end": 3000,
+        "frontType": 1,
         "start": 2600
       }
     ],
@@ -4405,64 +4329,61 @@
     "courseSetStatus": [],
     "distance": 3200,
     "distanceType": 4,
+    "finishTimeMax": 2040000,
+    "finishTimeMin": 1930000,
+    "laneMax": 14100,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 215,
-        "length": 181,
-        "slope": 16705.24699992756
+        "length": 100,
+        "slope": 20000,
+        "start": 208
       },
       {
-        "start": 476,
-        "length": 3,
-        "slope": -10182.787858575715
+        "length": 225,
+        "slope": 10000,
+        "start": 308
       },
       {
-        "start": 493,
-        "length": 36,
-        "slope": 23600.98533606718
+        "length": 150,
+        "slope": -20000,
+        "start": 533
       },
       {
-        "start": 556,
-        "length": 164,
-        "slope": -23563.194888626876
+        "length": 100,
+        "slope": 20000,
+        "start": 2050
       },
       {
-        "start": 2055,
-        "length": 181,
-        "slope": 16705.126009114043
+        "length": 225,
+        "slope": 10000,
+        "start": 2150
       },
       {
-        "start": 2316,
-        "length": 3,
-        "slope": -10184.39321121843
-      },
-      {
-        "start": 2333,
-        "length": 36,
-        "slope": 23627.51745296099
-      },
-      {
-        "start": 2396,
-        "length": 164,
-        "slope": -23562.618021432423
+        "length": 150,
+        "slope": -20000,
+        "start": 2375
       }
     ],
     "straights": [
       {
         "end": 458,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1450,
+        "frontType": 1,
         "start": 958
       },
       {
         "end": 2300,
+        "frontType": 2,
         "start": 1850
       },
       {
         "end": 3200,
+        "frontType": 1,
         "start": 2800
       }
     ],
@@ -4484,26 +4405,31 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 13000,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 245,
-        "length": 157,
-        "slope": 16863.6865674206
+        "length": 200,
+        "slope": 15000,
+        "start": 175
       },
       {
-        "start": 471,
-        "length": 102,
-        "slope": -14780.13549936777
+        "length": 200,
+        "slope": -15000,
+        "start": 475
       }
     ],
     "straights": [
       {
         "end": 400,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 850
       }
     ],
@@ -4525,26 +4451,31 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 940000,
+    "finishTimeMin": 808000,
+    "laneMax": 13000,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 477,
-        "length": 140,
-        "slope": 17189.16216130649
+        "length": 200,
+        "slope": 15000,
+        "start": 375
       },
       {
-        "start": 693,
-        "length": 190,
-        "slope": -12970.357582265451
+        "length": 200,
+        "slope": -15000,
+        "start": 675
       }
     ],
     "straights": [
       {
         "end": 600,
+        "frontType": 2,
         "start": 100
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1050
       }
     ],
@@ -4574,30 +4505,36 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 13000,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 837,
-        "length": 168,
-        "slope": 19481.409973602193
+        "length": 200,
+        "slope": 15000,
+        "start": 775
       },
       {
-        "start": 1079,
-        "length": 96,
-        "slope": -17841.784747871447
+        "length": 200,
+        "slope": -15000,
+        "start": 1075
       }
     ],
     "straights": [
       {
         "end": 300,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 2,
         "start": 600
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1450
       }
     ],
@@ -4627,30 +4564,36 @@
     "courseSetStatus": [],
     "distance": 1900,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1142000,
+    "laneMax": 13000,
     "raceTrackId": 10008,
     "slopes": [
       {
-        "start": 940,
-        "length": 168,
-        "slope": 18283.781247768184
+        "length": 200,
+        "slope": 15000,
+        "start": 875
       },
       {
-        "start": 1188,
-        "length": 195,
-        "slope": -14402.11636525795
+        "length": 200,
+        "slope": -15000,
+        "start": 1175
       }
     ],
     "straights": [
       {
         "end": 400,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1100,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1900,
+        "frontType": 1,
         "start": 1550
       }
     ],
@@ -4672,26 +4615,31 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 1012,
-        "length": 114,
-        "slope": 15108.698657879435
+        "length": 595,
+        "slope": -10000,
+        "start": 400
       },
       {
-        "start": 1129,
-        "length": 11,
-        "slope": 12919.742062984498
+        "length": 125,
+        "slope": 20000,
+        "start": 1000
       }
     ],
     "straights": [
       {
         "end": 250,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 850
       }
     ],
@@ -4713,26 +4661,31 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 840000,
+    "finishTimeMin": 800000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 1212,
-        "length": 116,
-        "slope": 14976.926550616625
+        "length": 595,
+        "slope": -10000,
+        "start": 600
       },
       {
-        "start": 1328,
-        "length": 12,
-        "slope": 12993.502603808056
+        "length": 125,
+        "slope": 20000,
+        "start": 1200
       }
     ],
     "straights": [
       {
         "end": 450,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1050
       }
     ],
@@ -4756,31 +4709,31 @@
     ],
     "distance": 1600,
     "distanceType": 2,
+    "finishTimeMax": 950000,
+    "finishTimeMin": 908000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 363,
-        "length": 22,
-        "slope": 11141.063686653439
+        "length": 400,
+        "slope": -10000,
+        "start": 950
       },
       {
-        "start": 1411,
-        "length": 114,
-        "slope": 15251.135124038405
-      },
-      {
-        "start": 1528,
-        "length": 12,
-        "slope": 12509.843450900318
+        "length": 120,
+        "slope": 20000,
+        "start": 1405
       }
     ],
     "straights": [
       {
         "end": 450,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1600,
+        "frontType": 1,
         "start": 1150
       }
     ],
@@ -4804,26 +4757,31 @@
     ],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 569,
-        "length": 22,
-        "slope": 11121.157347994003
+        "length": 400,
+        "slope": -10000,
+        "start": 1150
       },
       {
-        "start": 1611,
-        "length": 129,
-        "slope": 14727.337771174274
+        "length": 120,
+        "slope": 20000,
+        "start": 1605
       }
     ],
     "straights": [
       {
         "end": 650,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1350
       }
     ],
@@ -4855,40 +4813,46 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 163,
-        "length": 113,
-        "slope": 15220.414823767574
+        "length": 140,
+        "slope": -10000,
+        "start": 0
       },
       {
-        "start": 279,
-        "length": 11,
-        "slope": 13126.63971671884
+        "length": 125,
+        "slope": 20000,
+        "start": 145
       },
       {
-        "start": 1813,
-        "length": 113,
-        "slope": 15141.473855088745
+        "length": 595,
+        "slope": -10000,
+        "start": 1200
       },
       {
-        "start": 1929,
-        "length": 12,
-        "slope": 12552.182074656168
+        "length": 125,
+        "slope": 20000,
+        "start": 1800
       }
     ],
     "straights": [
       {
         "end": 370,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1050,
+        "frontType": 2,
         "start": 750
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1650
       }
     ],
@@ -4920,40 +4884,46 @@
     ],
     "distance": 2200,
     "distanceType": 3,
+    "finishTimeMax": 1350000,
+    "finishTimeMin": 1302000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 310,
-        "length": 116,
-        "slope": 15230.47201687792
+        "length": 290,
+        "slope": -10000,
+        "start": 0
       },
       {
-        "start": 430,
-        "length": 11,
-        "slope": 13141.7643011536
+        "length": 125,
+        "slope": 20000,
+        "start": 295
       },
       {
-        "start": 2007,
-        "length": 116,
-        "slope": 15142.497852776145
+        "length": 595,
+        "slope": -10000,
+        "start": 1400
       },
       {
-        "start": 2127,
-        "length": 12,
-        "slope": 12738.6653432378
+        "length": 125,
+        "slope": 20000,
+        "start": 2000
       }
     ],
     "straights": [
       {
         "end": 520,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1250,
+        "frontType": 2,
         "start": 900
       },
       {
         "end": 2200,
+        "frontType": 1,
         "start": 1850
       }
     ],
@@ -4985,41 +4955,41 @@
     ],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1490000,
+    "finishTimeMin": 1416000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 163,
-        "length": 114,
-        "slope": 15190.960209841982
+        "length": 132,
+        "slope": -10000,
+        "start": 0
       },
       {
-        "start": 280,
-        "length": 11,
-        "slope": 13356.610788921129
+        "length": 120,
+        "slope": 20000,
+        "start": 187
       },
       {
-        "start": 1172,
-        "length": 22,
-        "slope": 11098.928959352259
+        "length": 400,
+        "slope": -10000,
+        "start": 1750
       },
       {
-        "start": 2212,
-        "length": 113,
-        "slope": 15250.197111588011
-      },
-      {
-        "start": 2329,
-        "length": 11,
-        "slope": 12516.421074555561
+        "length": 120,
+        "slope": 20000,
+        "start": 2205
       }
     ],
     "straights": [
       {
         "end": 1250,
+        "frontType": 2,
         "start": 750
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 1950
       }
     ],
@@ -5049,45 +5019,46 @@
     "courseSetStatus": [],
     "distance": 2600,
     "distanceType": 4,
+    "finishTimeMax": 1650000,
+    "finishTimeMin": 1576000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 360,
-        "length": 114,
-        "slope": 15190.391311808322
+        "length": 315,
+        "slope": -10000,
+        "start": 0
       },
       {
-        "start": 477,
-        "length": 11,
-        "slope": 13113.58549313965
+        "length": 120,
+        "slope": 20000,
+        "start": 370
       },
       {
-        "start": 1370,
-        "length": 22,
-        "slope": 11081.529696479987
+        "length": 400,
+        "slope": -10000,
+        "start": 1950
       },
       {
-        "start": 2412,
-        "length": 113,
-        "slope": 15258.73896602605
-      },
-      {
-        "start": 2529,
-        "length": 11,
-        "slope": 12955.840000889535
+        "length": 120,
+        "slope": 20000,
+        "start": 2405
       }
     ],
     "straights": [
       {
         "end": 570,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1450,
+        "frontType": 2,
         "start": 950
       },
       {
         "end": 2600,
+        "frontType": 1,
         "start": 2150
       }
     ],
@@ -5127,44 +5098,51 @@
     ],
     "distance": 3000,
     "distanceType": 4,
+    "finishTimeMax": 1900000,
+    "finishTimeMin": 1815000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 1107,
-        "length": 116,
-        "slope": 15149.838653967885
+        "length": 595,
+        "slope": -10000,
+        "start": 498
       },
       {
-        "start": 1226,
-        "length": 13,
-        "slope": 12709.6703317389
+        "length": 125,
+        "slope": 20000,
+        "start": 1095
       },
       {
-        "start": 2807,
-        "length": 116,
-        "slope": 15148.460436499508
+        "length": 595,
+        "slope": -10000,
+        "start": 2200
       },
       {
-        "start": 2926,
-        "length": 13,
-        "slope": 12436.067874714365
+        "length": 125,
+        "slope": 20000,
+        "start": 2800
       }
     ],
     "straights": [
       {
         "end": 348,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1320,
+        "frontType": 1,
         "start": 948
       },
       {
         "end": 2050,
+        "frontType": 2,
         "start": 1700
       },
       {
         "end": 3000,
+        "frontType": 1,
         "start": 2650
       }
     ],
@@ -5186,21 +5164,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 12000,
     "raceTrackId": 10009,
-    "slopes": [
-      {
-        "start": 1110,
-        "length": 59,
-        "slope": 12347.434135345244
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 350,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 850
       }
     ],
@@ -5222,26 +5199,26 @@
     "courseSetStatus": [],
     "distance": 1400,
     "distanceType": 1,
+    "finishTimeMax": 940000,
+    "finishTimeMin": 808000,
+    "laneMax": 12000,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 441,
-        "length": 56,
-        "slope": -11899.53010640554
-      },
-      {
-        "start": 1310,
-        "length": 59,
-        "slope": 12346.801747018537
+        "length": 125,
+        "slope": 15000,
+        "start": 1200
       }
     ],
     "straights": [
       {
         "end": 550,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1400,
+        "frontType": 1,
         "start": 1050
       }
     ],
@@ -5271,30 +5248,36 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 12000,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 221,
-        "length": 54,
-        "slope": 12119.429477668806
+        "length": 125,
+        "slope": 15000,
+        "start": 105
       },
       {
-        "start": 1710,
-        "length": 59,
-        "slope": 12340.655078339623
+        "length": 125,
+        "slope": 15000,
+        "start": 1599
       }
     ],
     "straights": [
       {
         "end": 330,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 950,
+        "frontType": 2,
         "start": 630
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1449
       }
     ],
@@ -5327,35 +5310,36 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1290000,
+    "finishTimeMin": 1219000,
+    "laneMax": 12000,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 373,
-        "length": 47,
-        "slope": 10791.623402670139
+        "length": 125,
+        "slope": 15000,
+        "start": 275
       },
       {
-        "start": 517,
-        "length": 112,
-        "slope": 18091.521927762085
-      },
-      {
-        "start": 1907,
-        "length": 61,
-        "slope": 12312.279266997792
+        "length": 125,
+        "slope": 15000,
+        "start": 1800
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1150,
+        "frontType": 2,
         "start": 800
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1650
       }
     ],
@@ -5393,54 +5377,51 @@
     "courseSetStatus": [],
     "distance": 3200,
     "distanceType": 4,
+    "finishTimeMax": 2040000,
+    "finishTimeMin": 1930000,
+    "laneMax": 12500,
     "raceTrackId": 10009,
     "slopes": [
       {
-        "start": 298,
-        "length": 24,
-        "slope": 10983.052656874046
+        "length": 400,
+        "slope": -10000,
+        "start": 870
       },
       {
-        "start": 1344,
-        "length": 114,
-        "slope": 15323.662947570821
+        "length": 120,
+        "slope": 20000,
+        "start": 1325
       },
       {
-        "start": 1461,
-        "length": 11,
-        "slope": 13226.775713577295
+        "length": 595,
+        "slope": -10000,
+        "start": 2400
       },
       {
-        "start": 1695,
-        "length": 43,
-        "slope": 10068.848419855183
-      },
-      {
-        "start": 3011,
-        "length": 114,
-        "slope": 15230.71411911918
-      },
-      {
-        "start": 3128,
-        "length": 10,
-        "slope": 12726.102814786685
+        "length": 125,
+        "slope": 20000,
+        "start": 3000
       }
     ],
     "straights": [
       {
         "end": 370,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1520,
+        "frontType": 1,
         "start": 1070
       },
       {
         "end": 2250,
+        "frontType": 2,
         "start": 1900
       },
       {
         "end": 3200,
+        "frontType": 1,
         "start": 2850
       }
     ],
@@ -5464,21 +5445,26 @@
     ],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 710000,
+    "finishTimeMin": 675000,
+    "laneMax": 14500,
     "raceTrackId": 10010,
     "slopes": [
       {
-        "start": 20,
-        "length": 27,
-        "slope": -10299.886379843994
+        "length": 60,
+        "slope": -15000,
+        "start": 0
       }
     ],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 910
       }
     ],
@@ -5508,35 +5494,31 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1100000,
+    "finishTimeMin": 1044000,
+    "laneMax": 14500,
     "raceTrackId": 10010,
     "slopes": [
       {
-        "start": 275,
-        "length": 11,
-        "slope": 10956.67588099179
-      },
-      {
-        "start": 437,
-        "length": 59,
-        "slope": 12204.441594237847
-      },
-      {
-        "start": 511,
-        "length": 15,
-        "slope": 14419.750198352393
+        "length": 255,
+        "slope": 15000,
+        "start": 280
       }
     ],
     "straights": [
       {
         "end": 290,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1100,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1510
       }
     ],
@@ -5568,35 +5550,31 @@
     ],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1230000,
+    "finishTimeMin": 1171000,
+    "laneMax": 14500,
     "raceTrackId": 10010,
     "slopes": [
       {
-        "start": 485,
-        "length": 97,
-        "slope": 10897.74533524032
-      },
-      {
-        "start": 640,
-        "length": 60,
-        "slope": 12093.110581296105
-      },
-      {
-        "start": 716,
-        "length": 15,
-        "slope": 14484.093713570945
+        "length": 255,
+        "slope": 15000,
+        "start": 480
       }
     ],
     "straights": [
       {
         "end": 490,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1300,
+        "frontType": 2,
         "start": 900
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1710
       }
     ],
@@ -5636,34 +5614,36 @@
     ],
     "distance": 2600,
     "distanceType": 4,
+    "finishTimeMax": 1650000,
+    "finishTimeMin": 1576000,
+    "laneMax": 14500,
     "raceTrackId": 10010,
     "slopes": [
       {
-        "start": 1101,
-        "length": 218,
-        "slope": 30217.5880531938
-      },
-      {
-        "start": 1332,
-        "length": 43,
-        "slope": 29875.391406280432
+        "length": 255,
+        "slope": 15000,
+        "start": 1100
       }
     ],
     "straights": [
       {
         "end": 309,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1110,
+        "frontType": 1,
         "start": 719
       },
       {
         "end": 1900,
+        "frontType": 2,
         "start": 1520
       },
       {
         "end": 2600,
+        "frontType": 1,
         "start": 2310
       }
     ],
@@ -5687,21 +5667,20 @@
     ],
     "distance": 1000,
     "distanceType": 1,
+    "finishTimeMax": 630000,
+    "finishTimeMin": 574000,
+    "laneMax": 12000,
     "raceTrackId": 10010,
-    "slopes": [
-      {
-        "start": 373,
-        "length": 81,
-        "slope": -14127.566664722284
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 360,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1000,
+        "frontType": 1,
         "start": 720
       }
     ],
@@ -5731,35 +5710,31 @@
     "courseSetStatus": [],
     "distance": 1700,
     "distanceType": 2,
+    "finishTimeMax": 1130000,
+    "finishTimeMin": 1014000,
+    "laneMax": 12000,
     "raceTrackId": 10010,
     "slopes": [
       {
-        "start": 293,
-        "length": 179,
-        "slope": 18951.986973981617
-      },
-      {
-        "start": 561,
-        "length": 156,
-        "slope": -18899.514516704316
-      },
-      {
-        "start": 1060,
-        "length": 103,
-        "slope": -19541.02838433876
+        "length": 150,
+        "slope": 15000,
+        "start": 370
       }
     ],
     "straights": [
       {
         "end": 340,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1060,
+        "frontType": 2,
         "start": 700
       },
       {
         "end": 1700,
+        "frontType": 1,
         "start": 1420
       }
     ],
@@ -5797,39 +5772,30 @@
     "courseSetStatus": [],
     "distance": 2400,
     "distanceType": 3,
+    "finishTimeMax": 1560000,
+    "finishTimeMin": 1491000,
+    "laneMax": 12000,
     "raceTrackId": 10010,
-    "slopes": [
-      {
-        "start": 328,
-        "length": 47,
-        "slope": -10607.196867004299
-      },
-      {
-        "start": 1102,
-        "length": 79,
-        "slope": 14214.418158135502
-      },
-      {
-        "start": 1774,
-        "length": 47,
-        "slope": -10606.238880939414
-      }
-    ],
+    "slopes": [],
     "straights": [
       {
         "end": 312,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1040,
+        "frontType": 1,
         "start": 672
       },
       {
         "end": 1760,
+        "frontType": 2,
         "start": 1400
       },
       {
         "end": 2400,
+        "frontType": 1,
         "start": 2120
       }
     ],
@@ -5851,15 +5817,20 @@
     "courseSetStatus": [],
     "distance": 1200,
     "distanceType": 1,
+    "finishTimeMax": 770000,
+    "finishTimeMin": 690000,
+    "laneMax": 12000,
     "raceTrackId": 10101,
     "slopes": [],
     "straights": [
       {
         "end": 500,
+        "frontType": 2,
         "start": 0
       },
       {
         "end": 1200,
+        "frontType": 1,
         "start": 812
       }
     ],
@@ -5889,19 +5860,25 @@
     "courseSetStatus": [],
     "distance": 1800,
     "distanceType": 2,
+    "finishTimeMax": 1180000,
+    "finishTimeMin": 1081000,
+    "laneMax": 12000,
     "raceTrackId": 10101,
     "slopes": [],
     "straights": [
       {
         "end": 301,
+        "frontType": 1,
         "start": 0
       },
       {
-        "end": 1100.23,
+        "end": 1100.22998046875,
+        "frontType": 2,
         "start": 600
       },
       {
         "end": 1800,
+        "frontType": 1,
         "start": 1400
       }
     ],
@@ -5931,19 +5908,25 @@
     "courseSetStatus": [],
     "distance": 2000,
     "distanceType": 3,
+    "finishTimeMax": 1290000,
+    "finishTimeMin": 1219000,
+    "laneMax": 12000,
     "raceTrackId": 10101,
     "slopes": [],
     "straights": [
       {
         "end": 500,
+        "frontType": 1,
         "start": 0
       },
       {
         "end": 1300,
+        "frontType": 2,
         "start": 800
       },
       {
         "end": 2000,
+        "frontType": 1,
         "start": 1600
       }
     ],

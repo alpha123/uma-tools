@@ -1,4 +1,10 @@
 {
+  "1000011": [
+    "Carnival Bonus"
+  ],
+  "1000012": [
+    "Carnival Bonus"
+  ],
   "100011": [
     "Shooting Star"
   ],
@@ -53,8 +59,17 @@
   "100181": [
     "Blazing Pride"
   ],
+  "100191": [
+    "OMG! (ﾟ∀ﾟ)  The Final Sprint! ☆"
+  ],
   "100201": [
     "Angling and Scheming"
+  ],
+  "100211": [
+    "White Lightning Comin' Through!"
+  ],
+  "100221": [
+    "Fairy Tale"
   ],
   "100231": [
     "∴win Q.E.D."
@@ -62,20 +77,38 @@
   "100241": [
     "Flashy☆Landing"
   ],
+  "100251": [
+    "Chasing After You"
+  ],
   "100261": [
     "G00 1st. F∞;"
   ],
   "100271": [
     "Let's Pump Some Iron!"
   ],
+  "100281": [
+    "YUMMY☆SPEED!"
+  ],
   "100301": [
     "Blue Rose Closer"
+  ],
+  "100311": [
+    "All Charged! It's Go Time!"
   ],
   "100321": [
     "U=ma2"
   ],
+  "100331": [
+    "Shooting Star of Dioskouroi"
+  ],
+  "100341": [
+    "Now We're Cruisin'!"
+  ],
   "100351": [
     "Our Ticket to Win!"
+  ],
+  "100361": [
+    "trigger:BEAT"
   ],
   "100371": [
     "Schwarzes Schwert"
@@ -83,11 +116,17 @@
   "100381": [
     "#LookatCurren"
   ],
+  "100391": [
+    "A Princess Must Seize Victory!"
+  ],
   "100401": [
     "KEEP IT REAL."
   ],
   "100411": [
     "Genius x Bakushin = Victory"
+  ],
+  "100441": [
+    "Victory belongs to me—Strelitzia! ☆"
   ],
   "100451": [
     "Pure Heart"
@@ -95,8 +134,14 @@
   "100461": [
     "SPARKLY☆STARDOM"
   ],
+  "100481": [
+    "Pop & Polish"
+  ],
   "100501": [
     "Nemesis"
+  ],
+  "100511": [
+    "Budding Blossom"
   ],
   "100521": [
     "Super-Duper Climax"
@@ -107,14 +152,41 @@
   "100581": [
     "I Never Goof Up!"
   ],
+  "100591": [
+    "Moving Past, and Beyond"
+  ],
   "100601": [
     "Just a Little Farther!"
   ],
   "100611": [
     "Prideful King"
   ],
+  "100621": [
+    "Go, Go, Mun!"
+  ],
+  "100641": [
+    "Keep Pushing Ahead"
+  ],
+  "100671": [
+    "Eternal Encompassing Shine"
+  ],
+  "100681": [
+    "Victory Cheer!"
+  ],
+  "100691": [
+    "Ambition to Surpass the Sakura"
+  ],
   "10071": [
     "Warning Shot!"
+  ],
+  "100711": [
+    "A Lifelong Dream, A Moment's Flight"
+  ],
+  "100721": [
+    "Peerless Dance of Flowering Flames"
+  ],
+  "100741": [
+    "Lovely Spring Breeze"
   ],
   "10081": [
     "Xceleration"
@@ -161,6 +233,12 @@
   "10611": [
     "Call Me King"
   ],
+  "10621": [
+    "Ready, Go!"
+  ],
+  "1100011": [
+    "Feelin' a Bit Silly"
+  ],
   "110011": [
     "Dazzl'n ♪ Diver"
   ],
@@ -169,6 +247,15 @@
   ],
   "110041": [
     "A Kiss for Courage"
+  ],
+  "110051": [
+    "Ravissant"
+  ],
+  "110061": [
+    "Festive Miracle"
+  ],
+  "110101": [
+    "Joyful Voyage!"
   ],
   "110111": [
     "Superior Heal"
@@ -179,14 +266,71 @@
   "110141": [
     "Condor's Fury"
   ],
+  "110151": [
+    "Barcarole of Blessings"
+  ],
+  "110171": [
+    "Arrows Whistle, Shadows Disperse"
+  ],
   "110181": [
     "Eternal Moments"
+  ],
+  "110201": [
+    "Break It Down!"
+  ],
+  "110221": [
+    "Best Day Ever"
+  ],
+  "110231": [
+    "Presents from X"
   ],
   "110241": [
     "Flowery☆Maneuver"
   ],
+  "110261": [
+    "Operation Cacao"
+  ],
+  "110301": [
+    "Every Rose Has Its Fangs"
+  ],
+  "110371": [
+    "Guten Appetit ♪"
+  ],
+  "110381": [
+    "One True Color"
+  ],
+  "110401": [
+    "Dancing in the Leaves"
+  ],
+  "110451": [
+    "Give Mummy a Hug ♡"
+  ],
+  "110521": [
+    "114th Time's the Charm"
+  ],
   "110561": [
     "Bountiful Harvest"
+  ],
+  "110591": [
+    "Wherever This Wonder Leads"
+  ],
+  "110601": [
+    "Go☆Go☆Goal!"
+  ],
+  "110611": [
+    "Louder! Tracen Cheer!"
+  ],
+  "1200011": [
+    "Medium Race Enthusiast"
+  ],
+  "1200021": [
+    "Long Race Enthusiast"
+  ],
+  "1200031": [
+    "Mile Race Enthusiast"
+  ],
+  "120011": [
+    "Dreams Donned with Pride!"
   ],
   "200011": [
     "Right-Handed ◎"
@@ -196,6 +340,9 @@
   ],
   "200013": [
     "Right-Handed ×"
+  ],
+  "200014": [
+    "Right-Handed Demon"
   ],
   "200021": [
     "Left-Handed ◎"
@@ -241,6 +388,9 @@
   ],
   "200063": [
     "Kyoto Racecourse ×"
+  ],
+  "200064": [
+    "Yodo Invicta"
   ],
   "200071": [
     "Chukyo Racecourse ◎"
@@ -323,6 +473,9 @@
   "200153": [
     "Firm Conditions ×"
   ],
+  "200154": [
+    "Firm Course Menace"
+  ],
   "200161": [
     "Wet Conditions ◎"
   ],
@@ -341,6 +494,9 @@
   "200173": [
     "Spring Runner ×"
   ],
+  "200174": [
+    "Spring Spectacle"
+  ],
   "200181": [
     "Summer Runner ◎"
   ],
@@ -358,6 +514,9 @@
   ],
   "200193": [
     "Fall Runner ×"
+  ],
+  "200194": [
+    "Fall Frenzy"
   ],
   "200201": [
     "Winter Runner ◎"
@@ -707,6 +866,9 @@
   "200771": [
     "Trick (Front)"
   ],
+  "200772": [
+    "Tantalizing Trick"
+  ],
   "200781": [
     "Trick (Rear)"
   ],
@@ -857,11 +1019,17 @@
   "201102": [
     "Medium Straightaways ○"
   ],
+  "201103": [
+    "Flash Forward"
+  ],
   "201111": [
     "Medium Corners ◎"
   ],
   "201112": [
     "Medium Corners ○"
+  ],
+  "201113": [
+    "Refraction Arc"
   ],
   "201121": [
     "Clairvoyance"
@@ -899,6 +1067,9 @@
   "201172": [
     "Long Straightaways ○"
   ],
+  "201173": [
+    "Blast Forward"
+  ],
   "201181": [
     "Long Corners ◎"
   ],
@@ -910,6 +1081,9 @@
   ],
   "201192": [
     "Keeping the Lead"
+  ],
+  "201201": [
+    "VIP Pass"
   ],
   "201202": [
     "Passing Pro"
@@ -949,6 +1123,9 @@
   ],
   "201262": [
     "Dodging Danger"
+  ],
+  "201271": [
+    "Top Runner"
   ],
   "201272": [
     "Leader's Pride"
@@ -1017,7 +1194,7 @@
     "Late Surger Straightaways ○"
   ],
   "201391": [
-    "Later Surger Corners ◎"
+    "Late Surger Corners ◎"
   ],
   "201392": [
     "Late Surger Corners ○"
@@ -1057,6 +1234,9 @@
   ],
   "201452": [
     "End Closer Straightaways ○"
+  ],
+  "201453": [
+    "Moonlit Flash"
   ],
   "201461": [
     "End Closer Corners ◎"
@@ -1133,11 +1313,17 @@
   "201591": [
     "Uma Stan"
   ],
+  "201592": [
+    "Superstan"
+  ],
   "201601": [
     "Groundwork"
   ],
   "201611": [
     "Tail Held High"
+  ],
+  "201612": [
+    "Tail Nine"
   ],
   "201621": [
     "Shake It Out"
@@ -1154,11 +1340,137 @@
   "201661": [
     "Playtime's Over!"
   ],
+  "201662": [
+    "See Ya Later!"
+  ],
   "201671": [
     "Trending in the Charts!"
   ],
   "201672": [
     "Top Pick"
+  ],
+  "201681": [
+    "Lead the Charge!"
+  ],
+  "201682": [
+    "Forward, March!"
+  ],
+  "201691": [
+    "Lie in Wait"
+  ],
+  "201692": [
+    "Be Still"
+  ],
+  "201701": [
+    "Come What May"
+  ],
+  "201702": [
+    "All I've Got"
+  ],
+  "201801": [
+    "♡ 3D Nail Art"
+  ],
+  "201901": [
+    "Neck and Neck"
+  ],
+  "201902": [
+    "Head-On"
+  ],
+  "202001": [
+    "Master of the Sands"
+  ],
+  "202002": [
+    "Familiar Ground"
+  ],
+  "202011": [
+    "Headliner"
+  ],
+  "202012": [
+    "Feature Act"
+  ],
+  "202021": [
+    "Daring Strike"
+  ],
+  "202022": [
+    "Early Start"
+  ],
+  "202031": [
+    "Nothing Ventured"
+  ],
+  "202032": [
+    "Risky Business"
+  ],
+  "202041": [
+    "In High Spirits"
+  ],
+  "202042": [
+    "Light as a Feather"
+  ],
+  "202051": [
+    "Runaway"
+  ],
+  "202061": [
+    "Best in Japan"
+  ],
+  "202071": [
+    "Of Calm Mind"
+  ],
+  "202072": [
+    "Free-Spirited"
+  ],
+  "202081": [
+    "From the Brink"
+  ],
+  "202082": [
+    "Take the Chance"
+  ],
+  "202091": [
+    "Burning Soul"
+  ],
+  "202092": [
+    "Fighting Spirit"
+  ],
+  "202101": [
+    "Elated"
+  ],
+  "202102": [
+    "Eager"
+  ],
+  "202111": [
+    "Full of Vigor"
+  ],
+  "202112": [
+    "Pumped"
+  ],
+  "202121": [
+    "Dauntless"
+  ],
+  "202122": [
+    "Fearless"
+  ],
+  "202131": [
+    "Wild Wind"
+  ],
+  "202132": [
+    "With All My Soul"
+  ],
+  "202141": [
+    "You're Not the Boss of Me!"
+  ],
+  "202151": [
+    "Keep Going!"
+  ],
+  "202152": [
+    "Full Throttle"
+  ],
+  "202161": [
+    "Restraint"
+  ],
+  "202172": [
+    "Downhill Speedster"
+  ],
+  "202181": [
+    "99 Problems"
   ],
   "210011": [
     "Burning Spirit SPD"
@@ -1190,11 +1502,59 @@
   "210052": [
     "Ignited Spirit WIT"
   ],
+  "210061": [
+    "Radiant Star"
+  ],
+  "210062": [
+    "Glittering Star"
+  ],
   "300011": [
     "Unquenched Thirst"
   ],
   "300021": [
     "Unchanging"
+  ],
+  "300031": [
+    "Towards the Scenery I Seek"
+  ],
+  "300041": [
+    "Creeping Anxiety"
+  ],
+  "300051": [
+    "Blatant Fear"
+  ],
+  "300061": [
+    "Dream Run"
+  ],
+  "300071": [
+    "Show Me What Lies Beyond!"
+  ],
+  "300081": [
+    "Hoiya! Have a Good Run!"
+  ],
+  "300091": [
+    "As a Friend and Rival"
+  ],
+  "300101": [
+    "Cheers of a Fellow Dreamer"
+  ],
+  "300111": [
+    "Chin Up, Derby Umamusume!"
+  ],
+  "300121": [
+    "For the Team"
+  ],
+  "300131": [
+    "Ruler of Japan"
+  ],
+  "300141": [
+    "Indomitable"
+  ],
+  "9000011": [
+    "Carnival Bonus (inherited)"
+  ],
+  "9000012": [
+    "Carnival Bonus (inherited)"
   ],
   "900011": [
     "Shooting Star"
@@ -1250,8 +1610,17 @@
   "900181": [
     "Blazing Pride"
   ],
+  "900191": [
+    "OMG! (ﾟ∀ﾟ)  The Final Sprint! ☆"
+  ],
   "900201": [
     "Angling and Scheming"
+  ],
+  "900211": [
+    "White Lightning Comin' Through!"
+  ],
+  "900221": [
+    "Fairy Tale"
   ],
   "900231": [
     "∴win Q.E.D."
@@ -1259,20 +1628,38 @@
   "900241": [
     "Flashy☆Landing"
   ],
+  "900251": [
+    "Chasing After You"
+  ],
   "900261": [
     "G00 1st. F∞;"
   ],
   "900271": [
     "Let's Pump Some Iron!"
   ],
+  "900281": [
+    "YUMMY☆SPEED!"
+  ],
   "900301": [
     "Blue Rose Closer"
+  ],
+  "900311": [
+    "All Charged! It's Go Time!"
   ],
   "900321": [
     "U=ma2"
   ],
+  "900331": [
+    "Shooting Star of Dioskouroi"
+  ],
+  "900341": [
+    "Now We're Cruisin'!"
+  ],
   "900351": [
     "Our Ticket to Win!"
+  ],
+  "900361": [
+    "trigger:BEAT"
   ],
   "900371": [
     "Schwarzes Schwert"
@@ -1280,11 +1667,17 @@
   "900381": [
     "#LookatCurren"
   ],
+  "900391": [
+    "A Princess Must Seize Victory!"
+  ],
   "900401": [
     "KEEP IT REAL."
   ],
   "900411": [
     "Genius x Bakushin = Victory"
+  ],
+  "900441": [
+    "Victory belongs to me—Strelitzia! ☆"
   ],
   "900451": [
     "Pure Heart"
@@ -1292,8 +1685,14 @@
   "900461": [
     "SPARKLY☆STARDOM"
   ],
+  "900481": [
+    "Pop & Polish"
+  ],
   "900501": [
     "Nemesis"
+  ],
+  "900511": [
+    "Budding Blossom"
   ],
   "900521": [
     "Super-Duper Climax"
@@ -1304,14 +1703,41 @@
   "900581": [
     "I Never Goof Up!"
   ],
+  "900591": [
+    "Moving Past, and Beyond"
+  ],
   "900601": [
     "Just a Little Farther!"
   ],
   "900611": [
     "Prideful King"
   ],
+  "900621": [
+    "Go, Go, Mun!"
+  ],
+  "900641": [
+    "Keep Pushing Ahead"
+  ],
+  "900671": [
+    "Eternal Encompassing Shine"
+  ],
+  "900681": [
+    "Victory Cheer!"
+  ],
+  "900691": [
+    "Ambition to Surpass the Sakura"
+  ],
   "90071": [
     "Warning Shot! (inherited)"
+  ],
+  "900711": [
+    "A Lifelong Dream, A Moment's Flight"
+  ],
+  "900721": [
+    "Peerless Dance of Flowering Flames"
+  ],
+  "900741": [
+    "Lovely Spring Breeze"
   ],
   "90081": [
     "Xceleration (inherited)"
@@ -1358,6 +1784,12 @@
   "90611": [
     "Call Me King (inherited)"
   ],
+  "90621": [
+    "Ready, Go! (inherited)"
+  ],
+  "9100011": [
+    "Feelin' a Bit Silly (inherited)"
+  ],
   "910011": [
     "Dazzl'n ♪ Diver"
   ],
@@ -1366,6 +1798,15 @@
   ],
   "910041": [
     "A Kiss for Courage"
+  ],
+  "910051": [
+    "Ravissant"
+  ],
+  "910061": [
+    "Festive Miracle"
+  ],
+  "910101": [
+    "Joyful Voyage!"
   ],
   "910111": [
     "Superior Heal"
@@ -1376,13 +1817,70 @@
   "910141": [
     "Condor's Fury"
   ],
+  "910151": [
+    "Barcarole of Blessings"
+  ],
+  "910171": [
+    "Arrows Whistle, Shadows Disperse"
+  ],
   "910181": [
     "Eternal Moments"
+  ],
+  "910201": [
+    "Break It Down!"
+  ],
+  "910221": [
+    "Best day ever"
+  ],
+  "910231": [
+    "Presents from X"
   ],
   "910241": [
     "Flowery☆Maneuver"
   ],
+  "910261": [
+    "Operation Cacao"
+  ],
+  "910301": [
+    "Every Rose Has Its Fangs"
+  ],
+  "910371": [
+    "Guten Appetit ♪"
+  ],
+  "910381": [
+    "One True Color"
+  ],
+  "910401": [
+    "Dancing in the Leaves"
+  ],
+  "910451": [
+    "Give Mummy a Hug ♡"
+  ],
+  "910521": [
+    "114th Time's the Charm"
+  ],
   "910561": [
     "Bountiful Harvest"
+  ],
+  "910591": [
+    "Wherever This Wonder Leads"
+  ],
+  "910601": [
+    "Go☆Go☆Goal!"
+  ],
+  "910611": [
+    "Louder! Tracen Cheer!"
+  ],
+  "9200011": [
+    "Medium Race Enthusiast (inherited)"
+  ],
+  "9200021": [
+    "Long Race Enthusiast (inherited)"
+  ],
+  "9200031": [
+    "Mile Race Enthusiast (inherited)"
+  ],
+  "920011": [
+    "Dreams Donned with Pride!"
   ]
 }

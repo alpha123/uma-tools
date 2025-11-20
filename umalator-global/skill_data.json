@@ -3,12 +3,17 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "phase>=2&order>=2&order_rate<=50&change_order_onetime<0",
+        "condition": "phase>=2&order>=1&order_rate<=50&change_order_onetime<0",
         "effects": [
           {
             "modifier": 3500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -20,7 +25,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&order==1&bashin_diff_behind>=1",
+        "condition": "distance_rate>=50&order==1&bashin_diff_behind>=1",
         "effects": [
           {
             "modifier": 3500,
@@ -71,7 +76,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&order_rate<=30&behind_near_lane_time>=1",
+        "condition": "is_finalcorner==1&corner==0&order_rate<=30&behind_near_lane_time_set1>=1",
         "effects": [
           {
             "modifier": 4500,
@@ -139,7 +144,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1",
+        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1@distance_rate>=50&order==2&is_overtake==1",
         "effects": [
           {
             "modifier": 2500,
@@ -161,7 +166,7 @@
     "alternatives": [
       {
         "baseDuration": 40000,
-        "condition": "is_finalcorner==1&corner!=0&order>=3&order_rate<=50",
+        "condition": "is_finalcorner_laterhalf==1&corner!=0&order>=3&order_rate<=40",
         "effects": [
           {
             "modifier": 4000,
@@ -178,7 +183,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=4",
+        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=3",
         "effects": [
           {
             "modifier": 3500,
@@ -195,7 +200,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&is_behind_in==1&change_order_onetime<0&order_rate>=40",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
             "modifier": 3500,
@@ -251,7 +256,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&bashin_diff_infront<=1&bashin_diff_behind<=1&blocked_side_continuetime>=2&order<=4",
+        "condition": "is_finalcorner==1&bashin_diff_behind<=1&order<=4@is_finalcorner==1&bashin_diff_infront<=1&order<=4",
         "effects": [
           {
             "modifier": 3500,
@@ -266,6 +271,18 @@
   },
   "100161": {
     "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "is_finalcorner==1&order>=2&order_rate<=75&is_behind_in==1&change_order_onetime<0",
+        "effects": [
+          {
+            "modifier": 4500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      },
       {
         "baseDuration": 50000,
         "condition": "is_finalcorner==1&order>=2&order_rate<=75&is_behind_in==1&change_order_onetime<0",
@@ -302,7 +319,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&order>=4&change_order_onetime<0",
+        "condition": "is_finalcorner==1&corner!=0&order>=3&change_order_onetime<0",
         "effects": [
           {
             "modifier": 3500,
@@ -314,6 +331,28 @@
       }
     ],
     "rarity": 4
+  },
+  "100191": {
+    "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "change_order_up_end_after>=2",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 350,
+            "target": 1,
+            "type": 28
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 5
   },
   "100201": {
     "alternatives": [
@@ -336,7 +375,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&change_order_onetime<0&order<=4",
+        "condition": "is_finalcorner==1&change_order_onetime<0&order<=4",
         "effects": [
           {
             "modifier": 3500,
@@ -353,7 +392,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&blocked_side_continuetime>=2&order<=3",
+        "condition": "is_finalcorner==1&blocked_side_continuetime>=2&order<=3",
         "effects": [
           {
             "modifier": 2500,
@@ -405,11 +444,33 @@
     ],
     "rarity": 4
   },
+  "100281": {
+    "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "distance_rate>=45&distance_rate<=60&order>=3&order_rate<=50&hp_per<=70",
+        "effects": [
+          {
+            "modifier": 2500,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 3000,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 5
+  },
   "100301": {
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&order<=4&change_order_onetime<0",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
             "modifier": 3500,
@@ -425,13 +486,18 @@
   "100321": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 40000,
         "condition": "distance_rate>=50&corner!=0&order>=3&order_rate<=40",
         "effects": [
           {
             "modifier": 550,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": 2500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
@@ -443,7 +509,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&order<=5&blocked_side_continuetime>=2",
+        "condition": "is_finalcorner==1&corner==0&order<=5",
         "effects": [
           {
             "modifier": 3500,
@@ -456,11 +522,28 @@
     ],
     "rarity": 4
   },
+  "100371": {
+    "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "is_badstart==0&temptation_count==0&order>=3&is_finalcorner==1&corner==0",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 5
+  },
   "100381": {
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "distance_rate>=50&distance_rate<=65&order>=3&order_rate<=40&change_order_onetime<0",
+        "condition": "distance_rate>=50&distance_rate<=65&order>=2&order_rate<=40&change_order_onetime<0",
         "effects": [
           {
             "modifier": 2500,
@@ -471,6 +554,23 @@
             "modifier": 3000,
             "target": 1,
             "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 5
+  },
+  "100391": {
+    "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "is_finalcorner==1&corner==0&blocked_side_continuetime>=2",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
@@ -519,7 +619,7 @@
         "condition": "phase_random==1&order>=2&order_rate<=40",
         "effects": [
           {
-            "modifier": 550,
+            "modifier": 750,
             "target": 1,
             "type": 9
           }
@@ -533,7 +633,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "phase==1&corner==0&order==1&bashin_diff_behind<=1",
+        "condition": "phase==1&corner==0&order<=2&bashin_diff_behind<=1",
         "effects": [
           {
             "modifier": 2500,
@@ -555,7 +655,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&order_rate>=50&order_rate<=75&is_overtake==1",
+        "condition": "is_finalcorner==1&order_rate>=40&order_rate<=75&is_overtake==1",
         "effects": [
           {
             "modifier": 3500,
@@ -595,6 +695,11 @@
             "modifier": 3500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -645,7 +750,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=5&order_rate<=60",
+        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=4&order_rate<=70",
         "effects": [
           {
             "modifier": 4500,
@@ -696,7 +801,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1",
+        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1@distance_rate>=50&order==2&is_overtake==1",
         "effects": [
           {
             "modifier": 1500,
@@ -718,7 +823,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=4",
+        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=3",
         "effects": [
           {
             "modifier": 2500,
@@ -757,7 +862,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&order>=4&change_order_onetime<0",
+        "condition": "is_finalcorner==1&corner!=0&order>=3&change_order_onetime<0",
         "effects": [
           {
             "modifier": 2500,
@@ -774,7 +879,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner!=0&blocked_side_continuetime>=2&order<=3",
+        "condition": "is_finalcorner==1&blocked_side_continuetime>=2&order<=3",
         "effects": [
           {
             "modifier": 1500,
@@ -812,13 +917,18 @@
   "10321": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 40000,
         "condition": "distance_rate>=50&corner!=0&order>=3&order_rate<=40",
         "effects": [
           {
             "modifier": 350,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": 1500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
@@ -830,7 +940,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&order<=5&blocked_side_continuetime>=2",
+        "condition": "is_finalcorner==1&corner==0&order<=5",
         "effects": [
           {
             "modifier": 2500,
@@ -867,7 +977,7 @@
         "condition": "phase_random==1&order>=2&order_rate<=40",
         "effects": [
           {
-            "modifier": 350,
+            "modifier": 550,
             "target": 1,
             "type": 9
           }
@@ -904,6 +1014,11 @@
             "modifier": 2500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -932,7 +1047,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=5&order_rate<=60",
+        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=4&order_rate<=70",
         "effects": [
           {
             "modifier": 3500,
@@ -966,10 +1081,10 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "is_finalcorner==1&corner==0&is_overtake==1&order<=5&order_rate<=50&overtake_target_no_order_up_time>=2",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
-            "modifier": 3500,
+            "modifier": 4500,
             "target": 1,
             "type": 27
           }
@@ -1003,7 +1118,7 @@
         "condition": "phase==1&change_order_onetime>0&order_rate>=40",
         "effects": [
           {
-            "modifier": 550,
+            "modifier": 750,
             "target": 1,
             "type": 9
           }
@@ -1016,8 +1131,8 @@
   "110131": {
     "alternatives": [
       {
-        "baseDuration": 50000,
-        "condition": "is_finalcorner==1&hp_per<=35&order<=3&order_rate<=50&bashin_diff_behind<=1&overtake_target_time>=1",
+        "baseDuration": 60000,
+        "condition": "is_finalcorner==1&hp_per<=45&order<=3&order_rate<=50&bashin_diff_behind<=1&overtake_target_time>=1",
         "effects": [
           {
             "modifier": 3500,
@@ -1051,7 +1166,7 @@
     "alternatives": [
       {
         "baseDuration": 50000,
-        "condition": "phase_random==1&order>=3&order_rate<=50&is_overtake==1",
+        "condition": "phase==1&order>=3&order_rate<=50&is_overtake==1",
         "effects": [
           {
             "modifier": 3500,
@@ -1086,6 +1201,23 @@
             "modifier": 4000,
             "target": 1,
             "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 5
+  },
+  "110561": {
+    "alternatives": [
+      {
+        "baseDuration": 50000,
+        "condition": "distance_rate>=50&order_rate>=40&overtake_target_time>=2",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
@@ -2375,7 +2507,7 @@
         "condition": "running_style_count_same<=1",
         "effects": [
           {
-            "modifier": 600000,
+            "modifier": 800000,
             "target": 1,
             "type": 1
           }
@@ -2392,7 +2524,7 @@
         "condition": "running_style_count_same<=1",
         "effects": [
           {
-            "modifier": 400000,
+            "modifier": 600000,
             "target": 1,
             "type": 1
           }
@@ -2406,7 +2538,7 @@
     "alternatives": [
       {
         "baseDuration": -1,
-        "condition": "running_style_count_same>=6",
+        "condition": "running_style_count_same_rate>=40",
         "effects": [
           {
             "modifier": 600000,
@@ -2423,7 +2555,7 @@
     "alternatives": [
       {
         "baseDuration": -1,
-        "condition": "running_style_count_same>=6",
+        "condition": "running_style_count_same_rate>=40",
         "effects": [
           {
             "modifier": 400000,
@@ -2440,7 +2572,7 @@
     "alternatives": [
       {
         "baseDuration": -1,
-        "condition": "running_style_count_same>=6",
+        "condition": "running_style_count_same_rate>=40",
         "effects": [
           {
             "modifier": -400000,
@@ -2558,8 +2690,8 @@
   "200331": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 24000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": 3500,
@@ -2575,8 +2707,8 @@
   "200332": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 24000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -2592,8 +2724,8 @@
   "200333": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 24000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": -2000,
@@ -2609,8 +2741,8 @@
   "200341": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 30000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": 4000,
@@ -2626,8 +2758,8 @@
   "200342": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 30000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": 2000,
@@ -2643,8 +2775,8 @@
   "200343": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "corner_random==1@corner_random==2@corner_random==3@corner_random==4",
+        "baseDuration": 30000,
+        "condition": "all_corner_random==1",
         "effects": [
           {
             "modifier": -2000,
@@ -2711,7 +2843,7 @@
   "200361": {
     "alternatives": [
       {
-        "baseDuration": 9000,
+        "baseDuration": 24000,
         "condition": "straight_random==1",
         "effects": [
           {
@@ -2728,7 +2860,7 @@
   "200362": {
     "alternatives": [
       {
-        "baseDuration": 9000,
+        "baseDuration": 24000,
         "condition": "straight_random==1",
         "effects": [
           {
@@ -2745,7 +2877,7 @@
   "200371": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 30000,
         "condition": "straight_random==1",
         "effects": [
           {
@@ -2762,7 +2894,7 @@
   "200372": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 30000,
         "condition": "straight_random==1",
         "effects": [
           {
@@ -2814,7 +2946,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "slope==1",
+        "condition": "up_slope_random==1",
         "effects": [
           {
             "modifier": -200,
@@ -2831,7 +2963,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "accumulatetime>=2&blocked_all_continuetime>=1",
+        "condition": "accumulatetime>=2&is_surrounded==1",
         "effects": [
           {
             "modifier": -200,
@@ -2848,7 +2980,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&is_lastspurt==1&straight_random==1&corner==0&distance_diff_rate>=75",
+        "condition": "last_straight_random==1&distance_diff_rate>=75",
         "effects": [
           {
             "modifier": -2000,
@@ -2933,7 +3065,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "phase==0&accumulatetime>=5&blocked_front_continuetime>=1",
+        "condition": "phase<=1&accumulatetime>=5&blocked_front_continuetime>=1",
         "effects": [
           {
             "modifier": 550,
@@ -2950,7 +3082,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "phase==0&accumulatetime>=5&blocked_front_continuetime>=1",
+        "condition": "phase<=1&accumulatetime>=5&blocked_front_continuetime>=1",
         "effects": [
           {
             "modifier": 150,
@@ -2970,7 +3102,7 @@
         "condition": "phase_random==0",
         "effects": [
           {
-            "modifier": 350,
+            "modifier": 450,
             "target": 1,
             "type": 28
           }
@@ -2987,7 +3119,7 @@
         "condition": "phase_random==0",
         "effects": [
           {
-            "modifier": 250,
+            "modifier": 350,
             "target": 1,
             "type": 28
           }
@@ -3069,7 +3201,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "phase==1&blocked_all_continuetime>=1",
+        "condition": "phase==1&is_surrounded==1",
         "effects": [
           {
             "modifier": 550,
@@ -3086,7 +3218,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "phase==1&blocked_all_continuetime>=1",
+        "condition": "phase==1&is_surrounded==1",
         "effects": [
           {
             "modifier": 150,
@@ -3103,7 +3235,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "blocked_front_continuetime>=1&is_lastspurt==1&hp_per>=1",
+        "condition": "infront_near_lane_time>=1&is_lastspurt==1&hp_per>=1",
         "effects": [
           {
             "modifier": 4000,
@@ -3125,7 +3257,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "blocked_front_continuetime>=1&is_lastspurt==1&hp_per>=1",
+        "condition": "infront_near_lane_time>=1&is_lastspurt==1&hp_per>=1",
         "effects": [
           {
             "modifier": 2000,
@@ -3180,7 +3312,7 @@
   "200511": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "is_lastspurt==1&phase_random==3",
         "effects": [
           {
@@ -3197,7 +3329,7 @@
   "200512": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "is_lastspurt==1&phase_random==3",
         "effects": [
           {
@@ -3232,7 +3364,7 @@
     "alternatives": [
       {
         "baseDuration": 12000,
-        "condition": "running_style==1&phase==0&accumulatetime>=5",
+        "condition": "running_style==1&phase==0",
         "effects": [
           {
             "modifier": 4000,
@@ -3249,7 +3381,7 @@
     "alternatives": [
       {
         "baseDuration": 12000,
-        "condition": "running_style==1&phase==0&accumulatetime>=5",
+        "condition": "running_style==1&phase==0",
         "effects": [
           {
             "modifier": 2000,
@@ -3334,7 +3466,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "running_style==2&phase_random==0&accumulatetime>=5&order_rate<=50",
+        "condition": "running_style==2&phase_laterhalf_random==0&order_rate<=50",
         "effects": [
           {
             "modifier": 550,
@@ -3351,7 +3483,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "running_style==2&phase_random==0&accumulatetime>=5&order_rate<=50",
+        "condition": "running_style==2&phase_laterhalf_random==0&order_rate<=50",
         "effects": [
           {
             "modifier": 150,
@@ -3401,7 +3533,7 @@
   "200581": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 18000,
         "condition": "running_style==2&is_finalcorner_random==1&order_rate<=50",
         "effects": [
           {
@@ -3418,7 +3550,7 @@
   "200582": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 18000,
         "condition": "running_style==2&is_finalcorner_random==1&order_rate<=50",
         "effects": [
           {
@@ -3435,7 +3567,7 @@
   "200591": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "running_style==3&phase_random==1&order_rate>50",
         "effects": [
           {
@@ -3452,7 +3584,7 @@
   "200592": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "running_style==3&phase_random==1&order_rate>50",
         "effects": [
           {
@@ -3572,7 +3704,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==4&phase_random==2&distance_diff_rate>=75",
+        "condition": "running_style==4&phase_random==2&distance_diff_rate>=50",
         "effects": [
           {
             "modifier": 3500,
@@ -3589,7 +3721,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==4&phase_random==2&distance_diff_rate>=75",
+        "condition": "running_style==4&phase_random==2&distance_diff_rate>=50",
         "effects": [
           {
             "modifier": 1500,
@@ -3673,13 +3805,18 @@
   "200662": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 30000,
         "condition": "distance_type==1&phase_random==1&order_rate>50",
         "effects": [
           {
             "modifier": 150,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -3697,6 +3834,11 @@
             "modifier": 3500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -3714,6 +3856,11 @@
             "modifier": 1500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -3725,7 +3872,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order==1",
+        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order_rate<=50",
         "effects": [
           {
             "modifier": 3500,
@@ -3742,7 +3889,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order==1",
+        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order_rate<=50",
         "effects": [
           {
             "modifier": 1500,
@@ -3758,13 +3905,18 @@
   "200691": {
     "alternatives": [
       {
-        "baseDuration": 0,
-        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order_rate>50",
+        "baseDuration": 30000,
+        "condition": "distance_type==2&phase_laterhalf_random==0&order_rate>50",
         "effects": [
           {
             "modifier": 550,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": -2000,
+            "target": 9,
+            "type": 21
           }
         ],
         "precondition": ""
@@ -3775,13 +3927,18 @@
   "200692": {
     "alternatives": [
       {
-        "baseDuration": 0,
-        "condition": "distance_type==2&phase_random==0&accumulatetime>=5&order_rate>50",
+        "baseDuration": 30000,
+        "condition": "distance_type==2&phase_laterhalf_random==0&order_rate>50",
         "effects": [
           {
             "modifier": 150,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": -500,
+            "target": 9,
+            "type": 21
           }
         ],
         "precondition": ""
@@ -3827,7 +3984,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "distance_type==3&phase_random==1&order==1",
+        "condition": "distance_type==3&phase_random==1&order<=3",
         "effects": [
           {
             "modifier": 550,
@@ -3844,7 +4001,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "distance_type==3&phase_random==1&order==1",
+        "condition": "distance_type==3&phase_random==1&order<=3",
         "effects": [
           {
             "modifier": 150,
@@ -3860,7 +4017,7 @@
   "200721": {
     "alternatives": [
       {
-        "baseDuration": 9000,
+        "baseDuration": 24000,
         "condition": "distance_type==3&phase_random==1&order_rate<=50",
         "effects": [
           {
@@ -3877,7 +4034,7 @@
   "200722": {
     "alternatives": [
       {
-        "baseDuration": 9000,
+        "baseDuration": 24000,
         "condition": "distance_type==3&phase_random==1&order_rate<=50",
         "effects": [
           {
@@ -3901,6 +4058,11 @@
             "modifier": 3500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -3918,6 +4080,11 @@
             "modifier": 1500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -3997,7 +4164,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "distance_type==4&is_hp_empty_onetime==1",
+        "condition": "distance_type==4&hp_per<=30",
         "effects": [
           {
             "modifier": 550,
@@ -4014,7 +4181,7 @@
     "alternatives": [
       {
         "baseDuration": 0,
-        "condition": "distance_type==4&is_hp_empty_onetime==1",
+        "condition": "distance_type==4&hp_per<=30",
         "effects": [
           {
             "modifier": 150,
@@ -4422,7 +4589,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&corner_random==1@distance_type==1&corner_random==2@distance_type==1&corner_random==3@distance_type==1&corner_random==4",
+        "condition": "distance_type==1&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -4439,7 +4606,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&corner_random==1@distance_type==1&corner_random==2@distance_type==1&corner_random==3@distance_type==1&corner_random==4",
+        "condition": "distance_type==1&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -4455,8 +4622,8 @@
   "200981": {
     "alternatives": [
       {
-        "baseDuration": 12000,
-        "condition": "distance_type==1&phase==1&bashin_diff_behind>=5&order==1",
+        "baseDuration": 30000,
+        "condition": "distance_type==1&phase==1&bashin_diff_behind>=3&order==1",
         "effects": [
           {
             "modifier": 3500,
@@ -4472,8 +4639,8 @@
   "200982": {
     "alternatives": [
       {
-        "baseDuration": 12000,
-        "condition": "distance_type==1&phase==1&bashin_diff_behind>=5&order==1",
+        "baseDuration": 30000,
+        "condition": "distance_type==1&phase==1&bashin_diff_behind>=3&order==1",
         "effects": [
           {
             "modifier": 1500,
@@ -4490,7 +4657,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&phase_random==1&order>=2&order_rate<=50",
+        "condition": "distance_type==1&phase_laterhalf_random==1&order>=2&order_rate<=50",
         "effects": [
           {
             "modifier": 4000,
@@ -4507,7 +4674,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&phase_random==1&order>=2&order_rate<=50",
+        "condition": "distance_type==1&phase_laterhalf_random==1&order>=2&order_rate<=50",
         "effects": [
           {
             "modifier": 2000,
@@ -4523,7 +4690,7 @@
   "201001": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "distance_type==1&phase_random==1",
         "effects": [
           {
@@ -4545,7 +4712,7 @@
   "201002": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "distance_type==1&phase_random==1",
         "effects": [
           {
@@ -4568,7 +4735,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&phase_random==0&order<=3&accumulatetime>=5",
+        "condition": "distance_type==1&phase_random==0&order_rate<=50&accumulatetime>=5",
         "effects": [
           {
             "modifier": -2500,
@@ -4585,7 +4752,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==1&phase_random==0&order<=3&accumulatetime>=5",
+        "condition": "distance_type==1&phase_random==0&order_rate<=50&accumulatetime>=5",
         "effects": [
           {
             "modifier": -2000,
@@ -4601,13 +4768,18 @@
   "201021": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 12000,
         "condition": "distance_type==1&phase_random==0&order_rate>50&accumulatetime>=5",
         "effects": [
           {
             "modifier": -300,
             "target": 9,
             "type": 9
+          },
+          {
+            "modifier": -2000,
+            "target": 9,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -4618,13 +4790,18 @@
   "201022": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 12000,
         "condition": "distance_type==1&phase_random==0&order_rate>50&accumulatetime>=5",
         "effects": [
           {
             "modifier": -100,
             "target": 9,
             "type": 9
+          },
+          {
+            "modifier": -500,
+            "target": 9,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -4670,7 +4847,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&corner_random==1@distance_type==2&corner_random==2@distance_type==2&corner_random==3@distance_type==2&corner_random==4",
+        "condition": "distance_type==2&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -4687,7 +4864,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&corner_random==1@distance_type==2&corner_random==2@distance_type==2&corner_random==3@distance_type==2&corner_random==4",
+        "condition": "distance_type==2&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -4703,7 +4880,7 @@
   "201051": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 24000,
         "condition": "distance_type==2&phase_random==1&order_rate<=50",
         "effects": [
           {
@@ -4720,7 +4897,7 @@
   "201052": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 24000,
         "condition": "distance_type==2&phase_random==1&order_rate<=50",
         "effects": [
           {
@@ -4737,7 +4914,7 @@
   "201061": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 30000,
         "condition": "distance_type==2&phase==1&change_order_onetime<0",
         "effects": [
           {
@@ -4754,7 +4931,7 @@
   "201062": {
     "alternatives": [
       {
-        "baseDuration": 12000,
+        "baseDuration": 30000,
         "condition": "distance_type==2&phase==1&change_order_onetime<0",
         "effects": [
           {
@@ -4771,7 +4948,7 @@
   "201071": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "distance_type==2&is_overtake==1&accumulatetime>=5",
         "effects": [
           {
@@ -4788,7 +4965,7 @@
   "201072": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "distance_type==2&is_overtake==1&accumulatetime>=5",
         "effects": [
           {
@@ -4806,7 +4983,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==1&order==1",
+        "condition": "distance_type==2&phase_random==1&order<=3",
         "effects": [
           {
             "modifier": -2000,
@@ -4828,7 +5005,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==1&order==1",
+        "condition": "distance_type==2&phase_random==1&order<=3",
         "effects": [
           {
             "modifier": -1500,
@@ -4850,7 +5027,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==0&order_rate>50&accumulatetime>=5",
+        "condition": "distance_type==2&phase_random==0&order_rate>50&accumulatetime>=3",
         "effects": [
           {
             "modifier": -3000,
@@ -4867,7 +5044,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==2&phase_random==0&order_rate>50&accumulatetime>=5",
+        "condition": "distance_type==2&phase_random==0&order_rate>50&accumulatetime>=3",
         "effects": [
           {
             "modifier": -1000,
@@ -4918,7 +5095,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==3&corner_random==1@distance_type==3&corner_random==2@distance_type==3&corner_random==3@distance_type==3&corner_random==4",
+        "condition": "distance_type==3&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -4935,7 +5112,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==3&corner_random==1@distance_type==3&corner_random==2@distance_type==3&corner_random==3@distance_type==3&corner_random==4",
+        "condition": "distance_type==3&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -4985,7 +5162,7 @@
   "201131": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "distance_type==3&phase_random==1&order_rate>50",
         "effects": [
           {
@@ -5007,7 +5184,7 @@
   "201132": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "distance_type==3&phase_random==1&order_rate>50",
         "effects": [
           {
@@ -5166,7 +5343,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==4&corner_random==1@distance_type==4&corner_random==2@distance_type==4&corner_random==3@distance_type==4&corner_random==4",
+        "condition": "distance_type==4&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -5183,7 +5360,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==4&corner_random==1@distance_type==4&corner_random==2@distance_type==4&corner_random==3@distance_type==4&corner_random==4",
+        "condition": "distance_type==4&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -5200,7 +5377,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==4&phase_random==1&bashin_diff_behind>=3&order==1",
+        "condition": "distance_type==4&phase_random==1&bashin_diff_behind>=1&order==1",
         "effects": [
           {
             "modifier": 3500,
@@ -5217,7 +5394,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_type==4&phase_random==1&bashin_diff_behind>=3&order==1",
+        "condition": "distance_type==4&phase_random==1&bashin_diff_behind>=1&order==1",
         "effects": [
           {
             "modifier": 1500,
@@ -5288,12 +5465,12 @@
         "condition": "distance_type==4&phase_random==1&order>=5",
         "effects": [
           {
-            "modifier": -200,
+            "modifier": -100,
             "target": 9,
             "type": 9
           },
           {
-            "modifier": 550,
+            "modifier": 350,
             "target": 1,
             "type": 9
           }
@@ -5397,7 +5574,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&corner_random==1@running_style==1&corner_random==2@running_style==1&corner_random==3@running_style==1&corner_random==4",
+        "condition": "running_style==1&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -5414,7 +5591,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&corner_random==1@running_style==1&corner_random==2@running_style==1&corner_random==3@running_style==1&corner_random==4",
+        "condition": "running_style==1&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -5431,12 +5608,17 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase==0&blocked_all_continuetime>=1",
+        "condition": "running_style==1&phase==0&blocked_front_continuetime>=1@running_style==1&phase==0&blocked_side_continuetime>=1",
         "effects": [
           {
             "modifier": 350,
             "target": 1,
             "type": 28
+          },
+          {
+            "modifier": 5000,
+            "target": 1,
+            "type": 35
           }
         ],
         "precondition": ""
@@ -5448,12 +5630,17 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase==0&blocked_all_continuetime>=1",
+        "condition": "running_style==1&phase==0&blocked_front_continuetime>=1@running_style==1&phase==0&blocked_side_continuetime>=1",
         "effects": [
           {
             "modifier": 250,
             "target": 1,
             "type": 28
+          },
+          {
+            "modifier": 5000,
+            "target": 1,
+            "type": 35
           }
         ],
         "precondition": ""
@@ -5465,7 +5652,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase==0&change_order_onetime>0&accumulatetime>=5",
+        "condition": "running_style==1&phase<=1&change_order_onetime>0&accumulatetime>=5@running_style==1&phase<=1&blocked_side_continuetime>=2&accumulatetime>=5",
         "effects": [
           {
             "modifier": 1500,
@@ -5516,7 +5703,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase_random==1&order_rate>50",
+        "condition": "running_style==1&phase_random==1&order>=2",
         "effects": [
           {
             "modifier": 4000,
@@ -5533,7 +5720,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase_random==1&order_rate>50",
+        "condition": "running_style==1&phase_random==1&order>=2",
         "effects": [
           {
             "modifier": 2000,
@@ -5550,7 +5737,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==1&phase_random==0&order_rate>50&accumulatetime>=5",
+        "condition": "running_style==1&phase_random==0&order>=2&accumulatetime>=5",
         "effects": [
           {
             "modifier": -1000,
@@ -5601,7 +5788,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&corner_random==1@running_style==2&corner_random==2@running_style==2&corner_random==3@running_style==2&corner_random==4",
+        "condition": "running_style==2&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -5618,7 +5805,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&corner_random==1@running_style==2&corner_random==2@running_style==2&corner_random==3@running_style==2&corner_random==4",
+        "condition": "running_style==2&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -5634,7 +5821,7 @@
   "201331": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 30000,
         "condition": "running_style==2&is_move_lane==1@running_style==2&is_move_lane==2",
         "effects": [
           {
@@ -5651,7 +5838,7 @@
   "201332": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 30000,
         "condition": "running_style==2&is_move_lane==1@running_style==2&is_move_lane==2",
         "effects": [
           {
@@ -5669,7 +5856,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&slope==2",
+        "condition": "running_style==2&down_slope_random==1",
         "effects": [
           {
             "modifier": 3000,
@@ -5686,7 +5873,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&slope==2",
+        "condition": "running_style==2&down_slope_random==1",
         "effects": [
           {
             "modifier": 2000,
@@ -5737,7 +5924,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&phase_random==1&order_rate>50",
+        "condition": "running_style==2&phase_random==1&order_rate>40",
         "effects": [
           {
             "modifier": 3000,
@@ -5754,7 +5941,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==2&phase_random==1&order_rate>50",
+        "condition": "running_style==2&phase_random==1&order_rate>40",
         "effects": [
           {
             "modifier": 2000,
@@ -5839,7 +6026,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==3&corner_random==1@running_style==3&corner_random==2@running_style==3&corner_random==3@running_style==3&corner_random==4",
+        "condition": "running_style==3&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -5856,7 +6043,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==3&corner_random==1@running_style==3&corner_random==2@running_style==3&corner_random==3@running_style==3&corner_random==4",
+        "condition": "running_style==3&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -5872,7 +6059,7 @@
   "201401": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "running_style==3&is_overtake==1&accumulatetime>=5",
         "effects": [
           {
@@ -5889,7 +6076,7 @@
   "201402": {
     "alternatives": [
       {
-        "baseDuration": 30000,
+        "baseDuration": 40000,
         "condition": "running_style==3&is_overtake==1&accumulatetime>=5",
         "effects": [
           {
@@ -5906,8 +6093,8 @@
   "201411": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "running_style==3&slope==1",
+        "baseDuration": 24000,
+        "condition": "running_style==3&up_slope_random==1",
         "effects": [
           {
             "modifier": 3500,
@@ -5923,8 +6110,8 @@
   "201412": {
     "alternatives": [
       {
-        "baseDuration": 18000,
-        "condition": "running_style==3&slope==1",
+        "baseDuration": 24000,
+        "condition": "running_style==3&up_slope_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -6077,7 +6264,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==4&corner_random==1@running_style==4&corner_random==2@running_style==4&corner_random==3@running_style==4&corner_random==4",
+        "condition": "running_style==4&all_corner_random==1",
         "effects": [
           {
             "modifier": 2500,
@@ -6094,7 +6281,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "running_style==4&corner_random==1@running_style==4&corner_random==2@running_style==4&corner_random==3@running_style==4&corner_random==4",
+        "condition": "running_style==4&all_corner_random==1",
         "effects": [
           {
             "modifier": 1500,
@@ -6528,7 +6715,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "slope==1",
+        "condition": "up_slope_random==1",
         "effects": [
           {
             "modifier": 2000,
@@ -6545,7 +6732,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "near_count==4@near_count==5@near_count==6@near_count==7",
+        "condition": "near_count>=3&accumulatetime>=5",
         "effects": [
           {
             "modifier": 1500,
@@ -6557,6 +6744,23 @@
       }
     ],
     "rarity": 1
+  },
+  "201592": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "near_count>=3&accumulatetime>=5",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
   },
   "201601": {
     "alternatives": [
@@ -6680,7 +6884,7 @@
   "201671": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "ground_type==2&phase==1&blocked_side_continuetime>=2",
         "effects": [
           {
@@ -6697,13 +6901,371 @@
   "201672": {
     "alternatives": [
       {
-        "baseDuration": 18000,
+        "baseDuration": 24000,
         "condition": "ground_type==2&phase==1&blocked_side_continuetime>=2",
         "effects": [
           {
             "modifier": 1500,
             "target": 1,
             "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "201681": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "ground_type==2&phase_random==2",
+        "effects": [
+          {
+            "modifier": 350,
+            "target": 1,
+            "type": 28
+          },
+          {
+            "modifier": 3000,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "201682": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "ground_type==2&phase_random==2",
+        "effects": [
+          {
+            "modifier": 250,
+            "target": 1,
+            "type": 28
+          },
+          {
+            "modifier": 2000,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "201692": {
+    "alternatives": [
+      {
+        "baseDuration": 0,
+        "condition": "running_style==3&phase_laterhalf_random==0&order_rate>=50",
+        "effects": [
+          {
+            "modifier": 150,
+            "target": 1,
+            "type": 9
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "201701": {
+    "alternatives": [
+      {
+        "baseDuration": 24000,
+        "condition": "distance_type==3&is_lastspurt==1&corner==0&order_rate>=20&order_rate<=60",
+        "effects": [
+          {
+            "modifier": 3500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "201702": {
+    "alternatives": [
+      {
+        "baseDuration": 24000,
+        "condition": "distance_type==3&is_lastspurt==1&corner==0&order_rate>=20&order_rate<=60",
+        "effects": [
+          {
+            "modifier": 1500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "201902": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "running_style==2&phase_random==2&order_rate<=50",
+        "effects": [
+          {
+            "modifier": 2000,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "202022": {
+    "alternatives": [
+      {
+        "baseDuration": 40000,
+        "condition": "running_style==4&phase_random==1&order_rate>=50",
+        "effects": [
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "202032": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "distance_rate_after_random==50",
+        "effects": [
+          {
+            "modifier": 2500,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": -10000,
+            "target": 1,
+            "type": 9
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "202051": {
+    "alternatives": [
+      {
+        "baseDuration": -1,
+        "condition": "running_style==1",
+        "effects": [
+          {
+            "modifier": 0,
+            "target": 1,
+            "type": 6
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210011": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "phase_random==1",
+        "effects": [
+          {
+            "modifier": 4200,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210012": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "phase_random==1",
+        "effects": [
+          {
+            "modifier": 1800,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "210021": {
+    "alternatives": [
+      {
+        "baseDuration": 0,
+        "condition": "phase_random==1",
+        "effects": [
+          {
+            "modifier": 660,
+            "target": 1,
+            "type": 9
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210022": {
+    "alternatives": [
+      {
+        "baseDuration": 0,
+        "condition": "phase_random==1",
+        "effects": [
+          {
+            "modifier": 180,
+            "target": 1,
+            "type": 9
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "210031": {
+    "alternatives": [
+      {
+        "baseDuration": 12000,
+        "condition": "phase_random==2",
+        "effects": [
+          {
+            "modifier": 4800,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210032": {
+    "alternatives": [
+      {
+        "baseDuration": 12000,
+        "condition": "phase_random==2",
+        "effects": [
+          {
+            "modifier": 2400,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "210041": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "phase_random==2",
+        "effects": [
+          {
+            "modifier": 3000,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 3600,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210042": {
+    "alternatives": [
+      {
+        "baseDuration": 18000,
+        "condition": "phase_random==2",
+        "effects": [
+          {
+            "modifier": 600,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 1200,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "210051": {
+    "alternatives": [
+      {
+        "baseDuration": 40000,
+        "condition": "phase_random==0",
+        "effects": [
+          {
+            "modifier": 420,
+            "target": 1,
+            "type": 28
+          },
+          {
+            "modifier": 180000,
+            "target": 1,
+            "type": 8
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 2
+  },
+  "210052": {
+    "alternatives": [
+      {
+        "baseDuration": 40000,
+        "condition": "phase_random==0",
+        "effects": [
+          {
+            "modifier": 180,
+            "target": 1,
+            "type": 28
+          },
+          {
+            "modifier": 60000,
+            "target": 1,
+            "type": 8
           }
         ],
         "precondition": ""
@@ -6749,12 +7311,17 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "phase>=2&order>=2&order_rate<=50&change_order_onetime<0",
+        "condition": "phase>=2&order>=1&order_rate<=50&change_order_onetime<0",
         "effects": [
           {
             "modifier": 1500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -6766,7 +7333,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&order==1&bashin_diff_behind>=1",
+        "condition": "distance_rate>=50&order==1&bashin_diff_behind>=1",
         "effects": [
           {
             "modifier": 1500,
@@ -6817,7 +7384,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&order_rate<=30&behind_near_lane_time>=1",
+        "condition": "is_finalcorner==1&corner==0&order_rate<=30&behind_near_lane_time_set1>=1",
         "effects": [
           {
             "modifier": 2500,
@@ -6885,7 +7452,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1",
+        "condition": "distance_rate>=50&order==1&bashin_diff_behind<=1@distance_rate>=50&order==2&is_overtake==1",
         "effects": [
           {
             "modifier": 500,
@@ -6907,7 +7474,7 @@
     "alternatives": [
       {
         "baseDuration": 24000,
-        "condition": "is_finalcorner==1&corner!=0&order>=3&order_rate<=50",
+        "condition": "is_finalcorner_laterhalf==1&corner!=0&order>=3&order_rate<=40",
         "effects": [
           {
             "modifier": 2000,
@@ -6924,7 +7491,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=4",
+        "condition": "is_finalcorner==1&corner==0&change_order_onetime<0&order>=3",
         "effects": [
           {
             "modifier": 1500,
@@ -6941,7 +7508,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&is_behind_in==1&change_order_onetime<0&order_rate>=40",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
             "modifier": 1500,
@@ -6997,7 +7564,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner!=0&bashin_diff_infront<=1&bashin_diff_behind<=1&blocked_side_continuetime>=2&order<=4",
+        "condition": "is_finalcorner==1&bashin_diff_behind<=1&order<=4@is_finalcorner==1&bashin_diff_infront<=1&order<=4",
         "effects": [
           {
             "modifier": 1500,
@@ -7012,6 +7579,18 @@
   },
   "900161": {
     "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "is_finalcorner==1&order>=2&order_rate<=75&is_behind_in==1&change_order_onetime<0",
+        "effects": [
+          {
+            "modifier": 2500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      },
       {
         "baseDuration": 30000,
         "condition": "is_finalcorner==1&order>=2&order_rate<=75&is_behind_in==1&change_order_onetime<0",
@@ -7048,12 +7627,34 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner!=0&order>=4&change_order_onetime<0",
+        "condition": "is_finalcorner==1&corner!=0&order>=3&change_order_onetime<0",
         "effects": [
           {
             "modifier": 1500,
             "target": 1,
             "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "900191": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "change_order_up_end_after>=2",
+        "effects": [
+          {
+            "modifier": 1500,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 150,
+            "target": 1,
+            "type": 28
           }
         ],
         "precondition": ""
@@ -7082,7 +7683,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner!=0&change_order_onetime<0&order<=4",
+        "condition": "is_finalcorner==1&change_order_onetime<0&order<=4",
         "effects": [
           {
             "modifier": 1500,
@@ -7099,7 +7700,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner!=0&blocked_side_continuetime>=2&order<=3",
+        "condition": "is_finalcorner==1&blocked_side_continuetime>=2&order<=3",
         "effects": [
           {
             "modifier": 500,
@@ -7151,11 +7752,33 @@
     ],
     "rarity": 1
   },
+  "900281": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "distance_rate>=45&distance_rate<=60&order>=3&order_rate<=50&hp_per<=70",
+        "effects": [
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 27
+          },
+          {
+            "modifier": 1000,
+            "target": 1,
+            "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
   "900301": {
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&order<=4&change_order_onetime<0",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
             "modifier": 1500,
@@ -7171,13 +7794,18 @@
   "900321": {
     "alternatives": [
       {
-        "baseDuration": 0,
+        "baseDuration": 24000,
         "condition": "distance_rate>=50&corner!=0&order>=3&order_rate<=40",
         "effects": [
           {
             "modifier": 150,
             "target": 1,
             "type": 9
+          },
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
@@ -7189,7 +7817,24 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&order<=5&blocked_side_continuetime>=2",
+        "condition": "is_finalcorner==1&corner==0&order<=5",
+        "effects": [
+          {
+            "modifier": 1500,
+            "target": 1,
+            "type": 27
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "900371": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "is_badstart==0&temptation_count==0&order>=3&is_finalcorner==1&corner==0",
         "effects": [
           {
             "modifier": 1500,
@@ -7206,7 +7851,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "distance_rate>=50&distance_rate<=65&order>=3&order_rate<=40&change_order_onetime<0",
+        "condition": "distance_rate>=50&distance_rate<=65&order>=2&order_rate<=40&change_order_onetime<0",
         "effects": [
           {
             "modifier": 500,
@@ -7265,7 +7910,7 @@
         "condition": "phase_random==1&order>=2&order_rate<=40",
         "effects": [
           {
-            "modifier": 150,
+            "modifier": 350,
             "target": 1,
             "type": 9
           }
@@ -7279,7 +7924,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "phase==1&corner==0&order==1&bashin_diff_behind<=1",
+        "condition": "phase==1&corner==0&order<=2&bashin_diff_behind<=1",
         "effects": [
           {
             "modifier": 500,
@@ -7301,7 +7946,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner!=0&order_rate>=50&order_rate<=75&is_overtake==1",
+        "condition": "is_finalcorner==1&order_rate>=40&order_rate<=75&is_overtake==1",
         "effects": [
           {
             "modifier": 1500,
@@ -7341,6 +7986,11 @@
             "modifier": 1500,
             "target": 1,
             "type": 27
+          },
+          {
+            "modifier": 500,
+            "target": 1,
+            "type": 31
           }
         ],
         "precondition": ""
@@ -7391,7 +8041,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=5&order_rate<=60",
+        "condition": "temptation_count==0&remain_distance<=201&remain_distance>=199&order>=4&order_rate<=70",
         "effects": [
           {
             "modifier": 2500,
@@ -7425,10 +8075,10 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "is_finalcorner==1&corner==0&is_overtake==1&order<=5&order_rate<=50&overtake_target_no_order_up_time>=2",
+        "condition": "is_finalcorner==1&corner==0",
         "effects": [
           {
-            "modifier": 1500,
+            "modifier": 2500,
             "target": 1,
             "type": 27
           }
@@ -7462,7 +8112,7 @@
         "condition": "phase==1&change_order_onetime>0&order_rate>=40",
         "effects": [
           {
-            "modifier": 150,
+            "modifier": 350,
             "target": 1,
             "type": 9
           }
@@ -7475,8 +8125,8 @@
   "910131": {
     "alternatives": [
       {
-        "baseDuration": 30000,
-        "condition": "is_finalcorner==1&hp_per<=35&order<=3&order_rate<=50&bashin_diff_behind<=1&overtake_target_time>=1",
+        "baseDuration": 36000,
+        "condition": "is_finalcorner==1&hp_per<=45&order<=3&order_rate<=50&bashin_diff_behind<=1&overtake_target_time>=1",
         "effects": [
           {
             "modifier": 1500,
@@ -7510,7 +8160,7 @@
     "alternatives": [
       {
         "baseDuration": 30000,
-        "condition": "phase_random==1&order>=3&order_rate<=50&is_overtake==1",
+        "condition": "phase==1&order>=3&order_rate<=50&is_overtake==1",
         "effects": [
           {
             "modifier": 1500,
@@ -7545,6 +8195,23 @@
             "modifier": 2000,
             "target": 1,
             "type": 31
+          }
+        ],
+        "precondition": ""
+      }
+    ],
+    "rarity": 1
+  },
+  "910561": {
+    "alternatives": [
+      {
+        "baseDuration": 30000,
+        "condition": "distance_rate>=50&order_rate>=40&overtake_target_time>=2",
+        "effects": [
+          {
+            "modifier": 1500,
+            "target": 1,
+            "type": 27
           }
         ],
         "precondition": ""
