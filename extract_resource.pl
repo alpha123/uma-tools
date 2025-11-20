@@ -28,11 +28,11 @@ $metadb->{RaiseError} = 1;
 # work around windows quoting issues (just use ^ as a quote instead)
 $query =~ s/\^/"/g;
 
-say "SELECT h FROM a WHERE n LIKE \"$query\";";
+say "SELECT h, e FROM a WHERE n LIKE \"$query\";";
 
-my $select = $metadb->prepare("SELECT h FROM a WHERE n LIKE \"$query\";");
+my $select = $metadb->prepare("SELECT h, e FROM a WHERE n LIKE \"$query\";");
 
-my $hash;
+my ($hash, $enc);
 
 # make sure need_unpack directory exists
 unless (-d 'need_unpack') {
@@ -40,10 +40,17 @@ unless (-d 'need_unpack') {
 }
 
 $select->execute;
-$select->bind_columns(\($hash));
+$select->bind_columns(\($hash, $enc));
 
 while ($select->fetch) {
 	$hash =~ /^(..)/;
 	my $hdir = $1;
 	copy("$datadir/$hdir/$hash", "need_unpack/$hash");
+	# write encryption key next to the extracted file if present
+	if (defined $enc && length $enc) {
+		open my $kf, '>', "need_unpack/$hash.key" or die "Unable to write key file: $!";
+		binmode $kf;
+		print $kf $enc;
+		close $kf;
+	}
 }
