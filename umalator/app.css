@@ -63,8 +63,8 @@ body {
 	align-items: center;
 	display: flex;
 	gap: 50px;
-	margin-bottom: 10px;
 	margin-left: 20px;
+	margin-top: -20px;
 	position: relative;
 	width: 960px;
 }
