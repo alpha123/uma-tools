@@ -163,7 +163,7 @@ function SeasonSelect(props) {
 	}
 	return (
 		<div class="seasonSelect" onClick={click}>
-			{Array(4 + +!CC_GLOBAL /* global doenst have late spring for some reason */).fill(0).map((_,i) =>
+			{Array(4 + +!CC_GLOBAL /* global doesnt have late spring for some reason */).fill(0).map((_,i) =>
 				<img src={`/uma-tools/icons${CC_GLOBAL?'/global':''}/utx_txt_season_0${i}.png`} title={SKILL_STRINGS_en.skilldetails.season[i+1]}
 					class={i+1 == props.value ? 'selected' : ''} data-season={i+1} />)}
 		</div>

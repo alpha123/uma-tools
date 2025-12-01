@@ -53,6 +53,14 @@ export function IntroText(props) {
 			<details>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2025-12-01</h2>
+					<ul>
+						<li>Update game data</li>
+						<li>Update race mechanics to match changes in the first anniversary patch</li>
+						<li>Minor bug fixes</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2025-08-17</h2>
 					<ul>
 						<li><strong>Fix to use proper data for hills from the current global version instead of an approximation using data from a later patch</strong> (thanks to <a href="https://github.com/mikumifa">mikumifa</a>)</li>
