@@ -207,7 +207,7 @@ export function StrategySelect(props) {
 }
 
 const nonUniqueSkills = Object.keys(skills).filter(id => skilldata(id).rarity < 3 || skilldata(id).rarity > 5);
-export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */];
+export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skills).filter(id => id[0] == '4'));
 
 function assertIsSkill(sid: string): asserts sid is keyof typeof skills {
 	console.assert(skilldata(sid) != null);
