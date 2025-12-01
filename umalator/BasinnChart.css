@@ -18,17 +18,22 @@
 .basinnChart thead {
 	position: sticky;
 	top: 0;
+	z-index: 1;
 }
 
 .basinnChart th {
 	background: linear-gradient(#fff,#e4e0e9);
 	text-align: left;
-	width: 15%;
+	width: 11%;
 }
 
 .basinnChart th:first-child {
 	text-align: center;
-	width: 40%;
+	width: 34%;
+}
+
+.basinnChart th:last-child {
+	text-align: center;
 }
 
 .basinnChart .columnHeader {
@@ -63,6 +68,10 @@
 	transform: rotate(45deg);
 }
 
+.basinnChart tbody tr {
+	height: 34px;
+}
+
 .basinnChart tr.selected {
 	background: rgb(121, 216, 35);
 }
@@ -83,57 +92,124 @@
 }
 
 .hintbtn {
-	background: rgb(168, 227, 5);
-	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22));
-	border-radius: 6px;
+	border: none;
+	border-radius: 4px;
 	display: inline-block;
-	height: 27px;
-	outline: 2px solid rgb(85, 143, 24);
+	height: 18px;
 	position: relative;
 	text-align: center;
-	width: 32px;
+	width: 26px;
+}
+
+.hintbtn.hintDown {
+	background: linear-gradient(rgb(228, 224, 233), rgb(255, 255, 255));
+	outline: 2px solid rgb(181, 174, 187);
+}
+
+.hintbtn.hintUp {
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22));
+	outline: 2px solid rgb(85, 143, 24);
 }
 
 .hintbtn::before, .hintbtn::after {
-	border-top: 2px solid rgb(85, 143, 24);
 	content: "";
-	height: 20px;
+	height: 12px;
 	pointer-events: none;
 	position: absolute;
-	top: 1px;
-	width: 20px;
+	top: 0;
+	width: 18px;
+}
+
+.hintbtn.hintDown::before, .hintbtn.hintDown::after {
+	border-top: 2px solid rgb(181, 174, 187);
+}
+
+.hintbtn.hintUp::before, .hintbtn.hintUp::after {
+	border-top: 2px solid rgb(85, 143, 24);
 }
 
 .hintbtn::before {
-	background: linear-gradient(34deg, rgb(118, 189, 17), rgb(168, 227, 5) 70%);
+	border-top-left-radius: 3px;
 	border-top-right-radius: 4px;
-	left: 0;
-	transform: rotate(-34deg);
+	left: -1px;
+	transform: rotate(-36deg);
 	transform-origin: top left;
+}
+
+.hintbtn.hintDown::before {
+	background: linear-gradient(36deg, rgb(245, 243, 247), rgb(228, 224, 233) 50%);
+}
+
+.hintbtn.hintUp::before {
+	background: linear-gradient(36deg, rgb(118, 189, 17), rgb(168, 227, 5) 50%);
 }
 
 .hintbtn::after {
 	border-top-left-radius: 4px;
-	left: 12px;
-	transform: rotate(34deg);
+	border-top-right-radius: 3px;
+	right: -1px;
+	transform: rotate(36deg);
 	transform-origin: top right;
 }
 
 .hintbtnDummyBackground {
-	background: linear-gradient(-34deg, rgb(156, 218, 8), rgb(168, 227, 5));
 	height: 5px;
 	pointer-events: none;
 	position: absolute;
-	right: 4px;
-	top: -3px;
-	transform: rotate(34deg);
+	right: 2px;
+	top: -4px;
+	transform: rotate(36deg);
 	width: 12px;
 }
 
+.hintDown .hintbtnDummyBackground {
+	background: linear-gradient(-36deg, rgb(233, 229, 237), rgb(228, 224, 233) 30%);
+}
+
+.hintUp .hintbtnDummyBackground {
+	background: linear-gradient(-36deg, rgb(153, 216, 9), rgb(168, 227, 5) 30%);
+}
+
 .hintbtnText {
-	color: white;
-	font-size: 26px;
+	font-size: 18px;
 	font-weight: bold;
 	position: relative;
-	top: -10px;
+	top: -3px;
+}
+
+.hintDown .hintbtnText {
+	color: rgb(121, 64, 22);
+}
+
+.hintUp .hintbtnText {
+	color: white;
+}
+
+.hintbtn.hintbtnDisabled {
+	filter: brightness(0.5);
+}
+
+.hintDown {
+	margin-bottom: 2px;
+	margin-left: -36px;
+	margin-right: 10px;
+	transform: scaleY(-1);
+	vertical-align: text-bottom;
+}
+
+.hintUp {
+	margin-bottom: 2px;
+	margin-left: 10px;
+	vertical-align: text-bottom;
+}
+
+.hintedCost {
+	display: inline-block;
+	text-align: right;
+	width: 29px;
+}
+
+.hintLevel {
+	color: rgb(255, 145, 29);
+	margin-left: 0.5em;
 }

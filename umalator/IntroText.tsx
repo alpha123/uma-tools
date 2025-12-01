@@ -57,6 +57,13 @@ export function IntroText(props) {
 					<ul>
 						<li>Update game data</li>
 						<li>Update race mechanics to match changes in the first anniversary patch</li>
+						<li>
+							<details>
+								<summary>Add skill point cost and mean length gain per sp columns to skill chart</summary>
+								<p>This includes the total cost of the skill, i.e. gold skills including the cost of their white skill, ◎ including ○, etc. Known limitation: costs are not currently reduced for the gold if you already select the white version on the uma being tested. This is because the white version is not removed in the simulation, which will be fixed in a future update.</p>
+								<p>Cost calculation does not work for evolved skills in the JP version of the Umalator.</p>
+							</details>
+						</li>
 						<li>Minor bug fixes</li>
 					</ul>
 				</section>

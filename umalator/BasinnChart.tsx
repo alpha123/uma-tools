@@ -1,6 +1,7 @@
 import { h, Fragment } from 'preact';
 import { useState, useMemo, useId } from 'preact/hooks';
 import { Text, Localizer } from 'preact-i18n';
+import { Map as ImmMap } from 'immutable';
 
 import {
 	ColumnDef, SortFn, SortingState,
@@ -18,6 +19,7 @@ import { runComparison } from './compare';
 
 import './BasinnChart.css';
 
+import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 import skill_meta from '../skill_meta.json';
 
@@ -59,6 +61,41 @@ function SkillNameCell(props) {
 	);
 }
 
+function scaleBaseCost(baseCost: number, hint: number) {
+	return Math.floor(baseCost * (1 - (hint <= 3 ? 0.1 * hint : 0.3 + 0.05 * (hint - 3))));
+}
+
+function costForId(id, hints) {
+	const groupId = skillmeta(id).groupId;
+	return Object.keys(skilldata).reduce((a,b) => {
+		const info = skillmeta(b);
+		const rb = skilldata[b].rarity, rid = skilldata[id].rarity;
+		return a + (info.groupId == groupId &&
+			// sum cost for skills with ○ and ◎ variants of the same rarity
+			(b == id || rb < rid || rb == rid && +b > +id) && info.iconId[info.iconId.length-1] != '4'  // avoid counting purple skills toward their normal versions
+			? scaleBaseCost(info.baseCost, hints.get(b)) : 0)
+	}, 0);
+}
+
+function SkillCostCell(props) {
+	return (
+		<Fragment>
+			<button class={`hintbtn hintDown${props.hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={props.hint == 0}
+				onClick={() => props.updateHint(props.id, props.hint - 1)}>
+				<div class="hintbtnDummyBackground"></div>
+				<span class="hintbtnText">−</span>
+			</button>
+			<span class="hintedCost">{costForId(props.id, props.hints)}</span>
+			<button class={`hintbtn hintUp${props.hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={props.hint == 5}
+				onClick={() => props.updateHint(props.id, props.hint + 1)}>
+				<div class="hintbtnDummyBackground"></div>
+				<span class="hintbtnText">+</span>
+			</button>
+			{props.hint > 0 && <span class="hintLevel">{props.hint}</span>}
+		</Fragment>
+	);
+}
+
 function headerRenderer(radioGroup, selectedType, type, text, onClick) {
 	function click(e) {
 		e.stopPropagation();
@@ -83,10 +120,10 @@ export function BasinnChart(props) {
 	}
 
 	const columns = useMemo(() => [{
-		header: () => <span>Skill name</span>,
+		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>Skill name</span>,
 		accessorKey: 'id',
 		cell: (info) => <SkillNameCell id={info.getValue()} />,
-		sortingFn: (a,b,_) => skillnames[a] < skillnames[b] ? -1 : 1
+		sortFn: (a,b) => skillnames[a.getValue('id')][0] < skillnames[b.getValue('id')][0] ? -1 : 1
 	}, {
 		header: headerRenderer(radioGroup, selectedType, 'min', 'Minimum', headerClick),
 		accessorKey: 'min',
@@ -106,7 +143,26 @@ export function BasinnChart(props) {
 		accessorKey: 'median',
 		cell: formatBasinn,
 		sortDescFirst: true
-	}], [selectedType]);
+	}, {
+		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>SP Cost</span>,
+		id: 'spcost',
+		accessorFn: (row) => ({id: row.id, hint: props.hints.get(row.id)}),
+		cell: (info) => <SkillCostCell {...info.getValue()} hints={props.hints} updateHint={props.updateHint} />,
+		sortFn: (a,b) => {
+			const ac = costForId(a.getValue('id'), props.hints), bc = costForId(b.getValue('id'), props.hints);
+			return (bc < ac) - (ac < bc);
+		},
+		sortDescFirst: false
+	}, {
+		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>{CC_GLOBAL ? 'L / SP' : 'バ / SP'}</span>,
+		id: 'bsp',
+		accessorFn: (row) => row.mean / costForId(row.id, props.hints),
+		cell: (info) => {
+			const x = info.getValue();
+			return <span>{isNaN(x) || Math.abs(x) == Infinity ? '--' : x.toFixed(6)}</span>;
+		},
+		sortDescFirst: true
+	}], [selectedType, props.hints]);  // including hints here is a bad hack to force the table to rerender when hints changes (since it's not part of the actual table data), TODO fixme. currently not part of the actual row data because we get that straight from the simulator output.
 
 	const [sorting, setSorting] = useState<SortingState>([{id: 'mean', desc: true}]);
 

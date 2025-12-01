@@ -391,6 +391,7 @@ body {
 	position: absolute;
 	top: 0;
 	width: 845px;
+	z-index: 50;
 }
 
 .basinnChartPopover .expandedSkill {

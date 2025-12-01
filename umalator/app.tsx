@@ -1,7 +1,7 @@
 import { h, Fragment, render } from 'preact';
 import { useState, useReducer, useMemo, useEffect, useRef, useId, useCallback } from 'preact/hooks';
 import { Text, IntlProvider } from 'preact-i18n';
-import { Record, Set as ImmSet } from 'immutable';
+import { Record, Map as ImmMap } from 'immutable';
 import * as d3 from 'd3';
 import { computePosition, flip } from '@floating-ui/dom';
 
@@ -449,6 +449,11 @@ function App(props) {
 		return merged;
 	}, new Map());
 
+	const [hintLevels, setHintLevels] = useState(() => ImmMap(Object.keys(skilldata).map(id => [id, 0])));
+	function updateHintLevel(id, hint) {
+		setHintLevels(hintLevels.set(id, hint));
+	}
+
 	const [popoverSkill, setPopoverSkill] = useState('');
 
 	function racesetter(prop) {
@@ -693,7 +698,8 @@ function App(props) {
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
-					<BasinnChart data={tableData.values().toArray()} hidden={uma1.skills}
+					<BasinnChart data={tableData.values().toArray()} hidden={uma1.skills} hints={hintLevels}
+						updateHint={updateHintLevel}
 						onSelectionChange={basinnChartSelection}
 						onRunTypeChange={setChartData}
 						onDblClickRow={addSkillFromTable}
