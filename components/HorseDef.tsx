@@ -207,6 +207,7 @@ export function StrategySelect(props) {
 }
 
 const nonUniqueSkills = Object.keys(skills).filter(id => skilldata(id).rarity < 3 || skilldata(id).rarity > 5);
+export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */];
 
 function assertIsSkill(sid: string): asserts sid is keyof typeof skills {
 	console.assert(skilldata(sid) != null);
@@ -237,7 +238,7 @@ export function HorseDef(props) {
 	}
 
 	const umaId = state.outfitId;
-	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata(id).rarity != 6 || id.startsWith(umaId)), [umaId]);
+	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata(id).rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
 
 	function setter(prop: keyof HorseState) {
 		return (x) => setState(state.set(prop, x));

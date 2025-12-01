@@ -13,7 +13,7 @@ import { Language, LanguageSelect, useLanguageSelect } from '../components/Langu
 import { ExpandedSkillDetails, STRINGS_en as SKILL_STRINGS_en } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet } from '../components/HorseDefTypes';
-import { HorseDef, horseDefTabs } from '../components/HorseDef';
+import { HorseDef, horseDefTabs, universallyAccessiblePinks } from '../components/HorseDef';
 import { TRACKNAMES_ja, TRACKNAMES_en } from '../strings/common';
 
 import { getActivateableSkills, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
@@ -404,7 +404,7 @@ function RacePresets(props) {
 	);
 }
 
-const baseSkillsToTest = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3);
+const baseSkillsToTest = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) != -1);
 
 const enum Mode { Compare, Chart }
 const enum UiStateMsg { SetModeCompare, SetModeChart, SetCurrentIdx0, SetCurrentIdx1, ToggleExpand }
@@ -548,7 +548,9 @@ function App(props) {
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = getActivateableSkills(baseSkillsToTest.filter(s => !uma1.skills.has(s) && (s[0] != '9' || !uma1.skills.has('1' + s.slice(1)))), uma1, course, params);
+		const skills = getActivateableSkills(baseSkillsToTest.filter(s => !uma1.skills.has(s)
+			&& (s[0] != '9' || universallyAccessiblePinks.indexOf(s) != -1 /* rhein kraft pink, other universal pinks are 4xxxxx, TODO logic here is a little dicey */
+				|| !uma1.skills.has('1' + s.slice(1)))), uma1, course, params);
 		const filler = new Map();
 		skills.forEach(id => filler.set(id, getNullRow(id)));
 		const uma = uma1.toJS();
