@@ -29,6 +29,7 @@ body {
 #runPane {
 	display: flex;
 	flex-direction: column;
+	font-size: 14px;
 	justify-content: center;
 	margin-left: 35px;
 }
