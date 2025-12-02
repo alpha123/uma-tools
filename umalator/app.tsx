@@ -804,4 +804,17 @@ function App(props) {
 }
 
 initTelemetry();
-render(<App lang="en-ja" />, document.getElementById('app'));
+
+// there's an annoying site that embeds the umalator surrounded by a bunch of ads
+try {
+	// try to detect if we're in a cross-domain iframe by deliberately triggering a CORS violation (we can't inspect any
+	// properties of the parent page directly, but we can exploit that to determine if we're being embedded)
+	window.parent && window.parent.location.hostname;
+	render(<App lang="en-ja" />, document.getElementById('app'));
+} catch (e) {
+	if (e instanceof DOMException) {
+		document.getElementById('app').innerHTML = '<p style="font-size:22px"><span style="border:3px solid orange;border-radius:3em;color:orange;display:inline-block;font-weight:bold;height:1.8em;line-height:1.8em;text-align:center;width:1.8em">!</span> You are probably on some kind of scummy ad-infested rehosting site. The official URL for the Umalator is <a href="https://alpha123.github.io/uma-tools/umalator-global/" target="_blank">https://alpha123.github.io/uma-tools/umalator-global/</a>.</p>'
+	} else {
+		throw e;
+	}
+}
