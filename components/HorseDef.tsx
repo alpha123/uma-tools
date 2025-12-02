@@ -230,6 +230,18 @@ export function HorseDef(props) {
 	const {state, setState} = props;
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
 	const [expanded, setExpanded] = useState(() => ImmSet());
+	// essentially what we want to do is:
+	//   - when the user selects oonige, the strategy should be set to oonige
+	//   - when the user removes oonige, the strategy should be set to whatever they had selected before
+	//   - if the user selects oonige and then changes the strategy manually and then adds another skill, the strategy should stay
+	//     on whatever they selected and not activate oonige again
+	//   - if the user then removes oonige and adds it again, it should be reset to oonige
+	const [oldStrategyState, updateOldStrategyState] = useReducer((ss, msg: boolean | string) => {
+		if (typeof msg == 'boolean') {
+			return {...ss, oonigeIsNew: msg};
+		}
+		return {...ss, old: msg};
+	}, {oonigeIsNew: true, old: props.state.get('strategy')});
 
 	const tabstart = props.tabstart();
 	let tabi = 0;
@@ -244,7 +256,21 @@ export function HorseDef(props) {
 	function setter(prop: keyof HorseState) {
 		return (x) => setState(state.set(prop, x));
 	}
-	const setSkills = setter('skills');
+	function setSkills(ids) {
+		let st = state;
+		if (ids.has('202051') && oldStrategyState.oonigeIsNew) {
+			st = st.set('strategy', 'Oonige');
+			updateOldStrategyState(false);
+		} else if (!ids.has('202051')) {
+			st = st.set('strategy', oldStrategyState.old);
+			updateOldStrategyState(true);
+		}
+		setState(st.set('skills', ids));
+	}
+	function setStrategy(strat) {
+		updateOldStrategyState(strat);
+		setState(state.set('strategy', strat));
+	}
 
 	function setUma(id) {
 		let newSkills = state.skills.filter(id => skilldata(id).rarity < 3);
@@ -326,7 +352,7 @@ export function HorseDef(props) {
 				</div>
 				<div>
 					<span>{CC_GLOBAL ? 'Style:' : 'Strategy:'}</span>
-					<StrategySelect s={state.strategy} setS={setter('strategy')} tabindex={tabnext()} />
+					<StrategySelect s={state.strategy} setS={setStrategy} tabindex={tabnext()} />
 				</div>
 				<div>
 					<span>{CC_GLOBAL ? 'Style aptitude:' : 'Strategy aptitude:'}</span>
