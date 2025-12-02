@@ -192,6 +192,7 @@ export function StrategySelect(props) {
 				<option value="Senkou">Pace Chaser</option>
 				<option value="Sasi">Late Surger</option>
 				<option value="Oikomi">End Closer</option>
+				<option value="Oonige">Runaway</option>
 			</select>
 		);
 	}
