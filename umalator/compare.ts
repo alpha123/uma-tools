@@ -10,6 +10,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		.seed(options.seed)
 		.course(course)
 		.mood(racedef.mood)
+		.guaranteeSkillActivation(options.guaranteeSkillActivation)
 		.ground(racedef.groundCondition)
 		.weather(racedef.weather)
 		.season(racedef.season)
@@ -29,11 +30,11 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
 	uma1.skills.toArray().sort(sort).forEach(id => {
 		standard.addSkill(id.split('-')[0], Perspective.Self);
-		compare.addSkill(id.split('-')[0], Perspective.Other);
+		compare.addSkill(id.split('-')[0], Perspective.Other, null, Math.max(0.2, 1 - 90.0 / (standard._horse.wisdom * (1 + .02 * racedef.mood))));
 	});
 	uma2.skills.toArray().sort(sort).forEach(id => {
 		compare.addSkill(id.split('-')[0], Perspective.Self);
-		standard.addSkill(id.split('-')[0], Perspective.Other);
+		standard.addSkill(id.split('-')[0], Perspective.Other, null, Math.max(0.2, 1 - 90.0 / (compare._horse.wisdom * (1 + .02 * racedef.mood))));
 	});
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
