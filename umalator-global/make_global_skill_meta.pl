@@ -21,7 +21,8 @@ my $select = $db->prepare(<<SQL
    SELECT s.id, s.group_id, s.icon_id, COALESCE(sp.need_skill_point,0), s.disp_order
      FROM skill_data s
 LEFT JOIN single_mode_skill_need_point sp
-       ON s.id = sp.id;
+       ON s.id = sp.id
+    WHERE s.is_general_skill = 1 OR s.rarity >= 3;
 SQL
 );
 
