@@ -5,7 +5,7 @@ make a best effort to save/estimate mean and median as well (e.g. using some (ap
 - other options: do some x% of the runs and then pick the next one that's closest to the observed mean/median
 found the latter easier.
 * DONE integrated bashin chart
-* TODO skill hints/cost calculator?
+* DONE skill hints/cost calculator?
 * DONE show skill activations on course chart
 * TODO jp localization
 * TODO choose motivation
@@ -61,8 +61,8 @@ i.e. course, ground type, weather, etc
 - selective imports for d3
 - what else?
 ** TODO sprite sheet instead of loading individual images for icons and stuff
-** TODO replace skills of the same group when one is added from the bashin chart
-** TODO remove skills of the same group on uma2 when running bashin chart
+** DONE replace skills of the same group when one is added from the bashin chart
+** DONE remove skills of the same group on uma2 when running bashin chart
 ** TODO pass seed to runComparison
 bashin chart needs this to set a different seed between rounds
 as it is currently each round repeats the prior round at the start since the seed is the same

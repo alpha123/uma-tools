@@ -24,12 +24,7 @@ import { IntroText } from './IntroText';
 
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
-import skill_meta from '../skill_meta.json';
-
-function skillmeta(id: string) {
-	// handle the fake skills (e.g., variations of Sirius unique) inserted by make_skill_data with ids like 100701-1
-	return skill_meta[id.split('-')[0]];
-}
+import skillmeta from '../skill_meta.json';
 
 import './app.css';
 
@@ -553,9 +548,10 @@ function App(props) {
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = getActivateableSkills(baseSkillsToTest.filter(s => !uma1.skills.has(s)
+		const skills = getActivateableSkills(baseSkillsToTest.filter(s => !uma1.skills.includes(s)
 			&& (s[0] != '9' || universallyAccessiblePinks.indexOf(s) != -1 /* rhein kraft pink, other universal pinks are 4xxxxx, TODO logic here is a little dicey */
-				|| !uma1.skills.has('1' + s.slice(1)))), uma1, course, params);
+				// TODO might not need that check; also TODO adjust check below to filter out rhein kraft pink inherit for rhein kraft
+				|| !uma1.skills.includes('1' + s.slice(1)))), uma1, course, params);
 		const filler = new Map();
 		skills.forEach(id => filler.set(id, getNullRow(id)));
 		const uma = uma1.toJS();
@@ -574,7 +570,7 @@ function App(props) {
 
 	function addSkillFromTable(skillId) {
 		postEvent('addSkillFromTable', {skillId});
-		setUma1(uma1.set('skills', uma1.skills.add(skillId)));
+		setUma1(uma1.set('skills', uma1.skills.set(skillmeta[skillId].groupId, skillId)));
 	}
 
 	function showPopover(skillId) {
@@ -611,7 +607,7 @@ function App(props) {
 	];
 	const skillActivations = chartData == null ? [] : chartData.sk.flatMap((a,i) => {
 		return Array.from(a.keys()).flatMap(id => {
-			if (NO_SHOW.indexOf(skillmeta(id).iconId) > -1) return [];
+			if (NO_SHOW.indexOf(skillmeta[id].iconId) > -1) return [];
 			else return a.get(id).map(ar => ({
 				type: RegionDisplayType.Textbox,
 				color: colors[i],

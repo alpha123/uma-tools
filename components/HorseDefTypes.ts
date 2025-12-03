@@ -1,20 +1,10 @@
-import { Record } from 'immutable';
-import { SortedSet } from 'immutable-sorted';
+import { Record, Map as ImmMap } from 'immutable';
 
-import skill_meta from '../skill_meta.json';
+import skills from '../uma-skill-tools/data/skill_data.json';
+import skillmeta from '../skill_meta.json';
 
-function skillmeta(id: string) {
-	// handle the fake skills (e.g., variations of Sirius unique) inserted by make_skill_data with ids like 100701-1
-	return skill_meta[id.split('-')[0]];
-}
-
-function skillComparator(a, b) {
-	const x = skillmeta(a).order, y = skillmeta(b).order;
-	return +(y < x) - +(x < y) || +(b < a) - +(a < b);
-}
-
-export function SkillSet(iterable): SortedSet<keyof typeof skills> {
-	return SortedSet(iterable, skillComparator);
+export function SkillSet(ids): ImmMap<(typeof skill_meta)['groupId'], keyof typeof skills> {
+	return ImmMap(ids.map(id => [skillmeta[id].groupId, id]));
 }
 
 export class HorseState extends Record({

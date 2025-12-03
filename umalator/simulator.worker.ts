@@ -1,8 +1,12 @@
+import { fromJS } from 'immutable';
+
 import type { CourseData } from '../uma-skill-tools/CourseData';
 import type { RaceParameters } from '../uma-skill-tools/RaceParameters';
 
-import { HorseState, SkillSet } from '../components/HorseDefTypes';
+import { HorseState } from '../components/HorseDefTypes';
 import { runComparison } from './compare';
+
+import skillmeta from '../skill_meta.json';
 
 function mergeResults(results1, results2) {
 	console.assert(results1.id == results2.id, `mergeResults: ${results1.id} != ${results2.id}`);
@@ -33,10 +37,10 @@ function mergeResultSets(data1, data2) {
 	});
 }
 
-function run1Round(nsamples: number, skills: string[], course: CourseData, racedef: RaceParameters, uma, options) {
+function run1Round(nsamples: number, skills: string[], course: CourseData, racedef: RaceParameters, uma: HorseState, options) {
 	const data = new Map();
 	skills.forEach(id => {
-		const withSkill = uma.set('skills', uma.skills.add(id));
+		const withSkill = uma.set('skills', uma.skills.set(skillmeta[id].groupId, id));
 		const {results, runData} = runComparison(nsamples, course, racedef, uma, withSkill, options);
 		const mid = Math.floor(results.length / 2);
 		const median = results.length % 2 == 0 ? (results[mid-1] + results[mid]) / 2 : results[mid];
@@ -53,7 +57,7 @@ function run1Round(nsamples: number, skills: string[], course: CourseData, raced
 }
 
 function runChart({skills, course, racedef, uma, options}) {
-	const uma_ = new HorseState(uma).set('skills', SkillSet(uma.skills));
+	const uma_ = new HorseState(uma).set('skills', fromJS(uma.skills));
 	let results = run1Round(5, skills, course, racedef, uma_, options);
 	postMessage({type: 'chart', results});
 	skills = skills.filter(id => results.get(id).max > 0.1);
@@ -70,8 +74,8 @@ function runChart({skills, course, racedef, uma, options}) {
 }
 
 function runCompare({nsamples, course, racedef, uma1, uma2, options}) {
-	const uma1_ = new HorseState(uma1).set('skills', SkillSet(uma1.skills));
-	const uma2_ = new HorseState(uma2).set('skills', SkillSet(uma2.skills));
+	const uma1_ = new HorseState(uma1).set('skills', fromJS(uma1.skills));
+	const uma2_ = new HorseState(uma2).set('skills', fromJS(uma2.skills));
 	let results;
 	for (let n = Math.min(20, nsamples), mul = 6; n < nsamples; n = Math.min(n * mul, nsamples), mul = Math.max(mul - 1, 2)) {
 		results = runComparison(n, course, racedef, uma1_, uma2_, options);

@@ -21,12 +21,7 @@ import './BasinnChart.css';
 
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
-import skill_meta from '../skill_meta.json';
-
-function skillmeta(id: string) {
-	// handle the fake skills (e.g., variations of Sirius unique) inserted by make_skill_data with ids like 100701-1
-	return skill_meta[id.split('-')[0]];
-}
+import skillmeta from '../skill_meta.json';
 
 export function getActivateableSkills(skills: string[], horse: HorseState, course: CourseData, racedef: RaceParameters) {
 	const parser = getParser();
@@ -55,7 +50,7 @@ function formatBasinn(info) {
 function SkillNameCell(props) {
 	return (
 		<div class="chartSkillName">
-			<img src={`/uma-tools/icons/${skillmeta(props.id).iconId}.png`} />
+			<img src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} />
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);
@@ -66,9 +61,9 @@ function scaleBaseCost(baseCost: number, hint: number) {
 }
 
 function costForId(id, hints) {
-	const groupId = skillmeta(id).groupId;
+	const groupId = skillmeta[id].groupId;
 	return Object.keys(skilldata).reduce((a,b) => {
-		const info = skillmeta(b);
+		const info = skillmeta[b];
 		const rb = skilldata[b].rarity, rid = skilldata[id].rarity;
 		return a + (info.groupId == groupId &&
 			// sum cost for skills with ○ and ◎ variants of the same rarity
@@ -150,7 +145,7 @@ export function BasinnChart(props) {
 		cell: (info) => <SkillCostCell {...info.getValue()} hints={props.hints} updateHint={props.updateHint} />,
 		sortFn: (a,b) => {
 			const ac = costForId(a.getValue('id'), props.hints), bc = costForId(b.getValue('id'), props.hints);
-			return (bc < ac) - (ac < bc);
+			return +(bc < ac) - +(ac < bc);
 		},
 		sortDescFirst: false
 	}, {

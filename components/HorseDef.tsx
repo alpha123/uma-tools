@@ -13,11 +13,8 @@ import './HorseDef.css';
 
 import umas from '../umas.json';
 import icons from '../icons.json';
-import skills from '../uma-skill-tools/data/skill_data.json';
-
-function skilldata(id: string) {
-	return skills[id.split('-')[0]];
-}
+import skilldata from '../uma-skill-tools/data/skill_data.json';
+import skillmeta from '../skill_meta.json';
 
 const umaAltIds = Object.keys(umas).flatMap(id => Object.keys(umas[id].outfits));
 const umaNamesForSearch = {};
@@ -207,18 +204,27 @@ export function StrategySelect(props) {
 	);
 }
 
-const nonUniqueSkills = Object.keys(skills).filter(id => skilldata(id).rarity < 3 || skilldata(id).rarity > 5);
-export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skills).filter(id => id[0] == '4'));
+const nonUniqueSkills = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || skilldata[id].rarity > 5);
+export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skilldata).filter(id => id[0] == '4'));
 
-function assertIsSkill(sid: string): asserts sid is keyof typeof skills {
-	console.assert(skilldata(sid) != null);
+function isGeneralSkill(id: string) {
+	return skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) > -1;
 }
 
-function uniqueSkillForUma(oid: typeof umaAltIds[number]): keyof typeof skills {
+function assertIsSkill(sid: string): asserts sid is keyof typeof skilldata {
+	console.assert(skilldata[sid] != null);
+}
+
+function uniqueSkillForUma(oid: typeof umaAltIds[number]): keyof typeof skilldata {
 	const i = +oid.slice(1, -2), v = +oid.slice(-2);
 	const sid = (100000 + 10000 * (v - 1) + i * 10 + 1).toString();
 	assertIsSkill(sid);
 	return sid;
+}
+
+function skillOrder(a, b) {
+	const x = skillmeta[a].order, y = skillmeta[b].order;
+	return +(y < x) - +(x < y) || +(b < a) - +(a < b);
 }
 
 let totalTabs = 0;
@@ -251,21 +257,22 @@ export function HorseDef(props) {
 	}
 
 	const umaId = state.outfitId;
-	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata(id).rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
+	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata[id].rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
 
 	function setter(prop: keyof HorseState) {
 		return (x) => setState(state.set(prop, x));
 	}
-	function setSkills(ids) {
+	function setSkills(skills) {
 		let st = state;
-		if (ids.has('202051') && oldStrategyState.oonigeIsNew) {
+		// groupId for 大逃げ skill
+		if (skills.has('20205') && oldStrategyState.oonigeIsNew) {
 			st = st.set('strategy', 'Oonige');
 			updateOldStrategyState(false);
-		} else if (!ids.has('202051')) {
+		} else if (!skills.has('20205')) {
 			st = st.set('strategy', oldStrategyState.old);
 			updateOldStrategyState(true);
 		}
-		setState(st.set('skills', ids));
+		setState(st.set('skills', skills));
 	}
 	function setStrategy(strat) {
 		updateOldStrategyState(strat);
@@ -273,8 +280,11 @@ export function HorseDef(props) {
 	}
 
 	function setUma(id) {
-		let newSkills = state.skills.filter(id => skilldata(id).rarity < 3);
-		if (id) newSkills = newSkills.add(uniqueSkillForUma(id));
+		let newSkills = state.skills.filter(isGeneralSkill);
+		if (id) {
+			const uid = uniqueSkillForUma(id);
+			newSkills = newSkills.set(skillmeta[uid].groupId, uid);
+		}
 		setState(
 			state.set('outfitId', id)
 				.set('skills', newSkills)
@@ -286,8 +296,8 @@ export function HorseDef(props) {
 		setSkillPickerOpen(true);
 	}
 
-	function setSkillsAndClose(ids) {
-		setSkills(SkillSet(ids));
+	function setSkillsAndClose(skills) {
+		setSkills(skills);
 		setSkillPickerOpen(false);
 	}
 
@@ -296,7 +306,8 @@ export function HorseDef(props) {
 		const se = e.target.closest('.skill, .expandedSkill');
 		if (se == null) return;
 		if (e.target.classList.contains('skillDismiss')) {
-			setSkills(state.skills.delete(se.dataset.skillid))
+			// can't just remove skillmeta[skillid].groupId because debuffs will have a fake groupId
+			setSkills(state.skills.delete(state.skills.findKey(id => id == se.dataset.skillid)));
 		} else if (se.classList.contains('expandedSkill')) {
 			setExpanded(expanded.delete(se.dataset.skillid));
 		} else {
@@ -314,7 +325,7 @@ export function HorseDef(props) {
 
 	const skillList = useMemo(function () {
 		const u = uniqueSkillForUma(umaId);
-		return Array.from(state.skills).map(id =>
+		return Array.from(state.skills.values()).sort(skillOrder).map(id =>
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
 					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u} />
@@ -372,7 +383,7 @@ export function HorseDef(props) {
 			</div>
 			<div class={`horseSkillPickerOverlay ${skillPickerOpen ? "open" : ""}`} onClick={setSkillPickerOpen.bind(null, false)} />
 			<div class={`horseSkillPickerWrapper ${skillPickerOpen ? "open" : ""}`}>
-				<SkillList ids={selectableSkills} selected={new Set(state.skills)} setSelected={setSkillsAndClose} isOpen={skillPickerOpen} />
+				<SkillList ids={selectableSkills} selected={state.skills} setSelected={setSkillsAndClose} isOpen={skillPickerOpen} />
 			</div>
 		</div>
 	);

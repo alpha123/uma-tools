@@ -5,6 +5,8 @@ import { RaceSolverBuilder, Perspective } from '../uma-skill-tools/RaceSolverBui
 
 import { HorseState } from '../components/HorseDefTypes';
 
+import skillmeta from '../skill_meta.json';
+
 export function runComparison(nsamples: number, course: CourseData, racedef: RaceParameters, uma1: HorseState, uma2: HorseState, options) {
 	const standard = new RaceSolverBuilder(nsamples)
 		.seed(options.seed)
@@ -20,20 +22,23 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			.numUmas(racedef.numUmas);
 	}
 	const compare = standard.fork();
-	standard.horse(uma1.toJS());
-	compare.horse(uma2.toJS());
+	const uma1_ = uma1.update('skills', sk => Array.from(sk.values())).toJS();
+	const uma2_ = uma2.update('skills', sk => Array.from(sk.values())).toJS();
+	standard.horse(uma1_);
+	compare.horse(uma2_);
 	// ensure skills common to the two umas are added in the same order regardless of what additional skills they have
 	// this is important to make sure the rng for their activations is synced
-	const common = uma1.skills.intersect(uma2.skills).toArray().sort((a,b) => +a - +b);
-	const commonIdx = (id) => { let i = common.indexOf(id); return i > -1 ? i : common.length; };
+	// sort first by groupId so that white and gold versions of a skill get added in the same order
+	const common = uma1.skills.keySeq().toSet().intersect(uma2.skills.keySeq().toSet()).toArray().sort((a,b) => +a - +b);
+	const commonIdx = (id) => { let i = common.indexOf(skillmeta[id].groupId); return i > -1 ? i : common.length; };
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
-	uma1.skills.toArray().sort(sort).forEach(id => {
-		standard.addSkill(id.split('-')[0], Perspective.Self);
-		compare.addSkill(id.split('-')[0], Perspective.Other);
+	uma1_.skills.sort(sort).forEach(id => {
+		standard.addSkill(id, Perspective.Self);
+		compare.addSkill(id, Perspective.Other);
 	});
-	uma2.skills.toArray().sort(sort).forEach(id => {
-		compare.addSkill(id.split('-')[0], Perspective.Self);
-		standard.addSkill(id.split('-')[0], Perspective.Other);
+	uma2_.skills.sort(sort).forEach(id => {
+		compare.addSkill(id, Perspective.Self);
+		standard.addSkill(id, Perspective.Other);
 	});
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
