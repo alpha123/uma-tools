@@ -53,6 +53,22 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2025-12-03</h2>
+					<ul>
+						<li>Enable the Runaway style for global</li>
+						<li>Fix skills with preconditions</li>
+						<li>Greatly improve how skills of the same group (white/gold, single circle/double circle) are tracked. This should generally make a lot of behavior more intuitive, for example now if you have the white version of a skill the skill table shows only the difference between the white and the gold version, rather than adding the gold on top of the white which was the old behavior.</li>
+						<li>
+							<details>
+								<summary>Discount costs in the skill table by skills already owned</summary>
+								For example, if you own Corner Adept ○, the cost of Professor of Curvature will display as 180 instead of 360. When you add skills the costs don't update until you rerun the chart, or else the skill cost would be out of date with the calculated length gain and incorrectly inflate the SP efficiency. (Hints update immediately because hints do not effect the length gain of skills.)
+							</details>
+						</li>
+						<li>Show an indicator for when the skill table is out of date with the current uma and a button to rerun the table</li>
+						<li>Other minor UI improvements</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2025-12-01</h2>
 					<ul>
 						<li>Update game data</li>
@@ -60,7 +76,7 @@ export function IntroText(props) {
 						<li>
 							<details>
 								<summary>Add skill point cost and mean length gain per sp columns to skill chart</summary>
-								<p>This includes the total cost of the skill, i.e. gold skills including the cost of their white skill, ◎ including ○, etc. Known limitation: costs are not currently reduced for the gold if you already select the white version on the uma being tested. This is because the white version is not removed in the simulation, which will be fixed in a future update.</p>
+								<p>This includes the total cost of the skill, i.e. gold skills including the cost of their white skill, ◎ including ○, etc. <s>Known limitation: costs are not currently reduced for the gold if you already select the white version on the uma being tested. This is because the white version is not removed in the simulation, which will be fixed in a future update.</s> Update: this has been fixed.</p>
 								<p>Cost calculation does not work for evolved skills in the JP version of the Umalator.</p>
 							</details>
 						</li>
