@@ -7,7 +7,7 @@ use DBD::SQLite::Constants qw(:file_open);
 use JSON::PP;
 
 if (!@ARGV) {
-	die 'Usage: make_skill_data.pl master.mdb';
+	die 'Usage: make_global_skill_meta.pl master.mdb';
 }
 
 my $mastermdb = shift @ARGV;
@@ -34,7 +34,7 @@ $select->bind_columns(\($id, $group_id, $icon_id, $sp_cost, $disp_order));
 
 my $skills = {};
 while ($select->fetch) {
-	$skills->{$id} = {groupId => $group_id, iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
+	$skills->{$id} = {groupId => "$group_id", iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
 }
 
 my $json = JSON::PP->new;

@@ -42,7 +42,7 @@ $select->bind_columns(\($id, $group_id, $icon_id, $sp_cost, $disp_order));
 
 my $skills = {};
 while ($select->fetch) {
-	$skills->{$id} = {groupId => $group_id, iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
+	$skills->{$id} = {groupId => "$group_id", iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
 }
 
 my $json = JSON::PP->new;
