@@ -573,29 +573,9 @@ function App(props) {
 		if (r.runData != null) setResults(r);
 	}
 
-	function rerunGroupFor(skillId, uma) {
-		// rerun skills of the same group when we add/remove one. this is because adding this skill might reduce the
-		// cost of other skills, which would artificially inflate their sp efficiency because it would be using the old
-		// basinn values before accounting for this skill as a presupposed skill.
-		let rerun = skillGroups.get(skillmeta[skillId].groupId);
-		rerun = rerun.slice(rerun.findIndex(id => id == skillId) + 1);
-		if (rerun.length > 0) {
-			const params = racedefToParams(racedef, uma.strategy);
-			worker1.postMessage({msg: 'chart', data: {skills: rerun, course, racedef: params, uma: uma.toJS(), options: {seed, usePosKeep}}});
-		}
-	}
-
 	function addSkillFromTable(skillId) {
 		postEvent('addSkillFromTable', {skillId});
-		const newUma1 = uma1.set('skills', uma1.skills.set(skillmeta[skillId].groupId, skillId));
-		setUma1(newUma1);
-		rerunGroupFor(skillId, newUma1);
-	}
-
-	function handleSkillRemove(skillId, uma) {
-		if (mode == Mode.Chart) {
-			rerunGroupFor(skillId, uma);
-		}
+		setUma1(uma1.set('skills', uma1.skills.set(skillmeta[skillId].groupId, skillId)));
 	}
 
 	function showPopover(skillId) {
@@ -801,7 +781,7 @@ function App(props) {
 				{expanded && <div id="umaPane" />}
 				<div id={expanded ? 'umaOverlay' : 'umaPane'}>
 					<div class={!expanded && currentIdx == 0 ? 'selected' : ''}>
-						<HorseDef key={uma1.outfitId} state={uma1} setState={setUma1} onSkillRemove={handleSkillRemove} courseDistance={course.distance} tabstart={() => 4}>
+						<HorseDef key={uma1.outfitId} state={uma1} setState={setUma1} courseDistance={course.distance} tabstart={() => 4}>
 							{expanded ? 'Umamusume 1' : umaTabs}
 						</HorseDef>
 					</div>
@@ -812,7 +792,7 @@ function App(props) {
 							<div id="swapUmas" title="Swap umas" onClick={swapUmas}>⮂</div>
 						</div>}
 					{mode == Mode.Compare && <div class={!expanded && currentIdx == 1 ? 'selected' : ''}>
-						<HorseDef key={uma2.outfitId} state={uma2} setState={setUma2} onSkillRemove={handleSkillRemove} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
+						<HorseDef key={uma2.outfitId} state={uma2} setState={setUma2} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
 							{expanded ? 'Umamusume 2' : umaTabs}
 						</HorseDef>
 					</div>}
