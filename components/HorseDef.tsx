@@ -272,7 +272,9 @@ export function HorseDef(props) {
 			st = st.set('strategy', oldStrategyState.old);
 			updateOldStrategyState(true);
 		}
-		setState(st.set('skills', skills));
+		const newState = st.set('skills', skills);
+		setState(newState);
+		return newState;
 	}
 	function setStrategy(strat) {
 		updateOldStrategyState(strat);
@@ -307,7 +309,8 @@ export function HorseDef(props) {
 		if (se == null) return;
 		if (e.target.classList.contains('skillDismiss')) {
 			// can't just remove skillmeta[skillid].groupId because debuffs will have a fake groupId
-			setSkills(state.skills.delete(state.skills.findKey(id => id == se.dataset.skillid)));
+			const newUma = setSkills(state.skills.delete(state.skills.findKey(id => id == se.dataset.skillid)));
+			props.onSkillRemove(se.dataset.skillid, newUma);
 		} else if (se.classList.contains('expandedSkill')) {
 			setExpanded(expanded.delete(se.dataset.skillid));
 		} else {
