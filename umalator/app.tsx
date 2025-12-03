@@ -288,8 +288,8 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		seed,
 		usePosKeep,
 		racedef: racedef.toJS(),
-		uma1: uma1.toJS(),
-		uma2: uma2.toJS()
+		uma1: uma1.set('skills', Array.from(uma1.skills.values())).toJS(),
+		uma2: uma2.set('skills', Array.from(uma1.skills.values())).toJS()
 	});
 	const enc = new TextEncoder();
 	const stringStream = new ReadableStream({
