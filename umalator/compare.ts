@@ -53,7 +53,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			const skillSet = persp == Perspective.Self ? selfSet : otherSet;
 			if (id != 'asitame' && id != 'staminasyoubu') {
 				if (!skillSet.has(id)) skillSet.set(id, []);
-				skillSet.get(id).push([s.pos, 0]);
+				skillSet.get(id).push([s.pos, -1]);
 			}
 		};
 	}
@@ -62,9 +62,12 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			const skillSet = persp == Perspective.Self ? selfSet : otherSet;
 			if (id != 'asitame' && id != 'staminasyoubu') {
 				const ar = skillSet.get(id);  // activation record
-				// assume the first activation of a skill ends before the second one starts
-				// don't think there's any way around this but it should always be true
-				ar[ar.length-1][1] = Math.min(s.pos, course.distance);
+				// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
+				// activation has finished (as each copy has the same ID), so we can't just access a specific index
+				// (-1).
+				// assume that multiple activations of a skill always deactivate in the same order (probably true?) so
+				// just seach for the first record that hasn't had its deactivation location filled out yet.
+				ar.find(x => x[1] == -1)[1] = Math.min(s.pos, course.distance);
 			}
 		};
 	}
