@@ -183,8 +183,10 @@ export function BasinnChart(props) {
 		},
 		sortDescFirst: true
 	}], [selectedType, props.hints, props.hasSkills]);  // including hints here is a bad hack to force the table to
-	// rerender when hints changes (since it's not part of the actual table data). ditto for skills (since the
-	// cost/efficiency columns will change when skills are added to/removed from the uma).
+	// rerender when hints changes (since it's not part of the actual table data). ditto with hasSkills, but note that
+	// we should be passed the last run uma and not the current uma state, or else the chart will be out of date and the
+	// sp costs will change but not basinn values until the chart is rerun. (see the commit message for
+	// 21180cd49e56c54078c2bc837ae5bfc65809bb75)
 	// TODO fixme. currently not part of the actual row data because we get that straight from the simulator output.
 
 	const [sorting, setSorting] = useState<SortingState>([{id: 'mean', desc: true}]);
@@ -220,12 +222,8 @@ export function BasinnChart(props) {
 		props.onDblClickRow(id);
 	}
 
-	const hidden = useMemo(() => new Set(
-		Array.from(props.hasSkills.keys()).flatMap(g => skillGroups.get(g).slice(0, skillGroups.get(g).findIndex(id => id == props.hasSkills.get(g)) + 1))
-	), [props.hasSkills]);
-
 	return (
-		<div class="basinnChartWrapper">
+		<div class={`basinnChartWrapper${props.dirty ? ' dirty' : ''}`}>
 			<table class="basinnChart">
 				<thead>
 					{table.getHeaderGroups().map(headerGroup => (
@@ -257,7 +255,7 @@ export function BasinnChart(props) {
 					{table.getRowModel().rows.map(row => {
 						const id = row.getValue('id');
 						return (
-							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'} style={hidden.has(id) && 'display:none'}>
+							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'}>
 								{row.getAllCells().map(cell => (
 									<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
 								))}

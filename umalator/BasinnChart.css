@@ -8,6 +8,10 @@
 	width: 100%;
 }
 
+.basinnChartWrapper.dirty {
+	border: 2px solid rgb(222, 161, 87);
+}
+
 .basinnChart {
 	border-collapse: collapse;
 	color: #794016;

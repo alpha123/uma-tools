@@ -460,6 +460,8 @@ function App(props) {
 	const [uma1, setUma1] = useState(() => new HorseState());
 	const [uma2, setUma2] = useState(() => new HorseState());
 
+	const [lastRunChartUma, setLastRunChartUma] = useState(uma1);
+
 	const [{mode, currentIdx, expanded}, updateUiState] = useReducer(nextUiState, DEFAULT_UI_STATE);
 	function toggleExpand(e: Event) {
 		e.stopPropagation();
@@ -547,6 +549,7 @@ function App(props) {
 
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
+		setLastRunChartUma(uma1);
 		const params = racedefToParams(racedef, uma1.strategy);
 		const skills = getActivateableSkills(baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
@@ -696,15 +699,20 @@ function App(props) {
 			</div>
 		);
 	} else if (mode == Mode.Chart && tableData.size > 0) {
+		const dirty = !uma1.equals(lastRunChartUma);
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
-					<BasinnChart data={tableData.values().toArray()} hasSkills={uma1.skills} hints={hintLevels}
-						updateHint={updateHintLevel}
-						onSelectionChange={basinnChartSelection}
-						onRunTypeChange={setChartData}
-						onDblClickRow={addSkillFromTable}
-						onInfoClick={showPopover} />
+					<div class="basinnChartWrapperWrapper">
+						<BasinnChart data={tableData.values().toArray()} hasSkills={lastRunChartUma.skills} hints={hintLevels}
+							dirty={dirty}
+							updateHint={updateHintLevel}
+							onSelectionChange={basinnChartSelection}
+							onRunTypeChange={setChartData}
+							onDblClickRow={addSkillFromTable}
+							onInfoClick={showPopover} />
+						<button class={`basinnChartRefresh${dirty ? '' : ' hidden'}`} onClick={doBasinnChart}>⟲</button>
+					</div>
 				</div>
 			</div>
 		);
