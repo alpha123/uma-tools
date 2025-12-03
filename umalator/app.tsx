@@ -740,7 +740,7 @@ function App(props) {
 							</div>
 							<div>
 								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => updateUiState(UiStateMsg.SetModeChart)} />
-								<label for="mode-chart">Skill chart</label>
+								<label for="mode-chart">Skill table</label>
 							</div>
 						</fieldset>
 						<label for="nsamples">Samples:</label>
