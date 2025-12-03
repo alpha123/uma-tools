@@ -220,6 +220,10 @@ export function BasinnChart(props) {
 		props.onDblClickRow(id);
 	}
 
+	const hidden = useMemo(() => new Set(
+		Array.from(props.hasSkills.keys()).flatMap(g => skillGroups.get(g).slice(0, skillGroups.get(g).findIndex(id => id == props.hasSkills.get(g)) + 1))
+	), [props.hasSkills]);
+
 	return (
 		<div class="basinnChartWrapper">
 			<table class="basinnChart">
@@ -253,7 +257,7 @@ export function BasinnChart(props) {
 					{table.getRowModel().rows.map(row => {
 						const id = row.getValue('id');
 						return (
-							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'} style={props.hasSkills.includes(id) && 'display:none'}>
+							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'} style={hidden.has(id) && 'display:none'}>
 								{row.getAllCells().map(cell => (
 									<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
 								))}
