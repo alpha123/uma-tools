@@ -67,7 +67,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 				// (-1).
 				// assume that multiple activations of a skill always deactivate in the same order (probably true?) so
 				// just seach for the first record that hasn't had its deactivation location filled out yet.
-				ar.find(x => x[1] == -1)[1] = Math.min(s.pos, course.distance);
+				const r = ar.find(x => x[1] == -1);
+				// onSkillDeactivate gets called twice for skills that have both speed and accel components, so the end
+				// position could already have been filled out and r will be undefined
+				if (r != null) r[1] = Math.min(s.pos, course.distance);
 			}
 		};
 	}
