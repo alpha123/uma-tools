@@ -50,7 +50,7 @@ export function IntroText(props) {
 				</ul>
 				By and large it should be highly accurate. It has been battle-tested on the JP server for several years.
 			</details>
-			<details>
+			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
 					<h2>2025-12-01</h2>
