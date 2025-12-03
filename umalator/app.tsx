@@ -50,8 +50,8 @@ const presets = (CC_GLOBAL ? [
 	{type: EventType.CM, name: 'Gemini Cup', date: '2025-09', courseId: 10811, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Taurus Cup', date: '2025-08', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday}
 ] : [
-	{type: EventType.LOH, date: '2025-02', courseId: 10602, season: Season.Winter, time: Time.Midday},
-	{type: EventType.CM, date: '2025-01', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.LOH, date: '2026-02', courseId: 10602, season: Season.Winter, time: Time.Midday},
+	{type: EventType.CM, date: '2026-01', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, date: '2025-12-21', courseId: 10903, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.LOH, date: '2025-11', courseId: 11502, season: Season.Autumn, time: Time.Midday},
 	{type: EventType.CM, date: '2025-10', courseId: 10302, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Cloudy, time: Time.Midday},
