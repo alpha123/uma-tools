@@ -699,7 +699,7 @@ function App(props) {
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
-					<BasinnChart data={tableData.values().toArray()} hidden={uma1.skills} hints={hintLevels}
+					<BasinnChart data={tableData.values().toArray()} hasSkills={uma1.skills} hints={hintLevels}
 						updateHint={updateHintLevel}
 						onSelectionChange={basinnChartSelection}
 						onRunTypeChange={setChartData}

@@ -81,16 +81,19 @@ function scaleBaseCost(baseCost: number, hint: number) {
 	return Math.floor(baseCost * (1 - (hint <= 3 ? 0.1 * hint : 0.3 + 0.05 * (hint - 3))));
 }
 
-function costForId(id, hints) {
-	const groupId = skillmeta[id].groupId;
-	return Object.keys(skilldata).reduce((a,b) => {
-		const info = skillmeta[b];
-		const rb = skilldata[b].rarity, rid = skilldata[id].rarity;
-		return a + (info.groupId == groupId &&
-			// sum cost for skills with ○ and ◎ variants of the same rarity
-			(b == id || rb < rid || rb == rid && +b > +id) && info.iconId[info.iconId.length-1] != '4'  // avoid counting purple skills toward their normal versions
-			? scaleBaseCost(info.baseCost, hints.get(b)) : 0)
-	}, 0);
+function costForId(id, hints, owned) {
+	const group = skillGroups.get(skillmeta[id].groupId);
+	const existing = owned.get(skillmeta[id].groupId);
+	let cost = 0;
+	for (let i = 0; i < group.length; ++i) {
+		if (group[i] != existing) {
+			cost += scaleBaseCost(skillmeta[group[i]].baseCost, hints.get(group[i]));
+		}
+		if (group[i] == id) {
+			break;
+		}
+	}
+	return cost;
 }
 
 function SkillCostCell(props) {
@@ -101,7 +104,7 @@ function SkillCostCell(props) {
 				<div class="hintbtnDummyBackground"></div>
 				<span class="hintbtnText">−</span>
 			</button>
-			<span class="hintedCost">{costForId(props.id, props.hints)}</span>
+			<span class="hintedCost">{costForId(props.id, props.hints, props.ownedSkills)}</span>
 			<button class={`hintbtn hintUp${props.hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={props.hint == 5}
 				onClick={() => props.updateHint(props.id, props.hint + 1)}>
 				<div class="hintbtnDummyBackground"></div>
@@ -163,22 +166,26 @@ export function BasinnChart(props) {
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>SP Cost</span>,
 		id: 'spcost',
 		accessorFn: (row) => ({id: row.id, hint: props.hints.get(row.id)}),
-		cell: (info) => <SkillCostCell {...info.getValue()} hints={props.hints} updateHint={props.updateHint} />,
+		cell: (info) => <SkillCostCell {...info.getValue()} hints={props.hints} ownedSkills={props.hasSkills} updateHint={props.updateHint} />,
 		sortFn: (a,b) => {
-			const ac = costForId(a.getValue('id'), props.hints), bc = costForId(b.getValue('id'), props.hints);
+			const ac = costForId(a.getValue('id'), props.hints, props.hasSkills),
+				  bc = costForId(b.getValue('id'), props.hints, props.hasSkills);
 			return +(bc < ac) - +(ac < bc);
 		},
 		sortDescFirst: false
 	}, {
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>{CC_GLOBAL ? 'L / SP' : 'バ / SP'}</span>,
 		id: 'bsp',
-		accessorFn: (row) => row.mean / costForId(row.id, props.hints),
+		accessorFn: (row) => row.mean / costForId(row.id, props.hints, props.hasSkills),
 		cell: (info) => {
 			const x = info.getValue();
 			return <span>{isNaN(x) || Math.abs(x) == Infinity ? '--' : x.toFixed(6)}</span>;
 		},
 		sortDescFirst: true
-	}], [selectedType, props.hints]);  // including hints here is a bad hack to force the table to rerender when hints changes (since it's not part of the actual table data), TODO fixme. currently not part of the actual row data because we get that straight from the simulator output.
+	}], [selectedType, props.hints, props.hasSkills]);  // including hints here is a bad hack to force the table to
+	// rerender when hints changes (since it's not part of the actual table data). ditto for skills (since the
+	// cost/efficiency columns will change when skills are added to/removed from the uma).
+	// TODO fixme. currently not part of the actual row data because we get that straight from the simulator output.
 
 	const [sorting, setSorting] = useState<SortingState>([{id: 'mean', desc: true}]);
 
@@ -246,7 +253,7 @@ export function BasinnChart(props) {
 					{table.getRowModel().rows.map(row => {
 						const id = row.getValue('id');
 						return (
-							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'} style={props.hidden.has(id) && 'display:none'}>
+							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'} style={props.hasSkills.includes(id) && 'display:none'}>
 								{row.getAllCells().map(cell => (
 									<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
 								))}
