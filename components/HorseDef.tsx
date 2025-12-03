@@ -205,9 +205,9 @@ export function StrategySelect(props) {
 }
 
 const nonUniqueSkills = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || skilldata[id].rarity > 5);
-export const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skilldata).filter(id => id[0] == '4'));
+const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skilldata).filter(id => id[0] == '4'));
 
-function isGeneralSkill(id: string) {
+export function isGeneralSkill(id: string) {
 	return skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) > -1;
 }
 

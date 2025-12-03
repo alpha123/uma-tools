@@ -13,10 +13,10 @@ import { Language, LanguageSelect, useLanguageSelect } from '../components/Langu
 import { ExpandedSkillDetails, STRINGS_en as SKILL_STRINGS_en } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet } from '../components/HorseDefTypes';
-import { HorseDef, horseDefTabs, universallyAccessiblePinks } from '../components/HorseDef';
+import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
 import { TRACKNAMES_ja, TRACKNAMES_en } from '../strings/common';
 
-import { getActivateableSkills, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
+import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
 
 import { initTelemetry, postEvent } from './telemetry';
 
@@ -399,7 +399,7 @@ function RacePresets(props) {
 	);
 }
 
-const baseSkillsToTest = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) != -1);
+const baseSkillsToTest = Object.keys(skilldata).filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
 
 const enum Mode { Compare, Chart }
 const enum UiStateMsg { SetModeCompare, SetModeChart, SetCurrentIdx0, SetCurrentIdx1, ToggleExpand }
@@ -548,10 +548,15 @@ function App(props) {
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = getActivateableSkills(baseSkillsToTest.filter(s => !uma1.skills.includes(s)
-			&& (s[0] != '9' || universallyAccessiblePinks.indexOf(s) != -1 /* rhein kraft pink, other universal pinks are 4xxxxx, TODO logic here is a little dicey */
-				// TODO might not need that check; also TODO adjust check below to filter out rhein kraft pink inherit for rhein kraft
-				|| !uma1.skills.includes('1' + s.slice(1)))), uma1, course, params);
+		const skills = getActivateableSkills(baseSkillsToTest.filter(id => {
+			const existing = uma1.skills.get(skillmeta[id].groupId);
+			const group = skillGroups.get(skillmeta[id].groupId);
+			return !(
+				existing == id || group.indexOf(id) < group.indexOf(existing)
+				|| id[0] == '9' && uma1.skills.includes('1' + id.slice(1))  // reject inherited uniques if we already have the regular version
+				|| id == '92111091' && uma1.skills.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
+			);
+		}), uma1, course, params);
 		const filler = new Map();
 		skills.forEach(id => filler.set(id, getNullRow(id)));
 		const uma = uma1.toJS();
