@@ -25,6 +25,11 @@
 	text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
 }
 
+.racetrackStatThresholds {
+	font-size: 0.8em;
+	text-align: center;
+}
+
 .mouseoverText {
 	font-size: 12px;
 	font-weight: 600;

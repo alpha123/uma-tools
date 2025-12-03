@@ -1,6 +1,6 @@
 import { h, Fragment } from 'preact';
 import { useState, useContext, useMemo, useCallback } from 'preact/hooks';
-import { IntlProvider, Text } from 'preact-i18n';
+import { IntlProvider, Text, useText } from 'preact-i18n';
 
 import { CourseData, CourseHelpers, Surface, Orientation } from '../uma-skill-tools/CourseData';
 import { Region, RegionList } from '../uma-skill-tools/Region';
@@ -17,6 +17,7 @@ export const enum RegionDisplayType { Immediate, Regions, Textbox };
 
 const STRINGS_ja = Object.freeze({
 	'racetrack': Object.freeze({
+		'thresholds': '補正ステータス：',
 		'none': '​',
 		'inner': ' （内）',
 		'outer': ' （外）',
@@ -45,6 +46,7 @@ const STRINGS_ja = Object.freeze({
 
 const STRINGS_en = Object.freeze({
 	'racetrack': Object.freeze({
+		'thresholds': 'Stat thresholds: ',
 		'none': '​',
 		'inner': ' (inner)',
 		'outer': ' (outer)',
@@ -369,6 +371,10 @@ export function RaceTrack(props) {
 		}, {seen: new Set(), rungs: Array(10).fill(0).map(_ => []), elem: []}).elem;
 	}, [props.regions, course.distance]);
 
+	const statStrings = useText({1: 'ui.stats.1', 2: 'ui.stats.2', 3: 'ui.stats.3', 4: 'ui.stats.4', 5: 'ui.stats.5'});
+	const {joiner} = useText('ui.joiner');
+	const statThresholds = course.courseSetStatus.map(s => statStrings[s]).join(joiner);
+
 	return (
 		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
 			<div class="racetrackWrapper" style={`width:${props.width + xOffset + xExtra}px`}>
@@ -382,6 +388,7 @@ export function RaceTrack(props) {
 					</svg>
 					{props.children}
 				</svg>
+				{course.courseSetStatus.length > 0 && <div class="racetrackStatThresholds"><Text id="racetrack.thresholds" />{statThresholds}</div>}
 			</div>
 		</IntlProvider>
 	);

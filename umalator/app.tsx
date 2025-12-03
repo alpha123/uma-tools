@@ -79,6 +79,21 @@ const presets = (CC_GLOBAL ? [
 const DEFAULT_PRESET = presets[Math.max(presets.findIndex((now => p => new Date(p.date.getFullYear(), p.date.getUTCMonth() + 1, 0) < now)(new Date())) - 1, 0)];
 const DEFAULT_COURSE_ID = DEFAULT_PRESET.courseId;
 
+const UI_ja = Object.freeze({
+	'stats': Object.freeze(['なし', 'スピード', 'スタミナ', 'パワー', '根性', '賢さ']),
+	'joiner': '、',
+});
+
+const UI_en = Object.freeze({
+	'stats': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wisdom']),
+	'joiner': ', ',
+});
+
+const UI_global = Object.freeze({
+	'stats': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wit']),
+	'joiner': ', ',
+});
+
 function id(x) { return x; }
 
 function binSearch(a: number[], x: number) {
@@ -528,7 +543,7 @@ function App(props) {
 		setUma2(uma1);
 	}
 
-	const strings = {skillnames: {}, tracknames: TRACKNAMES_en};
+	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, ui: CC_GLOBAL ? UI_global : UI_en};
 	const langid = +(props.lang == 'en');
 	Object.keys(skillnames).forEach(id => strings.skillnames[id] = skillnames[id][langid]);
 

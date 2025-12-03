@@ -65,6 +65,7 @@ export function IntroText(props) {
 							</details>
 						</li>
 						<li>Show an indicator for when the skill table is out of date with the current uma and a button to rerun the table</li>
+						<li>Show stat thresholds when the course has them</li>
 						<li>Other minor UI improvements</li>
 					</ul>
 				</section>
