@@ -184,7 +184,7 @@ export function AptitudeSelect(props){
 export function StrategySelect(props) {
 	if (CC_GLOBAL) {
 		return (
-			<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)}>
+			<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)} style="text-align:left">
 				<option value="Nige">Front Runner</option>
 				<option value="Senkou">Pace Chaser</option>
 				<option value="Sasi">Late Surger</option>
