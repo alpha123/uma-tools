@@ -48,19 +48,17 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		standard.useDefaultPacer(); compare.useDefaultPacer();
 	}
 	const skillPos1 = new Map(), skillPos2 = new Map();
-	function getActivator(selfSet, otherSet) {
+	function getActivator(skillSet) {
 		return function (s, id, persp) {
-			const skillSet = persp == Perspective.Self ? selfSet : otherSet;
-			if (id != 'asitame' && id != 'staminasyoubu') {
+			if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
 				if (!skillSet.has(id)) skillSet.set(id, []);
 				skillSet.get(id).push([s.pos, -1]);
 			}
 		};
 	}
-	function getDeactivator(selfSet, otherSet) {
+	function getDeactivator(skillSet) {
 		return function (s, id, persp) {
-			const skillSet = persp == Perspective.Self ? selfSet : otherSet;
-			if (id != 'asitame' && id != 'staminasyoubu') {
+			if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
 				const ar = skillSet.get(id);  // activation record
 				// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
 				// activation has finished (as each copy has the same ID), so we can't just access a specific index
@@ -74,10 +72,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			}
 		};
 	}
-	standard.onSkillActivate(getActivator(skillPos1, skillPos2));
-	standard.onSkillDeactivate(getDeactivator(skillPos1, skillPos2));
-	compare.onSkillActivate(getActivator(skillPos2, skillPos1));
-	compare.onSkillDeactivate(getDeactivator(skillPos2, skillPos1));
+	standard.onSkillActivate(getActivator(skillPos1));
+	standard.onSkillDeactivate(getDeactivator(skillPos1));
+	compare.onSkillActivate(getActivator(skillPos2));
+	compare.onSkillDeactivate(getDeactivator(skillPos2));
 	let a = standard.build(), b = compare.build();
 	let ai = 1, bi = 0;
 	let sign = 1;

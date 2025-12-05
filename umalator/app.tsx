@@ -271,6 +271,28 @@ function VelocityLines(props) {
 	);
 }
 
+function ResultsTable(props) {
+	const {caption, color, chartData, idx} = props;
+	return (
+		<table>
+			<caption style={`color:${color}`}>{caption}</caption>
+			<tbody>
+				<tr><th>Time to finish</th><td>{chartData.t[idx][chartData.t[idx].length-1].toFixed(4) + ' s'}</td></tr>
+				<tr><th>Start delay</th><td>{chartData.sdly[idx].toFixed(4) + ' s'}</td></tr>
+				<tr><th>Top speed</th><td>{chartData.v[idx].reduce((a,b) => Math.max(a,b), 0).toFixed(2) + ' m/s'}</td></tr>
+			</tbody>
+			{chartData.sk[idx].size > 0 &&
+				<tbody>
+					{Array.from(chartData.sk[idx].entries()).map(([id,ars]) => ars.flatMap(pos =>
+						<tr>
+							<th>{skillnames[id][0]}</th>
+							<td>{pos[1] == -1 ? `${pos[0].toFixed(2)} m` : `${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
+						</tr>))}
+				</tbody>}
+		</table>
+	);
+}
+
 const NO_SHOW = Object.freeze([
 	'10011', '10012', '10016', '10021', '10022', '10026', '10031', '10032', '10036',
 	'10041', '10042', '10046', '10051', '10052', '10056', '10061', '10062', '10066',
@@ -678,38 +700,8 @@ function App(props) {
 					<Histogram width={500} height={333} data={results} />
 				</div>
 				<div id="infoTables">
-					<table>
-						<caption style="color:#2a77c5">Umamusume 1</caption>
-						<tbody>
-							<tr><th>Time to finish</th><td>{chartData.t[0][chartData.t[0].length-1].toFixed(4) + ' s'}</td></tr>
-							<tr><th>Start delay</th><td>{chartData.sdly[0].toFixed(4) + ' s'}</td></tr>
-							<tr><th>Top speed</th><td>{chartData.v[0].reduce((a,b) => Math.max(a,b), 0).toFixed(2) + ' m/s'}</td></tr>
-						</tbody>
-						{chartData.sk[0].size > 0 &&
-							<tbody>
-								{Array.from(chartData.sk[0].entries()).map(([id,ars]) => ars.flatMap(pos =>
-									<tr>
-										<th>{skillnames[id][0]}</th>
-										<td>{`${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
-									</tr>))}
-							</tbody>}
-					</table>
-					<table>
-						<caption style="color:#c52a2a">Umamusume 2</caption>
-						<tbody>
-							<tr><th>Time to finish</th><td>{chartData.t[1][chartData.t[1].length-1].toFixed(4) + ' s'}</td></tr>
-							<tr><th>Start delay</th><td>{chartData.sdly[1].toFixed(4) + ' s'}</td></tr>
-							<tr><th>Top speed</th><td>{chartData.v[1].reduce((a,b) => Math.max(a,b), 0).toFixed(2) + ' m/s'}</td></tr>
-						</tbody>
-						{chartData.sk[1].size > 0 &&
-							<tbody>
-								{Array.from(chartData.sk[1].entries()).map(([id,ars]) => ars.flatMap(pos =>
-									<tr>
-										<th>{skillnames[id][0]}</th>
-										<td>{`${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
-									</tr>))}
-							</tbody>}
-					</table>
+					<ResultsTable caption="Umamusume 1" color="#2a77c5" chartData={chartData} idx={0} />
+					<ResultsTable caption="Umamusume 2" color="#c52a2a" chartData={chartData} idx={1} />
 				</div>
 			</div>
 		);
