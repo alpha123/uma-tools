@@ -50,7 +50,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const skillPos1 = new Map(), skillPos2 = new Map();
 	function getActivator(skillSet) {
 		return function (s, id, persp) {
-			if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+			if (id == 'downhill') {
+				if (!skillSet.has('downhill')) skillSet.set('downhill', 0);
+				skillSet.set('downhill', skillSet.get('downhill') - s.accumulatetime.t);
+			} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
 				if (!skillSet.has(id)) skillSet.set(id, []);
 				skillSet.get(id).push([s.pos, -1]);
 			}
@@ -58,7 +61,9 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	}
 	function getDeactivator(skillSet) {
 		return function (s, id, persp) {
-			if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+			if (id == 'downhill') {
+				skillSet.set('downhill', skillSet.get('downhill') + s.accumulatetime.t);
+			} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
 				const ar = skillSet.get(id);  // activation record
 				// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
 				// activation has finished (as each copy has the same ID), so we can't just access a specific index
@@ -87,7 +92,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	for (let i = 0; i < nsamples; ++i) {
 		const s1 = a.next(retry).value as RaceSolver;
 		const s2 = b.next(retry).value as RaceSolver;
-		const data = {t: [[], []], p: [[], []], v: [[], []], hp: [[], []], sk: [null,null], sdly: [0,0]};
+		const data = {t: [[], []], p: [[], []], v: [[], []], hp: [[], []], sk: [null,null], sdly: [0,0], dh: [0,0]};
 
 		while (s2.pos < course.distance) {
 			s2.step(1/15);
@@ -119,6 +124,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		s2.cleanup();
 		s1.cleanup();
 
+		data.dh[1] = skillPos2.get('downhill') || 0; skillPos2.delete('downhill');
+		data.dh[0] = skillPos1.get('downhill') || 0; skillPos1.delete('downhill');
 		data.sk[1] = new Map(skillPos2);  // NOT ai (NB. why not?)
 		skillPos2.clear();
 		data.sk[0] = new Map(skillPos1);  // NOT bi (NB. why not?)

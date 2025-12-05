@@ -265,6 +265,7 @@ function ResultsTable(props) {
 				<tr><th>Time to finish</th><td>{chartData.t[idx][chartData.t[idx].length-1].toFixed(4) + ' s'}</td></tr>
 				<tr><th>Start delay</th><td>{chartData.sdly[idx].toFixed(4) + ' s'}</td></tr>
 				<tr><th>Top speed</th><td>{chartData.v[idx].reduce((a,b) => Math.max(a,b), 0).toFixed(2) + ' m/s'}</td></tr>
+				<tr><th>Time in downhill speedup mode</th><td>{chartData.dh[idx].toFixed(2) + ' s'}</td></tr>
 			</tbody>
 			{chartData.sk[idx].size > 0 &&
 				<tbody>
