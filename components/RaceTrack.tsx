@@ -371,8 +371,8 @@ export function RaceTrack(props) {
 		}, {seen: new Set(), rungs: Array(10).fill(0).map(_ => []), elem: []}).elem;
 	}, [props.regions, course.distance]);
 
-	const statStrings = useText({1: 'ui.stats.1', 2: 'ui.stats.2', 3: 'ui.stats.3', 4: 'ui.stats.4', 5: 'ui.stats.5'});
-	const {joiner} = useText('ui.joiner');
+	const statStrings = useText({1: 'common.stat.1', 2: 'common.stat.2', 3: 'common.stat.3', 4: 'common.stat.4', 5: 'common.stat.5'});
+	const {joiner} = useText('common.joiner');
 	const statThresholds = course.courseSetStatus.map(s => statStrings[s]).join(joiner);
 
 	return (

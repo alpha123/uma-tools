@@ -14,7 +14,7 @@ import { ExpandedSkillDetails, STRINGS_en as SKILL_STRINGS_en } from '../compone
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
-import { TRACKNAMES_ja, TRACKNAMES_en } from '../strings/common';
+import { TRACKNAMES_ja, TRACKNAMES_en, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
 
 import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
 
@@ -78,21 +78,6 @@ const presets = (CC_GLOBAL ? [
 
 const DEFAULT_PRESET = presets[Math.max(presets.findIndex((now => p => new Date(p.date.getFullYear(), p.date.getUTCMonth() + 1, 0) < now)(new Date())) - 1, 0)];
 const DEFAULT_COURSE_ID = DEFAULT_PRESET.courseId;
-
-const UI_ja = Object.freeze({
-	'stats': Object.freeze(['なし', 'スピード', 'スタミナ', 'パワー', '根性', '賢さ']),
-	'joiner': '、',
-});
-
-const UI_en = Object.freeze({
-	'stats': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wisdom']),
-	'joiner': ', ',
-});
-
-const UI_global = Object.freeze({
-	'stats': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wit']),
-	'joiner': ', ',
-});
 
 function id(x) { return x; }
 
@@ -565,8 +550,8 @@ function App(props) {
 		setUma2(uma1);
 	}
 
-	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, ui: CC_GLOBAL ? UI_global : UI_en};
-	const langid = +(props.lang == 'en');
+	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: CC_GLOBAL ? COMMON_global : COMMON_en};
+	const langid = CC_GLOBAL ? 0 : +(props.lang == 'en');
 	Object.keys(skillnames).forEach(id => strings.skillnames[id] = skillnames[id][langid]);
 
 	function doComparison() {

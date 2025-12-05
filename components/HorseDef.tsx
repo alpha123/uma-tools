@@ -1,8 +1,9 @@
 import { h, Fragment } from 'preact';
 import { useState, useReducer, useMemo, useEffect, useRef } from 'preact/hooks';
-import { IntlProvider, Text, Localizer } from 'preact-i18n';
+import { IntlProvider, Text } from 'preact-i18n';
 import { Set as ImmSet } from 'immutable';
 
+import { useLanguage } from '../components/Language';
 import { SkillList, Skill, ExpandedSkillDetails } from '../components/SkillList';
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
@@ -15,6 +16,60 @@ import umas from '../umas.json';
 import icons from '../icons.json';
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillmeta from '../skill_meta.json';
+
+const STRINGS_ja = Object.freeze({
+	'strategy': Object.freeze({
+		'nige': '逃げ',
+		'senkou': '先行',
+		'sasi': '差し',
+		'oikomi': '追込',
+		'oonige': '大逃げ'
+	}),
+	'select': Object.freeze({
+		'strategy': 'TODO check game for 脚質 vs 作戦',
+		'surfaceaptitude': 'コース適正 or バ場適性',
+		'distanceaptitude': '距離適正',
+		'strategyaptitude': '脚質適正'
+	}),
+	'skillheader': 'スキル',
+	'addskill': '+ スキル追加'
+});
+
+const STRINGS_en = Object.freeze({
+	'strategy': Object.freeze({
+		'nige': 'Runner',
+		'senkou': 'Leader',
+		'sasi': 'Betweener',
+		'oikomi': 'Chaser',
+		'oonige': 'Oonige'
+	}),
+	'select': Object.freeze({
+		'strategy': 'Strategy:',
+		'surfaceaptitude': 'Surface aptitude:',
+		'distanceaptitude': 'Distance aptitude:',
+		'strategyaptitude': 'Strategy aptitude:'
+	}),
+	'skillheader': 'Skills',
+	'addskill': 'Add Skill'
+});
+
+const STRINGS_global = Object.freeze({
+	'strategy': Object.freeze({
+		'nige': 'Front Runner',
+		'senkou': 'Pace Chaser',
+		'sasi': 'Late Surger',
+		'oikomi': 'End Closer',
+		'oonige': 'Runaway'
+	}),
+	'select': Object.freeze({
+		'strategy': 'Style:',
+		'surfaceAptitude': 'Surface aptitude:',
+		'distanceAptitude': 'Distance aptitude:',
+		'strategyAptitude': 'Style aptitude:'
+	}),
+	'skillheader': 'Skills',
+	'addskill': 'Add Skill'
+});
 
 const umaAltIds = Object.keys(umas).flatMap(id => Object.keys(umas[id].outfits));
 const umaNamesForSearch = {};
@@ -182,24 +237,13 @@ export function AptitudeSelect(props){
 }
 
 export function StrategySelect(props) {
-	if (CC_GLOBAL) {
-		return (
-			<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)} style="text-align:left">
-				<option value="Nige">Front Runner</option>
-				<option value="Senkou">Pace Chaser</option>
-				<option value="Sasi">Late Surger</option>
-				<option value="Oikomi">End Closer</option>
-				<option value="Oonige">Runaway</option>
-			</select>
-		);
-	}
 	return (
-		<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)}>
-			<option value="Nige">逃げ</option>
-			<option value="Senkou">先行</option>
-			<option value="Sasi">差し</option>
-			<option value="Oikomi">追込</option>
-			<option value="Oonige">大逃げ</option>
+		<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)} style={CC_GLOBAL ? "text-align:left" : null}>
+			<option value="Nige"><Text id="strategy.nige" /></option>
+			<option value="Senkou"><Text id="strategy.senkou" /></option>
+			<option value="Sasi"><Text id="strategy.sasi" /></option>
+			<option value="Oikomi"><Text id="strategy.oikomi" /></option>
+			<option value="Oonige"><Text id="strategy.oonige" /></option>
 		</select>
 	);
 }
@@ -233,6 +277,7 @@ export function horseDefTabs() {
 }
 
 export function HorseDef(props) {
+	const lang = useLanguage();
 	const {state, setState} = props;
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
 	const [expanded, setExpanded] = useState(() => ImmSet());
@@ -337,54 +382,56 @@ export function HorseDef(props) {
 	}, [state.skills, umaId, expanded, props.courseDistance]);
 
 	return (
-		<div class="horseDef">
-			<div class="horseDefHeader">{props.children}</div>
-			<UmaSelector value={umaId} select={setUma} tabindex={tabnext()} />
-			<div class="horseParams">
-				<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span>Speed</span></div>
-				<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span>Stamina</span></div>
-				<div class="horseParamHeader"><img src="/uma-tools/icons/status_02.png" /><span>Power</span></div>
-				<div class="horseParamHeader"><img src="/uma-tools/icons/status_03.png" /><span>Guts</span></div>
-				<div class="horseParamHeader"><img src="/uma-tools/icons/status_04.png" /><span>{CC_GLOBAL?'Wit':'Wisdom'}</span></div>
-				<Stat value={state.speed} change={setter('speed')} tabindex={tabnext()} />
-				<Stat value={state.stamina} change={setter('stamina')} tabindex={tabnext()} />
-				<Stat value={state.power} change={setter('power')} tabindex={tabnext()} />
-				<Stat value={state.guts} change={setter('guts')} tabindex={tabnext()} />
-				<Stat value={state.wisdom} change={setter('wisdom')} tabindex={tabnext()} />
-			</div>
-			<div class="horseAptitudes">
-				<div>
-					<span>Surface aptitude:</span>
-					<AptitudeSelect a={state.surfaceAptitude} setA={setter('surfaceAptitude')} tabindex={tabnext()} />
+		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+			<div class="horseDef">
+				<div class="horseDefHeader">{props.children}</div>
+				<UmaSelector value={umaId} select={setUma} tabindex={tabnext()} />
+				<div class="horseParams">
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span><Text id="common.stat.2" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_02.png" /><span><Text id="common.stat.3" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_03.png" /><span><Text id="common.stat.4" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_04.png" /><span><Text id="common.stat.5" /></span></div>
+					<Stat value={state.speed} change={setter('speed')} tabindex={tabnext()} />
+					<Stat value={state.stamina} change={setter('stamina')} tabindex={tabnext()} />
+					<Stat value={state.power} change={setter('power')} tabindex={tabnext()} />
+					<Stat value={state.guts} change={setter('guts')} tabindex={tabnext()} />
+					<Stat value={state.wisdom} change={setter('wisdom')} tabindex={tabnext()} />
 				</div>
-				<div>
-					<span>Distance aptitude:</span>
-					<AptitudeSelect a={state.distanceAptitude} setA={setter('distanceAptitude')} tabindex={tabnext()} />
+				<div class="horseAptitudes">
+					<div>
+						<span><Text id="select.surfaceaptitude" /></span>
+						<AptitudeSelect a={state.surfaceAptitude} setA={setter('surfaceAptitude')} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="select.distanceaptitude" /></span>
+						<AptitudeSelect a={state.distanceAptitude} setA={setter('distanceAptitude')} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="select.strategy" /></span>
+						<StrategySelect s={state.strategy} setS={setStrategy} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="select.strategyaptitude" /></span>
+						<AptitudeSelect a={state.strategyAptitude} setA={setter('strategyAptitude')} tabindex={tabnext()} />
+					</div>
 				</div>
-				<div>
-					<span>{CC_GLOBAL ? 'Style:' : 'Strategy:'}</span>
-					<StrategySelect s={state.strategy} setS={setStrategy} tabindex={tabnext()} />
+				<div class="horseSkillHeader"><Text id="skillheader" /></div>
+				<div class="horseSkillListWrapper" onClick={handleSkillClick}>
+					<ul class="horseSkillList">
+						{skillList}
+						<li key="add">
+							<div class="skill addSkillButton" onClick={openSkillPicker} tabindex={tabnext()}>
+								<span>+</span><Text id="addskill" />
+							</div>
+						</li>
+					</ul>
 				</div>
-				<div>
-					<span>{CC_GLOBAL ? 'Style aptitude:' : 'Strategy aptitude:'}</span>
-					<AptitudeSelect a={state.strategyAptitude} setA={setter('strategyAptitude')} tabindex={tabnext()} />
+				<div class={`horseSkillPickerOverlay ${skillPickerOpen ? "open" : ""}`} onClick={setSkillPickerOpen.bind(null, false)} />
+				<div class={`horseSkillPickerWrapper ${skillPickerOpen ? "open" : ""}`}>
+					<SkillList ids={selectableSkills} selected={state.skills} setSelected={setSkillsAndClose} isOpen={skillPickerOpen} />
 				</div>
 			</div>
-			<div class="horseSkillHeader">Skills</div>
-			<div class="horseSkillListWrapper" onClick={handleSkillClick}>
-				<ul class="horseSkillList">
-					{skillList}
-					<li key="add">
-						<div class="skill addSkillButton" onClick={openSkillPicker} tabindex={tabnext()}>
-							<span>+</span>Add Skill
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div class={`horseSkillPickerOverlay ${skillPickerOpen ? "open" : ""}`} onClick={setSkillPickerOpen.bind(null, false)} />
-			<div class={`horseSkillPickerWrapper ${skillPickerOpen ? "open" : ""}`}>
-				<SkillList ids={selectableSkills} selected={state.skills} setSelected={setSkillsAndClose} isOpen={skillPickerOpen} />
-			</div>
-		</div>
+		</IntlProvider>
 	);
 }
