@@ -8,6 +8,7 @@ import { SkillRarity } from '../uma-skill-tools/RaceSolver.ts';
 
 import { useLanguage } from './Language';
 import { Tooltip } from './Tooltip';
+import { isDebuffSkill } from './HorseDefTypes';
 
 import './SkillList.css';
 
@@ -473,14 +474,6 @@ function textSearch(id: string, searchText: string, searchConditions: boolean) {
 	} else {
 		return 0;
 	}
-}
-
-function isDebuffSkill(id: string) {
-	// iconId 3xxxx is the debuff icons
-	// i think this basically matches the intuitive behavior of being able to add multiple debuff skills and not other skills;
-	// e.g. there are some skills with both a debuff component and a positive component and typically it doesnt make sense to
-	// add multiple of those
-	return skillmeta[id].iconId[0] == '3';
 }
 
 export function SkillList(props) {
