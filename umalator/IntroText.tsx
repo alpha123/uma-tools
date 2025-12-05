@@ -18,12 +18,6 @@ export function IntroText(props) {
 					</li>
 					<li>
 						<details>
-							<summary>Downhill speed-up mode is not implemented</summary>
-							Relevant for stamina calculation since downhills save you a pretty good amount of HP on average. Consider the reported HP consumption to be worst-case currently. Minimal if any effect on skill efficacy.
-						</details>
-					</li>
-					<li>
-						<details>
 							<summary>The <span style="color:rgb(255,119,61);font-weight:bold">Rushed</span> status effect is not implemented</summary>
 							Like hills this primarily only impacts HP consumption.
 						</details>
@@ -52,6 +46,14 @@ export function IntroText(props) {
 			</details>
 			<details open={true}>
 				<summary>Changelog</summary>
+				<section>
+					<h2>2025-12-05</h2>
+					<ul>
+						<li><strong>Implement downhill speed-up mode</strong></li>
+						<li>Fix an issue with saving and loading from URLs</li>
+						<li>Minor UI improvements and bug fixes</li>
+					</ul>
+				</section>
 				<section>
 					<h2>2025-12-03</h2>
 					<ul>
