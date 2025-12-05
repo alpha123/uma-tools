@@ -63,9 +63,9 @@ const STRINGS_global = Object.freeze({
 	}),
 	'select': Object.freeze({
 		'strategy': 'Style:',
-		'surfaceAptitude': 'Surface aptitude:',
-		'distanceAptitude': 'Distance aptitude:',
-		'strategyAptitude': 'Style aptitude:'
+		'surfaceaptitude': 'Surface aptitude:',
+		'distanceaptitude': 'Distance aptitude:',
+		'strategyaptitude': 'Style aptitude:'
 	}),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill'
@@ -382,7 +382,7 @@ export function HorseDef(props) {
 	}, [state.skills, umaId, expanded, props.courseDistance]);
 
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_global}>
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
 				<UmaSelector value={umaId} select={setUma} tabindex={tabnext()} />
