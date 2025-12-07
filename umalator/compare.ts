@@ -2,6 +2,7 @@ import { CourseData } from '../uma-skill-tools/CourseData';
 import { RaceParameters } from '../uma-skill-tools/RaceParameters';
 import { RaceSolver } from '../uma-skill-tools/RaceSolver';
 import { RaceSolverBuilder, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
+import { Rule30CARng } from '../uma-skill-tools/Random';
 
 import { HorseState } from '../components/HorseDefTypes';
 
@@ -26,6 +27,9 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const uma2_ = uma2.update('skills', sk => Array.from(sk.values())).toJS();
 	standard.horse(uma1_);
 	compare.horse(uma2_);
+	const wisdomRolls = new Map();
+	const wisdomRng = new Rule30CARng(options.seed);
+	for (let i = 0; i < 20; ++i) wisdomRng.pair();   // advance the RNG state a bit because we only seeded the low bits
 	// ensure skills common to the two umas are added in the same order regardless of what additional skills they have
 	// this is important to make sure the rng for their activations is synced
 	// sort first by groupId so that white and gold versions of a skill get added in the same order
@@ -33,10 +37,13 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const commonIdx = (id) => { let i = common.indexOf(skillmeta[id].groupId); return i > -1 ? i : common.length; };
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
 	uma1_.skills.sort(sort).forEach(id => {
+		wisdomRolls.set(id, wisdomRng.random());
 		standard.addSkill(id, Perspective.Self);
 		compare.addSkill(id, Perspective.Other);
 	});
 	uma2_.skills.sort(sort).forEach(id => {
+		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
+		wisdomRolls.set(id, wisdomRng.random());
 		compare.addSkill(id, Perspective.Self);
 		standard.addSkill(id, Perspective.Other);
 	});
@@ -46,6 +53,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	}
 	if (options.usePosKeep) {
 		standard.useDefaultPacer(); compare.useDefaultPacer();
+	}
+	if (options.useIntChecks) {
+		standard.withWisdomChecks(wisdomRolls);
+		compare.withWisdomChecks(wisdomRolls);
 	}
 	const skillPos1 = new Map(), skillPos2 = new Map();
 	function getActivator(skillSet) {

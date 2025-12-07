@@ -47,6 +47,19 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2025-12-07</h2>
+					<ul>
+						<li>Fixed a bug causing skills shared between uma1 and uma2 to activate at different positions sometimes</li>
+						<li>
+							<details>
+								<summary>Implement wit checks for skill activation</summary>
+								<p>Off by default because with it on obviously the minimum length gain for any skill is 0 (when the wit check fails). Primarily useful for stamina testing, in which case you do want to account for recovery skills whiffing.</p>
+								<p>Enabling this does not break RNG sync.</p>
+							</details>
+						</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2025-12-05</h2>
 					<ul>
 						<li><strong>Implement downhill speed-up mode</strong></li>
