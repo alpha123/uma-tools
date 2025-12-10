@@ -27,7 +27,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const uma2_ = uma2.update('skills', sk => Array.from(sk.values())).toJS();
 	standard.horse(uma1_);
 	compare.horse(uma2_);
-	const wisdomRolls = new Map();
+	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(options.seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();   // advance the RNG state a bit because we only seeded the low bits
 	// ensure skills common to the two umas are added in the same order regardless of what additional skills they have
@@ -37,13 +37,13 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const commonIdx = (id) => { let i = common.indexOf(skillmeta[id].groupId); return i > -1 ? i : common.length; };
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
 	uma1_.skills.sort(sort).forEach(id => {
-		wisdomRolls.set(id, wisdomRng.random());
+		wisdomSeeds.set(id, wisdomRng.pair());
 		standard.addSkill(id, Perspective.Self);
 		compare.addSkill(id, Perspective.Other);
 	});
 	uma2_.skills.sort(sort).forEach(id => {
 		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
-		wisdomRolls.set(id, wisdomRng.random());
+		wisdomSeeds.set(id, wisdomRng.pair());
 		compare.addSkill(id, Perspective.Self);
 		standard.addSkill(id, Perspective.Other);
 	});
@@ -55,8 +55,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		standard.useDefaultPacer(); compare.useDefaultPacer();
 	}
 	if (options.useIntChecks) {
-		standard.withWisdomChecks(wisdomRolls);
-		compare.withWisdomChecks(wisdomRolls);
+		standard.withWisdomChecks(wisdomSeeds);
+		compare.withWisdomChecks(wisdomSeeds);
 	}
 	const skillPos1 = new Map(), skillPos2 = new Map();
 	function getActivator(skillSet) {
