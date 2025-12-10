@@ -171,7 +171,7 @@ export function UmaSelector(props) {
 						const uid = oid.slice(0,4);
 						return (
 							<li key={oid} data-uma-id={oid} class={`umaSuggestion ${i == activeIdx ? 'selected' : ''}`}>
-								<img src={icons[oid]} /><span>{umas[uid].outfits[oid]} {umas[uid].name[1]}</span>
+								<img src={icons[oid]} loading="lazy" /><span>{umas[uid].outfits[oid]} {umas[uid].name[1]}</span>
 							</li>
 						);
 					})}
@@ -210,7 +210,7 @@ export function Stat(props) {
 const APTITUDES = Object.freeze(['S','A','B','C','D','E','F','G']);
 export function AptitudeIcon(props) {
 	const idx = 7 - APTITUDES.indexOf(props.a);
-	return <img src={`/uma-tools/icons/utx_ico_statusrank_${(100 + idx).toString().slice(1)}.png`} />;
+	return <img src={`/uma-tools/icons/utx_ico_statusrank_${(100 + idx).toString().slice(1)}.png`} loading="lazy" />;
 }
 
 export function AptitudeSelect(props){

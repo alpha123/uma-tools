@@ -205,7 +205,7 @@ const classnames = Object.freeze(['', 'skill-white', 'skill-gold', 'skill-unique
 export function Skill(props) {
 	return (
 		<div class={`skill ${classnames[skilldata[props.id].rarity]} ${props.selected ? 'selected' : ''}`} data-skillid={props.id}>
-			<img class="skillIcon" src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} /> 
+			<img class="skillIcon" src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} loading="lazy" /> 
 			<span class="skillName"><Text id={`skillnames.${props.id}`} /></span>
 			{props.dismissable && <span class="skillDismiss">✕</span>}
 		</div>
