@@ -47,6 +47,14 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2025-12-10</h2>
+					<ul>
+						<li>Fix a bug with wit checks</li>
+						<li>Improve page loading times on some browsers</li>
+						<li>Update game data</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2025-12-07</h2>
 					<ul>
 						<li>Fixed a bug causing skills shared between uma1 and uma2 to activate at different positions sometimes</li>
