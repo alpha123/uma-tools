@@ -16,7 +16,7 @@ might be cool to animate e.g., the histogram bars popping up
 * TODO OCR to load umas from screenshots
 * TODO implement stamina/hp consumption
 ** DONE implement in sim
-*** TODO also implement downhills
+*** DONE also implement downhills
 **** TODO show downhill mode procs on race chart
 ** DONE chart line
 ** TODO show % max spurt rate, average excess hp, etc
@@ -73,12 +73,15 @@ need to check if b.start/end is within in r in addition to r within b
 ** DONE tab order in expanded uma pane is wrong
 ** DONE expanding uma pane sets selected uma to 2
 expand button click bubbling up to tab click; need stopPropagation()
-** TODO potential skill desync issues
+** DONE potential skill desync issues
 possibly having random skills on both umas that the other doesn't have can cause the activations for random skills that
 they DO both have to become desynced. need to look into this.
+
+tentatively fixed
 ** DONE lock up after clicking min/max/etc in certain circumstances
 reproduce: https://alpha123.github.io/uma-tools/umalator/#H4sIAAAAAAAACtWPz2rDMAyH30VnH%2ByUQsitx7HLoMfRg0iUzDS2jP8QSsm7T%2FZaxvoGu0my9f0%2B3WHkEhO9TTAY3etegU%2FowkoJhqPWCkqiD07vRAGGHAspiDjSRDMMd3DMstgpWCIXXxkKNsL8RbHViTCxb2W2jh5fcaKapnehOzQVxCXPNlcLMPrQawOyHIgqsj%2BKRsrorEdpu2oVeGsRTXEpOT0fNpsmdtIddNuKmGm5CfZM%2FspFsJMVlh%2FpFLLNparAuaaVOOOf6Ql%2BAa%2Fjq11XyfwUW9E1cPm5pXu55Z9ccdn3b6%2Fl3rQJAgAA
-** TODO seirios ≤4 popularity version is unselectable
+** DONE seirios ≤4 popularity version is unselectable
+no longer applicable
 ** TODO annoying issue where sometimes it shows no skills as having activated
 even though I think they probably did? unsure, needs to be investigated
 ** DONE skills don't show on the chart if they're still active when the simulation ends
@@ -94,3 +97,5 @@ reproduce: https://alpha123.github.io/uma-tools/umalator-global/#H4sIAAAAAAAACtW
 ** TODO skill id 104901111 always drains 100% stamina             :simulator:
 as a result of no scaling being implemented
 this seems to be kind of weird since it does cause a fresh regression checkpoint to fail
+** DONE seems like a skill desync bug
+https://alpha123.github.io/uma-tools/umalator-global/#H4sIAAAAAAAACr1PO2%2BDMBD%2BLzcz2LwS2KJOUZdKGasMFhzEAtvID6Eq4r%2F3DLRpI3Xt9t13d9%2FjDo0J1uG5hZqzkuUJaCfUNKKDumAsAYdIu7TkRVVkh6xKIDh8M%2B4VcYLa24Arc9b%2B5YbNQG%2BdGB2RVjTYYgf1HZQxUSOB3pqgCWYJzCj8De2KHQpn9Aq9VLifihZjKLaQgRI8CpngO%2BljWOAsYywFep7WhDxd03qhpBZQH%2BM0mTk6kAYNffDu62yWrjWKDLcfKzz2HyR6QT2YQKKtJCXd4Gny0ocYBC7RK9hO%2FGJP8BB4pgc5jmT5DjyG5URVjPFvkEVAcYpyB4eNobg5h%2BtWO32q%2FWfhbdwbHx%2BF859983%2Fpe12WT4W4rP5YAgAA

@@ -39,14 +39,18 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	uma1_.skills.sort(sort).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
 		standard.addSkill(id, Perspective.Self);
-		compare.addSkill(id, Perspective.Other);
 	});
 	uma2_.skills.sort(sort).forEach(id => {
 		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
 		wisdomSeeds.set(id, wisdomRng.pair());
 		compare.addSkill(id, Perspective.Self);
-		standard.addSkill(id, Perspective.Other);
 	});
+	// iterating twice like this is VERY ANNOYING
+	// unfortunately, because we add every skill to both umas, if we add them in the same iteration uma2 will have all the
+	// Other skills before its Self skills, which can cause skill desync issues when there are debuffs
+	// TODO i don't really like this, this might just be masking some deeper underlying issue.
+	uma1_.skills.forEach(id => compare.addSkill(id, Perspective.Other));
+	uma2_.skills.forEach(id => standard.addSkill(id, Perspective.Other));
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
 		compare.withAsiwotameru().withStaminaSyoubu();
