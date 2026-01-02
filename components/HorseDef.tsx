@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import { useState, useReducer, useMemo, useEffect, useRef } from 'preact/hooks';
+import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/hooks';
 import { IntlProvider, Text } from 'preact-i18n';
 import { Set as ImmSet } from 'immutable';
 
@@ -360,12 +360,10 @@ export function HorseDef(props) {
 		}
 	}
 
-	useEffect(function () {
-		window.requestAnimationFrame(() =>
-			document.querySelectorAll('.horseExpandedSkill').forEach(e => {
-				(e as HTMLElement).style.gridRow = 'span ' + Math.ceil((e.firstChild as HTMLElement).offsetHeight / 64);
-			})
-		);
+	useLayoutEffect(function () {
+		document.querySelectorAll('.horseExpandedSkill').forEach(e => {
+			(e as HTMLElement).style.gridRow = 'span ' + Math.ceil((e.firstChild as HTMLElement).offsetHeight / 64);
+		});
 	}, [expanded]);
 
 	const skillList = useMemo(function () {
