@@ -529,12 +529,12 @@ export function SkillList(props) {
 		// aren't used as keys into anything else (like skill data) so it doesn't really matter what they are, only that
 		// they're the same for skills that should be mutually exclusive (which we want for white/gold/pink sets, but not for
 		// debuffs)
-		let newSelected;
+		const newSelected = new Map(props.selected.entries());
 		if (isDebuffSkill(id)) {
-			const ndebuffs = props.selected.count(isDebuffSkill);
-			newSelected = props.selected.set(groupId + '-' + ndebuffs, id);
+			const ndebuffs = Array.from(props.selected.values()).filter(isDebuffSkill).length;
+			newSelected.set(groupId + '-' + ndebuffs, id);
 		} else {
-			newSelected = props.selected.set(groupId, id);
+			newSelected.set(groupId, id);
 		}
 		props.setSelected(newSelected);
 	}

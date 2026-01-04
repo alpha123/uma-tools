@@ -23,24 +23,22 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			.numUmas(racedef.numUmas);
 	}
 	const compare = standard.fork();
-	const uma1_ = uma1.update('skills', sk => Array.from(sk.values())).toJS();
-	const uma2_ = uma2.update('skills', sk => Array.from(sk.values())).toJS();
-	standard.horse(uma1_);
-	compare.horse(uma2_);
+	standard.horse(uma1);
+	compare.horse(uma2);
 	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(options.seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();   // advance the RNG state a bit because we only seeded the low bits
 	// ensure skills common to the two umas are added in the same order regardless of what additional skills they have
 	// this is important to make sure the rng for their activations is synced
 	// sort first by groupId so that white and gold versions of a skill get added in the same order
-	const common = uma1.skills.keySeq().toSet().intersect(uma2.skills.keySeq().toSet()).toArray().sort((a,b) => +a - +b);
+	const common = Array.from(new Set(uma1.skills.keys()).intersection(new Set(uma2.skills.keys()))).sort((a,b) => +a - +b);
 	const commonIdx = (id) => { let i = common.indexOf(skillmeta[id].groupId); return i > -1 ? i : common.length; };
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
-	uma1_.skills.sort(sort).forEach(id => {
+	Array.from(uma1.skills.values()).sort(sort).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
 		standard.addSkill(id, Perspective.Self);
 	});
-	uma2_.skills.sort(sort).forEach(id => {
+	Array.from(uma2.skills.values()).sort(sort).forEach(id => {
 		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
 		wisdomSeeds.set(id, wisdomRng.pair());
 		compare.addSkill(id, Perspective.Self);
@@ -49,8 +47,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	// unfortunately, because we add every skill to both umas, if we add them in the same iteration uma2 will have all the
 	// Other skills before its Self skills, which can cause skill desync issues when there are debuffs
 	// TODO i don't really like this, this might just be masking some deeper underlying issue.
-	uma1_.skills.forEach(id => compare.addSkill(id, Perspective.Other));
-	uma2_.skills.forEach(id => standard.addSkill(id, Perspective.Other));
+	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other));
+	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other));
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
 		compare.withAsiwotameru().withStaminaSyoubu();

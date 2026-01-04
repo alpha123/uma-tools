@@ -1,5 +1,3 @@
-import { Record, Map as ImmMap } from 'immutable';
-
 import skills from '../uma-skill-tools/data/skill_data.json';
 import skillmeta from '../skill_meta.json';
 
@@ -11,8 +9,8 @@ export function isDebuffSkill(id: string) {
 	return skillmeta[id].iconId[0] == '3';
 }
 
-export function SkillSet(ids): ImmMap<(typeof skill_meta)['groupId'], keyof typeof skills> {
-	return ImmMap(ids.reduce((acc, id) => {
+export function SkillSet(ids): Map<(typeof skillmeta)['groupId'], keyof typeof skills> {
+	return new Map(ids.reduce((acc, id) => {
 		const {entries, ndebuff} = acc;
 		const groupId = skillmeta[id].groupId;
 		if (isDebuffSkill(id)) {
@@ -25,7 +23,23 @@ export function SkillSet(ids): ImmMap<(typeof skill_meta)['groupId'], keyof type
 	}, {entries: [], ndebuff: 0}).entries);
 }
 
-export class HorseState extends Record({
+export type Aptitude = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+
+export interface HorseState {
+	outfitId: string
+	speed: number
+	stamina: number
+	power: number
+	guts: number
+	wisdom: number
+	strategy: 'Nige' | 'Senkou' | 'Sasi' | 'Oikomi' | 'Oonige'
+	distanceAptitude: Aptitude
+	surfaceAptitude: Aptitude
+	strategyAptitude: Aptitude
+	skills: Map<(typeof skillmeta)['groupId'], keyof typeof skills>
+}
+
+export const DEFAULT_HORSE_STATE = {
 	outfitId: '',
 	speed:   CC_GLOBAL ? 1200 : 1850,
 	stamina: CC_GLOBAL ? 1200 : 1700,
@@ -37,4 +51,4 @@ export class HorseState extends Record({
 	surfaceAptitude: 'A',
 	strategyAptitude: 'A',
 	skills: SkillSet([])
-}) {}
+};

@@ -1,5 +1,6 @@
 import { h, Fragment, render } from 'preact';
 import { useState, useReducer, useMemo, useEffect, useRef, useId, useCallback } from 'preact/hooks';
+import { memo } from 'preact/compat';
 import { Text, MarkupText, Localizer, IntlProvider } from 'preact-i18n';
 import { Record, Map as ImmMap } from 'immutable';
 import * as d3 from 'd3';
@@ -9,10 +10,12 @@ import { CourseHelpers } from '../uma-skill-tools/CourseData';
 import { RaceParameters, Mood, GroundCondition, Weather, Season, Time, Grade } from '../uma-skill-tools/RaceParameters';
 import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 
+import { O, c, State, makeState, useLens, useSetter } from '../optics';
+
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { ExpandedSkillDetails } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
-import { HorseState, SkillSet } from '../components/HorseDefTypes';
+import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
@@ -91,14 +94,40 @@ const UI_STRINGS = Object.freeze({
 	'en-global': UI_global
 });
 
-class RaceParams extends Record({
+interface RaceParams {
+	mood: Mood
+	ground: GroundCondition
+	weather: Weather
+	season: Season
+	time: Time
+	grade: Grade
+}
+
+const DEFAULT_RACE_PARAMS = {
 	mood: 2 as Mood,
 	ground: GroundCondition.Good,
 	weather: Weather.Sunny,
 	season: Season.Spring,
 	time: Time.Midday,
 	grade: Grade.G1
-}) {}
+};
+
+function shallowEquals(o1, o2) {
+	// assume o1 and o2 have the same shape
+	return Object.keys(o1).reduce((b,k) => b && Object.is(o1[k], o2[k]), true);
+}
+
+function horseEquals(h1, h2) {
+	return h1 == h2 || Object.keys(h1).reduce((b,k) => {
+		if (!b) return false;
+		if (k == 'skills') {
+			const s1 = h1.skills, s2 = h2.skills;
+			return s1.size == s2.size && Array.from(s1.keys()).reduce((b,k) => b && s1.get(k) == s2.get(k), true);
+		} else {
+			return Object.is(h1[k], h2[k]);
+		}
+	}, true);
+}
 
 const enum EventType { CM, LOH }
 
@@ -130,14 +159,14 @@ const presets = (CC_GLOBAL ? [
 		name: def.name,
 		date: new Date(def.date),
 		courseId: def.courseId,
-		racedef: new RaceParams({
+		racedef: {
 			mood: 2 as Mood,
 			ground: def.type == EventType.CM ? def.ground : GroundCondition.Good,
 			weather: def.type == EventType.CM ? def.weather : Weather.Sunny,
 			season: def.season,
 			time: def.time,
 			grade: Grade.G1
-		})
+		}
 	}))
 	.sort((a,b) => +b.date - +a.date);
 
@@ -145,6 +174,8 @@ const DEFAULT_PRESET = presets[Math.max(presets.findIndex((now => p => new Date(
 const DEFAULT_COURSE_ID = DEFAULT_PRESET.courseId;
 
 function id(x) { return x; }
+
+function toggle(b) { return !b; }
 
 function binSearch(a: number[], x: number) {
 	let lo = 0, hi = a.length - 1;
@@ -164,10 +195,11 @@ function binSearch(a: number[], x: number) {
 }
 
 function TimeOfDaySelect(props) {
+	const [t, setT] = useLens(props.t);
 	function click(e) {
 		e.stopPropagation();
 		if (!('timeofday' in e.target.dataset)) return;
-		props.set(+e.target.dataset.timeofday);
+		setT(+e.target.dataset.timeofday);
 	}
 	// + 2 because for some reason the icons are 00-02 (noon/evening/night) but the enum values are 1-4 (morning(?) noon evening night)
 	return (
@@ -175,15 +207,16 @@ function TimeOfDaySelect(props) {
 			<Localizer>
 				{Array(3).fill(0).map((_,i) =>
 					<img src={`/uma-tools/icons/utx_ico_timezone_0${i}.png`} title={<Text id={`common.time.${i+2}`} />}
-						class={i+2 == props.value ? 'selected' : ''} data-timeofday={i+2} />)}
+						class={i+2 == t ? 'selected' : ''} data-timeofday={i+2} />)}
 			</Localizer>
 		</div>
 	);
 }
 
 function GroundSelect(props) {
+	const [g, setG] = useLens(props.g);
 	return (
-		<select class="groundSelect" value={props.value} onInput={(e) => props.set(+e.currentTarget.value)}>
+		<select class="groundSelect" value={g} onInput={(e) => setG(+e.currentTarget.value)}>
 			<option value="1"><Text id="common.ground.1" /></option>
 			<option value="2"><Text id="common.ground.2" /></option>
 			<option value="3"><Text id="common.ground.3" /></option>
@@ -193,40 +226,42 @@ function GroundSelect(props) {
 }
 
 function WeatherSelect(props) {
+	const [w, setW] = useLens(props.w);
 	function click(e) {
 		e.stopPropagation();
 		if (!('weather' in e.target.dataset)) return;
-		props.set(+e.target.dataset.weather);
+		setW(+e.target.dataset.weather);
 	}
 	return (
 		<div class="weatherSelect" onClick={click}>
 			<Localizer>
 				{Array(4).fill(0).map((_,i) =>
 					<img src={`/uma-tools/icons/utx_ico_weather_0${i}.png`} title={<Text id={`common.weather.${i+1}`} />}
-						class={i+1 == props.value ? 'selected' : ''} data-weather={i+1} />)}
+						class={i+1 == w ? 'selected' : ''} data-weather={i+1} />)}
 			</Localizer>
 		</div>
 	);
 }
 
 function SeasonSelect(props) {
+	const [s, setS] = useLens(props.s);
 	function click(e) {
 		e.stopPropagation();
 		if (!('season' in e.target.dataset)) return;
-		props.set(+e.target.dataset.season);
+		setS(+e.target.dataset.season);
 	}
 	return (
 		<div class="seasonSelect" onClick={click}>
 			<Localizer>
 				{Array(4 + +!CC_GLOBAL /* global doesnt have late spring for some reason */).fill(0).map((_,i) =>
 					<img src={`/uma-tools/icons${CC_GLOBAL?'/global':''}/utx_txt_season_0${i}.png`} title={<Text id={`common.season.${i+1}`} />}
-						class={i+1 == props.value ? 'selected' : ''} data-season={i+1} />)}
+						class={i+1 == s ? 'selected' : ''} data-season={i+1} />)}
 			</Localizer>
 		</div>
 	);
 }
 
-function Histogram(props) {
+const Histogram = memo(function Histogram(props) {
 	const {data, width, height} = props;
 	const axes = useRef(null);
 	const xH = 20;
@@ -257,7 +292,7 @@ function Histogram(props) {
 			<g ref={axes}></g>
 		</svg>
 	);
-}
+});
 
 function BasinnChartPopover(props) {
 	const popover = useRef(null);
@@ -282,7 +317,7 @@ function BasinnChartPopover(props) {
 	);
 }
 
-function VelocityLines(props) {
+const VelocityLines = memo(function VelocityLines(props) {
 	const axes = useRef(null);
 	const data = props.data;
 	const x = d3.scaleLinear().domain([0,props.courseDistance]).range([0,props.width]);
@@ -315,9 +350,9 @@ function VelocityLines(props) {
 			<g ref={axes} />
 		</Fragment>
 	);
-}
+});
 
-function ResultsTable(props) {
+const ResultsTable = memo(function ResultsTable(props) {
 	const {caption, color, chartData, idx} = props;
 	return (
 		<table>
@@ -338,7 +373,7 @@ function ResultsTable(props) {
 				</tbody>}
 		</table>
 	);
-}
+});
 
 const NO_SHOW = Object.freeze([
 	'10011', '10012', '10016', '10021', '10022', '10026', '10031', '10032', '10036',
@@ -365,6 +400,10 @@ function racedefToParams({mood, ground, weather, season, time, grade}: RaceParam
 	};
 }
 
+function emptySimStateForCid(cid) {
+	return {courseId: cid, results: [], runData: null};
+}
+
 async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState) {
 	const json = JSON.stringify({
 		courseId,
@@ -372,9 +411,9 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		seed,
 		usePosKeep,
 		useIntChecks,
-		racedef: racedef.toJS(),
-		uma1: uma1.set('skills', Array.from(uma1.skills.values())).toJS(),
-		uma2: uma2.set('skills', Array.from(uma2.skills.values())).toJS()
+		racedef,
+		uma1: {...uma1, skills: Array.from(uma1.skills.values())},
+		uma2: {...uma2, skills: Array.from(uma2.skills.values())}
 	});
 	const enc = new TextEncoder();
 	const stringStream = new ReadableStream({
@@ -415,25 +454,25 @@ async function deserialize(hash) {
 			try {
 				const o = JSON.parse(json);
 				return {
-					courseId: o.courseId,
+					simState: emptySimStateForCid(o.courseId),
 					nsamples: o.nsamples,
 					seed: o.seed || DEFAULT_SEED,  // field added later, could be undefined when loading state from existing links
 					usePosKeep: o.usePosKeep,
 					useIntChecks: o.useIntChecks || false,  // added later
-					racedef: new RaceParams(o.racedef),
-					uma1: new HorseState(o.uma1).set('skills', SkillSet(o.uma1.skills)),
-					uma2: new HorseState(o.uma2).set('skills', SkillSet(o.uma2.skills))
+					racedef: o.racedef,
+					uma1: Object.assign(o.uma1, {skills: SkillSet(o.uma1.skills)}),
+					uma2: Object.assign(o.uma2, {skills: SkillSet(o.uma2.skills)})
 				};
 			} catch (_) {
 				return {
-					courseId: DEFAULT_COURSE_ID,
+					simState: emptySimStateForCid(DEFAULT_COURSE_ID),
 					nsamples: DEFAULT_SAMPLES,
 					seed: DEFAULT_SEED,
 					usePosKeep: true,
 					useIntChecks: false,
-					racedef: new RaceParams(),
-					uma1: new HorseState(),
-					uma2: new HorseState()
+					racedef: DEFAULT_RACE_PARAMS,
+					uma1: DEFAULT_HORSE_STATE,
+					uma2: DEFAULT_HORSE_STATE
 				};
 			}
 		} else {
@@ -442,49 +481,28 @@ async function deserialize(hash) {
 	}
 }
 
-const EMPTY_RESULTS_STATE = {courseId: DEFAULT_COURSE_ID, results: [], runData: null, chartData: null, displaying: ''};
-function updateResultsState(state: typeof EMPTY_RESULTS_STATE, o: number | string | {results: any, runData: any}) {
-	if (typeof o == 'number') {
-		return {
-			courseId: o,
-			results: [],
-			runData: null,
-			chartData: null,
-			displaying: ''
-		};
-	} else if (typeof o == 'string') {
-		postEvent('setChartData', {display: o});
-		return {
-			courseId: state.courseId,
-			results: state.results,
-			runData: state.runData,
-			chartData: state.runData != null ? state.runData[o] : null,
-			displaying: o
-		};
-	} else {
-		return {
-			courseId: state.courseId,
-			results: o.results,
-			runData: o.runData,
-			chartData: o.runData[state.displaying || 'meanrun'],
-			displaying: state.displaying || 'meanrun'
-		};
-	}
-}
-
-function RacePresets(props) {
+const RacePresets = memo(function RacePresets(props) {
+	const [courseId, setCourseId] = useLens(props.courseId);
+	const [racedef, setRacedef] = useLens(props.racedef);
 	const id = useId();
-	const selectedIdx = presets.findIndex(p => p.courseId == props.courseId && p.racedef.equals(props.racedef));
+	const selectedIdx = presets.findIndex(p => p.courseId == courseId && shallowEquals(p.racedef, racedef));
+	function change(e) {
+		const i = +e.currentTarget.value;
+		if (i > -1) {
+			setCourseId(presets[i].courseId);
+			setRacedef(presets[i].racedef);
+		}
+	}
 	return (
 		<Fragment>
 			<label for={id}>Preset:</label>
-			<select id={id} onChange={e => { const i = +e.currentTarget.value; i > -1 && props.set(presets[i].courseId, presets[i].racedef); }}>
+			<select id={id} onChange={change}>
 				<option value="-1"></option>
 				{presets.map((p,i) => <option value={i} selected={i == selectedIdx}>{p.name || (p.date.getUTCFullYear() + '-' + (100 + p.date.getUTCMonth() + 1).toString().slice(-2) + (p.type == EventType.CM ? ' CM' : ' LOH'))}</option>)}
 			</select>
 		</Fragment>
 	);
-}
+}, () => true);
 
 const baseSkillsToTest = Object.keys(skilldata).filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
 
@@ -508,47 +526,38 @@ function nextUiState(state: typeof DEFAULT_UI_STATE, msg: UiStateMsg) {
 	}
 }
 
-function App(props) {
+function Umalator(props) {
 	//const [language, setLanguage] = useLanguageSelect();
-	const [skillsOpen, setSkillsOpen] = useState(false);
-	const [racedef, setRaceDef] = useState(() => DEFAULT_PRESET.racedef);
-	const [nsamples, setSamples] = useState(DEFAULT_SAMPLES);
-	const [seed, setSeed] = useState(DEFAULT_SEED);
-	const [usePosKeep, togglePosKeep] = useReducer((b,_) => !b, true);
-	const [useIntChecks, toggleIntChecks] = useReducer((b,_) => !b, false);
-	const [showHp, toggleShowHp] = useReducer((b,_) => !b, false);
-	const [{courseId, results, runData, chartData, displaying}, setSimState] = useReducer(updateResultsState, EMPTY_RESULTS_STATE);
-	const setCourseId = setSimState;
-	const setResults = setSimState;
-	const setChartData = setSimState;
-
-	const [tableData, updateTableData] = useReducer((data,newData) => {
-		const merged = new Map();
-		if (newData == 'reset') {
-			return merged;
-		}
-		data.forEach((v,k) => merged.set(k,v));
-		newData.forEach((v,k) => merged.set(k,v));
-		return merged;
-	}, new Map());
-
-	const [hintLevels, setHintLevels] = useState(() => ImmMap(Object.keys(skilldata).map(id => [id, 0])));
-	function updateHintLevel(id, hint) {
-		setHintLevels(hintLevels.set(id, hint));
-	}
-
-	const [popoverSkill, setPopoverSkill] = useState('');
-
-	function racesetter(prop) {
-		return (value) => setRaceDef(racedef.set(prop, value));
-	}
-
+	const [racedef] = useLens(O.racedef);
+	const [nsamples, setSamples] = useLens(O.nsamples);
+	const [seed, setSeed] = useLens(O.seed);
+	const [usePosKeep, setPosKeep] = useLens(O.usePosKeep); const togglePosKeep = () => setPosKeep(toggle);
+	const [useIntChecks, setIntChecks] = useLens(O.useIntChecks); const toggleIntChecks = () => setIntChecks(toggle);
+	const [showHp, setShowHp] = useLens(O.useShowHp); const toggleShowHp = () => setShowHp(toggle);
+	const [{courseId, results, runData}, setSimState] = useLens(O.simState);
+	const [displaying, setChartData] = useLens(O.displayedRun);
+	const chartData = runData && runData[displaying];
 	const course = useMemo(() => CourseHelpers.getCourse(courseId), [courseId]);
+	const setCourseId = c(setSimState, emptySimStateForCid);
+	function setResults(o) {
+		setSimState(s => ({...s, results: o.results, runData: o.runData}));
+	}
+	const [tableData, setTableData] = useLens(O.tableData);
+	function resetTableData() {
+		setTableData(new Map());
+	}
+	function updateTableData(newData) {
+		setTableData(data => {
+			const merged = new Map();
+			data.forEach((v,k) => merged.set(k,v));
+			newData.forEach((v,k) => merged.set(k,v));
+			return merged;
+		});
+	}
 
-	const [uma1, setUma1] = useState(() => new HorseState());
-	const [uma2, setUma2] = useState(() => new HorseState());
-
-	const [lastRunChartUma, setLastRunChartUma] = useState(uma1);
+	const [uma1, setUma1] = useLens(O.uma1);
+	const [uma2, setUma2] = useLens(O.uma2);
+	const [lastRunChartUma, setLastRunChartUma] = useState(DEFAULT_HORSE_STATE);
 
 	const [{mode, currentIdx, expanded}, updateUiState] = useReducer(nextUiState, DEFAULT_UI_STATE);
 	function toggleExpand(e: Event) {
@@ -556,6 +565,8 @@ function App(props) {
 		postEvent('toggleExpand', {expand: !expanded});
 		updateUiState(UiStateMsg.ToggleExpand);
 	}
+
+	const [popoverSkill, setPopoverSkill] = useState('');
 
 	const workers = [1,2,3,4].map(_ => useMemo(() => {
 		const w = new Worker('./simulator.worker.js');
@@ -572,26 +583,6 @@ function App(props) {
 		});
 		return w;
 	}, []));
-
-	function loadState() {
-		if (window.location.hash) {
-			deserialize(window.location.hash.slice(1)).then(o => {
-				setCourseId(o.courseId);
-				setSamples(o.nsamples);
-				setSeed(o.seed);
-				if (o.usePosKeep != usePosKeep) togglePosKeep(0);
-				if (!!o.useIntChecks != useIntChecks) toggleIntChecks(0);
-				setRaceDef(o.racedef);
-				setUma1(o.uma1);
-				setUma2(o.uma2);
-			});
-		}
-	}
-
-	useEffect(function () {
-		loadState();
-		window.addEventListener('hashchange', loadState);
-	}, []);
 
 	function copyStateUrl(e) {
 		e.preventDefault();
@@ -629,8 +620,8 @@ function App(props) {
 				nsamples,
 				course,
 				racedef: racedefToParams(racedef),
-				uma1: uma1.toJS(),
-				uma2: uma2.toJS(),
+				uma1: uma1,
+				uma2: uma2,
 				options: {seed, usePosKeep, useIntChecks}
 			}
 		});
@@ -643,18 +634,19 @@ function App(props) {
 		const skills = getActivateableSkills(baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
 			const group = skillGroups.get(skillmeta[id].groupId);
+			const skillSet = Array.from(uma1.skills.values());
 			return !(
 				existing == id || group.indexOf(id) < group.indexOf(existing)
-				|| id[0] == '9' && uma1.skills.includes('1' + id.slice(1))  // reject inherited uniques if we already have the regular version
-				|| id == '92111091' && uma1.skills.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
+				|| id[0] == '9' && skillSet.includes('1' + id.slice(1))  // reject inherited uniques if we already have the regular version
+				|| id == '92111091' && skillSet.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
 			);
 		}), uma1, course, params);
 		const filler = new Map();
 		skills.forEach(id => filler.set(id, getNullRow(id)));
-		const uma = uma1.toJS();
+		const uma = uma1;
 		const skills1 = skills.slice(0,Math.floor(skills.length/2));
 		const skills2 = skills.slice(Math.floor(skills.length/2));
-		updateTableData('reset');
+		resetTableData();
 		updateTableData(filler);
 		const nPerWorker = Math.ceil(skills.length/workers.length);
 		workers.reduce((skills, w) => {
@@ -670,7 +662,7 @@ function App(props) {
 
 	function addSkillFromTable(skillId) {
 		postEvent('addSkillFromTable', {skillId});
-		setUma1(uma1.set('skills', uma1.skills.set(skillmeta[skillId].groupId, skillId)));
+		setUma1(new (O.skills.get(skillmeta[skillId].groupId))(skillId));
 	}
 
 	function showPopover(skillId) {
@@ -717,12 +709,12 @@ function App(props) {
 		});
 	});
 
-	const umaTabs = (
+	const umaTabs = useMemo(() => (
 		<Fragment>
 			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => updateUiState(UiStateMsg.SetCurrentIdx0)}>Umamusume 1</div>
 			{mode == Mode.Compare && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => updateUiState(UiStateMsg.SetCurrentIdx1)}>Umamusume 2<div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
 		</Fragment>
-	);
+	), [currentIdx, mode]);
 
 	let resultsPane;
 	if (mode == Mode.Compare && results.length > 0) {
@@ -763,16 +755,16 @@ function App(props) {
 			</div>
 		);
 	} else if (mode == Mode.Chart && tableData.size > 0) {
-		const dirty = !uma1.equals(lastRunChartUma);
+		const dirty = !horseEquals(uma1, lastRunChartUma);
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
 					<div class="basinnChartWrapperWrapper">
-						<BasinnChart data={tableData.values().toArray()} hasSkills={lastRunChartUma.skills} hints={hintLevels}
+						<BasinnChart data={Array.from(tableData.values())} hasSkills={lastRunChartUma.skills}
 							dirty={dirty}
-							updateHint={updateHintLevel}
+							hintLevels={O.hintLevels}
+							displayedRun={O.displayedRun}
 							onSelectionChange={basinnChartSelection}
-							onRunTypeChange={setChartData}
 							onDblClickRow={addSkillFromTable}
 							onInfoClick={showPopover} />
 						<button class={`basinnChartRefresh${dirty ? '' : ' hidden'}`} onClick={doBasinnChart}>⟲</button>
@@ -840,24 +832,24 @@ function App(props) {
 							: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
 						}
 						<a href="#" onClick={copyStateUrl}><Text id="ui.sidebar.copylink" /></a>
-						<RacePresets courseId={courseId} racedef={racedef} set={(courseId, racedef) => { setCourseId(courseId); setRaceDef(racedef); }} />
+						<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 					</div>
 					<div id="buttonsRow">
 						<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
 						<div id="buttonsRowSpace" />
-						<TimeOfDaySelect value={racedef.time} set={racesetter('time')} />
+						<TimeOfDaySelect t={O.racedef.time} />
 						<div>
-							<GroundSelect value={racedef.ground} set={racesetter('ground')} />
-							<WeatherSelect value={racedef.weather} set={racesetter('weather')} />
+							<GroundSelect g={O.racedef.ground} />
+							<WeatherSelect w={O.racedef.weather} />
 						</div>
-						<SeasonSelect value={racedef.season} set={racesetter('season')} />
+						<SeasonSelect s={O.racedef.season} />
 					</div>
 				</div>
 				{resultsPane}
 				{expanded && <div id="umaPane" />}
 				<div id={expanded ? 'umaOverlay' : 'umaPane'}>
 					<div class={!expanded && currentIdx == 0 ? 'selected' : ''}>
-						<HorseDef key={uma1.outfitId} state={uma1} setState={setUma1} courseDistance={course.distance} tabstart={() => 4}>
+						<HorseDef key={uma1.outfitId} state={O.uma1} courseDistance={course.distance} tabstart={() => 4}>
 							{expanded ? 'Umamusume 1' : umaTabs}
 						</HorseDef>
 					</div>
@@ -868,7 +860,7 @@ function App(props) {
 							<div id="swapUmas" title="Swap umas" onClick={swapUmas}>⮂</div>
 						</div>}
 					{mode == Mode.Compare && <div class={!expanded && currentIdx == 1 ? 'selected' : ''}>
-						<HorseDef key={uma2.outfitId} state={uma2} setState={setUma2} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
+						<HorseDef key={uma2.outfitId} state={O.uma2} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
 							{expanded ? 'Umamusume 2' : umaTabs}
 						</HorseDef>
 					</div>}
@@ -877,6 +869,42 @@ function App(props) {
 				{popoverSkill && <BasinnChartPopover skillid={popoverSkill} results={tableData.get(popoverSkill).results} courseDistance={course.distance} />}
 			</IntlProvider>
 		</Language.Provider>
+	);
+}
+
+function App(props) {
+	const state = makeState(() => ({
+		racedef: DEFAULT_PRESET.racedef,
+		nsamples: DEFAULT_SAMPLES,
+		seed: DEFAULT_SEED,
+		usePosKeep: true,
+		useIntChecks: false,
+		showHp: false,
+		uma1: DEFAULT_HORSE_STATE,
+		uma2: DEFAULT_HORSE_STATE,
+		simState: emptySimStateForCid(DEFAULT_COURSE_ID),
+		displayedRun: 'meanrun',
+		tableData: new Map(),
+		hintLevels: new Map(Object.keys(skilldata).map(id => [id, 0])),
+		popoverSkill: ''
+	}));
+
+	function loadState() {
+		if (window.location.hash) {
+			deserialize(window.location.hash.slice(1)).then(o =>
+				state.setState(Object.assign({}, state.ref.current.state, o)));
+		}
+	}
+
+	useEffect(function () {
+		loadState();
+		window.addEventListener('hashchange', loadState);
+	}, []);
+
+	return (
+		<State.Provider value={state}>
+			<Umalator lang={props.lang} />
+		</State.Provider>
 	);
 }
 

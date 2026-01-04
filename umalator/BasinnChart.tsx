@@ -8,6 +8,8 @@ import {
 	createSortedRowModel, flexRender, rowSortingFeature, sortFns, tableFeatures, useTable
 } from '@tanstack/preact-table';
 
+import { O, c, useLens } from '../optics';
+
 import { Region, RegionList } from '../uma-skill-tools/Region';
 import { CourseData } from '../uma-skill-tools/CourseData';
 import { RaceParameters } from '../uma-skill-tools/RaceParameters';
@@ -97,20 +99,24 @@ function costForId(id, hints, owned) {
 }
 
 function SkillCostCell(props) {
+	const [hints, setHints] = useLens(props.hintLevels);
+	const hint = hints.get(props.id);
+	const incrHint = useMemo(() => new (O.get(props.id))(x => x + 1), [props.id]);
+	const decrHint = useMemo(() => new (O.get(props.id))(x => x - 1), [props.id]);
 	return (
 		<Fragment>
-			<button class={`hintbtn hintDown${props.hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={props.hint == 0}
-				onClick={() => props.updateHint(props.id, props.hint - 1)}>
+			<button class={`hintbtn hintDown${hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={hint == 0}
+				onClick={() => setHints(decrHint)}>
 				<div class="hintbtnDummyBackground"></div>
 				<span class="hintbtnText">−</span>
 			</button>
-			<span class="hintedCost">{costForId(props.id, props.hints, props.ownedSkills)}</span>
-			<button class={`hintbtn hintUp${props.hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={props.hint == 5}
-				onClick={() => props.updateHint(props.id, props.hint + 1)}>
+			<span class="hintedCost">{costForId(props.id, hints, props.ownedSkills)}</span>
+			<button class={`hintbtn hintUp${hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={hint == 5}
+				onClick={() => setHints(incrHint)}>
 				<div class="hintbtnDummyBackground"></div>
 				<span class="hintbtnText">+</span>
 			</button>
-			{props.hint > 0 && <span class="hintLevel">{props.hint}</span>}
+			{hint > 0 && <span class="hintLevel">{hint}</span>}
 		</Fragment>
 	);
 }
@@ -131,12 +137,8 @@ function headerRenderer(radioGroup, selectedType, type, text, onClick) {
 export function BasinnChart(props) {
 	const radioGroup = useId();
 	const [selected, setSelected] = useState('');
-	const [selectedType, setSelectedType] = useState('mean');
-
-	function headerClick(type) {
-		setSelectedType(type);
-		props.onRunTypeChange(type + 'run');
-	}
+	const [hints, setHints] = useLens(props.hintLevels);
+	const [displayedRun, setDisplayedRun] = useLens(props.displayedRun);
 
 	const columns = useMemo(() => [{
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>Skill name</span>,
@@ -144,45 +146,45 @@ export function BasinnChart(props) {
 		cell: (info) => <SkillNameCell id={info.getValue()} />,
 		sortFn: (a,b) => skillnames[a.getValue('id')][0] < skillnames[b.getValue('id')][0] ? -1 : 1
 	}, {
-		header: headerRenderer(radioGroup, selectedType, 'min', 'Minimum', headerClick),
+		header: headerRenderer(radioGroup, displayedRun, 'minrun', 'Minimum', setDisplayedRun),
 		accessorKey: 'min',
 		cell: formatBasinn
 	}, {
-		header: headerRenderer(radioGroup, selectedType, 'max', 'Maximum', headerClick),
+		header: headerRenderer(radioGroup, displayedRun, 'maxrun', 'Maximum', setDisplayedRun),
 		accessorKey: 'max',
 		cell: formatBasinn,
 		sortDescFirst: true
 	}, {
-		header: headerRenderer(radioGroup, selectedType, 'mean', 'Mean', headerClick),
+		header: headerRenderer(radioGroup, displayedRun, 'meanrun', 'Mean', setDisplayedRun),
 		accessorKey: 'mean',
 		cell: formatBasinn,
 		sortDescFirst: true
 	}, {
-		header: headerRenderer(radioGroup, selectedType, 'median', 'Median', headerClick),
+		header: headerRenderer(radioGroup, displayedRun, 'medianrun', 'Median', setDisplayedRun),
 		accessorKey: 'median',
 		cell: formatBasinn,
 		sortDescFirst: true
 	}, {
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>SP Cost</span>,
 		id: 'spcost',
-		accessorFn: (row) => ({id: row.id, hint: props.hints.get(row.id)}),
-		cell: (info) => <SkillCostCell {...info.getValue()} hints={props.hints} ownedSkills={props.hasSkills} updateHint={props.updateHint} />,
+		accessorFn: (row) => ({id: row.id}),
+		cell: (info) => <SkillCostCell {...info.getValue()} hintLevels={props.hintLevels} ownedSkills={props.hasSkills} />,
 		sortFn: (a,b) => {
-			const ac = costForId(a.getValue('id'), props.hints, props.hasSkills),
-				  bc = costForId(b.getValue('id'), props.hints, props.hasSkills);
+			const ac = costForId(a.getValue('id'), hints, props.hasSkills),
+				  bc = costForId(b.getValue('id'), hints, props.hasSkills);
 			return +(bc < ac) - +(ac < bc);
 		},
 		sortDescFirst: false
 	}, {
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>{CC_GLOBAL ? 'L / SP' : 'バ / SP'}</span>,
 		id: 'bsp',
-		accessorFn: (row) => row.mean / costForId(row.id, props.hints, props.hasSkills),
+		accessorFn: (row) => row.mean / costForId(row.id, hints, props.hasSkills),
 		cell: (info) => {
 			const x = info.getValue();
 			return <span>{isNaN(x) || Math.abs(x) == Infinity ? '--' : x.toFixed(6)}</span>;
 		},
 		sortDescFirst: true
-	}], [selectedType, props.hints, props.hasSkills]);  // including hints here is a bad hack to force the table to
+	}], [displayedRun, hints, props.hasSkills]);  // including hints here is a bad hack to force the table to
 	// rerender when hints changes (since it's not part of the actual table data). ditto with hasSkills, but note that
 	// we should be passed the last run uma and not the current uma state, or else the chart will be out of date and the
 	// sp costs will change but not basinn values until the chart is rerun. (see the commit message for
