@@ -499,7 +499,7 @@ function App(props) {
 		updateUiState(UiStateMsg.ToggleExpand);
 	}
 
-	const [worker1, worker2] = [1,2].map(_ => useMemo(() => {
+	const workers = [1,2,3,4].map(_ => useMemo(() => {
 		const w = new Worker('./simulator.worker.js');
 		w.addEventListener('message', function (e) {
 			const {type, results} = e.data;
@@ -565,7 +565,7 @@ function App(props) {
 
 	function doComparison() {
 		postEvent('doComparison', {});
-		worker1.postMessage({
+		workers[0].postMessage({
 			msg: 'compare',
 			data: {
 				nsamples,
@@ -598,8 +598,11 @@ function App(props) {
 		const skills2 = skills.slice(Math.floor(skills.length/2));
 		updateTableData('reset');
 		updateTableData(filler);
-		worker1.postMessage({msg: 'chart', data: {skills: skills1, course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
-		worker2.postMessage({msg: 'chart', data: {skills: skills2, course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
+		const nPerWorker = Math.ceil(skills.length/workers.length);
+		workers.reduce((skills, w) => {
+			w.postMessage({msg: 'chart', data: {skills: skills.slice(0, nPerWorker), course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
+			return skills.slice(nPerWorker);
+		}, skills);
 	}
 
 	function basinnChartSelection(skillId) {
