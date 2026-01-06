@@ -18,16 +18,9 @@ import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillmeta from '../skill_meta.json';
 
 const STRINGS_ja = Object.freeze({
-	'strategy': Object.freeze({
-		'nige': '逃げ',
-		'senkou': '先行',
-		'sasi': '差し',
-		'oikomi': '追込',
-		'oonige': '大逃げ'
-	}),
 	'select': Object.freeze({
-		'strategy': 'TODO check game for 脚質 vs 作戦',
-		'surfaceaptitude': 'コース適正 or バ場適性',
+		'strategy': '作戦',
+		'surfaceaptitude': 'バ場適性',
 		'distanceaptitude': '距離適正',
 		'strategyaptitude': '脚質適正'
 	}),
@@ -36,13 +29,6 @@ const STRINGS_ja = Object.freeze({
 });
 
 const STRINGS_en = Object.freeze({
-	'strategy': Object.freeze({
-		'nige': 'Runner',
-		'senkou': 'Leader',
-		'sasi': 'Betweener',
-		'oikomi': 'Chaser',
-		'oonige': 'Oonige'
-	}),
 	'select': Object.freeze({
 		'strategy': 'Strategy:',
 		'surfaceaptitude': 'Surface aptitude:',
@@ -54,13 +40,6 @@ const STRINGS_en = Object.freeze({
 });
 
 const STRINGS_global = Object.freeze({
-	'strategy': Object.freeze({
-		'nige': 'Front Runner',
-		'senkou': 'Pace Chaser',
-		'sasi': 'Late Surger',
-		'oikomi': 'End Closer',
-		'oonige': 'Runaway'
-	}),
 	'select': Object.freeze({
 		'strategy': 'Style:',
 		'surfaceaptitude': 'Surface aptitude:',
@@ -239,11 +218,11 @@ export function AptitudeSelect(props){
 export function StrategySelect(props) {
 	return (
 		<select class="horseStrategySelect" value={props.s} tabindex={props.tabindex} onInput={(e) => props.setS(e.currentTarget.value)} style={CC_GLOBAL ? "text-align:left" : null}>
-			<option value="Nige"><Text id="strategy.nige" /></option>
-			<option value="Senkou"><Text id="strategy.senkou" /></option>
-			<option value="Sasi"><Text id="strategy.sasi" /></option>
-			<option value="Oikomi"><Text id="strategy.oikomi" /></option>
-			<option value="Oonige"><Text id="strategy.oonige" /></option>
+			<option value="Nige"><Text id="common.strategy.1" /></option>
+			<option value="Senkou"><Text id="common.strategy.2" /></option>
+			<option value="Sasi"><Text id="common.strategy.3" /></option>
+			<option value="Oikomi"><Text id="common.strategy.4" /></option>
+			<option value="Oonige"><Text id="common.strategy.5" /></option>
 		</select>
 	);
 }

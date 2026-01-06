@@ -10,6 +10,8 @@ import { useLanguage } from './Language';
 import { Tooltip } from './Tooltip';
 import { isDebuffSkill } from './HorseDefTypes';
 
+import { extendStrings, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
+
 import './SkillList.css';
 
 import skilldata from '../uma-skill-tools/data/skill_data.json';
@@ -68,7 +70,7 @@ export const STRINGS_ja = Object.freeze({
 		'durationincrease': '{{n}}倍',
 		'effects': '効果',
 		'grade': Object.freeze({100: 'G1', 200: 'G2', 300: 'G3', 400: 'OP', 700: 'Pre-OP', 800: 'Maiden', 900: 'デビュー', 999: '毎日'}),
-		'ground_condition': Object.freeze(['', '良', '稍重', '重', '不良']),
+		'ground_condition': COMMON_ja['ground'],
 		'ground_type': Object.freeze(['', '芝', 'ダート']),
 		'id': 'ID: ',
 		'meters': '{{n}}m',
@@ -76,13 +78,13 @@ export const STRINGS_ja = Object.freeze({
 		'order_rate': 'チャンミ：{{cm}}、リグヒ：{{loh}}',
 		'preconditions': '前提条件',
 		'rotation': Object.freeze(['', '右回り', '左回り']),
-		'running_style': Object.freeze(['', '逃げ', '先行', '差し', '追込']),
-		'season': Object.freeze(['', '早春', '夏', '秋', '冬', '春']),
+		'running_style': COMMON_ja['strategy'],
+		'season': COMMON_ja['season'],
 		'seconds': '{{n}}s',
 		'slope': Object.freeze(['平地', '上り坂', '下り坂']),
 		'speed': '{{n}}m/s',
 		'time': Object.freeze(['', '朝', '昼', '夕方', '夜']),
-		'weather': Object.freeze(['', '晴れ', '曇り', '雨', '雪'])
+		'weather': COMMON_ja['weather']
 	})
 });
 
@@ -136,7 +138,7 @@ export const STRINGS_en = Object.freeze({
 		'durationincrease': '{{n}}×',
 		'effects': 'Effects:',
 		'grade': Object.freeze({100: 'G1', 200: 'G2', 300: 'G3', 400: 'OP', 700: 'Pre-OP', 800: 'Maiden', 900: 'Debut', 999: 'Daily races'}),
-		'ground_condition': Object.freeze(['', 'Good', 'Yielding', 'Soft', 'Heavy']),
+		'ground_condition': COMMON_en['ground'],
 		'ground_type': Object.freeze(['', 'Turf', 'Dirt']),
 		'id': 'ID: ',
 		'meters': '{{n}}m',
@@ -144,15 +146,31 @@ export const STRINGS_en = Object.freeze({
 		'order_rate': 'CM: {{cm}}, LOH: {{loh}}',
 		'preconditions': 'Preconditions:',
 		'rotation': Object.freeze(['', 'Clockwise', 'Counterclockwise']),
-		'running_style': Object.freeze(['', 'Runner', 'Leader', 'Betweener', 'Chaser']),
-		'season': Object.freeze(['', 'Early spring', 'Summer', 'Autumn', 'Winter', 'Late spring']),
+		'running_style': COMMON_en['strategy'],
+		'season': COMMON_en['season'],
 		'seconds': '{{n}}s',
 		'slope': Object.freeze(['Flat', 'Uphill', 'Downhill']),
 		'speed': '{{n}}m/s',
 		'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
-		'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy'])
+		'weather': COMMON_en['weather']
 	})
 });
+
+export const STRINGS_global = extendStrings(STRINGS_en, {
+	'skilldetails': extendStrings(STRINGS_en['skilldetails'], {
+		'ground_condition': COMMON_global['ground'],
+		'running_style': COMMON_global['strategy'],
+		'season': COMMON_global['season'],
+		'weather': COMMON_global['weather']
+	})
+});
+
+const STRINGS = {
+	'ja': STRINGS_ja,
+	'en': STRINGS_en,
+	'en-ja': STRINGS_en,
+	'en-global': STRINGS_global
+};
 
 function C(s: string) {
 	return Parser.parseAny(Parser.tokenize(s));
@@ -380,7 +398,7 @@ export function ExpandedSkillDetails(props) {
 	const skill = skilldata[props.id];
 	const lang = useLanguage();
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+		<IntlProvider definition={STRINGS[lang]}>
 			<div class={`expandedSkill ${classnames[skill.rarity]}`} data-skillid={props.id}>
 				<div class="expandedSkillHeader">
 					<img class="skillIcon" src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} />
@@ -585,7 +603,7 @@ export function SkillList(props) {
 	}, [props.ids, props.selected, visible]);
 
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+		<IntlProvider definition={STRINGS[lang]}>
 			<div class="filterGroups" onClick={updateFilters}>
 				<div data-filter-group="search">
 					<Localizer><input type="text" class="filterSearch" value={searchText} placeholder={<Text id="skillfilters.search" />} onInput={updateFilters} ref={searchInput} /></Localizer>

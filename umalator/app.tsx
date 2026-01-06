@@ -1,6 +1,6 @@
 import { h, Fragment, render } from 'preact';
 import { useState, useReducer, useMemo, useEffect, useRef, useId, useCallback } from 'preact/hooks';
-import { Text, IntlProvider } from 'preact-i18n';
+import { Text, MarkupText, Localizer, IntlProvider } from 'preact-i18n';
 import { Record, Map as ImmMap } from 'immutable';
 import * as d3 from 'd3';
 import { computePosition, flip } from '@floating-ui/dom';
@@ -14,7 +14,7 @@ import { ExpandedSkillDetails, STRINGS_en as SKILL_STRINGS_en } from '../compone
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
-import { TRACKNAMES_ja, TRACKNAMES_en, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
+import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
 
 import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
 
@@ -30,6 +30,58 @@ import './app.css';
 
 const DEFAULT_SAMPLES = 500;
 const DEFAULT_SEED = 2615953739;
+
+const UI_ja = Object.freeze({
+	'lengthsunit': 'バ身',
+	'resultshelp': '負の数とは<strong style="color:#2a77c5">第一ウマ娘</strong>の方が速い。正の数とは<strong style="color:#c52a2a">第二ウマ娘</strong>の方が速い。',
+	'uma1': '第一ウマ娘',
+	'uma2': '第二ウマ娘',
+	'mode': Object.freeze({
+		'compare': '真っ向勝負',
+		'chart': 'スキル効果値'
+	}),
+	'sidebar': Object.freeze({
+		'mode': 'モード',
+		'seed': '乱数シード',
+		'intchecks': 'Wisdom checks for skills',
+		'run': Object.freeze({
+			'compare': '比べる',
+			'chart': '実行する'
+		}),
+	})
+});
+const UI_en = Object.freeze({
+	'lengthsunit': 'bashin',
+	'resultshelp': 'Negative numbers mean <strong style="color:#2a77c5">Umamusume 1</strong> is faster, positive numbers mean <strong style="color:#c52a2a">Umamusume 2</strong> is faster.',
+	'uma1': 'Umamusume 1',
+	'uma2': 'Umamusume 2',
+	'mode': Object.freeze({
+		'compare': 'Compare',
+		'chart': 'Skill table'
+	}),
+	'sidebar': Object.freeze({
+		'mode': 'Mode:',
+		'seed': 'Seed:',
+		'intchecks': 'Wisdom checks for skills',
+		'run': Object.freeze({
+			'compare': 'COMPARE',
+			'chart': 'RUN'
+		}),
+	})
+});
+const UI_global = extendStrings(UI_en, {
+	'lengthsunit': 'lengths',
+	'sidebar': extendStrings(UI_en['sidebar'], {
+		'intchecks': 'Wit checks for skills'
+	})
+});
+
+const UI = Object.freeze({
+	'ja': UI_ja,
+	'en': UI_en,
+	'en-ja': UI_en,
+	'en-global': UI_global
+});
 
 class RaceParams extends Record({
 	mood: 2 as Mood,
@@ -118,22 +170,12 @@ function TimeOfDaySelect(props) {
 }
 
 function GroundSelect(props) {
-	if (CC_GLOBAL) {
-		return (
-			<select class="groundSelect" value={props.value} onInput={(e) => props.set(+e.currentTarget.value)}>
-				<option value="1">Firm</option>
-				<option value="2">Good</option>
-				<option value="3">Soft</option>
-				<option value="4">Heavy</option>
-			</select>
-		);
-	}
 	return (
 		<select class="groundSelect" value={props.value} onInput={(e) => props.set(+e.currentTarget.value)}>
-			<option value="1">良</option>
-			<option value="2">稍重</option>
-			<option value="3">重</option>
-			<option value="4">不良</option>
+			<option value="1"><Text id="common.ground.1" /></option>
+			<option value="2"><Text id="common.ground.2" /></option>
+			<option value="3"><Text id="common.ground.3" /></option>
+			<option value="4"><Text id="common.ground.4" /></option>
 		</select>
 	);
 }
@@ -559,7 +601,7 @@ function App(props) {
 		setUma2(uma1);
 	}
 
-	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: CC_GLOBAL ? COMMON_global : COMMON_en};
+	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: CC_GLOBAL ? COMMON_global : COMMON_en, ui: UI[props.lang]};
 	const langid = CC_GLOBAL ? 0 : +(props.lang == 'en');
 	Object.keys(skillnames).forEach(id => strings.skillnames[id] = skillnames[id][langid]);
 
@@ -686,19 +728,21 @@ function App(props) {
 						</tfoot>
 						<tbody>
 							<tr>
-								<td onClick={() => setChartData('minrun')}>{results[0].toFixed(2)}<span class="unit-basinn">{CC_GLOBAL?'lengths':'バ身'}</span></td>
-								<td onClick={() => setChartData('maxrun')}>{results[results.length-1].toFixed(2)}<span class="unit-basinn">{CC_GLOBAL?'lengths':'バ身'}</span></td>
-								<td onClick={() => setChartData('meanrun')}>{mean.toFixed(2)}<span class="unit-basinn">{CC_GLOBAL?'lengths':'バ身'}</span></td>
-								<td onClick={() => setChartData('medianrun')}>{median.toFixed(2)}<span class="unit-basinn">{CC_GLOBAL?'lengths':'バ身'}</span></td>
+								<td onClick={() => setChartData('minrun')}>{results[0].toFixed(2)}<span class="unit-basinn"><Text id="ui.lengthsunit" /></span></td>
+								<td onClick={() => setChartData('maxrun')}>{results[results.length-1].toFixed(2)}<span class="unit-basinn"><Text id="ui.lengthsunit" /></span></td>
+								<td onClick={() => setChartData('meanrun')}>{mean.toFixed(2)}<span class="unit-basinn"><Text id="ui.lengthsunit" /></span></td>
+								<td onClick={() => setChartData('medianrun')}>{median.toFixed(2)}<span class="unit-basinn"><Text id="ui.lengthsunit" /></span></td>
 							</tr>
 						</tbody>
 					</table>
-					<div id="resultsHelp">Negative numbers mean <strong style="color:#2a77c5">Umamusume 1</strong> is faster, positive numbers mean <strong style="color:#c52a2a">Umamusume 2</strong> is faster.</div>
+					<div id="resultsHelp"><MarkupText id="ui.resultshelp" /></div>
 					<Histogram width={500} height={333} data={results} />
 				</div>
 				<div id="infoTables">
-					<ResultsTable caption="Umamusume 1" color="#2a77c5" chartData={chartData} idx={0} />
-					<ResultsTable caption="Umamusume 2" color="#c52a2a" chartData={chartData} idx={1} />
+					<Localizer>
+						<ResultsTable caption={<Text id="ui.uma1" />} color="#2a77c5" chartData={chartData} idx={0} />
+						<ResultsTable caption={<Text id="ui.uma2" />} color="#c52a2a" chartData={chartData} idx={1} />
+					</Localizer>
 				</div>
 			</div>
 		);
@@ -745,19 +789,19 @@ function App(props) {
 					</RaceTrack>
 					<div id="runPane">
 						<fieldset>
-							<legend>Mode:</legend>
+							<legend><Text id="ui.sidebar.mode" /></legend>
 							<div>
 								<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => updateUiState(UiStateMsg.SetModeCompare)} />
-								<label for="mode-compare">Compare</label>
+								<label for="mode-compare"><Text id="ui.mode.compare" /></label>
 							</div>
 							<div>
 								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => updateUiState(UiStateMsg.SetModeChart)} />
-								<label for="mode-chart">Skill table</label>
+								<label for="mode-chart"><Text id="ui.mode.chart" /></label>
 							</div>
 						</fieldset>
 						<label for="nsamples">Samples:</label>
 						<input type="number" id="nsamples" min="1" max="10000" value={nsamples} onInput={(e) => setSamples(+e.currentTarget.value)} />
-						<label for="seed">Seed:</label>
+						<label for="seed"><Text id="ui.sidebar.seed" /></label>
 						<div id="seedWrapper">
 							<input type="number" id="seed" value={seed} onInput={(e) => setSeed(+e.currentTarget.value)} />
 							<button title="Randomize seed" onClick={() => setSeed(Math.floor(Math.random() * (-1 >>> 0)) >>> 0)}>🎲</button>
@@ -767,7 +811,7 @@ function App(props) {
 							<input type="checkbox" id="poskeep" checked={usePosKeep} onClick={togglePosKeep} />
 						</div>
 						<div>
-							<label for="intchecks">{CC_GLOBAL?'Wit checks for skills':'Wisdom checks for skills'}</label>
+							<label for="intchecks"><Text id="ui.sidebar.intchecks" /></label>
 							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} />
 						</div>
 						<div>
@@ -776,8 +820,8 @@ function App(props) {
 						</div>
 						{
 							mode == Mode.Compare
-							? <button id="run" onClick={doComparison} tabindex={1}>COMPARE</button>
-							: <button id="run" onClick={doBasinnChart} tabindex={1}>RUN</button>
+							? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
+							: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
 						}
 						<a href="#" onClick={copyStateUrl}>Copy link</a>
 						<RacePresets courseId={courseId} racedef={racedef} set={(courseId, racedef) => { setCourseId(courseId); setRaceDef(racedef); }} />
@@ -827,7 +871,7 @@ try {
 	// try to detect if we're in a cross-domain iframe by deliberately triggering a CORS violation (we can't inspect any
 	// properties of the parent page directly, but we can exploit that to determine if we're being embedded)
 	window.parent && window.parent.location.hostname;
-	render(<App lang="en-ja" />, document.getElementById('app'));
+	render(<App lang={CC_GLOBAL?"en-global":"en-ja"} />, document.getElementById('app'));
 } catch (e) {
 	if (e instanceof DOMException) {
 		document.getElementById('app').innerHTML = '<p style="font-size:22px"><span style="border:3px solid orange;border-radius:3em;color:orange;display:inline-block;font-weight:bold;height:1.8em;line-height:1.8em;text-align:center;width:1.8em">!</span> You are probably on some kind of scummy ad-infested rehosting site. The official URL for the Umalator is <a href="https://alpha123.github.io/uma-tools/umalator-global/" target="_blank">https://alpha123.github.io/uma-tools/umalator-global/</a>.</p>'
