@@ -10,11 +10,11 @@ import { RaceParameters, Mood, GroundCondition, Weather, Season, Time, Grade } f
 import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
-import { ExpandedSkillDetails, STRINGS_en as SKILL_STRINGS_en } from '../components/SkillList';
+import { ExpandedSkillDetails } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
-import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
+import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
 import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
 
@@ -42,12 +42,16 @@ const UI_ja = Object.freeze({
 	}),
 	'sidebar': Object.freeze({
 		'mode': 'モード',
+		'samples': '標本数',
 		'seed': '乱数シード',
+		'poskeep': 'Simulate pos keep',
 		'intchecks': 'Wisdom checks for skills',
+		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
 			'compare': '比べる',
 			'chart': '実行する'
 		}),
+		'copylink': 'リンクをコピー'
 	})
 });
 const UI_en = Object.freeze({
@@ -61,12 +65,16 @@ const UI_en = Object.freeze({
 	}),
 	'sidebar': Object.freeze({
 		'mode': 'Mode:',
+		'samples': 'Samples:',
 		'seed': 'Seed:',
+		'poskeep': 'Simulate pos keep',
 		'intchecks': 'Wisdom checks for skills',
+		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
 			'compare': 'COMPARE',
 			'chart': 'RUN'
 		}),
+		'copylink': 'Copy link'
 	})
 });
 const UI_global = extendStrings(UI_en, {
@@ -76,7 +84,7 @@ const UI_global = extendStrings(UI_en, {
 	})
 });
 
-const UI = Object.freeze({
+const UI_STRINGS = Object.freeze({
 	'ja': UI_ja,
 	'en': UI_en,
 	'en-ja': UI_en,
@@ -162,9 +170,11 @@ function TimeOfDaySelect(props) {
 	// + 2 because for some reason the icons are 00-02 (noon/evening/night) but the enum values are 1-4 (morning(?) noon evening night)
 	return (
 		<div class="timeofdaySelect" onClick={click}>
-			{Array(3).fill(0).map((_,i) =>
-				<img src={`/uma-tools/icons/utx_ico_timezone_0${i}.png`} title={SKILL_STRINGS_en.skilldetails.time[i+2]}
-					class={i+2 == props.value ? 'selected' : ''} data-timeofday={i+2} />)}
+			<Localizer>
+				{Array(3).fill(0).map((_,i) =>
+					<img src={`/uma-tools/icons/utx_ico_timezone_0${i}.png`} title={<Text id={`common.time.${i+2}`} />}
+						class={i+2 == props.value ? 'selected' : ''} data-timeofday={i+2} />)}
+			</Localizer>
 		</div>
 	);
 }
@@ -188,9 +198,11 @@ function WeatherSelect(props) {
 	}
 	return (
 		<div class="weatherSelect" onClick={click}>
-			{Array(4).fill(0).map((_,i) =>
-				<img src={`/uma-tools/icons/utx_ico_weather_0${i}.png`} title={SKILL_STRINGS_en.skilldetails.weather[i+1]}
-					class={i+1 == props.value ? 'selected' : ''} data-weather={i+1} />)}
+			<Localizer>
+				{Array(4).fill(0).map((_,i) =>
+					<img src={`/uma-tools/icons/utx_ico_weather_0${i}.png`} title={<Text id={`common.weather.${i+1}`} />}
+						class={i+1 == props.value ? 'selected' : ''} data-weather={i+1} />)}
+			</Localizer>
 		</div>
 	);
 }
@@ -203,9 +215,11 @@ function SeasonSelect(props) {
 	}
 	return (
 		<div class="seasonSelect" onClick={click}>
-			{Array(4 + +!CC_GLOBAL /* global doesnt have late spring for some reason */).fill(0).map((_,i) =>
-				<img src={`/uma-tools/icons${CC_GLOBAL?'/global':''}/utx_txt_season_0${i}.png`} title={SKILL_STRINGS_en.skilldetails.season[i+1]}
-					class={i+1 == props.value ? 'selected' : ''} data-season={i+1} />)}
+			<Localizer>
+				{Array(4 + +!CC_GLOBAL /* global doesnt have late spring for some reason */).fill(0).map((_,i) =>
+					<img src={`/uma-tools/icons${CC_GLOBAL?'/global':''}/utx_txt_season_0${i}.png`} title={<Text id={`common.season.${i+1}`} />}
+						class={i+1 == props.value ? 'selected' : ''} data-season={i+1} />)}
+			</Localizer>
 		</div>
 	);
 }
@@ -601,7 +615,7 @@ function App(props) {
 		setUma2(uma1);
 	}
 
-	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: CC_GLOBAL ? COMMON_global : COMMON_en, ui: UI[props.lang]};
+	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: COMMON_STRINGS[props.lang], ui: UI_STRINGS[props.lang]};
 	const langid = CC_GLOBAL ? 0 : +(props.lang == 'en');
 	Object.keys(skillnames).forEach(id => strings.skillnames[id] = skillnames[id][langid]);
 
@@ -799,7 +813,7 @@ function App(props) {
 								<label for="mode-chart"><Text id="ui.mode.chart" /></label>
 							</div>
 						</fieldset>
-						<label for="nsamples">Samples:</label>
+						<label for="nsamples"><Text id="ui.sidebar.samples" /></label>
 						<input type="number" id="nsamples" min="1" max="10000" value={nsamples} onInput={(e) => setSamples(+e.currentTarget.value)} />
 						<label for="seed"><Text id="ui.sidebar.seed" /></label>
 						<div id="seedWrapper">
@@ -807,7 +821,7 @@ function App(props) {
 							<button title="Randomize seed" onClick={() => setSeed(Math.floor(Math.random() * (-1 >>> 0)) >>> 0)}>🎲</button>
 						</div>
 						<div>
-							<label for="poskeep">Simulate pos keep</label>
+							<label for="poskeep"><Text id="ui.sidebar.poskeep" /></label>
 							<input type="checkbox" id="poskeep" checked={usePosKeep} onClick={togglePosKeep} />
 						</div>
 						<div>
@@ -815,7 +829,7 @@ function App(props) {
 							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} />
 						</div>
 						<div>
-							<label for="showhp">Show HP consumption</label>
+							<label for="showhp"><Text id="ui.sidebar.showhp" /></label>
 							<input type="checkbox" id="showhp" checked={showHp} onClick={toggleShowHp} />
 						</div>
 						{
@@ -823,7 +837,7 @@ function App(props) {
 							? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
 							: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
 						}
-						<a href="#" onClick={copyStateUrl}>Copy link</a>
+						<a href="#" onClick={copyStateUrl}><Text id="ui.sidebar.copylink" /></a>
 						<RacePresets courseId={courseId} racedef={racedef} set={(courseId, racedef) => { setCourseId(courseId); setRaceDef(racedef); }} />
 					</div>
 					<div id="buttonsRow">

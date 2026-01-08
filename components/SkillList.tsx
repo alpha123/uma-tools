@@ -20,7 +20,7 @@ import skillmeta from '../skill_meta.json';
 
 const Parser = getParser(Matcher.mockConditions);
 
-export const STRINGS_ja = Object.freeze({
+const STRINGS_ja = Object.freeze({
 	'skillfilters': Object.freeze({
 		'search': '',  // TODO translate
 		'white': '白スキル',
@@ -83,12 +83,12 @@ export const STRINGS_ja = Object.freeze({
 		'seconds': '{{n}}s',
 		'slope': Object.freeze(['平地', '上り坂', '下り坂']),
 		'speed': '{{n}}m/s',
-		'time': Object.freeze(['', '朝', '昼', '夕方', '夜']),
+		'time': COMMON_ja['time'],
 		'weather': COMMON_ja['weather']
 	})
 });
 
-export const STRINGS_en = Object.freeze({
+const STRINGS_en = Object.freeze({
 	'skillfilters': Object.freeze({
 		'search': 'Search by skill name or conditions',
 		'white': 'White skills',
@@ -151,17 +151,18 @@ export const STRINGS_en = Object.freeze({
 		'seconds': '{{n}}s',
 		'slope': Object.freeze(['Flat', 'Uphill', 'Downhill']),
 		'speed': '{{n}}m/s',
-		'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
+		'time': COMMON_en['time'],
 		'weather': COMMON_en['weather']
 	})
 });
 
-export const STRINGS_global = extendStrings(STRINGS_en, {
+const STRINGS_global = extendStrings(STRINGS_en, {
 	'skilldetails': extendStrings(STRINGS_en['skilldetails'], {
 		'ground_condition': COMMON_global['ground'],
 		'running_style': COMMON_global['strategy'],
 		'season': COMMON_global['season'],
-		'weather': COMMON_global['weather']
+		'weather': COMMON_global['weather'],
+		'time': COMMON_global['time']
 	})
 });
 

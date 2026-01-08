@@ -18,7 +18,8 @@ export const COMMON_ja = Object.freeze({
 	'ground': Object.freeze(['', '良', '稍重', '重', '不良']),
 	'weather': Object.freeze(['', '晴れ', '曇り', '雨', '雪']),
 	'season': Object.freeze(['', '早春', '夏', '秋', '冬', '春']),
-	'strategy': Object.freeze(['', '逃げ', '先行', '差し', '追込', '大逃げ'])
+	'strategy': Object.freeze(['', '逃げ', '先行', '差し', '追込', '大逃げ']),
+	'time': Object.freeze(['', '朝', '昼', '夕方', '夜']),
 });
 
 export const COMMON_en = Object.freeze({
@@ -27,7 +28,8 @@ export const COMMON_en = Object.freeze({
 	'ground': Object.freeze(['', 'Good', 'Yielding', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),
 	'season': Object.freeze(['', 'Early spring', 'Summer', 'Autumn', 'Winter', 'Late spring']),
-	'strategy': Object.freeze(['', 'Runner', 'Leader', 'Betweener', 'Chaser', 'Oonige'])
+	'strategy': Object.freeze(['', 'Runner', 'Leader', 'Betweener', 'Chaser', 'Oonige']),
+	'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
 });
 
 export const COMMON_global = Object.freeze({
@@ -36,5 +38,13 @@ export const COMMON_global = Object.freeze({
 	'ground': Object.freeze(['', 'Firm', 'Good', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),
 	'season': Object.freeze(['', 'Spring', 'Summer', 'Fall', 'Winter', 'Spring']),
-	'strategy': Object.freeze(['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer', 'Runaway'])
+	'strategy': Object.freeze(['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer', 'Runaway']),
+	'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
+});
+
+export const COMMON_STRINGS = Object.freeze({
+	'ja': COMMON_ja,
+	'en': COMMON_en,
+	'en-ja': COMMON_en,
+	'en-global': COMMON_global
 });
