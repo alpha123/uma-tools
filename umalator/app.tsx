@@ -103,6 +103,8 @@ class RaceParams extends Record({
 const enum EventType { CM, LOH }
 
 const presets = (CC_GLOBAL ? [
+	// TODO correct date
+	{type: EventType.CM, name: 'Capricorn Cup', date: '2026-02-21', courseId: 10701, season: Season.Winter, ground: GroundCondition.Soft, weather: Weather.Snowy, time: Time.Midday},
 	// TODO date for sagittarius is just estimated so that both it and scorpio arent 2026-01
 	{type: EventType.CM, name: 'Sagittarius Cup', date: '2026-01-28', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Scorpio Cup', date: '2026-01-01', courseId: 10604, season: Season.Autumn, ground: GroundCondition.Soft, weather: Weather.Rainy, time: Time.Midday},
