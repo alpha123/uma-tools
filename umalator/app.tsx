@@ -2,7 +2,6 @@ import { h, Fragment, render } from 'preact';
 import { useState, useReducer, useMemo, useEffect, useRef, useId, useCallback } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { Text, MarkupText, Localizer, IntlProvider } from 'preact-i18n';
-import { Record, Map as ImmMap } from 'immutable';
 import * as d3 from 'd3';
 import { computePosition, flip } from '@floating-ui/dom';
 

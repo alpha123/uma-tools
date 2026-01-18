@@ -2,7 +2,6 @@ import { h, Fragment } from 'preact';
 import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { IntlProvider, Text } from 'preact-i18n';
-import { Set as ImmSet } from 'immutable';
 
 import { O, c, id, useLens, useGetter, Delete } from '../optics';
 
@@ -265,7 +264,7 @@ export function horseDefTabs() {
 export const HorseDef = memo(function HorseDef(props) {
 	const lang = useLanguage();
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
-	const [expanded, setExpanded] = useState(() => ImmSet());
+	const [expanded, setExpanded] = useState(new Set());
 	const strategy = useGetter(props.state.strategy);
 	// essentially what we want to do is:
 	//   - when the user selects oonige, the strategy should be set to oonige
@@ -336,11 +335,14 @@ export const HorseDef = memo(function HorseDef(props) {
 		if (e.target.classList.contains('skillDismiss')) {
 			// can't just remove skillmeta[skillid].groupId because debuffs will have a fake groupId
 			const k = Array.from(skills.entries()).find(([g,id]) => id == se.dataset.skillid)[0];
-			setSkills(new (O.get(k))(Delete));
+			skills.delete(k);
+			setSkills(new Map(skills));
 		} else if (se.classList.contains('expandedSkill')) {
-			setExpanded(expanded.delete(se.dataset.skillid));
+			expanded.delete(se.dataset.skillid);
+			setExpanded(new Set(expanded));
 		} else {
-			setExpanded(expanded.add(se.dataset.skillid));
+			expanded.add(se.dataset.skillid);
+			setExpanded(new Set(expanded));
 		}
 	}
 

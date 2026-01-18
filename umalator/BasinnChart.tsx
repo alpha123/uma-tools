@@ -1,7 +1,6 @@
 import { h, Fragment } from 'preact';
 import { useState, useMemo, useId } from 'preact/hooks';
 import { Text, Localizer } from 'preact-i18n';
-import { Map as ImmMap } from 'immutable';
 
 import {
 	ColumnDef, SortFn, SortingState,
