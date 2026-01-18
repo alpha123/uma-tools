@@ -231,7 +231,14 @@
 
 /* one day i'll actually learn CSS */
 .horseAptitudeSelect li {
-	margin-left: -22px;
+	display: flex;
+	margin-left: -40px;
+	padding: 4px 0 4px 22px;
+	width: 38px;
+}
+
+.horseAptitudeSelect li:hover {
+	background: rgb(0, 120, 215);
 }
 
 .horseAptitudeSelect img {
