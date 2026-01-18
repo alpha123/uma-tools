@@ -208,6 +208,7 @@ export function AptitudeSelect(props){
 		const k = e.key.toUpperCase();
 		if (APTITUDES.indexOf(k) > -1) {
 			setA(k);
+			setOpen(false);
 		}
 	}
 	return (
