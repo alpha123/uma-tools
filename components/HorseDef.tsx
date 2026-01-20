@@ -52,6 +52,13 @@ const STRINGS_global = Object.freeze({
 	'addskill': 'Add Skill'
 });
 
+const STRINGS = {
+	'ja': STRINGS_ja,
+	'en': STRINGS_en,
+	'en-ja': STRINGS_en,
+	'en-global': STRINGS_global
+};
+
 const umaAltIds = Object.keys(umas).flatMap(id => Object.keys(umas[id].outfits));
 const umaNamesForSearch = {};
 umaAltIds.forEach(id => {
@@ -367,7 +374,7 @@ export const HorseDef = memo(function HorseDef(props) {
 	}, [skills, umaId, expanded, props.courseDistance]);
 
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_global}>
+		<IntlProvider definition={STRINGS[lang]}>
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
 				<UmaSelector outfitId={l_umaId} tabindex={tabnext()} />
