@@ -3,11 +3,12 @@ import { useCallback, useContext, useState, useEffect } from 'preact/hooks';
 
 import './Language.css';
 
-const defaultLanguage = localStorage.getItem('language') || (navigator.language.startsWith('ja') ? 'ja' : 'en-ja');
+const LANG_KEY = CC_GLOBAL ? 'globalLanguage' : 'language';
+const defaultLanguage = localStorage.getItem(LANG_KEY) || (CC_GLOBAL ? 'en-global' : navigator.language.startsWith('ja') ? 'ja' : 'en-ja');
 
 export function useLanguageSelect() {
     const p = useState(defaultLanguage);
-    useEffect(() => localStorage.setItem('language', p[0]), [p[0]]);
+    useEffect(() => localStorage.setItem(LANG_KEY, p[0]), [p[0]]);
     return p;
 }
 
