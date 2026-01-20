@@ -372,8 +372,8 @@ export function RaceTrack(props) {
 	}, [props.regions, course.distance]);
 
 	const statStrings = useText({1: 'common.stat.1', 2: 'common.stat.2', 3: 'common.stat.3', 4: 'common.stat.4', 5: 'common.stat.5'});
-	const {joiner} = useText('common.joiner');
-	const statThresholds = course.courseSetStatus.map(s => statStrings[s]).join(joiner);
+	const {noneStat, joiner} = useText({noneStat: 'common.stat.0', joiner: 'common.joiner'});
+	const statThresholds = course.courseSetStatus.length == 0 ? noneStat : course.courseSetStatus.map(s => statStrings[s]).join(joiner);
 
 	return (
 		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
@@ -388,7 +388,7 @@ export function RaceTrack(props) {
 					</svg>
 					{props.children}
 				</svg>
-				{course.courseSetStatus.length > 0 && <div class="racetrackStatThresholds"><Text id="racetrack.thresholds" />{statThresholds}</div>}
+				{<div class="racetrackStatThresholds"><Text id="racetrack.thresholds" />{statThresholds}</div>}
 			</div>
 		</IntlProvider>
 	);
