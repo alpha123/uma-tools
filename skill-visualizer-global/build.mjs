@@ -50,7 +50,7 @@ const mockAssert = {
 };
 
 const buildOptions = {
-	entryPoints: [{in: 'app.tsx', out: 'bundle'}],
+	entryPoints: [{in: '../skill-visualizer/app.tsx', out: 'bundle'}],
 	bundle: true,
 	minify: !debug,
 	outdir: '.',
@@ -73,7 +73,7 @@ const MIME_TYPES = {
 	'.woff': 'font/woff'
 };
 
-const ARTIFACTS = ['bundle.js', 'bundle.css', 'simulator.worker.js'];
+const ARTIFACTS = ['bundle.js', 'bundle.css'];
 
 function runServer(ctx, port) {
 	const requestCount = new Map(ARTIFACTS.map(f => [f, 0]));

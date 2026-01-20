@@ -1,5 +1,6 @@
 .racetrackWrapper {
 	margin: auto;
+	position: relative;
 }
 
 #skillDetailsWrapper {
@@ -91,13 +92,13 @@
 	border-right: none;
 }
 
-#thresholds {
+.racetrackStatThresholds {
 	font-size: 0.8em;
 	left: 50%;
 	line-height: 2.8em;
 	position: absolute;
 	text-align: center;
-	top: 0;
+	bottom: -2.8em;
 	transform: translate(-50%, 0);
 }
 
