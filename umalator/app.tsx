@@ -9,7 +9,7 @@ import { CourseHelpers } from '../uma-skill-tools/CourseData';
 import { RaceParameters, Mood, GroundCondition, Weather, Season, Time, Grade } from '../uma-skill-tools/RaceParameters';
 import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 
-import { O, c, State, makeState, useLens, useSetter } from '../optics';
+import { O, c, K, State, makeState, useLens, useSetter } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { ExpandedSkillDetails } from '../components/SkillList';
@@ -501,29 +501,50 @@ const RacePresets = memo(function RacePresets(props) {
 			</select>
 		</Fragment>
 	);
-}, () => true);
+}, K(true));
 
 const baseSkillsToTest = Object.keys(skilldata).filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
 
-const enum Mode { Compare, Chart }
-const enum UiStateMsg { SetModeCompare, SetModeChart, SetCurrentIdx0, SetCurrentIdx1, ToggleExpand }
-
-const DEFAULT_UI_STATE = {mode: Mode.Compare, currentIdx: 0, expanded: false};
-
-function nextUiState(state: typeof DEFAULT_UI_STATE, msg: UiStateMsg) {
-	switch (msg) {
-		case UiStateMsg.SetModeCompare:
-			return {...state, mode: Mode.Compare};
-		case UiStateMsg.SetModeChart:
-			return {...state, mode: Mode.Chart, currentIdx: 0, expanded: false};
-		case UiStateMsg.SetCurrentIdx0:
-			return {...state, currentIdx: 0};
-		case UiStateMsg.SetCurrentIdx1:
-			return {...state, currentIdx: 1};
-		case UiStateMsg.ToggleExpand:
-			return {...state, expanded: !state.expanded};
-	}
+function pathValue(base, routeDesc, default_) {
+	const k = Object.keys(routeDesc);
+	const url = window.location.pathname.slice(base.length);
+	const i = k.findIndex(path => url.indexOf(path) != -1);
+	return i == -1 ? default_ : routeDesc[k[i]];
 }
+
+function useRoute<T>(base: string, getRouteDesc: () => Record<string,T>, default_: T, deps: any[]=[]): [T, (value: T) => void] {
+	const routeDesc = useMemo(getRouteDesc, deps);
+	const reverse = useMemo(() => {
+		const reverse = new Map();
+		Object.keys(routeDesc).forEach((path,value) => reverse.set(value, path));
+		return reverse;
+	}, [routeDesc]);
+	const [lastNav, setLastNav] = useState(default_);
+	const [current, setCurrent] = useState(() => pathValue(base, routeDesc, default_));
+	useEffect(function () {
+		function pageshow() {
+			const v = pathValue(base, routeDesc, default_);
+			setCurrent(v);
+			setLastNav(v);
+		}
+		function popstate(e) {
+			setCurrent(e.state != null ? e.state : lastNav);
+		}
+		window.addEventListener('pageshow', pageshow);
+		window.addEventListener('popstate', popstate);
+		return function () {
+			window.removeEventListener('pageshow', pageshow);
+			window.removeEventListener('popstate', popstate);
+		};
+	}, [routeDesc, lastNav]);
+	const navigate = useCallback(function (value) {
+		window.history.pushState(value, '', base + reverse.get(value) + window.location.hash);
+		setCurrent(value);
+	}, [routeDesc]);
+	return [current, navigate];
+}
+
+const enum Mode { Compare, Chart }
 
 function Umalator(props) {
 	//const [language, setLanguage] = useLanguageSelect();
@@ -558,11 +579,18 @@ function Umalator(props) {
 	const [uma2, setUma2] = useLens(O.uma2);
 	const [lastRunChartUma, setLastRunChartUma] = useState(DEFAULT_HORSE_STATE);
 
-	const [{mode, currentIdx, expanded}, updateUiState] = useReducer(nextUiState, DEFAULT_UI_STATE);
+	const [mode, setMode] = useRoute(CC_GLOBAL ? '/uma-tools/umalator-global' : '/uma-tools/umalator', () => ({
+		'/compare': Mode.Compare,
+		'/skills': Mode.Chart
+	}), Mode.Compare);
+	const [currentIdx_, setCurrentIdx] = useState(0);
+	const currentIdx = mode != Mode.Compare ? 0 : currentIdx_;
+	const [expanded_, setExpanded] = useState(false);
+	const expanded = mode == Mode.Compare && expanded_;
 	function toggleExpand(e: Event) {
 		e.stopPropagation();
 		postEvent('toggleExpand', {expand: !expanded});
-		updateUiState(UiStateMsg.ToggleExpand);
+		setExpanded(!expanded_);
 	}
 
 	const [popoverSkill, setPopoverSkill] = useState('');
@@ -710,8 +738,8 @@ function Umalator(props) {
 
 	const umaTabs = useMemo(() => (
 		<Fragment>
-			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => updateUiState(UiStateMsg.SetCurrentIdx0)}>Umamusume 1</div>
-			{mode == Mode.Compare && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => updateUiState(UiStateMsg.SetCurrentIdx1)}>Umamusume 2<div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
+			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => setCurrentIdx(0)}>Umamusume 1</div>
+			{mode == Mode.Compare && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => setCurrentIdx(1)}>Umamusume 2<div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
 		</Fragment>
 	), [currentIdx, mode]);
 
@@ -798,11 +826,11 @@ function Umalator(props) {
 						<fieldset>
 							<legend><Text id="ui.sidebar.mode" /></legend>
 							<div>
-								<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => updateUiState(UiStateMsg.SetModeCompare)} />
+								<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => setMode(Mode.Compare)} />
 								<label for="mode-compare"><Text id="ui.mode.compare" /></label>
 							</div>
 							<div>
-								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => updateUiState(UiStateMsg.SetModeChart)} />
+								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => setMode(Mode.Chart)} />
 								<label for="mode-chart"><Text id="ui.mode.chart" /></label>
 							</div>
 						</fieldset>
