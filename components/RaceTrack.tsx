@@ -6,7 +6,7 @@ import { CourseData, CourseHelpers, Surface, Orientation } from '../uma-skill-to
 import { Region, RegionList } from '../uma-skill-tools/Region';
 
 import { useLanguage } from './Language';
-import { TRACKNAMES_ja, TRACKNAMES_en } from '../strings/common';
+import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en } from '../strings/common';
 
 import courses from '../uma-skill-tools/data/course_data.json';
 import tracknames from '../uma-skill-tools/data/tracknames.json';
@@ -76,6 +76,22 @@ const STRINGS_en = Object.freeze({
 	}) 
 });
 
+const STRINGS_global = extendStrings(STRINGS_en, {
+	'racetrack': extendStrings(STRINGS_en['racetrack'], {
+		'orientation': Object.freeze(['', '(right-handed)', '(left-handed)', '', '(straight)']),
+		'phase0': 'Early-race',
+		'phase1': 'Mid-race',
+		'phase2': 'Late-race'
+	})
+});
+
+const STRINGS = {
+	'ja': STRINGS_ja,
+	'en': STRINGS_en,
+	'en-ja': STRINGS_en,
+	'en-global': STRINGS_global
+};
+
 const inoutKey = Object.freeze(['', 'none', 'inner', 'outer', 'outin']);
 
 const coursesByTrack = (function () {
@@ -103,7 +119,7 @@ export function TrackSelect(props) {
 	}
 
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+		<IntlProvider definition={STRINGS[lang]}>
 			<div class="trackSelect">
 				<select value={trackid} onChange={changeTrack} tabindex={props.tabindex}>
 					{Object.keys(tracknames).map(tid => <option value={tid}><Text id={`tracknames.${tid}`} /></option>)}
@@ -376,7 +392,7 @@ export function RaceTrack(props) {
 	const statThresholds = course.courseSetStatus.length == 0 ? noneStat : course.courseSetStatus.map(s => statStrings[s]).join(joiner);
 
 	return (
-		<IntlProvider definition={lang == 'ja' ? STRINGS_ja : STRINGS_en}>
+		<IntlProvider definition={STRINGS[lang]}>
 			<div class="racetrackWrapper" style={`width:${props.width + xOffset + xExtra}px`}>
 				{trackNameHeader}
 				<svg version="1.1" width={props.width + xOffset + xExtra} height={props.height + yOffset + yExtra} xmlns="http://www.w3.org/2000/svg" class="racetrackView" data-courseid={props.courseid} onMouseMove={doMouseMove} onMouseLeave={doMouseLeave}>
