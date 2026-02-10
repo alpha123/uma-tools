@@ -74,12 +74,13 @@ function runChart({skills, course, racedef, uma, options}) {
 }
 
 function runCompare({nsamples, course, racedef, uma1, uma2, options}) {
+	const seedgen = new Rule30CARng(options.seed);
 	let results;
 	for (let n = Math.min(20, nsamples), mul = 6; n < nsamples; n = Math.min(n * mul, nsamples), mul = Math.max(mul - 1, 2)) {
-		results = runComparison(n, course, racedef, uma1, uma2, options);
+		results = runComparison(n, course, racedef, uma1, uma2, seedgen.pair(), options);
 		postMessage({type: 'compare', results});
 	}
-	results = runComparison(nsamples, course, racedef, uma1, uma2, options);
+	results = runComparison(nsamples, course, racedef, uma1, uma2, seedgen.pair(), options);
 	postMessage({type: 'compare', results});
 }
 
