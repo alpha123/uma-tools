@@ -1,5 +1,6 @@
 import type { CourseData } from '../uma-skill-tools/CourseData';
 import type { RaceParameters } from '../uma-skill-tools/RaceParameters';
+import { Rule30CARng } from '../uma-skill-tools/Random';
 
 import { HorseState } from '../components/HorseDefTypes';
 import { runComparison } from './compare';
@@ -35,12 +36,12 @@ function mergeResultSets(data1, data2) {
 	});
 }
 
-function run1Round(nsamples: number, skills: string[], course: CourseData, racedef: RaceParameters, uma: HorseState, options) {
+function run1Round(nsamples: number, skills: string[], course: CourseData, racedef: RaceParameters, uma: HorseState, seed: [number,number], options) {
 	const data = new Map();
 	skills.forEach(id => {
 		const withSkill = {...uma, skills: new Map(uma.skills.entries())};
 		withSkill.skills.set(skillmeta[id].groupId, id);
-		const {results, runData} = runComparison(nsamples, course, racedef, uma, withSkill, options);
+		const {results, runData} = runComparison(nsamples, course, racedef, uma, withSkill, seed, options);
 		const mid = Math.floor(results.length / 2);
 		const median = results.length % 2 == 0 ? (results[mid-1] + results[mid]) / 2 : results[mid];
 		const mean = results.reduce((a,b) => a+b, 0) / results.length;
@@ -56,17 +57,18 @@ function run1Round(nsamples: number, skills: string[], course: CourseData, raced
 }
 
 function runChart({skills, course, racedef, uma, options}) {
-	let results = run1Round(5, skills, course, racedef, uma, options);
+	const seedgen = new Rule30CARng(options.seed);
+	let results = run1Round(20, skills, course, racedef, uma, seedgen.pair(), options);
 	postMessage({type: 'chart', results});
 	skills = skills.filter(id => results.get(id).max > 0.1);
-	let update = run1Round(20, skills, course, racedef, uma, options);
+	let update = run1Round(30, skills, course, racedef, uma, seedgen.pair(), options);
 	mergeResultSets(results, update);
 	postMessage({type: 'chart', results});
 	skills = skills.filter(id => Math.abs(results.get(id).max - results.get(id).min) > 0.1);
-	update = run1Round(50, skills, course, racedef, uma, options);
+	update = run1Round(50, skills, course, racedef, uma, seedgen.pair(), options);
 	mergeResultSets(results, update);
 	postMessage({type: 'chart', results});
-	update = run1Round(200, skills, course, racedef, uma, options);
+	update = run1Round(100, skills, course, racedef, uma, seedgen.pair(), options);
 	mergeResultSets(results, update);
 	postMessage({type: 'chart', results});
 }

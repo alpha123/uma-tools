@@ -63,7 +63,7 @@ i.e. course, ground type, weather, etc
 ** TODO sprite sheet instead of loading individual images for icons and stuff
 ** DONE replace skills of the same group when one is added from the bashin chart
 ** DONE remove skills of the same group on uma2 when running bashin chart
-** TODO pass seed to runComparison
+** DONE pass seed to runComparison
 bashin chart needs this to set a different seed between rounds
 as it is currently each round repeats the prior round at the start since the seed is the same
 * bugs

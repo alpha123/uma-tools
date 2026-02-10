@@ -8,9 +8,9 @@ import { HorseState } from '../components/HorseDefTypes';
 
 import skillmeta from '../skill_meta.json';
 
-export function runComparison(nsamples: number, course: CourseData, racedef: RaceParameters, uma1: HorseState, uma2: HorseState, options) {
+export function runComparison(nsamples: number, course: CourseData, racedef: RaceParameters, uma1: HorseState, uma2: HorseState, seed: [number,number], options) {
 	const standard = new RaceSolverBuilder(nsamples)
-		.seed(options.seed)
+		.seed(...seed)
 		.course(course)
 		.mood(racedef.mood)
 		.ground(racedef.groundCondition)
@@ -28,7 +28,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	standard.otherRawWisdom(uma2.wisdom);
 	compare.otherRawWisdom(uma1.wisdom);
 	const wisdomSeeds = new Map<string, [number,number]>();
-	const wisdomRng = new Rule30CARng(options.seed);
+	const wisdomRng = new Rule30CARng(...seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();   // advance the RNG state a bit because we only seeded the low bits
 	// ensure skills common to the two umas are added in the same order regardless of what additional skills they have
 	// this is important to make sure the rng for their activations is synced
