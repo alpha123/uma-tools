@@ -596,7 +596,6 @@ function Umalator(props) {
 
 	const [uma1, setUma1] = useLens(O.uma1);
 	const [uma2, setUma2] = useLens(O.uma2);
-	const [lastRunChartUma, setLastRunChartUma] = useState(DEFAULT_HORSE_STATE);
 
 	const [mode, setMode] = useRoute(CC_GLOBAL ? '/uma-tools/umalator-global' : '/uma-tools/umalator', () => ({
 		'/compare': Mode.Compare,
@@ -612,8 +611,9 @@ function Umalator(props) {
 		setExpanded(!expanded_);
 	}
 
-	const [chartSkills, setChartSkills] = useState([]);
-	const [chartMode, setChartMode] = useState('all');
+	const loadedChartSkills = useGetter(O.chartSkills);
+	const [chartSkills, setChartSkills] = useState(loadedChartSkills || []);
+	const [chartMode, setChartMode] = useState(loadedChartSkills == null ? 'all' : 'selected');
 	const chartSkillsMap = useMemo(() => {
 		const m = new Map();
 		chartSkills.forEach(id => m.set(id,id));
@@ -622,19 +622,27 @@ function Umalator(props) {
 	const [chartSkillPickerOpen, setChartSkillPickerOpen] = useState(false);
 	const [popoverSkill, setPopoverSkill] = useState('');
 
-	const loadedChartSkills = useGetter(O.chartSkills);
 	// update when state is loaded from url
 	useEffect(() => {
-		setChartSkills(loadedChartSkills || []);
-		setChartMode(loadedChartSkills == null ? 'all' : 'selected');
-		setTableData(getNullTableData(loadedChartSkills || baseSkillsToTest));
-	}, [loadedChartSkills]);
+		if (loadedChartSkills != null) {
+			setTableData(getNullTableData(loadedChartSkills));
+		}
+	}, []);
+
+	const [lastChartRun, setLastChartRun] = useState({
+		uma: uma1,
+		courseId,
+		racedef,
+		skills: [],
+		fresh: true
+	});
 
 	function switchChartMode(e) {
 		const newMode = e.currentTarget.value;
 		setChartMode(newMode);
 		if (newMode != chartMode) {
 			setTableData(getNullTableData(newMode == 'selected' ? chartSkills : baseSkillsToTest));
+			setLastChartRun({...lastChartRun, skills: [], fresh: true});
 		}
 	}
 
@@ -654,6 +662,9 @@ function Umalator(props) {
 		const m = new Map(tableData);
 		m.delete(id);
 		setTableData(m);
+		// because we delete from tableData we should update the last run info to reflect that we no longer have the
+		// data for that skill
+		setLastChartRun({...lastChartRun, skills: lastChartRun.skills.filter(x => x != id)});
 	}
 
 	const workers = [1,2,3,4].map(_ => useMemo(() => {
@@ -729,7 +740,6 @@ function Umalator(props) {
 
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
-		setLastRunChartUma(uma1);
 		const params = racedefToParams(racedef, uma1.strategy);
 		const skills = chartMode == 'selected' ? chartSkills : getActivateableSkills(baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
@@ -741,6 +751,7 @@ function Umalator(props) {
 				|| id == '92111091' && skillSet.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
 			);
 		}), uma1, course, params);
+		setLastChartRun({uma: uma1, courseId, racedef, skills, fresh: false});
 		runBasinnChart(uma1, params, skills);
 	}
 
@@ -844,12 +855,12 @@ function Umalator(props) {
 			</div>
 		);
 	} else if (mode == Mode.Chart) {
-		const dirty = !horseEquals(uma1, lastRunChartUma);
+		const dirty = !horseEquals(uma1, lastChartRun.uma) || courseId != lastChartRun.courseId || !shallowEquals(racedef, lastChartRun.racedef) || (chartMode == 'selected' ? chartSkills.some(id => lastChartRun.skills.indexOf(id) == -1) : lastChartRun.fresh);
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
 					<div id="basinnChartWrapperWrapper">
-						<BasinnChart data={Array.from(tableData.values())} hasSkills={lastRunChartUma.skills}
+						<BasinnChart data={Array.from(tableData.values())} hasSkills={lastChartRun.uma.skills}
 							dirty={dirty}
 							hintLevels={O.hintLevels}
 							displayedRun={O.displayedRun}
@@ -993,14 +1004,19 @@ function App(props) {
 		simState: emptySimStateForCid(DEFAULT_COURSE_ID),
 		displayedRun: 'meanrun',
 		tableData: getNullTableData(baseSkillsToTest),
-		hintLevels: new Map(allSkills.map(id => [id, 0])),
+		hintLevels: new Map(allSkills.map(id => [id,0])),
 		chartSkills: null
 	}));
 
+	// key shenanigans to force unmount/remount when loading state from URL so that sub-components can have their own
+	// derived state based on the initial state we load
+	const [key, setKey] = useState(false);
 	function loadState() {
 		if (window.location.hash) {
-			deserialize(window.location.hash.slice(1)).then(o =>
-				state.setState(Object.assign({}, state.ref.current.state, o)));
+			deserialize(window.location.hash.slice(1)).then(o => {
+				state.setState(Object.assign({}, state.ref.current.state, o));
+				setKey(!key);
+			});
 		}
 	}
 
@@ -1011,7 +1027,7 @@ function App(props) {
 
 	return (
 		<State.Provider value={state}>
-			<Umalator lang={props.lang} />
+			<Umalator key={key} lang={props.lang} />
 		</State.Provider>
 	);
 }
