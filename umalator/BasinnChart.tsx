@@ -201,7 +201,18 @@ export function BasinnChart(props) {
 		_features: tableFeatures({rowSortingFeature}),
 		_rowModels: {sortedRowModel: createSortedRowModel(sortFns)},
 		columns,
-		data: props.data,
+		// force data to be different every rerender. this is obviously very suboptimal, but we seem to be running into
+		// an issue where the return value from accessorFn is cached even when the `columns` change. what happens is that
+		// the accessorFn for the bsp column depends on `hints`, and when `hints` changes (and hence `columns` due to
+		// `hints` being in the useMemo dependencies) the cached value is not recomputed and so the displayed basinn / sp
+		// value doesn't update with hints.
+		// this seems to be this issue https://github.com/TanStack/table/issues/5363
+		// i thought it used to work before the lens patch, but then i realized it only appeared to work because changing
+		// hints would rerender the top level component, which re-computes our `data` property every time so it would
+		// never be referentially identical and we'd always rerender the table from scratch. now that changing hints
+		// doesn't cause a top level rerender, this no longer happens and the bug manifests. work around it by
+		// unconditionally copying props.data here.
+		data: props.data.slice(),
 		onSortingChange: setSorting,
 		enableSortingRemoval: false,
 		state: {sorting}
