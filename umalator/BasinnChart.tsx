@@ -103,19 +103,20 @@ function SkillCostCell(props) {
 	const hint = hints.get(props.id);
 	const incrHint = useMemo(() => new (O.get(props.id))(x => x + 1), [props.id]);
 	const decrHint = useMemo(() => new (O.get(props.id))(x => x - 1), [props.id]);
+	const baseCost = skillmeta[props.id].baseCost;
 	return (
 		<Fragment>
-			<button class={`hintbtn hintDown${hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={hint == 0}
+			{baseCost > 0 && <button class={`hintbtn hintDown${hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={hint == 0}
 				onClick={() => setHints(decrHint)}>
 				<div class="hintbtnDummyBackground"></div>
 				<span class="hintbtnText">−</span>
-			</button>
+			</button>}
 			<span class="hintedCost">{costForId(props.id, hints, props.ownedSkills)}</span>
-			<button class={`hintbtn hintUp${hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={hint == 5}
+			{baseCost > 0 && <button class={`hintbtn hintUp${hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={hint == 5}
 				onClick={() => setHints(incrHint)}>
 				<div class="hintbtnDummyBackground"></div>
 				<span class="hintbtnText">+</span>
-			</button>
+			</button>}
 			{hint > 0 && <span class="hintLevel">{hint}</span>}
 		</Fragment>
 	);
