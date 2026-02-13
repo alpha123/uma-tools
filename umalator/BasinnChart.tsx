@@ -72,6 +72,7 @@ function formatBasinn(info) {
 function SkillNameCell(props) {
 	return (
 		<div class="chartSkillName">
+			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
 			<img src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} />
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
@@ -142,7 +143,7 @@ export function BasinnChart(props) {
 	const columns = useMemo(() => [{
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>Skill name</span>,
 		accessorKey: 'id',
-		cell: (info) => <SkillNameCell id={info.getValue()} />,
+		cell: (info) => <SkillNameCell id={info.getValue()} dismissable={!!props.dismissable} />,
 		sortFn: (a,b) => skillnames[a.getValue('id')][0] < skillnames[b.getValue('id')][0] ? -1 : 1
 	}, {
 		header: headerRenderer(radioGroup, displayedRun, 'minrun', 'Minimum', setDisplayedRun),
@@ -188,11 +189,11 @@ export function BasinnChart(props) {
 			return xf && yf ? +(y < x) - +(x < y) : +xf - +yf;
 		},
 		sortDescFirst: true
-	}], [displayedRun, hints, props.hasSkills]);  // including hints here is a bad hack to force the table to
-	// rerender when hints changes (since it's not part of the actual table data). ditto with hasSkills, but note that
-	// we should be passed the last run uma and not the current uma state, or else the chart will be out of date and the
-	// sp costs will change but not basinn values until the chart is rerun. (see the commit message for
-	// 21180cd49e56c54078c2bc837ae5bfc65809bb75)
+	}], [displayedRun, hints, props.hasSkills, props.dismissable]);
+	// including hints here is a bad hack to force the table to rerender when hints changes (since it's not part of the
+	// actual table data). ditto with hasSkills, but note that we should be passed the last run uma and not the current
+	// uma state, or else the chart will be out of date and the sp costs will change but not basinn values until the
+	// chart is rerun. (see the commit message for 21180cd49e56c54078c2bc837ae5bfc65809bb75)
 	// TODO fixme. currently not part of the actual row data because we get that straight from the simulator output.
 
 	const [sorting, setSorting] = useState<SortingState>([{id: 'mean', desc: true}]);
@@ -225,6 +226,8 @@ export function BasinnChart(props) {
 		const id = tr.dataset.skillid;
 		if (e.target.tagName == 'IMG') {
 			props.onInfoClick(id);
+		} else if (e.target.classList.contains('chartSkillDismiss')) {
+			props.onSkillDismiss(id);
 		} else {
 			setSelected(id);
 			props.onSelectionChange(id);

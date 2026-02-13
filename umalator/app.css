@@ -381,12 +381,33 @@ body {
 	display: none !important;
 }
 
-.basinnChartWrapperWrapper {
+#basinnChartWrapperWrapper {
 	position: relative;
 	width: 100%;
 }
 
-.basinnChartRefresh {
+#basinnChartOptionsRow {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+
+#basinnChartOptionsRow > button {
+	background: none;
+	border: 1px solid rgb(148, 150, 189);
+	border-radius: 8px;
+	height: 36px;
+	padding: 0 0.7em;
+}
+
+#basinnChartSelect {
+	border: none;
+	display: flex;
+	flex-direction: column;
+}
+
+#basinnChartRefresh {
 	background: unset;
 	border: unset;
 	color: rgb(222, 161, 87);
@@ -397,7 +418,7 @@ body {
 	transition: all 100ms;
 }
 
-.basinnChartRefresh:hover {
+#basinnChartRefresh:hover {
 	transform: scale(1.3);
 }
 

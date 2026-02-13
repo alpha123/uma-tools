@@ -9,16 +9,17 @@ import { CourseHelpers } from '../uma-skill-tools/CourseData';
 import { RaceParameters, Mood, GroundCondition, Weather, Season, Time, Grade } from '../uma-skill-tools/RaceParameters';
 import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 
-import { O, c, K, State, makeState, useLens, useSetter } from '../optics';
+import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { ExpandedSkillDetails } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
 import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
+import { SkillList } from '../components/SkillList';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
-import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, runBasinnChart, BasinnChart } from './BasinnChart';
+import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, BasinnChart } from './BasinnChart';
 
 import { initTelemetry, postEvent } from './telemetry';
 
@@ -54,6 +55,11 @@ const UI_ja = Object.freeze({
 			'chart': '実行する'
 		}),
 		'copylink': 'リンクをコピー'
+	}),
+	'basinnchartselection': Object.freeze({
+		'all': 'All skills',
+		'selected': 'Selected skills',
+		'addskill': '+ スキル追加'
 	})
 });
 const UI_en = Object.freeze({
@@ -77,6 +83,11 @@ const UI_en = Object.freeze({
 			'chart': 'RUN'
 		}),
 		'copylink': 'Copy link'
+	}),
+	'basinnchartselection': Object.freeze({
+		'all': 'All skills',
+		'selected': 'Selected skills',
+		'addskill': '+ Add Skill'
 	})
 });
 const UI_global = extendStrings(UI_en, {
@@ -403,8 +414,8 @@ function emptySimStateForCid(cid) {
 	return {courseId: cid, results: [], runData: null};
 }
 
-async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState) {
-	const json = JSON.stringify({
+async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, chartSkills: string[] | null) {
+	const o = {
 		courseId,
 		nsamples,
 		seed,
@@ -412,8 +423,10 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		useIntChecks,
 		racedef,
 		uma1: {...uma1, skills: Array.from(uma1.skills.values())},
-		uma2: {...uma2, skills: Array.from(uma2.skills.values())}
-	});
+		uma2: {...uma2, skills: Array.from(uma2.skills.values())},
+	};
+	if (chartSkills != null) o.chartSkills = chartSkills;
+	const json = JSON.stringify(o);
 	const enc = new TextEncoder();
 	const stringStream = new ReadableStream({
 		start(controller) {
@@ -460,7 +473,8 @@ async function deserialize(hash) {
 					useIntChecks: o.useIntChecks || false,  // added later
 					racedef: o.racedef,
 					uma1: Object.assign(o.uma1, {skills: SkillSet(o.uma1.skills)}),
-					uma2: Object.assign(o.uma2, {skills: SkillSet(o.uma2.skills)})
+					uma2: Object.assign(o.uma2, {skills: SkillSet(o.uma2.skills)}),
+					chartSkills: o.chartSkills || null  // added later
 				};
 			} catch (_) {
 				return {
@@ -471,7 +485,8 @@ async function deserialize(hash) {
 					useIntChecks: false,
 					racedef: DEFAULT_RACE_PARAMS,
 					uma1: DEFAULT_HORSE_STATE,
-					uma2: DEFAULT_HORSE_STATE
+					uma2: DEFAULT_HORSE_STATE,
+					chartSkills: null
 				};
 			}
 		} else {
@@ -503,7 +518,14 @@ const RacePresets = memo(function RacePresets(props) {
 	);
 }, K(true));
 
-const baseSkillsToTest = Object.keys(skilldata).filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
+const allSkills = Object.keys(skilldata);
+const baseSkillsToTest = allSkills.filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
+
+function getNullTableData(skills) {
+	const filler = new Map();
+	skills.forEach(id => filler.set(id, getNullRow(id)));
+	return filler;
+}
 
 function pathValue(base, routeDesc, default_) {
 	const k = Object.keys(routeDesc);
@@ -563,9 +585,6 @@ function Umalator(props) {
 		setSimState(s => ({...s, results: o.results, runData: o.runData}));
 	}
 	const [tableData, setTableData] = useLens(O.tableData);
-	function resetTableData() {
-		setTableData(new Map());
-	}
 	function updateTableData(newData) {
 		setTableData(data => {
 			const merged = new Map();
@@ -593,7 +612,49 @@ function Umalator(props) {
 		setExpanded(!expanded_);
 	}
 
+	const [chartSkills, setChartSkills] = useState([]);
+	const [chartMode, setChartMode] = useState('all');
+	const chartSkillsMap = useMemo(() => {
+		const m = new Map();
+		chartSkills.forEach(id => m.set(id,id));
+		return m;
+	}, [chartSkills]);
+	const [chartSkillPickerOpen, setChartSkillPickerOpen] = useState(false);
 	const [popoverSkill, setPopoverSkill] = useState('');
+
+	const loadedChartSkills = useGetter(O.chartSkills);
+	// update when state is loaded from url
+	useEffect(() => {
+		setChartSkills(loadedChartSkills || []);
+		setChartMode(loadedChartSkills == null ? 'all' : 'selected');
+		setTableData(getNullTableData(loadedChartSkills || baseSkillsToTest));
+	}, [loadedChartSkills]);
+
+	function switchChartMode(e) {
+		const newMode = e.currentTarget.value;
+		setChartMode(newMode);
+		if (newMode != chartMode) {
+			setTableData(getNullTableData(newMode == 'selected' ? chartSkills : baseSkillsToTest));
+		}
+	}
+
+	function setChartSkillsAndClose(skillMap) {
+		const newSkills = Array.from(skillMap.values());
+		setChartSkills(newSkills);
+		const m = new Map(tableData);
+		newSkills.forEach(id => {
+			if (chartSkills.indexOf(id) == -1) m.set(id, getNullRow(id));
+		});
+		setTableData(m);
+		setChartSkillPickerOpen(false);
+	}
+
+	function removeChartSkill(id) {
+		setChartSkills(chartSkills.filter(x => x != id));
+		const m = new Map(tableData);
+		m.delete(id);
+		setTableData(m);
+	}
 
 	const workers = [1,2,3,4].map(_ => useMemo(() => {
 		const w = new Worker('./simulator.worker.js');
@@ -613,7 +674,9 @@ function Umalator(props) {
 
 	function copyStateUrl(e) {
 		e.preventDefault();
-		serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2).then(hash => {
+		serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2,
+			mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
+		).then(hash => {
 			const url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 			window.navigator.clipboard.writeText(url + '#' + hash);
 		});
@@ -654,11 +717,21 @@ function Umalator(props) {
 		});
 	}
 
+	function runBasinnChart(uma, params, skills) {
+		const filler = getNullTableData(skills);
+		setTableData(filler);
+		const nPerWorker = Math.ceil(skills.length/workers.length);
+		workers.reduce((skills, w) => {
+			w.postMessage({msg: 'chart', data: {skills: skills.slice(0, nPerWorker), course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
+			return skills.slice(nPerWorker);
+		}, skills);
+	}
+
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		setLastRunChartUma(uma1);
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = getActivateableSkills(baseSkillsToTest.filter(id => {
+		const skills = chartMode == 'selected' ? chartSkills : getActivateableSkills(baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
 			const group = skillGroups.get(skillmeta[id].groupId);
 			const skillSet = Array.from(uma1.skills.values());
@@ -668,18 +741,7 @@ function Umalator(props) {
 				|| id == '92111091' && skillSet.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
 			);
 		}), uma1, course, params);
-		const filler = new Map();
-		skills.forEach(id => filler.set(id, getNullRow(id)));
-		const uma = uma1;
-		const skills1 = skills.slice(0,Math.floor(skills.length/2));
-		const skills2 = skills.slice(Math.floor(skills.length/2));
-		resetTableData();
-		updateTableData(filler);
-		const nPerWorker = Math.ceil(skills.length/workers.length);
-		workers.reduce((skills, w) => {
-			w.postMessage({msg: 'chart', data: {skills: skills.slice(0, nPerWorker), course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
-			return skills.slice(nPerWorker);
-		}, skills);
+		runBasinnChart(uma1, params, skills);
 	}
 
 	function basinnChartSelection(skillId) {
@@ -781,20 +843,39 @@ function Umalator(props) {
 				</div>
 			</div>
 		);
-	} else if (mode == Mode.Chart && tableData.size > 0) {
+	} else if (mode == Mode.Chart) {
 		const dirty = !horseEquals(uma1, lastRunChartUma);
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-chart">
-					<div class="basinnChartWrapperWrapper">
+					<div id="basinnChartWrapperWrapper">
 						<BasinnChart data={Array.from(tableData.values())} hasSkills={lastRunChartUma.skills}
 							dirty={dirty}
 							hintLevels={O.hintLevels}
 							displayedRun={O.displayedRun}
+							dismissable={chartMode == 'selected'}
 							onSelectionChange={basinnChartSelection}
 							onDblClickRow={addSkillFromTable}
-							onInfoClick={showPopover} />
-						<button class={`basinnChartRefresh${dirty ? '' : ' hidden'}`} onClick={doBasinnChart}>⟲</button>
+							onInfoClick={showPopover}
+							onSkillDismiss={removeChartSkill} />
+						<button id="basinnChartRefresh" class={dirty ? '' : 'hidden'} onClick={doBasinnChart}>⟲</button>
+					</div>
+				</div>
+				<div id="basinnChartOptionsRow">
+					<fieldset id="basinnChartSelect">
+						<div>
+							<input type="radio" id="basinnChartSelectAll" name="basinnChartSelection" value="all" checked={chartMode == 'all'} onClick={switchChartMode} />
+							<label for="basinnChartSelectAll"><Text id="ui.basinnchartselection.all" /></label>
+						</div>
+						<div>
+							<input type="radio" id="basinnChartSelectSelected" name="basinnChartSelection" value="selected" checked={chartMode == 'selected'} onClick={switchChartMode} />
+							<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
+						</div>
+					</fieldset>
+					<button id="basinnChartAddSkill" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+					<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
+					<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
+						<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
 					</div>
 				</div>
 			</div>
@@ -911,9 +992,9 @@ function App(props) {
 		uma2: DEFAULT_HORSE_STATE,
 		simState: emptySimStateForCid(DEFAULT_COURSE_ID),
 		displayedRun: 'meanrun',
-		tableData: new Map(),
-		hintLevels: new Map(Object.keys(skilldata).map(id => [id, 0])),
-		popoverSkill: ''
+		tableData: getNullTableData(baseSkillsToTest),
+		hintLevels: new Map(allSkills.map(id => [id, 0])),
+		chartSkills: null
 	}));
 
 	function loadState() {

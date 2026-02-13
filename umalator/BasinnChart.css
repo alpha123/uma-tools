@@ -95,6 +95,12 @@
 	height: 1.5em;
 }
 
+.chartSkillDismiss {
+	color: rgb(148, 150, 189);
+	cursor: default;
+	font-weight: normal;
+}
+
 .hintbtn {
 	border: none;
 	border-radius: 4px;

@@ -514,6 +514,13 @@ export function SkillList(props) {
 	const searchInput = useRef(null);
 	const [searchText, setSearchText] = useState('');
 
+	// group - allow selecting one skill per group
+	// single - select each skill individually
+	const selectionMode = props.selectionMode || 'group';
+	function groupIdFor(id) {
+		return selectionMode == 'single' ? id : skillmeta[id].groupId;
+	}
+
 	useEffect(function () {
 		if (props.isOpen && searchInput.current) {
 			searchInput.current.focus();
@@ -526,7 +533,7 @@ export function SkillList(props) {
 		if (se == null) return;
 		e.stopPropagation();
 		let id = se.dataset.skillid;
-		const groupId = skillmeta[id].groupId;
+		const groupId = groupIdFor(id);
 		// fake the group ids for debuff skills to allow adding multiple of them. this is because skills are unique per
 		// groupId (the keys of the map) and not by skill id, so it's fine to add the same value to multiple keys. groupIds
 		// aren't used as keys into anything else (like skill data) so it doesn't really matter what they are, only that
@@ -601,7 +608,7 @@ export function SkillList(props) {
 	const items = useMemo(() => {
 		return props.ids.map(id => (
 			<li key={id} class={visible.has(id) ? '' : 'hidden'}>
-				<Skill id={id} selected={props.selected.get(skillmeta[id].groupId) == id} />
+				<Skill id={id} selected={props.selected.get(groupIdFor(id)) == id} />
 			</li>
 		));
 	}, [props.ids, props.selected, visible]);
