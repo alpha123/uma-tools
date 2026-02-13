@@ -343,8 +343,9 @@ export const HorseDef = memo(function HorseDef(props) {
 		if (e.target.classList.contains('skillDismiss')) {
 			// can't just remove skillmeta[skillid].groupId because debuffs will have a fake groupId
 			const k = Array.from(skills.entries()).find(([g,id]) => id == se.dataset.skillid)[0];
-			skills.delete(k);
-			setSkills(new Map(skills));
+			const newSkills = new Map(skills);
+			newSkills.delete(k);
+			setSkills(newSkills);
 		} else if (se.classList.contains('expandedSkill')) {
 			expanded.delete(se.dataset.skillid);
 			setExpanded(new Set(expanded));
