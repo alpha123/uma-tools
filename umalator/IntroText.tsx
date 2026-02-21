@@ -47,6 +47,28 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-02-21</h2>
+					<ul>
+						<li>Add an option to run the skill table with a selection of skills rather than all skills (can be much faster for testing only a subset of skills)</li>
+						<li>‘Copy link’ now links directly to the compare mode or skill table mode</li>
+						<li>UI may be slightly more responsive, particularly on low end devices</li>
+						<li>
+							<details>
+								<summary>Improvements to layout on mobile devices</summary>
+								It's still not good, but hopefully it's better than before.
+							</details>
+						</li>
+						<li>
+							<details>
+								<summary>Bug fixes involving the activation of certain skills</summary>
+								In particular, Moxie and Restless should now work correctly.
+							</details>
+						</li>
+						<li>Many other bug fixes</li>
+						<li>Minor UI improvements</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2025-12-10</h2>
 					<ul>
 						<li>Fix a bug with wit checks</li>
