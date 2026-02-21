@@ -58,10 +58,13 @@ function run1Round(nsamples: number, skills: string[], course: CourseData, raced
 
 function runChart({skills, course, racedef, uma, options}) {
 	const seedgen = new Rule30CARng(options.seed);
-	let results = run1Round(20, skills, course, racedef, uma, seedgen.pair(), options);
+	let results = run1Round(3, skills, course, racedef, uma, seedgen.pair(), options);
+	postMessage({type: 'chart', results});
+	let update = run1Round(17, skills, course, racedef, uma, seedgen.pair(), options);
+	mergeResultSets(results, update);
 	postMessage({type: 'chart', results});
 	skills = skills.filter(id => results.get(id).max > 0.1);
-	let update = run1Round(30, skills, course, racedef, uma, seedgen.pair(), options);
+	update = run1Round(30, skills, course, racedef, uma, seedgen.pair(), options);
 	mergeResultSets(results, update);
 	postMessage({type: 'chart', results});
 	skills = skills.filter(id => Math.abs(results.get(id).max - results.get(id).min) > 0.1);
