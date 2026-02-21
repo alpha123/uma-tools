@@ -19,6 +19,11 @@ body {
 	height: 98vh;
 }
 
+#nonUmaPanes {
+	display: flex;
+	width: 100%;
+}
+
 #midPane {
 	display: flex;
 	flex-direction: column;
@@ -392,7 +397,6 @@ body {
 #basinnChartOptionsRow {
 	align-items: center;
 	display: flex;
-	flex: 1;
 	flex-direction: column;
 	margin-top: 24px;
 }
@@ -442,4 +446,32 @@ body {
 
 .basinnChartPopover .expandedSkill {
 	width: 345px;
+}
+
+@media (orientation: portrait) {
+	#app {
+		flex-direction: column;
+	}
+
+	#nonUmaPanes {
+		flex-direction: column-reverse;
+	}
+
+	#sidebar {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	#sidebar > fieldset {
+		display: flex;
+	}
+
+	#resultsPaneWrapper {
+		flex-direction: column;
+	}
+
+	#basinnChartOptionsRow {
+		flex-direction: row;
+		margin-top: unset;
+	}
 }

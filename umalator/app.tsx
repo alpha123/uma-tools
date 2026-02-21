@@ -909,84 +909,86 @@ function Umalator(props) {
 					</div>}
 					{expanded && <div id="closeUmaOverlay" title="Close panel" onClick={toggleExpand}>✕</div>}
 				</div>
-				<div id="midPane" class={chartData ? 'hasResults' : ''}>
-					<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseLeave={rtMouseLeave} regions={skillActivations}>
-						<VelocityLines data={chartData} courseDistance={course.distance} width={960} height={250} xOffset={20} showHp={showHp} />
-						<g id="rtMouseOverBox" style="display:none">
-							<text id="rtV1" x="25" y="10" fill="#2a77c5" font-size="10px"></text>
-							<text id="rtV2" x="25" y="20" fill="#c52a2a" font-size="10px"></text>
-						</g>
-					</RaceTrack>
-					<div id="buttonsRow">
-						<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
-						<div id="buttonsRowSpace" />
-						<TimeOfDaySelect t={O.racedef.time} />
-						<div>
-							<GroundSelect g={O.racedef.ground} />
-							<WeatherSelect w={O.racedef.weather} />
-						</div>
-						<SeasonSelect s={O.racedef.season} />
-					</div>
-					{resultsPane}
-				</div>
-				<div id="sidebar">
-					<fieldset>
-						<legend><Text id="ui.sidebar.mode" /></legend>
-						<div>
-							<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => setMode(Mode.Compare)} />
-							<label for="mode-compare"><Text id="ui.mode.compare" /></label>
-						</div>
-						<div>
-							<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => setMode(Mode.Chart)} />
-							<label for="mode-chart"><Text id="ui.mode.chart" /></label>
-						</div>
-					</fieldset>
-					<label for="nsamples"><Text id="ui.sidebar.samples" /></label>
-					<input type="number" id="nsamples" min="1" max="10000" value={nsamples} onInput={(e) => setSamples(+e.currentTarget.value)} />
-					<label for="seed"><Text id="ui.sidebar.seed" /></label>
-					<div id="seedWrapper">
-						<input type="number" id="seed" value={seed} onInput={(e) => setSeed(+e.currentTarget.value)} />
-						<button title="Randomize seed" onClick={() => setSeed(Math.floor(Math.random() * (-1 >>> 0)) >>> 0)}>🎲</button>
-					</div>
-					<div>
-						<label for="poskeep"><Text id="ui.sidebar.poskeep" /></label>
-						<input type="checkbox" id="poskeep" checked={usePosKeep} onClick={togglePosKeep} />
-					</div>
-					<div>
-						<label for="intchecks"><Text id="ui.sidebar.intchecks" /></label>
-						<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} />
-					</div>
-					<div>
-						<label for="showhp"><Text id="ui.sidebar.showhp" /></label>
-						<input type="checkbox" id="showhp" checked={showHp} onClick={toggleShowHp} />
-					</div>
-					{
-						mode == Mode.Compare
-							? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
-							: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
-					}
-					<a href="#" onClick={copyStateUrl}><Text id="ui.sidebar.copylink" /></a>
-					<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
-					{
-						mode == Mode.Chart &&
-							<div id="basinnChartOptionsRow">
-								<fieldset id="basinnChartSelect">
-									<div>
-										<input type="radio" id="basinnChartSelectAll" name="basinnChartSelection" value="all" checked={chartMode == 'all'} onClick={switchChartMode} />
-										<label for="basinnChartSelectAll"><Text id="ui.basinnchartselection.all" /></label>
-									</div>
-									<div>
-										<input type="radio" id="basinnChartSelectSelected" name="basinnChartSelection" value="selected" checked={chartMode == 'selected'} onClick={switchChartMode} />
-										<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
-									</div>
-								</fieldset>
-								<button id="basinnChartAddSkill" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
-								<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
-								<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
-									<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
-								</div>
+				<div id="nonUmaPanes">
+					<div id="midPane" class={chartData ? 'hasResults' : ''}>
+						<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseLeave={rtMouseLeave} regions={skillActivations}>
+							<VelocityLines data={chartData} courseDistance={course.distance} width={960} height={250} xOffset={20} showHp={showHp} />
+							<g id="rtMouseOverBox" style="display:none">
+								<text id="rtV1" x="25" y="10" fill="#2a77c5" font-size="10px"></text>
+								<text id="rtV2" x="25" y="20" fill="#c52a2a" font-size="10px"></text>
+							</g>
+						</RaceTrack>
+						<div id="buttonsRow">
+							<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
+							<div id="buttonsRowSpace" />
+							<TimeOfDaySelect t={O.racedef.time} />
+							<div>
+								<GroundSelect g={O.racedef.ground} />
+								<WeatherSelect w={O.racedef.weather} />
 							</div>
-					}
+							<SeasonSelect s={O.racedef.season} />
+						</div>
+						{resultsPane}
+					</div>
+					<div id="sidebar">
+						<fieldset>
+							<legend><Text id="ui.sidebar.mode" /></legend>
+							<div>
+								<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => setMode(Mode.Compare)} />
+								<label for="mode-compare"><Text id="ui.mode.compare" /></label>
+							</div>
+							<div>
+								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => setMode(Mode.Chart)} />
+								<label for="mode-chart"><Text id="ui.mode.chart" /></label>
+							</div>
+						</fieldset>
+						<label for="nsamples"><Text id="ui.sidebar.samples" /></label>
+						<input type="number" id="nsamples" min="1" max="10000" value={nsamples} onInput={(e) => setSamples(+e.currentTarget.value)} />
+						<label for="seed"><Text id="ui.sidebar.seed" /></label>
+						<div id="seedWrapper">
+							<input type="number" id="seed" value={seed} onInput={(e) => setSeed(+e.currentTarget.value)} />
+							<button title="Randomize seed" onClick={() => setSeed(Math.floor(Math.random() * (-1 >>> 0)) >>> 0)}>🎲</button>
+						</div>
+						<div>
+							<label for="poskeep"><Text id="ui.sidebar.poskeep" /></label>
+							<input type="checkbox" id="poskeep" checked={usePosKeep} onClick={togglePosKeep} />
+						</div>
+						<div>
+							<label for="intchecks"><Text id="ui.sidebar.intchecks" /></label>
+							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} />
+						</div>
+						<div>
+							<label for="showhp"><Text id="ui.sidebar.showhp" /></label>
+							<input type="checkbox" id="showhp" checked={showHp} onClick={toggleShowHp} />
+						</div>
+						{
+							mode == Mode.Compare
+								? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
+								: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
+						}
+						<a href="#" onClick={copyStateUrl}><Text id="ui.sidebar.copylink" /></a>
+						<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
+						{
+							mode == Mode.Chart &&
+								<div id="basinnChartOptionsRow">
+									<fieldset id="basinnChartSelect">
+										<div>
+											<input type="radio" id="basinnChartSelectAll" name="basinnChartSelection" value="all" checked={chartMode == 'all'} onClick={switchChartMode} />
+											<label for="basinnChartSelectAll"><Text id="ui.basinnchartselection.all" /></label>
+										</div>
+										<div>
+											<input type="radio" id="basinnChartSelectSelected" name="basinnChartSelection" value="selected" checked={chartMode == 'selected'} onClick={switchChartMode} />
+											<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
+										</div>
+									</fieldset>
+									<button id="basinnChartAddSkill" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
+									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
+										<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
+									</div>
+								</div>
+						}
+					</div>
 				</div>
 				{popoverSkill && <BasinnChartPopover skillid={popoverSkill} results={tableData.get(popoverSkill).results} courseDistance={course.distance} />}
 			</IntlProvider>
