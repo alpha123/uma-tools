@@ -455,6 +455,7 @@ body {
 
 	#umaPane {
 		height: 67vh;
+		width: 100vw;
 	}
 
 	#expandBtn {
@@ -463,6 +464,10 @@ body {
 
 	#nonUmaPanes {
 		flex-direction: column-reverse;
+	}
+
+	#midPane {
+		margin-left: 0;
 	}
 
 	#sidebar {
