@@ -400,6 +400,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						<span><Text id="select.distanceaptitude" /></span>
 						<AptitudeSelect a={props.state.distanceAptitude} tabindex={tabnext()} />
 					</div>
+					<div>{/*motivation*/}</div>
 					<div>
 						<span><Text id="select.strategy" /></span>
 						<StrategySelect s={l_strategy} tabindex={tabnext()} />
@@ -408,6 +409,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						<span><Text id="select.strategyaptitude" /></span>
 						<AptitudeSelect a={props.state.strategyAptitude} tabindex={tabnext()} />
 					</div>
+					<div>{/*popularity*/}</div>
 				</div>
 				<div class="horseSkillHeader"><Text id="skillheader" /></div>
 				<div class="horseSkillListWrapper" onClick={handleSkillClick}>

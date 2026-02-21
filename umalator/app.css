@@ -235,7 +235,7 @@ body {
 }
 
 #umaPane {
-	width: 700px;  /* needed for when this is a placeholder to consume grid space when uma pane is expanded */
+	min-width: 700px;  /* needed for when this is a placeholder to consume grid space when uma pane is expanded */
 }
 
 #umaPane > div {
@@ -453,13 +453,26 @@ body {
 		flex-direction: column;
 	}
 
+	#umaPane {
+		height: 67vh;
+	}
+
+	#expandBtn {
+		display: none;
+	}
+
 	#nonUmaPanes {
 		flex-direction: column-reverse;
 	}
 
 	#sidebar {
+		align-items: center;
+		column-gap: 20px;
 		flex-direction: row;
 		flex-wrap: wrap;
+		font-size: 26px;
+		margin: 0 auto;
+		width: 96vw;
 	}
 
 	#sidebar > fieldset {

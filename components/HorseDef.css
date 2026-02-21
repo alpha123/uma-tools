@@ -122,9 +122,8 @@
 	border: 2px solid rgb(163, 221, 111);
 	border-radius: 8px;
 	display: grid;
-	grid-template-columns: repeat(5, 130px);
-	margin: 10px auto;
-	width: 650px;
+	grid-template-columns: repeat(5, 1fr);
+	margin: 10px 16px;
 }
 
 .horseParamHeader {
@@ -176,14 +175,14 @@
 	font-weight: bold;
 	margin-left: 10px;
 	padding: 0;
-	width: 76px;
+	width: 100%;
 }
 
 .horseAptitudes {
 	display: grid;
-	grid-template-columns: repeat(2, 210px);
+	grid-template-columns: repeat(2, 8fr) 5fr;
 	gap: 8px 12px;
-	margin: 0 25px;
+	margin: 0 36px;
 }
 
 .horseAptitudes > div {
@@ -197,6 +196,11 @@
 	height: 1.8em;
 	padding: 0 8px;
 	position: relative;
+}
+
+.horseAptitudes > div:nth-child(3n) {
+	border: unset;
+	background: unset;
 }
 
 .horseAptitudeSelect {
@@ -267,7 +271,7 @@
 	font-weight: bold;
 	margin: 16px auto;
 	text-align: center;
-	width: 680px;
+	width: calc(100% - 16px);
 }
 
 .horseSkillListWrapper {
@@ -281,7 +285,7 @@
 .horseSkillList {
 	display: grid;
 	gap: 16px 10px;
-	grid-template-columns: repeat(2, 288px);
+	grid-template-columns: repeat(2, 1fr);
 	list-style-type: none;
 	margin: 0 auto;
 	padding: 12px;
@@ -335,4 +339,16 @@
 .addSkillButton > span {
 	font-size: 2em;
 	margin: 0 6px;
+}
+
+@media (orientation: portrait) {
+	.horseDef {
+		font-size: 28px;
+		height: 67vh;
+		width: unset;
+	}
+
+	.horseSkillList {
+		width: unset;
+	}
 }
