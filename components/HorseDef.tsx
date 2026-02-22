@@ -281,11 +281,12 @@ export function MoodSelect(props) {
 }
 
 export function PopularitySelect(props) {
+	const lang = useLanguage();
 	const [p, setP] = useLens(props.p);
 	return (
 		<Fragment>
 			<Text id="popularity.pre" />
-			<input type="number" min="1" max="18" value={p} tabindex={props.tabindex} onInput={(e) => setP(+e.currentTarget.value)} />
+			<input type="number" dir={lang == 'ja' ? 'rtl' : 'ltr'} min="1" max="18" value={p} tabindex={props.tabindex} onInput={(e) => setP(+e.currentTarget.value)} />
 			<Text id="popularity.post" />
 		</Fragment>
 	);
