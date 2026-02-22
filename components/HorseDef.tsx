@@ -1,7 +1,7 @@
 import { h, Fragment } from 'preact';
 import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/hooks';
 import { memo } from 'preact/compat';
-import { IntlProvider, Text } from 'preact-i18n';
+import { IntlProvider, Text, Localizer, useText } from 'preact-i18n';
 
 import { O, c, id, useLens, useGetter, Delete } from '../optics';
 
@@ -28,6 +28,7 @@ const STRINGS_ja = Object.freeze({
 	}),
 	'skillheader': 'スキル',
 	'addskill': '+ スキル追加',
+	'moodfmt': '調子：{{mood}}',
 	'popularity': Object.freeze({
 		'pre': '',
 		'post': '番人気'
@@ -43,6 +44,7 @@ const STRINGS_en = Object.freeze({
 	}),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
+	'moodfmt': 'Motivation: {{mood}}',
 	'popularity': Object.freeze({
 		'pre': 'Popularity:',
 		'post': ''
@@ -58,6 +60,7 @@ const STRINGS_global = Object.freeze({
 	}),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
+	'moodfmt': 'Mood: {{mood}}',
 	'popularity': Object.freeze({
 		'pre': 'No.',
 		'post': 'Fav'
@@ -269,7 +272,12 @@ export function MoodSelect(props) {
 			setM((n + 4) % 5 - 2);
 		}
 	}
-	return <img src={`/uma-tools/icons${infix}/utx_ico_motivation_m_${(102+m).toString().slice(1)}.png`} tabindex={props.tabindex} onClick={cycle} onContextMenu={reverseCycle} onKeyDown={selectByKey} />;
+	const {[m+3]: mood} = useText('common.mood.' + (m+3));
+	return (
+		<Localizer>
+			<img src={`/uma-tools/icons${infix}/utx_ico_motivation_m_${(102+m).toString().slice(1)}.png`} tabindex={props.tabindex} title={<Text id="moodfmt" fields={{mood}} />} onClick={cycle} onContextMenu={reverseCycle} onKeyDown={selectByKey} />
+		</Localizer>
+	);
 }
 
 export function PopularitySelect(props) {

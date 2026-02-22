@@ -684,13 +684,29 @@ function Umalator(props) {
 		return w;
 	}, []));
 
+	const copyLinkLink = useRef(null);
+
+	function doSerialize() {
+		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2,
+			mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
+		);
+	}
+
 	function copyStateUrl(e) {
 		e.preventDefault();
-		serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2,
-			mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
-		).then(hash => {
+		doSerialize().then(hash => {
 			const url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 			window.navigator.clipboard.writeText(url + '#' + hash);
+		});
+	}
+
+	function updateCopyLinkHref(e) {
+		// don't preventDefault() because we do want the context menu to show, we just want the element's href
+		// to be updated so that the browser's ‘Copy Link’ functionality works as expected
+		doSerialize().then(hash => {
+			if (copyLinkLink.current != null) {
+				copyLinkLink.current.href = '#' + hash;
+			}
 		});
 	}
 
@@ -967,7 +983,7 @@ function Umalator(props) {
 								? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
 								: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
 						}
-						<a href="#" onClick={copyStateUrl}><Text id="ui.sidebar.copylink" /></a>
+						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
 						<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 						{
 							mode == Mode.Chart &&

@@ -28,14 +28,14 @@ const STRINGS_ja = Object.freeze({
 		'pink': '進化スキル',
 		'unique': '固有スキル',
 		'inherit': '継承した固有スキル',
-		'nige': '逃げ',
-		'senkou': '先行',
-		'sasi': '差し',
-		'oikomi': '追込',
-		'short': '短距離',
-		'mile': 'マイル',
-		'medium': '中距離',
-		'long': '長距離',
+		'nige': COMMON_ja['strategy'][1],
+		'senkou': COMMON_ja['strategy'][2],
+		'sasi': COMMON_ja['strategy'][3],
+		'oikomi': COMMON_ja['strategy'][4],
+		'short': COMMON_ja['distance'][1],
+		'mile': COMMON_ja['distance'][2],
+		'medium': COMMON_ja['distance'][3],
+		'long': COMMON_ja['distance'][4],
 		'turf': '芝',
 		'dirt': 'ダート',
 		'phase0': '序盤',
@@ -64,7 +64,7 @@ const STRINGS_ja = Object.freeze({
 		'accel': '{{n}}m/s²',
 		'basinn': '{{n}}バ身',
 		'conditions': '発動条件',
-		'distance_type': Object.freeze(['', '短距離', 'マイル', '中距離', '長距離']),
+		'distance_type': COMMON_ja['distance'],
 		'baseduration': '基準持続時間',
 		'effectiveduration': '効果時間（{{distance}}m）',
 		'durationincrease': '{{n}}倍',
@@ -96,14 +96,14 @@ const STRINGS_en = Object.freeze({
 		'pink': 'Evolved skills',
 		'unique': 'Unique skills',
 		'inherit': 'Inherited uniques',
-		'nige': 'Runner',
-		'senkou': 'Leader',
-		'sasi': 'Betweener',
-		'oikomi': 'Chaser',
-		'short': 'Short',
-		'mile': 'Mile',
-		'medium': 'Medium',
-		'long': 'Long',
+		'nige': COMMON_en['strategy'][1],
+		'senkou': COMMON_en['strategy'][2],
+		'sasi': COMMON_en['strategy'][3],
+		'oikomi': COMMON_en['strategy'][4],
+		'short': COMMON_en['distance'][1],
+		'mile': COMMON_en['distance'][2],
+		'medium': COMMON_en['distance'][3],
+		'long': COMMON_en['distance'][4],
 		'turf': 'Turf',
 		'dirt': 'Dirt',
 		'phase0': 'Opening leg',
@@ -132,7 +132,7 @@ const STRINGS_en = Object.freeze({
 		'accel': '{{n}}m/s²',
 		'basinn': '{{n}} bashin',
 		'conditions': 'Conditions:',
-		'distance_type': Object.freeze(['', 'Short', 'Mile', 'Medium', 'Long']),
+		'distance_type': COMMON_en['distance'],
 		'baseduration': 'Base duration:',
 		'effectiveduration': 'Effective duration ({{distance}}m):',
 		'durationincrease': '{{n}}×',
@@ -157,10 +157,24 @@ const STRINGS_en = Object.freeze({
 });
 
 const STRINGS_global = extendStrings(STRINGS_en, {
+	'skillfilters': extendStrings(STRINGS_en['skillfilters'], {
+		'nige': COMMON_global['strategy'][1],
+		'senkou': COMMON_global['strategy'][2],
+		'sasi': COMMON_global['strategy'][3],
+		'oikomi': COMMON_global['strategy'][4],
+		'short': COMMON_global['distance'][1],
+		'mile': COMMON_global['distance'][2],
+		'medium': COMMON_global['distance'][3],
+		'long': COMMON_global['distance'][4],
+		'phase0': 'Early-race',
+		'phase1': 'Mid-race',
+		'phase2': 'Late-race',
+	}),
 	'skilleffecttypes': extendStrings(STRINGS_en['skilleffecttypes'], {
 		'5': 'Wit up'
 	}),
 	'skilldetails': extendStrings(STRINGS_en['skilldetails'], {
+		'distance_type': COMMON_global['distance'],
 		'ground_condition': COMMON_global['ground'],
 		'running_style': COMMON_global['strategy'],
 		'season': COMMON_global['season'],
@@ -559,13 +573,10 @@ export function SkillList(props) {
 			newSearchText = e.target.value;
 			setSearchText(newSearchText);
 		} else if (group == 'icontype') {
-			if (groups_filters.icontype.every(f => active.icontype[f])) {
-				groups_filters.icontype.forEach(f => f != filter && setActive.icontype[f](active.icontype[f] = false));
+			if (active.icontype[filter] && !groups_filters.icontype.every(f => active.icontype[f])) {
+				groups_filters.icontype.forEach(f => setActive.icontype[f](active.icontype[f] = true));
 			} else {
-				setActive.icontype[filter](active.icontype[filter] = !active.icontype[filter]);
-				if (!groups_filters.icontype.some(f => active.icontype[f])) {
-					groups_filters.icontype.forEach(f => setActive.icontype[f](active.icontype[f] = true));
-				}
+				groups_filters.icontype.forEach(f => setActive.icontype[f](active.icontype[f] = (f == filter)));
 			}
 		} else {
 			setActive[group][filter](active[group][filter]);

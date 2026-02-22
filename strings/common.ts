@@ -15,31 +15,37 @@ export function extendStrings(o,e) {
 export const COMMON_ja = Object.freeze({
 	'stat': Object.freeze(['なし', 'スピード', 'スタミナ', 'パワー', '根性', '賢さ']),
 	'joiner': '、',
+	'distance': Object.freeze(['', '短距離', 'マイル', '中距離', '長距離']),
 	'ground': Object.freeze(['', '良', '稍重', '重', '不良']),
 	'weather': Object.freeze(['', '晴れ', '曇り', '雨', '雪']),
 	'season': Object.freeze(['', '早春', '夏', '秋', '冬', '春']),
 	'strategy': Object.freeze(['', '逃げ', '先行', '差し', '追込', '大逃げ']),
 	'time': Object.freeze(['', '朝', '昼', '夕方', '夜']),
+	'mood': Object.freeze(['', '絶不調', '不調', '普通', '好調', '絶好調'])
 });
 
 export const COMMON_en = Object.freeze({
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wisdom']),
 	'joiner': ', ',
+	'distance': Object.freeze(['', 'Short', 'Mile', 'Medium', 'Long']),
 	'ground': Object.freeze(['', 'Good', 'Yielding', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),
 	'season': Object.freeze(['', 'Early spring', 'Summer', 'Autumn', 'Winter', 'Late spring']),
 	'strategy': Object.freeze(['', 'Runner', 'Leader', 'Betweener', 'Chaser', 'Oonige']),
 	'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
+	'mood': Object.freeze(['', '絶不調', '不調', '普通', '好調', '絶好調'])
 });
 
 export const COMMON_global = Object.freeze({
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wit']),
 	'joiner': ', ',
+	'distance': Object.freeze(['', 'Sprint', 'Mile', 'Medium', 'Long']),
 	'ground': Object.freeze(['', 'Firm', 'Good', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),
 	'season': Object.freeze(['', 'Spring', 'Summer', 'Fall', 'Winter', 'Spring']),
 	'strategy': Object.freeze(['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer', 'Runaway']),
 	'time': Object.freeze(['', 'Morning', 'Mid day', 'Evening', 'Night']),
+	'mood': Object.freeze(['', 'Awful', 'Bad', 'Normal', 'Good', 'Great'])
 });
 
 export const COMMON_STRINGS = Object.freeze({
