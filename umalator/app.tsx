@@ -44,7 +44,6 @@ const UI_ja = Object.freeze({
 		'chart': 'スキル効果値'
 	}),
 	'sidebar': Object.freeze({
-		'mode': 'モード',
 		'samples': '標本数',
 		'seed': '乱数シード',
 		'poskeep': 'Simulate pos keep',
@@ -74,7 +73,6 @@ const UI_en = Object.freeze({
 		'chart': 'Skill table'
 	}),
 	'sidebar': Object.freeze({
-		'mode': 'Mode:',
 		'samples': 'Samples:',
 		'seed': 'Seed:',
 		'poskeep': 'Simulate pos keep',
@@ -952,6 +950,11 @@ function Umalator(props) {
 				</div>
 				<div id="nonUmaPanes">
 					<div id="midPane" class={chartData ? 'hasResults' : ''}>
+						<div id="modeBar">
+							<button class={`modeBtn${mode == Mode.Compare ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Compare)}><Text id="ui.mode.compare" /></button>
+							<button class={`modeBtn${mode == Mode.Chart ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Chart)}><Text id="ui.mode.chart" /></button>
+
+						</div>
 						<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseLeave={rtMouseLeave} regions={skillActivations}>
 							<VelocityLines data={chartData} courseDistance={course.distance} width={960} height={250} xOffset={20} showHp={showHp} />
 							<g id="rtMouseOverBox" style="display:none">
@@ -973,17 +976,6 @@ function Umalator(props) {
 						{resultsPane}
 					</div>
 					<div id="sidebar">
-						<fieldset>
-							<legend><Text id="ui.sidebar.mode" /></legend>
-							<div>
-								<input type="radio" id="mode-compare" name="mode" value="compare" checked={mode == Mode.Compare} onClick={() => setMode(Mode.Compare)} />
-								<label for="mode-compare"><Text id="ui.mode.compare" /></label>
-							</div>
-							<div>
-								<input type="radio" id="mode-chart" name="mode" value="chart" checked={mode == Mode.Chart} onClick={() => setMode(Mode.Chart)} />
-								<label for="mode-chart"><Text id="ui.mode.chart" /></label>
-							</div>
-						</fieldset>
 						<label for="nsamples"><Text id="ui.sidebar.samples" /></label>
 						<input type="number" id="nsamples" min="1" max="10000" value={nsamples} onInput={(e) => setSamples(+e.currentTarget.value)} />
 						<label for="seed"><Text id="ui.sidebar.seed" /></label>
