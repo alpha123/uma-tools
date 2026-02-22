@@ -8,6 +8,13 @@
 	src: local("Noto Sans JP"), url("/uma-tools/fonts/NotoSansJP-VariableFont_wght.ttf") format("truetype");
 }
 
+:root {
+	/*--uma1-color: rgb(35, 178, 246);
+	--uma2-color: rgb(255, 111, 183);*/
+	--uma1-color: rgb(42, 119, 197);
+	--uma2-color: rgb(197, 42, 42);
+}
+
 body {
 	font-family: Inter, "Noto Sans JP", sans-serif;
 	overflow: hidden;
@@ -285,7 +292,13 @@ body {
 	font-size: 0.5em;
 }
 
+strong.uma1 { color: var(--uma1-color); }
+strong.uma2 { color: var(--uma2-color); }
+
 #infoTables {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 	height: 54vh;
 	margin-left: 80px;
 	margin-top: 10px;
@@ -294,17 +307,81 @@ body {
 }
 
 #infoTables > table {
-	border-collapse: collapse;
+	background: #fff;
+	border-radius: 10px;
+	border-spacing: 0;
+	display: block;
+	height: 26vh;
+	overflow-y: auto;
 	width: 100%;
+}
+
+#infoTables > table.uma1 {
+	border: 2px solid var(--uma1-color);
+}
+
+#infoTables > table.uma2 {
+	border: 2px solid var(--uma2-color);
+}
+
+#infoTables caption {
+	background: #fff;
+	border-radius: 10px 10px 0 0;
+	height: 1.9em;
+	position: fixed;
+	text-align: left;
+	width: 476px;
+}
+
+#infoTables caption > div {
+	border-top-left-radius: 4px;
+	color: white;
+	line-height: 1.625em;
+	padding: 2px 8px;
+	position: relative;
+	width: max-content;
+}
+
+#infoTables caption > div::after {
+	border-style: solid;
+	border-width: calc(1.625em + 4px) calc((1.625em + 4px) / 3.5) 0 0;
+	content: '';
+	height: 0;
+	left: 100%;
+	position: absolute;
+	top: 0;
+	width: 0;
+}
+
+#infoTables > .uma1 > caption > div {
+	background: var(--uma1-color);
+}
+
+#infoTables > .uma1 > caption > div::after {
+	border-color: var(--uma1-color) transparent transparent transparent;
+}
+
+#infoTables > .uma2 > caption > div {
+	background: var(--uma2-color);
+}
+
+#infoTables > .uma2 > caption > div::after {
+	border-color: var(--uma2-color) transparent transparent transparent;
 }
 
 #infoTables tbody {
 	border-bottom: 1px solid rgb(121, 64, 22);
 	display: block;
+	margin-top: -2px;
+	padding: 0 12px;
 	width: 450px;
 }
 
-#infoTables tbody:last-child {
+#infoTables tbody:first-of-type {
+	line-height: 1.4em;
+}
+
+#infoTables tbody:last-of-type {
 	border: none;
 }
 

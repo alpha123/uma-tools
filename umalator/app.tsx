@@ -37,7 +37,7 @@ const DEFAULT_SEED = 2615953739;
 
 const UI_ja = Object.freeze({
 	'lengthsunit': 'バ身',
-	'resultshelp': '負の数とは<strong style="color:#2a77c5">第一ウマ娘</strong>の方が速い。正の数とは<strong style="color:#c52a2a">第二ウマ娘</strong>の方が速い。',
+	'resultshelp': '負の数とは<strong class="uma1">第一ウマ娘</strong>の方が速い。正の数とは<strong class="uma2">第二ウマ娘</strong>の方が速い。',
 	'uma': 'ウマ娘',
 	'uma1': '第一ウマ娘',
 	'uma2': '第二ウマ娘',
@@ -70,7 +70,7 @@ const UI_ja = Object.freeze({
 });
 const UI_en = Object.freeze({
 	'lengthsunit': 'bashin',
-	'resultshelp': 'Negative numbers mean <strong style="color:#2a77c5">Umamusume 1</strong> is faster, positive numbers mean <strong style="color:#c52a2a">Umamusume 2</strong> is faster.',
+	'resultshelp': 'Negative numbers mean <strong class="uma1">Umamusume 1</strong> is faster, positive numbers mean <strong class="uma2">Umamusume 2</strong> is faster.',
 	'uma': 'Umamusume',
 	'uma1': 'Umamusume 1',
 	'uma2': 'Umamusume 2',
@@ -292,6 +292,10 @@ function SeasonSelect(props) {
 	);
 }
 
+const [UMA1_COLOR, UMA2_COLOR] = (function (cs) {
+	return [cs.getPropertyValue('--uma1-color'), cs.getPropertyValue('--uma2-color')];
+})(window.getComputedStyle(document.documentElement));
+
 const Histogram = memo(function Histogram(props) {
 	const {data, width, height} = props;
 	const axes = useRef(null);
@@ -315,7 +319,7 @@ const Histogram = memo(function Histogram(props) {
 	}, [data, width, height]);
 
 	const rects = buckets.map((b,i) =>
-		<rect key={i} fill={b.x1 <= 0 || !props.splitColors ? "#2a77c5" : "#c52a2a"} stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
+		<rect key={i} fill={b.x1 <= 0 || !props.splitColors ? UMA1_COLOR : UMA2_COLOR} stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
 	);
 	return (
 		<svg id="histogram" width={width} height={height}>
@@ -363,7 +367,7 @@ const VelocityLines = memo(function VelocityLines(props) {
 			g.append('g').attr('transform', `translate(${props.xOffset},4)`).call(d3.axisLeft(y));
 		}
 	}, [props.data, props.courseDistance, props.width, props.height]);
-	const colors = ['#2a77c5', '#c52a2a'];
+	const colors = [UMA1_COLOR, UMA2_COLOR];
 	const hpColors = ['#688aab', '#ab6868'];
 	return (
 		<Fragment>
@@ -384,10 +388,10 @@ const VelocityLines = memo(function VelocityLines(props) {
 });
 
 const ResultsTable = memo(function ResultsTable(props) {
-	const {caption, color, chartData, idx, spurtRate} = props;
+	const {caption, class:cls, chartData, idx, spurtRate} = props;
 	return (
-		<table>
-			<caption style={`color:${color}`}>{caption}</caption>
+		<table class={cls}>
+			<caption><div>{caption}</div></caption>
 			<tbody>
 				<tr><th>Time to finish</th><td>{chartData.t[idx][chartData.t[idx].length-1].toFixed(4) + ' s'}</td></tr>
 				<tr><th>Full spurt rate</th><td>{(spurtRate * 100).toFixed(2) + '%'}</td></tr>
@@ -897,8 +901,8 @@ function Umalator(props) {
 	}
 
 	const colors = [
-		{stroke: 'rgb(42, 119, 197)', fill: 'rgba(42, 119, 197, 0.7)'},
-		{stroke: 'rgb(197, 42, 42)', fill: 'rgba(197, 42, 42, 0.7)'}
+		{stroke: UMA1_COLOR, fill: UMA1_COLOR.replace(/rgb\((.+?)\)/, "rgba($1, 0.7)")},
+		{stroke: UMA2_COLOR, fill: UMA2_COLOR.replace(/rgb\((.+?)\)/, "rgba($1, 0.7)")}
 	];
 	const skillActivations = chartData == null ? [] : chartData.sk.flatMap((a,i) => {
 		return Array.from(a.keys()).flatMap(id => {
@@ -954,8 +958,8 @@ function Umalator(props) {
 				</div>
 				<div id="infoTables">
 					<Localizer>
-						<ResultsTable caption={<Text id="ui.uma1" />} color="#2a77c5" chartData={chartData} idx={0} spurtRate={runData.nspurt[0] / results.length} />
-						<ResultsTable caption={<Text id="ui.uma2" />} color="#c52a2a" chartData={chartData} idx={1} spurtRate={runData.nspurt[1] / results.length} />
+						<ResultsTable caption={<Text id="ui.uma1" />} class="uma1" chartData={chartData} idx={0} spurtRate={runData.nspurt[0] / results.length} />
+						<ResultsTable caption={<Text id="ui.uma2" />} class="uma2" chartData={chartData} idx={1} spurtRate={runData.nspurt[1] / results.length} />
 					</Localizer>
 				</div>
 			</div>
