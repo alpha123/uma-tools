@@ -20,6 +20,7 @@
 }
 
 .basinnChart thead {
+	line-height: 1.625em;
 	position: sticky;
 	top: 0;
 	z-index: 1;
