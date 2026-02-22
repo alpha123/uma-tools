@@ -447,6 +447,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 	}
 }
 
+const NEW_HORSE_FIELDS = Object.freeze({mood: 2, popularity: 1});  // added later
 async function deserialize(hash) {
 	const zipped = atob(decodeURIComponent(hash));
 	const buf = new Uint8Array(zipped.split('').map(c => c.charCodeAt(0)));
@@ -472,8 +473,8 @@ async function deserialize(hash) {
 					usePosKeep: o.usePosKeep,
 					useIntChecks: o.useIntChecks || false,  // added later
 					racedef: o.racedef,
-					uma1: Object.assign(o.uma1, {skills: SkillSet(o.uma1.skills)}),
-					uma2: Object.assign(o.uma2, {skills: SkillSet(o.uma2.skills)}),
+					uma1: Object.assign({}, NEW_HORSE_FIELDS, o.uma1, {skills: SkillSet(o.uma1.skills)}),
+					uma2: Object.assign({}, NEW_HORSE_FIELDS, o.uma2, {skills: SkillSet(o.uma2.skills)}),
 					chartSkills: o.chartSkills || null  // added later
 				};
 			} catch (_) {

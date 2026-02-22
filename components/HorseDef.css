@@ -167,7 +167,7 @@
 	width: 25px;
 }
 
-.horseParam > input {
+.horseParam > input, .horseAptitudes > div:last-child > input {
 	background: inherit;
 	border: none;
 	color: rgb(121,64,22);
@@ -201,6 +201,17 @@
 .horseAptitudes > div:nth-child(3n) {
 	border: unset;
 	background: unset;
+	justify-content: end;
+}
+
+.horseAptitudes > div:nth-child(3) > img {
+	height: 1.5em;
+}
+
+.horseAptitudes > div:last-child > input {
+	font-size: 1em;
+	margin: 0 4px;
+	width: 2.6em;
 }
 
 .horseAptitudeSelect {

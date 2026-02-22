@@ -27,7 +27,11 @@ const STRINGS_ja = Object.freeze({
 		'strategyaptitude': '脚質適正'
 	}),
 	'skillheader': 'スキル',
-	'addskill': '+ スキル追加'
+	'addskill': '+ スキル追加',
+	'popularity': Object.freeze({
+		'pre': '',
+		'post': '番人気'
+	})
 });
 
 const STRINGS_en = Object.freeze({
@@ -38,7 +42,11 @@ const STRINGS_en = Object.freeze({
 		'strategyaptitude': 'Strategy aptitude:'
 	}),
 	'skillheader': 'Skills',
-	'addskill': 'Add Skill'
+	'addskill': 'Add Skill',
+	'popularity': Object.freeze({
+		'pre': 'Popularity:',
+		'post': ''
+	})
 });
 
 const STRINGS_global = Object.freeze({
@@ -49,7 +57,11 @@ const STRINGS_global = Object.freeze({
 		'strategyaptitude': 'Style aptitude:'
 	}),
 	'skillheader': 'Skills',
-	'addskill': 'Add Skill'
+	'addskill': 'Add Skill',
+	'popularity': Object.freeze({
+		'pre': 'No.',
+		'post': 'Fav'
+	})
 });
 
 const STRINGS = {
@@ -241,6 +253,36 @@ export function StrategySelect(props) {
 	);
 }
 
+export function MoodSelect(props) {
+	const infix = useLanguage() == 'ja' ? '' : '/global';
+	const [m, setM] = useLens(props.m);
+	function cycle() {
+		setM((m + 3) % 5 - 2);
+	}
+	function reverseCycle(e) {
+		e.preventDefault();
+		setM(((m + 1) % 5 + 5) % 5 - 2);
+	}
+	function selectByKey(e: KeyboardEvent) {
+		const n = parseInt(e.key,10);
+		if (!isNaN(n)) {
+			setM((n + 4) % 5 - 2);
+		}
+	}
+	return <img src={`/uma-tools/icons${infix}/utx_ico_motivation_m_${(102+m).toString().slice(1)}.png`} tabindex={props.tabindex} onClick={cycle} onContextMenu={reverseCycle} onKeyDown={selectByKey} />;
+}
+
+export function PopularitySelect(props) {
+	const [p, setP] = useLens(props.p);
+	return (
+		<Fragment>
+			<Text id="popularity.pre" />
+			<input type="number" min="1" max="18" value={p} tabindex={props.tabindex} onInput={(e) => setP(+e.currentTarget.value)} />
+			<Text id="popularity.post" />
+		</Fragment>
+	);
+}
+
 const nonUniqueSkills = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || skilldata[id].rarity > 5);
 const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skilldata).filter(id => id[0] == '4'));
 
@@ -400,7 +442,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						<span><Text id="select.distanceaptitude" /></span>
 						<AptitudeSelect a={props.state.distanceAptitude} tabindex={tabnext()} />
 					</div>
-					<div>{/*motivation*/}</div>
+					<div><MoodSelect m={props.state.mood} tabindex={tabnext()} /></div>
 					<div>
 						<span><Text id="select.strategy" /></span>
 						<StrategySelect s={l_strategy} tabindex={tabnext()} />
@@ -409,7 +451,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						<span><Text id="select.strategyaptitude" /></span>
 						<AptitudeSelect a={props.state.strategyAptitude} tabindex={tabnext()} />
 					</div>
-					<div>{/*popularity*/}</div>
+					<div><PopularitySelect p={props.state.popularity} tabindex={tabnext()} /></div>
 				</div>
 				<div class="horseSkillHeader"><Text id="skillheader" /></div>
 				<div class="horseSkillListWrapper" onClick={handleSkillClick}>

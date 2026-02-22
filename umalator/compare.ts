@@ -23,8 +23,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			.numUmas(racedef.numUmas);
 	}
 	const compare = standard.fork();
-	standard.horse(uma1);
-	compare.horse(uma2);
+	standard.horse(uma1).mood(uma1.mood).popularity(uma1.popularity);
+	compare.horse(uma2).mood(uma2.mood).popularity(uma2.popularity);
 	standard.otherRawWisdom(uma2.wisdom);
 	compare.otherRawWisdom(uma1.wisdom);
 	const wisdomSeeds = new Map<string, [number,number]>();

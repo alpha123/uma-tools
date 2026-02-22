@@ -37,6 +37,8 @@ export interface HorseState {
 	surfaceAptitude: Aptitude
 	strategyAptitude: Aptitude
 	skills: Map<(typeof skillmeta)['groupId'], keyof typeof skills>
+	mood: -1 | -2 | 0 | 1 | 2;
+	popularity: number
 }
 
 export const DEFAULT_HORSE_STATE = {
@@ -50,5 +52,7 @@ export const DEFAULT_HORSE_STATE = {
 	distanceAptitude: 'S',
 	surfaceAptitude: 'A',
 	strategyAptitude: 'A',
-	skills: SkillSet([])
+	skills: SkillSet([]),
+	mood: 2,
+	popularity: 1
 };
