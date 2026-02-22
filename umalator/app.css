@@ -79,13 +79,23 @@ body {
 }
 
 .presetSelect > legend {
-	background: white;
-	color: rgb(148, 150, 189);
+	background: rgb(148, 150, 189);
+	border-top-left-radius: 8px;
+	color: white;
 	font-size: 0.6em;
-	left: 6px;
-	line-height: 0.6em;
+	line-height: 1.2em;
 	position: absolute;
-	top: -0.3em;
+}
+
+.presetSelect > legend::after {
+	border-color: rgb(148, 150, 189) transparent transparent transparent;
+	border-style: solid;
+	border-width: 1.2em 0.34em 0 0;
+	content: '';
+	height: 0;
+	position: absolute;
+	right: -0.31em;
+	width: 0;
 }
 
 .presetSelect > select {
