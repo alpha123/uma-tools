@@ -179,6 +179,7 @@
 }
 
 .horseAptitudes {
+	align-items: center;
 	display: grid;
 	grid-template-columns: repeat(2, 8fr) 5fr;
 	gap: 8px 12px;
