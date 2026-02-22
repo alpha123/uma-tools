@@ -67,10 +67,32 @@ body {
 #buttonsRow {
 	align-items: center;
 	display: flex;
-	gap: 50px;
+	gap: 25px;
 	margin-left: 20px;
 	position: relative;
 	width: 960px;
+}
+
+.presetSelect {
+	border: none;
+	padding: 0;
+}
+
+.presetSelect > legend {
+	background: white;
+	color: rgb(148, 150, 189);
+	font-size: 0.6em;
+	left: 6px;
+	line-height: 0.6em;
+	position: absolute;
+	top: -0.3em;
+}
+
+.presetSelect > select {
+	background: none;
+	border: 1px solid rgb(148, 150, 189);
+	border-radius: 8px;
+	padding: 0.7em;
 }
 
 .trackSelect > select {

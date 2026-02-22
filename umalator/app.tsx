@@ -503,7 +503,6 @@ async function deserialize(hash) {
 const RacePresets = memo(function RacePresets(props) {
 	const [courseId, setCourseId] = useLens(props.courseId);
 	const [racedef, setRacedef] = useLens(props.racedef);
-	const id = useId();
 	const selectedIdx = presets.findIndex(p => p.courseId == courseId && shallowEquals(p.racedef, racedef));
 	function change(e) {
 		const i = +e.currentTarget.value;
@@ -513,13 +512,13 @@ const RacePresets = memo(function RacePresets(props) {
 		}
 	}
 	return (
-		<Fragment>
-			<label for={id}>Preset:</label>
-			<select id={id} onChange={change}>
+		<fieldset class="presetSelect">
+			<legend>Preset</legend>
+			<select onChange={change}>
 				<option value="-1"></option>
 				{presets.map((p,i) => <option value={i} selected={i == selectedIdx}>{p.name || (p.date.getUTCFullYear() + '-' + (100 + p.date.getUTCMonth() + 1).toString().slice(-2) + (p.type == EventType.CM ? ' CM' : ' LOH'))}</option>)}
 			</select>
-		</Fragment>
+		</fieldset>
 	);
 }, K(true));
 
@@ -940,6 +939,7 @@ function Umalator(props) {
 							</g>
 						</RaceTrack>
 						<div id="buttonsRow">
+							<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 							<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
 							<div id="buttonsRowSpace" />
 							<TimeOfDaySelect t={O.racedef.time} />
@@ -988,7 +988,6 @@ function Umalator(props) {
 								: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
 						}
 						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
-						<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 						{
 							mode == Mode.Chart &&
 								<div id="basinnChartOptionsRow">
