@@ -101,7 +101,7 @@ body {
 	font-size: 1.6em;
 	font-weight: bold;
 	margin-top: 10px;
-	outline: 2px solid rgb(60, 105, 0);
+	outline: 1px solid rgb(55, 108, 2);
 	padding: 12px;
 }
 
@@ -505,7 +505,7 @@ body {
 	color: rgb(121, 64, 22);
 	font-weight: bold;
 	height: 36px;
-	outline: 2px solid rgb(97, 92, 122);
+	outline: 1px solid rgb(99, 93, 123);
 	padding: 0 0.7em;
 }
 
@@ -522,7 +522,7 @@ body {
 #basinnChartRefresh {
 	background: unset;
 	border: unset;
-	color: rgb(222, 161, 87);
+	color: rgb(255, 145, 28);
 	font-size: 26px;
 	position: absolute;
 	right: -36px;
