@@ -26,7 +26,7 @@
 .racetrackName {
 	color: rgb(121,64,22);
 	flex: 1;
-	font: 22px bold sans-serif;
+	font-size: 22px;
 	text-align: center;
 	text-stroke: 1px rgb(121,64,22);
 	-webkit-text-stroke: 1px rgb(121,64,22);
