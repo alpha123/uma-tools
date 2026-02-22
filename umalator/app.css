@@ -93,12 +93,20 @@ body {
 }
 
 #run {
-	background: none;
-	border: 1px solid rgb(148, 150, 189);
-	border-radius: 8px;
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22)) padding-box, linear-gradient(rgb(183, 241, 43), rgb(118, 205, 40)) border-box;
+	border: 2px solid transparent;
+	border-radius: 12px;
+	box-shadow: 0px 5px 0 rgb(180, 178, 192);
+	color: white;
 	font-size: 1.6em;
+	font-weight: bold;
 	margin-top: 10px;
-	padding: 24px;
+	outline: 2px solid rgb(60, 105, 0);
+	padding: 12px;
+}
+
+#run:active {
+	box-shadow: none;
 }
 
 #rtMouseOverBox > text {
@@ -490,11 +498,19 @@ body {
 }
 
 #basinnChartAddSkill {
-	background: none;
-	border: 1px solid rgb(148, 150, 189);
+	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
+	border: 2px solid transparent;
 	border-radius: 8px;
+	box-shadow: 0px 5px 0 rgb(180, 178, 192);
+	color: rgb(121, 64, 22);
+	font-weight: bold;
 	height: 36px;
+	outline: 2px solid rgb(97, 92, 122);
 	padding: 0 0.7em;
+}
+
+#basinnChartAddSkill:active {
+	box-shadow: none;
 }
 
 #basinnChartSelect {
