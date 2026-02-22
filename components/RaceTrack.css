@@ -15,8 +15,15 @@
 	text-anchor: middle;
 }
 
+.racetrackHeader {
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .racetrackName {
 	color: rgb(121,64,22);
+	flex: 1;
 	font: 22px bold sans-serif;
 	margin-bottom: 0.3em;
 	text-align: center;
@@ -26,8 +33,13 @@
 }
 
 .racetrackStatThresholds {
-	font-size: 0.8em;
-	text-align: center;
+	display: flex;
+	flex-direction: row-reverse;
+	width: 0;
+}
+
+.racetrackStatThresholds > img {
+	height: 2em;
 }
 
 .mouseoverText {

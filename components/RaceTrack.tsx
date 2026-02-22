@@ -193,15 +193,27 @@ export function RaceTrack(props) {
 		props.mouseLeave && props.mouseLeave();
 	}
 
-	const trackNameHeader = useMemo(() =>
-		<div class="racetrackName">
-			<Text id={`tracknames.${course.raceTrackId}`} />{' '}<Text id="coursedesc" plural={course.surface} fields={{
-				'distance': course.distance,
-				'inout': <Text id={`racetrack.${inoutKey[courses[props.courseid].course]}`} />,
-				'surface': <Text id={course.surface == Surface.Turf ? 'racetrack.turf' : 'racetrack.dirt'} />
-			}} />{' '}<Text id={`racetrack.orientation.${course.turn}`} />
-		</div>
-	, [props.courseid]);
+	const trackNameHeader = useMemo(() => {
+		const statStrings = useText({1: 'common.stat.1', 2: 'common.stat.2', 3: 'common.stat.3', 4: 'common.stat.4', 5: 'common.stat.5'});
+		const {noneStat, joiner} = useText({noneStat: 'common.stat.0', joiner: 'common.joiner'});
+		const statThresholds = course.courseSetStatus.length == 0 ? noneStat : course.courseSetStatus.map(s => statStrings[s]).join(joiner);
+		const title = STRINGS[lang]['racetrack']['thresholds'];
+		// generate icons in reverse order because we use flex-direction: row-reverse to get the 0 width container to overflow
+		// in the correct direction
+		const thresholdIcons = course.courseSetStatus.slice().reverse().map(s => <img src={`/uma-tools/icons/utx_ico_obtain_${(s+99).toString().slice(1)}.png`} />);
+		return (
+			<div class="racetrackHeader">
+				<div class="racetrackName">
+					<Text id={`tracknames.${course.raceTrackId}`} />{' '}<Text id="coursedesc" plural={course.surface} fields={{
+						'distance': course.distance,
+						'inout': <Text id={`racetrack.${inoutKey[courses[props.courseid].course]}`} />,
+						'surface': <Text id={course.surface == Surface.Turf ? 'racetrack.turf' : 'racetrack.dirt'} />
+					}} />{' '}<Text id={`racetrack.orientation.${course.turn}`} />
+				</div>
+				<div class="racetrackStatThresholds" title={title + statThresholds}>{thresholdIcons}</div>
+			</div>
+		);
+	}, [props.courseid]);
 
 	const almostEverything = useMemo(function () {
 		const flatLevel = 50;
@@ -387,10 +399,6 @@ export function RaceTrack(props) {
 		}, {seen: new Set(), rungs: Array(10).fill(0).map(_ => []), elem: []}).elem;
 	}, [props.regions, course.distance]);
 
-	const statStrings = useText({1: 'common.stat.1', 2: 'common.stat.2', 3: 'common.stat.3', 4: 'common.stat.4', 5: 'common.stat.5'});
-	const {noneStat, joiner} = useText({noneStat: 'common.stat.0', joiner: 'common.joiner'});
-	const statThresholds = course.courseSetStatus.length == 0 ? noneStat : course.courseSetStatus.map(s => statStrings[s]).join(joiner);
-
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="racetrackWrapper" style={`width:${props.width + xOffset + xExtra}px`}>
@@ -404,7 +412,6 @@ export function RaceTrack(props) {
 					</svg>
 					{props.children}
 				</svg>
-				{<div class="racetrackStatThresholds"><Text id="racetrack.thresholds" />{statThresholds}</div>}
 			</div>
 		</IntlProvider>
 	);
