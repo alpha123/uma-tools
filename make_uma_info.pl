@@ -8,10 +8,13 @@ use File::Basename;
 use File::Copy;
 use File::Slurper 'read_binary';
 use DBI;
-use DBD::SQLite::Constants qw(:file_open);
+use DBD::SQLite::Constants qw(:file_open);  # requires custom DBD::SQLite; see note in extract_resource.pl
 use JSON::PP;
 
-use Encoding qw(encode decode);
+use lib dirname(abs_path(__FILE__));
+use AssetExtractor qw($db_key extract_asset);
+
+use Encode qw(encode decode);
 # NONE OF THIS SHIT WORKS
 # I HAVE TRIED EVERY COMBINATION OF binmode(), use open qw(:std :utf8), OutputCP(), etc etc
 # PROBABLY IT WORKS ON NORMAL WINDOWS BUT MY LOCALE IS SET TO JAPAN
@@ -55,11 +58,14 @@ my $metadb = DBI->connect("dbi:SQLite:$meta", undef, undef, {
 });
 $metadb->{RaiseError} = 1;
 
-my $select_chara_icon = $metadb->prepare('SELECT n, h FROM a WHERE n LIKE ("%/chr_icon_" || ?);');
+$metadb->do('PRAGMA cipher = "chacha20";');
+$metadb->do("PRAGMA hexkey = \"$db_key\";");
+
+my $select_chara_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE ("%/chr_icon_" || ?);');
 
 # for some bizarre reason the icon ids for alts arent always the same as the category 5 ids in text_data (sometimes they are!)
 # select all of them and rely on ordering by rowid to sort things out for us.
-my $select_trained_icon = $metadb->prepare('SELECT n, h FROM a WHERE n LIKE ("%/trained_chr_icon_" || ?1 || "_" || ?1 || "%") AND n LIKE "%_02" ORDER BY rowid;');
+my $select_trained_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE ("%/trained_chr_icon_" || ?1 || "_" || ?1 || "%") AND n LIKE "%_02" ORDER BY rowid;');
 
 $select_umas->execute;
 
@@ -68,10 +74,9 @@ $select_umas->bind_columns(\($id, $ja_name));
 
 while ($select_umas->fetch) {
 	if (!$umas->{$id}) {
-		my $icon_path;
-		my $icon_hash;
+		my ($icon_path, $icon_hash, $icon_keyint);
 		$select_chara_icon->execute($id);
-		$select_chara_icon->bind_columns(\($icon_path, $icon_hash));
+		$select_chara_icon->bind_columns(\($icon_path, $icon_hash, $icon_keyint));
 		$select_chara_icon->fetch;
 
 		my $en_name = $en_names{$id};
@@ -85,11 +90,8 @@ while ($select_umas->fetch) {
 		my $base = basename($icon_path);  # tehe
 		$icons->{$id} = "/uma-tools/icons/chara/$base.png";
 
-		$icon_hash =~ /^(..)/;
-		my $hdir = $1;
-		copy("$datadir/$hdir/$icon_hash", "need_unpack/$icon_hash");
+		extract_asset($datadir, $icon_hash, $icon_keyint);
 	}
-
 	my @outfit_ids;
 	my $o_id;
 	my $epithet;
@@ -100,19 +102,16 @@ while ($select_umas->fetch) {
 		$umas->{$id}->{outfits}->{$o_id} = Encode::decode('utf8', $epithet);
 	}
 
-	my $icon_path;
-	my $icon_hash;
+	my ($icon_path, $icon_hash, $icon_keyint);
 	$select_trained_icon->execute($id);
-	$select_trained_icon->bind_columns(\($icon_path, $icon_hash));
+	$select_trained_icon->bind_columns(\($icon_path, $icon_hash, $icon_keyint));
 	my $i = 0;
 	while ($select_trained_icon->fetch) {
 		next if $icons->{$outfit_ids[$i++]};
 		my $base = basename($icon_path);
 		$icons->{$outfit_ids[$i - 1]} = "/uma-tools/icons/chara/$base.png";
 
-		$icon_hash =~ /^(..)/;
-		my $hdir = $1;
-		copy("$datadir/$hdir/$icon_hash", "need_unpack/$icon_hash");
+		extract_asset($datadir, $icon_hash, $icon_keyint);
 	}
 }
 
