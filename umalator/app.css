@@ -222,11 +222,18 @@ body {
 }
 
 #infoTables > table th {
+	align-items: center;
 	color: rgb(121, 64, 22);
+	display: flex;
 	font-weight: bold;
+	gap: 4px;
 	overflow: hidden;
 	text-align: left;
 	text-wrap: nowrap;
+}
+
+#infoTables > table th > img {
+	height: 1.5em;
 }
 
 #infoTables > table td {

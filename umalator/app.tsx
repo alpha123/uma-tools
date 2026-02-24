@@ -377,7 +377,7 @@ const ResultsTable = memo(function ResultsTable(props) {
 				<tbody>
 					{Array.from(chartData.sk[idx].entries()).map(([id,ars]) => ars.flatMap(pos =>
 						<tr>
-							<th>{skillnames[id][0]}</th>
+							<th><img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[id].iconId}.png`} /><span>{skillnames[id][0]}</span></th>
 							<td>{pos[1] == -1 ? `${pos[0].toFixed(2)} m` : `${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
 						</tr>))}
 				</tbody>}
