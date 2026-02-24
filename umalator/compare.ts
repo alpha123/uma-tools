@@ -25,8 +25,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const compare = standard.fork();
 	standard.horse(uma1).mood(uma1.mood).popularity(uma1.popularity);
 	compare.horse(uma2).mood(uma2.mood).popularity(uma2.popularity);
-	standard.otherRawWisdom(uma2.wisdom);
-	compare.otherRawWisdom(uma1.wisdom);
+	standard.otherRawWisdom(uma2.wisdom, uma2.mood);
+	compare.otherRawWisdom(uma1.wisdom, uma1.mood);
 	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(...seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();   // advance the RNG state a bit because we only seeded the low bits
