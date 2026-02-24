@@ -73,7 +73,7 @@ function SkillNameCell(props) {
 	return (
 		<div class="chartSkillName">
 			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
-			<img src={`/uma-tools/icons/${skillmeta[props.id].iconId}.png`} />
+			<img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} />
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);
