@@ -8,8 +8,8 @@ found the latter easier.
 * DONE skill hints/cost calculator?
 * DONE show skill activations on course chart
 * TODO jp localization
-* TODO choose motivation
-* TODO choose popularity
+* DONE choose motivation
+* DONE choose popularity
 probably should involve un-splitting sirius unique, try to come up with a solution that also works for the bashin chart
 * TODO animations
 might be cool to animate e.g., the histogram bars popping up
