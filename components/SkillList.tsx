@@ -52,10 +52,12 @@ const STRINGS_ja = Object.freeze({
 		'4': '根性アップ',
 		'5': '賢さアップ',
 		'9': '体力回復',
+		'13': '掛かり時間',
 		'21': '現在速度（減速なし）',
 		'22': '現在速度',
 		'27': '目標速度',
 		'28': 'レーン移動速度',
+		'29': '掛かりの確率',
 		'31': '加速',
 		'37': 'Activate random gold skill',
 		'42': 'スキルの効果時間上がり'
@@ -120,10 +122,12 @@ const STRINGS_en = Object.freeze({
 		'4': 'Guts up',
 		'5': 'Wisdom up',
 		'9': 'Recovery',
+		'13': 'Kakari duration',
 		'21': 'Current speed',
 		'22': 'Current speed with natural deceleration',
 		'27': 'Target speed',
 		'28': 'Lane movement speed',
+		'29': 'Kakari chance',
 		'31': 'Acceleration',
 		'37': 'Activate random gold skill',
 		'42': 'Increase skill duration'
@@ -171,7 +175,9 @@ const STRINGS_global = extendStrings(STRINGS_en, {
 		'phase2': 'Late-race',
 	}),
 	'skilleffecttypes': extendStrings(STRINGS_en['skilleffecttypes'], {
-		'5': 'Wit up'
+		'5': 'Wit up',
+		'13': 'Rushed duration',
+		'29': 'Rushed chance'
 	}),
 	'skilldetails': extendStrings(STRINGS_en['skilldetails'], {
 		'distance_type': COMMON_global['distance'],
@@ -405,9 +411,11 @@ const formatEffect = Object.freeze({
 	4: formatStat,
 	5: formatStat,
 	9: n => `${(n * 100).toFixed(1)}%`,
+	13: s => fmtSeconds(forceSign(s)),
 	21: formatSpeed, 
 	22: formatSpeed,
 	27: formatSpeed,
+	29: n => forceSign(n) + '%',
 	31: n => <Text id="skilldetails.accel" plural={n} fields={{n: forceSign(n)}} />,
 	42: n => <Text id="skilldetails.durationincrease" plural={n} fields={{n}} />
 });

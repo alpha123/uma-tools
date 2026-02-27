@@ -60,7 +60,8 @@ const UI_ja = Object.freeze({
 		'all': 'All skills',
 		'selected': 'Selected skills',
 		'addskill': '+ スキル追加'
-	})
+	}),
+	'kakari': '掛かり'
 });
 const UI_en = Object.freeze({
 	'lengthsunit': 'bashin',
@@ -88,13 +89,15 @@ const UI_en = Object.freeze({
 		'all': 'All skills',
 		'selected': 'Selected skills',
 		'addskill': '+ Add Skill'
-	})
+	}),
+	'kakari': 'Kakari'
 });
 const UI_global = extendStrings(UI_en, {
 	'lengthsunit': 'lengths',
 	'sidebar': extendStrings(UI_en['sidebar'], {
 		'intchecks': 'Wit checks for skills'
-	})
+	}),
+	'kakari': 'Rushed'
 });
 
 const UI_STRINGS = Object.freeze({
@@ -375,7 +378,7 @@ const ResultsTable = memo(function ResultsTable(props) {
 			</tbody>
 			{chartData.sk[idx].size > 0 &&
 				<tbody>
-					{Array.from(chartData.sk[idx].entries()).map(([id,ars]) => ars.flatMap(pos =>
+					{Array.from(chartData.sk[idx].entries()).flatMap(([id,ars]) => id == 'kakari' ? [] : ars.map(pos =>
 						<tr>
 							<th><img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[id].iconId}.png`} /><span>{skillnames[id][0]}</span></th>
 							<td>{pos[1] == -1 ? `${pos[0].toFixed(2)} m` : `${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
@@ -816,11 +819,11 @@ function Umalator(props) {
 	];
 	const skillActivations = chartData == null ? [] : chartData.sk.flatMap((a,i) => {
 		return Array.from(a.keys()).flatMap(id => {
-			if (NO_SHOW.indexOf(skillmeta[id].iconId) > -1) return [];
+			if (id != 'kakari' && NO_SHOW.indexOf(skillmeta[id].iconId) > -1) return [];
 			else return a.get(id).map(ar => ({
 				type: RegionDisplayType.Textbox,
 				color: colors[i],
-				text: skillnames[id][0],
+				text: id == 'kakari' ? UI_STRINGS[props.lang]['kakari'] : skillnames[id][0],
 				regions: [{start: ar[0], end: ar[1]}]
 			}));
 		});
