@@ -47,6 +47,28 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-02-26</h2>
+					<ul>
+						<li>
+							<details>
+								<summary>Implement Rushed</summary>
+								<p>
+									Debuffs that depend on the target being Rushed (i.e., the Frenzied and Trick skills) do not work correctly, or rather do not work as you probably expect them to. These skills suck anyway and you should not take them.
+								</p>
+							</details>
+						</li>
+						<li>Show % of max speed+duration last spurts achieved in compare mode (“Full spurt rate” row)</li>
+						<li>Implement mood and popularity</li>
+						<li>
+							Slight UI rearrangement
+							<ul>
+								<li>The presets selector has been moved closer to the race options, which it is logically related to.</li>
+								<li>Course stat thresholds are now displayed by stat icons to the right of the course name above the course visualization. This is intended to improve vertical space efficiency and readability at a glance.</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-02-21</h2>
 					<ul>
 						<li>Add an option to run the skill table with a selection of skills rather than all skills (can be much faster for testing only a subset of skills)</li>
