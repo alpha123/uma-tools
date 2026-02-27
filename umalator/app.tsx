@@ -145,8 +145,7 @@ function horseEquals(h1, h2) {
 const enum EventType { CM, LOH }
 
 const presets = (CC_GLOBAL ? [
-	// (date)
-	{type: EventType.CM, name: 'Aquarius Cup', date: '2026-02-28', courseId: 10611, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, name: 'Aquarius Cup', date: '2026-03-10' /* TODO date */, courseId: 10611, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Capricorn Cup', date: '2026-02-13', courseId: 10701, season: Season.Winter, ground: GroundCondition.Soft, weather: Weather.Snowy, time: Time.Midday},
 	{type: EventType.CM, name: 'Sagittarius Cup', date: '2026-01-23', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Scorpio Cup', date: '2026-01-01', courseId: 10604, season: Season.Autumn, ground: GroundCondition.Soft, weather: Weather.Rainy, time: Time.Midday},
@@ -154,16 +153,19 @@ const presets = (CC_GLOBAL ? [
 	{type: EventType.CM, name: 'Virgo Cup', date: '2025-11-20', courseId: 10903, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Leo Cup', date: '2025-10-30', courseId: 10906, season: Season.Summer, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Cancer Cup', date: '2025-10-07', courseId: 10602, season: Season.Summer, ground: GroundCondition.Yielding, weather: Weather.Sunny, time: Time.Midday},
-	{type: EventType.CM, name: 'Gemini Cup', date: '2025-09', courseId: 10811, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
-	{type: EventType.CM, name: 'Taurus Cup', date: '2025-08', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday}
+	{type: EventType.CM, name: 'Gemini Cup', date: '2025-09-11', courseId: 10811, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, name: 'Taurus Cup', date: '2025-08-21', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday}
 ] : [
+	{type: EventType.LOH, date: '2026-05-31' /* TODO date */, courseId: 10801, season: Season.Spring, time: Time.Midday},
+	{type: EventType.CM, date: '2026-04-30' /* TODO date */, courseId: 11709, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, date: '2026-03-22', courseId: 11703, season: Season.Spring, ground: GroundCondition.Good, weather: weather.Sunny, time: Time.Midday},
 	{type: EventType.LOH, date: '2026-02-15', courseId: 10602, season: Season.Winter, time: Time.Midday},
 	{type: EventType.CM, date: '2026-01-22', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, date: '2025-12-21', courseId: 10903, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
-	{type: EventType.LOH, date: '2025-11', courseId: 11502, season: Season.Autumn, time: Time.Midday},
-	{type: EventType.CM, date: '2025-10', courseId: 10302, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Cloudy, time: Time.Midday},
+	{type: EventType.LOH, date: '2025-11-21', courseId: 11502, season: Season.Autumn, time: Time.Midday},
+	{type: EventType.CM, date: '2025-10-23', courseId: 10302, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Cloudy, time: Time.Midday},
 	{type: EventType.CM, date: '2025-09-22', courseId: 10807, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
-	{type: EventType.LOH, date: '2025-08', courseId: 10105, season: Season.Summer, Time: Time.Midday},
+	{type: EventType.LOH, date: '2025-08-15', courseId: 10105, season: Season.Summer, Time: Time.Midday},
 	{type: EventType.CM, date: '2025-07-25', courseId: 10906, ground: GroundCondition.Yielding, weather: Weather.Cloudy, season: Season.Summer, time: Time.Midday},
 	{type: EventType.CM, date: '2025-06-21', courseId: 10606, ground: GroundCondition.Good, weather: Weather.Sunny, season: Season.Spring, time: Time.Midday}
 ])
