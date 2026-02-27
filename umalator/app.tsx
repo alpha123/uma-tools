@@ -939,8 +939,8 @@ function Umalator(props) {
 							</g>
 						</RaceTrack>
 						<div id="buttonsRow">
-							<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 							<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
+							<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
 							<div id="buttonsRowSpace" />
 							<TimeOfDaySelect t={O.racedef.time} />
 							<div>
