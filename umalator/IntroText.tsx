@@ -18,12 +18,6 @@ export function IntroText(props) {
 					</li>
 					<li>
 						<details>
-							<summary>The <span style="color:rgb(255,119,61);font-weight:bold">Rushed</span> status effect is not implemented</summary>
-							Like hills this primarily only impacts HP consumption.
-						</details>
-					</li>
-					<li>
-						<details>
 							<summary>Skill cooldowns are not implemented</summary>
 							Skills only ever activate once even if they have a cooldown like Professor of Curvature or Beeline Burst.
 						</details>
@@ -40,7 +34,6 @@ export function IntroText(props) {
 							Front Runners have a chance to temporarily speed up based on their wit stat. This is difficult to model and not useful for skill comparisons so it is not implemented, but consider that wit on Front Runners is very slightly more useful than the simulator reports.
 						</details>
 					</li>
-					<li>Motivation is always assumed to be maximum</li>
 				</ul>
 				By and large it should be highly accurate. It has been battle-tested on the JP server for several years.
 			</details>
