@@ -102,6 +102,7 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const diff = [];
 	let min = Infinity, max = -Infinity, estMean, estMedian, bestMeanDiff = Infinity, bestMedianDiff = Infinity;
 	let minrun, maxrun, meanrun, medianrun;
+	let nspurt = [0,0];
 	const sampleCutoff = Math.max(Math.floor(nsamples * 0.8), nsamples - 200);
 	let retry = false;
 	for (let i = 0; i < nsamples; ++i) {
@@ -158,6 +159,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 			retry = true;
 		} else {
 			retry = false;
+			nspurt[bi] += +(s1.isLastSpurt && s1.lastSpurtTransition == -1);
+			nspurt[ai] += +(s2.isLastSpurt && s2.lastSpurtTransition == -1);
 			const basinn = sign * (s2.pos - pos1) / 2.5;
 			diff.push(basinn);
 			if (basinn < min) {
@@ -188,5 +191,5 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		}
 	}
 	diff.sort((a,b) => a - b);
-	return {results: diff, runData: {minrun, maxrun, meanrun, medianrun}};
+	return {results: diff, runData: {nspurt, minrun, maxrun, meanrun, medianrun}};
 }

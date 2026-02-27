@@ -366,12 +366,13 @@ const VelocityLines = memo(function VelocityLines(props) {
 });
 
 const ResultsTable = memo(function ResultsTable(props) {
-	const {caption, color, chartData, idx} = props;
+	const {caption, color, chartData, idx, spurtRate} = props;
 	return (
 		<table>
 			<caption style={`color:${color}`}>{caption}</caption>
 			<tbody>
 				<tr><th>Time to finish</th><td>{chartData.t[idx][chartData.t[idx].length-1].toFixed(4) + ' s'}</td></tr>
+				<tr><th>Full spurt rate</th><td>{(spurtRate * 100).toFixed(2) + '%'}</td></tr>
 				<tr><th>Start delay</th><td>{chartData.sdly[idx].toFixed(4) + ' s'}</td></tr>
 				<tr><th>Top speed</th><td>{chartData.v[idx].reduce((a,b) => Math.max(a,b), 0).toFixed(2) + ' m/s'}</td></tr>
 				<tr><th>Time in downhill speedup mode</th><td>{chartData.dh[idx].toFixed(2) + ' s'}</td></tr>
@@ -868,8 +869,8 @@ function Umalator(props) {
 				</div>
 				<div id="infoTables">
 					<Localizer>
-						<ResultsTable caption={<Text id="ui.uma1" />} color="#2a77c5" chartData={chartData} idx={0} />
-						<ResultsTable caption={<Text id="ui.uma2" />} color="#c52a2a" chartData={chartData} idx={1} />
+						<ResultsTable caption={<Text id="ui.uma1" />} color="#2a77c5" chartData={chartData} idx={0} spurtRate={runData.nspurt[0] / results.length} />
+						<ResultsTable caption={<Text id="ui.uma2" />} color="#c52a2a" chartData={chartData} idx={1} spurtRate={runData.nspurt[1] / results.length} />
 					</Localizer>
 				</div>
 			</div>
