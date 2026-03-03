@@ -10,11 +10,15 @@ export function row_getValue<
   TFeatures extends TableFeatures,
   TData extends RowData,
 >(row: Row<TFeatures, TData>, columnId: string) {
-  if (row._valuesCache.hasOwnProperty(columnId)) {
+  const column = row._table.getColumn(columnId)
+
+  if (
+    row._valuesCache.hasOwnProperty(columnId) &&
+    row._accessorFnsCache.hasOwnProperty(columnId) &&
+    row._accessorFnsCache[columnId] === column?.accessorFn
+  ) {
     return row._valuesCache[columnId]
   }
-
-  const column = row._table.getColumn(columnId)
 
   if (!column?.accessorFn) {
     return undefined
@@ -29,11 +33,15 @@ export function row_getUniqueValues<
   TFeatures extends TableFeatures,
   TData extends RowData,
 >(row: Row<TFeatures, TData>, columnId: string) {
-  if (row._uniqueValuesCache.hasOwnProperty(columnId)) {
+  const column = row._table.getColumn(columnId)
+
+  if (
+    row._uniqueValuesCache.hasOwnProperty(columnId) &&
+    row._accessorFnsCache.hasOwnProperty(columnId) &&
+    row._accessorFnsCache[columnId] === column?.accessorFn
+  ) {
     return row._uniqueValuesCache[columnId]
   }
-
-  const column = row._table.getColumn(columnId)
 
   if (!column?.accessorFn) {
     return undefined
@@ -44,6 +52,7 @@ export function row_getUniqueValues<
     return row._uniqueValuesCache[columnId]
   }
 
+  row._accessorFnsCache[columnId] = column.accessorFn
   row._uniqueValuesCache[columnId] = column.columnDef.getUniqueValues(
     row.original,
     row.index,

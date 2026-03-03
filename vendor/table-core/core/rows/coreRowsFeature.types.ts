@@ -10,6 +10,7 @@ export interface Row_CoreProperties<
 > {
   _uniqueValuesCache: Record<string, unknown>
   _valuesCache: Record<string, unknown>
+  _accessorFnsCache: Record<string, unknown>
   /**
    * The depth of the row (if nested or grouped) relative to the root row array.
    * [API Docs](https://tanstack.com/table/v8/docs/api/core/row#depth)

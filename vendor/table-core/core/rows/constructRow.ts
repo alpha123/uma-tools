@@ -19,6 +19,7 @@ export const constructRow = <
   const row: Row_CoreProperties<TFeatures, TData> = {
     _uniqueValuesCache: {},
     _valuesCache: {},
+    _accessorFnsCache: {},
     depth,
     id,
     index: rowIndex,

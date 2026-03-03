@@ -1,5 +1,6 @@
 import { h, Fragment } from 'preact';
 import { useState, useMemo, useId } from 'preact/hooks';
+import { memo } from 'preact/compat';
 import { Text, Localizer } from 'preact-i18n';
 
 import {
@@ -69,7 +70,7 @@ function formatBasinn(info) {
 	return info.getValue().toFixed(2).replace('-0.00', '0.00') + ' L';
 }
 
-function SkillNameCell(props) {
+const SkillNameCell = memo(function SkillNameCell(props) {
 	return (
 		<div class="chartSkillName">
 			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
@@ -77,7 +78,7 @@ function SkillNameCell(props) {
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);
-}
+});
 
 function scaleBaseCost(baseCost: number, hint: number) {
 	return Math.floor(baseCost * (1 - (hint <= 3 ? 0.1 * hint : 0.3 + 0.05 * (hint - 3))));
@@ -98,7 +99,7 @@ function costForId(id, hints, owned) {
 	return cost;
 }
 
-function SkillCostCell(props) {
+const SkillCostCell = memo(function SkillCostCell(props) {
 	const [hints, setHints] = useLens(props.hintLevels);
 	const hint = hints.get(props.id);
 	const incrHint = useMemo(() => new (O.get(props.id))(x => x + 1), [props.id]);
@@ -120,7 +121,7 @@ function SkillCostCell(props) {
 			{hint > 0 && <span class="hintLevel">{hint}</span>}
 		</Fragment>
 	);
-}
+}, (prev, next) => prev.id == next.id && prev.ownedSkills == next.ownedSkills);
 
 function headerRenderer(radioGroup, selectedType, type, text, onClick) {
 	function click(e) {
@@ -203,18 +204,7 @@ export function BasinnChart(props) {
 		_features: tableFeatures({rowSortingFeature}),
 		_rowModels: {sortedRowModel: createSortedRowModel(sortFns)},
 		columns,
-		// force data to be different every rerender. this is obviously very suboptimal, but we seem to be running into
-		// an issue where the return value from accessorFn is cached even when the `columns` change. what happens is that
-		// the accessorFn for the bsp column depends on `hints`, and when `hints` changes (and hence `columns` due to
-		// `hints` being in the useMemo dependencies) the cached value is not recomputed and so the displayed basinn / sp
-		// value doesn't update with hints.
-		// this seems to be this issue https://github.com/TanStack/table/issues/5363
-		// i thought it used to work before the lens patch, but then i realized it only appeared to work because changing
-		// hints would rerender the top level component, which re-computes our `data` property every time so it would
-		// never be referentially identical and we'd always rerender the table from scratch. now that changing hints
-		// doesn't cause a top level rerender, this no longer happens and the bug manifests. work around it by
-		// unconditionally copying props.data here.
-		data: props.data.slice(),
+		data: props.data,
 		onSortingChange: setSorting,
 		enableSortingRemoval: false,
 		state: {sorting}
