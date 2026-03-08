@@ -40,6 +40,30 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-03-08</h2>
+					<ul>
+						<li>
+							<details>
+								<summary>Allow choosing how skill activations are decided</summary>
+								<p>Click a skill to expand it → Activation section</p>
+								<p>The options are:</p>
+								<ul>
+									<li>Immediate: activates as soon as the uma enters the trigger range</li>
+									<li>Fixed distance: always activates at a fixed location on the track (in meters)</li>
+									<li>Random (Uniform): uniformly samples the trigger areas</li>
+									<li>Random (Log-normal): like above, but using a log-normal distribution instead with parameter <i>σ</i>. This option is usually not useful and mostly included for historical reasons.</li>
+									<li>Random (Erlang): as above but using an Erlang distribution with parameter <i>k</i>. Generally more useful and intuitive than log-normal. Increasing <i>k</i> biases skills towards activating later in their range; lower <i>k</i> makes them activate sooner.</li>
+									<li>straight_random: implements the behavior of skills with the straight_random condition. Roughly, this is like uniform random but the chance of a segment (straight, corner, hill, etc) being chosen is independent of its length.</li>
+									<li>all_corner_random: implements the behavior of skills with the all_corner_random condition. This cannot be concisely described.</li>
+								</ul>
+								<p>Due to details of the implementation, the usual <i>μ</i> parameter for a log-normal distribution and <i>λ</i> parameter for an Erlang distribution are not used.</p>
+							</details>
+						</li>
+						<li>Add a mode to the skill table to run only inherited unique skills</li>
+						<li>Minor UI improvements and performance enhancements</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-02-26</h2>
 					<ul>
 						<li>
