@@ -299,7 +299,7 @@ const Histogram = memo(function Histogram(props) {
 	}, [data, width, height]);
 
 	const rects = buckets.map((b,i) =>
-		<rect key={i} fill="#2a77c5" stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
+		<rect key={i} fill={b.x1 <= 0 ? "#2a77c5" : "#c52a2a"} stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
 	);
 	return (
 		<svg id="histogram" width={width} height={height}>
