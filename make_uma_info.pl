@@ -65,7 +65,7 @@ my $select_chara_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE ("%
 
 # for some bizarre reason the icon ids for alts arent always the same as the category 5 ids in text_data (sometimes they are!)
 # select all of them and rely on ordering by rowid to sort things out for us.
-my $select_trained_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE ("%/trained_chr_icon_" || ?1 || "_" || ?1 || "%") AND n LIKE "%_02" ORDER BY rowid;');
+my $select_trained_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE ("%/trained_chr_icon_" || ?1 || "_" || ?1 || "%") AND (n LIKE "%_01" OR n LIKE "%_02") ORDER BY rowid;');
 
 $select_umas->execute;
 
@@ -88,7 +88,7 @@ while ($select_umas->fetch) {
 		}
 		$umas->{$id} = {name => [Encode::decode('utf8', $ja_name), $en_name], outfits => {}};
 		my $base = basename($icon_path);  # tehe
-		$icons->{$id} = "/uma-tools/icons/chara/$base.png";
+		$icons->{$id} = $base;
 
 		extract_asset($datadir, $icon_hash, $icon_keyint);
 	}
@@ -107,11 +107,14 @@ while ($select_umas->fetch) {
 	$select_trained_icon->bind_columns(\($icon_path, $icon_hash, $icon_keyint));
 	my $i = 0;
 	while ($select_trained_icon->fetch) {
-		next if $icons->{$outfit_ids[$i++]};
-		my $base = basename($icon_path);
-		$icons->{$outfit_ids[$i - 1]} = "/uma-tools/icons/chara/$base.png";
-
+		next if $icons->{$outfit_ids[$i]};
+		my $base1 = basename($icon_path);
 		extract_asset($datadir, $icon_hash, $icon_keyint);
+		# icons come in pairs (_01 and _02), fetch the next
+		$select_trained_icon->fetch;
+		my $base2 = basename($icon_path);
+		extract_asset($datadir, $icon_hash, $icon_keyint);
+		$icons->{$outfit_ids[$i++]} = [$base1, $base2];
 	}
 }
 

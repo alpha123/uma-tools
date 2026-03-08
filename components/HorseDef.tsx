@@ -164,7 +164,7 @@ export function UmaSelector(props) {
 	return (
 		<div class="umaSelector">
 			<div class="umaSelectorIconsBox" onClick={focus}>
-				<img src={value ? icons[value] : randomMob} />
+				<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} />
 				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" />
 			</div>
 			<div class="umaEpithet"><span>{value && u.outfits[value]}</span></div>
@@ -175,7 +175,7 @@ export function UmaSelector(props) {
 						const uid = oid.slice(0,4);
 						return (
 							<li key={oid} data-uma-id={oid} class={`umaSuggestion ${i == activeIdx ? 'selected' : ''}`}>
-								<img src={icons[oid]} loading="lazy" /><span>{umas[uid].outfits[oid]} {umas[uid].name[1]}</span>
+								<img src={`/uma-tools/icons/chara/${icons[oid][1]}.png`} loading="lazy" /><span>{umas[uid].outfits[oid]} {umas[uid].name[1]}</span>
 							</li>
 						);
 					})}
