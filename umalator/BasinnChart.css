@@ -92,8 +92,11 @@
 }
 
 .chartSkillName > img {
-	cursor: pointer;
 	height: 1.5em;
+}
+
+.chartSkillName > img:first-of-type {
+	cursor: pointer;
 }
 
 .chartSkillDismiss {

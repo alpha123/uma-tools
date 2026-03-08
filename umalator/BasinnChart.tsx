@@ -21,6 +21,7 @@ import { runComparison } from './compare';
 
 import './BasinnChart.css';
 
+import icons from '../icons.json';
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 import skillmeta from '../skill_meta.json';
@@ -70,11 +71,17 @@ function formatBasinn(info) {
 	return info.getValue().toFixed(2).replace('-0.00', '0.00') + ' L';
 }
 
+function outfitIdForUniqueSkill(sid: keyof typeof skilldata) {
+	return (100000 + +sid.slice(2,-1) * 100 + +sid.slice(1,2) + 1).toString();
+}
+
 const SkillNameCell = memo(function SkillNameCell(props) {
+	const r = skilldata[props.id].rarity;
 	return (
 		<div class="chartSkillName">
 			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
 			<img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} />
+			{(r >= 3 && r <= 5 || props.id[0] == '9') && <img src={`/uma-tools/icons/chara/${icons[outfitIdForUniqueSkill(props.id)][+(props.id[0] != '9')]}.png`} />}
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);
@@ -215,7 +222,7 @@ export function BasinnChart(props) {
 		if (tr == null) return;
 		e.stopPropagation();
 		const id = tr.dataset.skillid;
-		if (e.target.tagName == 'IMG') {
+		if (e.target.matches('img:first-of-type')) {
 			props.onInfoClick(id);
 		} else if (e.target.classList.contains('chartSkillDismiss')) {
 			props.onSkillDismiss(id);
