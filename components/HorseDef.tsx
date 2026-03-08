@@ -389,7 +389,8 @@ export const HorseDef = memo(function HorseDef(props) {
 
 	function handleSkillClick(e) {
 		e.stopPropagation();
-		const se = e.target.closest('.skill, .expandedSkill');
+		const seh = e.target.closest('.expandedSkillHeader');
+		const se = seh != null ? seh.parentNode : e.target.closest('.skill');
 		if (se == null) return;
 		if (e.target.classList.contains('skillDismiss')) {
 			// can't just remove skillmeta[skillid].groupId because debuffs will have a fake groupId
@@ -417,7 +418,8 @@ export const HorseDef = memo(function HorseDef(props) {
 		return Array.from(skills.values()).sort(skillOrder).map(id =>
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
-					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u} />
+					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
+						  samplePolicy={props.state.samplePolicies.get(id)} />
 				  </li>
 				: <li key={id} style="">
 					  <Skill id={id} selected={false} dismissable={id != u} />

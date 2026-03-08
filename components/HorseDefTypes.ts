@@ -23,6 +23,12 @@ export function SkillSet(ids): Map<(typeof skillmeta)['groupId'], keyof typeof s
 	}, {entries: [], ndebuff: 0}).entries);
 }
 
+// pass these plain objects around instead of actual ActivationSamplePolicy instances since we need to send them
+// between web workers, so we need something serializable.
+export type SamplePolicyDesc = {policy: 'immediate'} | {policy: 'fixed', pos: number}
+	| {policy: 'random'} | {policy: 'straight-random'} | {policy: 'all-corner-random'}
+	| {policy: 'log-normal', mu: number, sigma: number} | {policy: 'erlang', k: number, lambda: number};
+
 export type Aptitude = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
 export interface HorseState {
@@ -37,7 +43,8 @@ export interface HorseState {
 	surfaceAptitude: Aptitude
 	strategyAptitude: Aptitude
 	skills: Map<(typeof skillmeta)['groupId'], keyof typeof skills>
-	mood: -1 | -2 | 0 | 1 | 2;
+	samplePolicies: Map<keyof typeof skills, SamplePolicyDesc>
+	mood: -2 | -1 | 0 | 1 | 2;
 	popularity: number
 }
 
@@ -53,6 +60,7 @@ export const DEFAULT_HORSE_STATE = {
 	surfaceAptitude: 'A',
 	strategyAptitude: 'A',
 	skills: SkillSet([]),
+	samplePolicies: new Map(),
 	mood: 2,
 	popularity: 1
 };

@@ -1,14 +1,17 @@
 import { h, Fragment, cloneElement } from 'preact';
-import { useState, useContext, useMemo, useEffect, useRef } from 'preact/hooks';
+import { useState, useContext, useMemo, useEffect, useRef, useId } from 'preact/hooks';
 import { IntlProvider, Text, Localizer } from 'preact-i18n';
+
+import { useLens } from '../optics';
 
 import { getParser } from '../uma-skill-tools/ConditionParser';
 import * as Matcher from '../uma-skill-tools/tools/ConditionMatcher';
-import { SkillRarity } from '../uma-skill-tools/RaceSolver.ts';
+import { SkillRarity } from '../uma-skill-tools/RaceSolver';
+import { ImmediatePolicy, RandomPolicy, UniformRandomPolicy, LogNormalRandomPolicy, ErlangRandomPolicy, StraightRandomPolicy, AllCornerRandomPolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 
 import { useLanguage } from './Language';
 import { Tooltip } from './Tooltip';
-import { isDebuffSkill } from './HorseDefTypes';
+import { isDebuffSkill, SamplePolicyDesc } from './HorseDefTypes';
 
 import { extendStrings, COMMON_ja, COMMON_en, COMMON_global } from '../strings/common';
 
@@ -87,6 +90,16 @@ const STRINGS_ja = Object.freeze({
 		'speed': '{{n}}m/s',
 		'time': COMMON_ja['time'],
 		'weather': COMMON_ja['weather']
+	}),
+	'activationlabel': '発動：',
+	'samplepolicies': Object.freeze({
+		'immediate': 'Immediate',
+		'fixed': 'Fixed distance',
+		'random': 'Random (Uniform)',
+		'log-normal': 'Random (Log-normal)',
+		'erlang': 'Random (Erlang)',
+		'straight-random': 'straight_random',
+		'all-corner-random': 'all_corner_random'
 	})
 });
 
@@ -157,6 +170,16 @@ const STRINGS_en = Object.freeze({
 		'speed': '{{n}}m/s',
 		'time': COMMON_en['time'],
 		'weather': COMMON_en['weather']
+	}),
+	'activationlabel': 'Activation:',
+	'samplepolicies': Object.freeze({
+		'immediate': 'Immediate',
+		'fixed': 'Fixed distance',
+		'random': 'Random (Uniform)',
+		'log-normal': 'Random (Log-normal)',
+		'erlang': 'Random (Erlang)',
+		'straight-random': 'straight_random',
+		'all-corner-random': 'all_corner_random'
 	})
 });
 
@@ -420,6 +443,126 @@ const formatEffect = Object.freeze({
 	42: n => <Text id="skilldetails.durationincrease" plural={n} fields={{n}} />
 });
 
+const RealParser = getParser();
+function defaultSamplePolicyForSkill(id) {
+	// TODO
+	// Each alternative may resolve to a different ActivationSamplePolicy, so correctly we should have one
+	// SamplePolicyEditor for each alternative in ExpandedSkillDetails below. unfortunately, there's currently no
+	// good way to pass per-alternative samplePolicy overrides, and doing so would require slightly invasive changes
+	// to RaceSolverBuilder.
+	// This is mostly okay since not many skills actually have alternatives with different samplePolicies, but it
+	// does mean that technically if the second alternative has a different samplePolicy and the first one doesn't
+	// activate on this course, then this display lies about the default. (Editing it will be fine since it overrides
+	// all alternatives.)
+	const sp = RealParser.parse(RealParser.tokenize(skilldata[id].alternatives[0].condition)).samplePolicy;
+	if (sp == ImmediatePolicy) {
+		return {policy: 'immediate'};
+	} else if (sp == RandomPolicy || sp instanceof UniformRandomPolicy) {
+		// i wish i had written about why these are separate things; conceptually the reason is that the former is used
+		// for true random conditions (e.g. _random) and the latter is used for non-random conditions that happen to be
+		// best modeled by a uniform distribution.
+		// they should (in theory) have the same median/mean behavior, though their implementations are different enough
+		// that it's hard for me to prove that is the case. also, RandomPolicy places fixed 10m triggers, while
+		// UniformRandomPolicy places triggers that stretch to the end of the region; this is unlikely to matter.
+		// iirc, the point is only that they reconcile differently, which isn't relevant to the user at all, so lie
+		// about UniformRandomPolicy being the same as RandomPolicy to avoid having two effectively identical options.
+		// (note that what is displayed as "Random (Uniform)" in the UI is RandomPolicy and not UniformRandomPolicy)
+		// XXX because their implementations are different this might result in the unintuitive behavior that changing a
+		// UniformRandomPolicy skill to something else and then back to random might cause it to activate in different
+		//  places (since it's not actually the original sample policy in spite of being indistinguishable in the UI)
+		return {policy: 'random'};
+	} else if (sp instanceof LogNormalRandomPolicy) {
+		return {policy: 'log-normal', mu: sp.mu, sigma: sp.sigma};
+	} else if (sp instanceof ErlangRandomPolicy) {
+		return {policy: 'erlang', k: sp.k, lambda: sp.lambda};
+	} else if (sp == StraightRandomPolicy) {
+		return {policy: 'straight-random'};
+	} else if (sp == AllCornerRandomPolicy) {
+		return {policy: 'all-corner-random'};
+	} else {
+		console.assert(false);
+	}
+	// fixed will never occur as a default
+}
+
+function makePolicy(type: SamplePolicyDesc['policy'], distance: number): SamplePolicyDesc {
+	switch (type) {
+		case 'immediate':
+		case 'random':
+		case 'straight-random':
+		case 'all-corner-random':
+			return {policy: type};
+		case 'fixed':
+			return {policy: 'fixed', pos: Math.floor(distance / 2)};
+		case 'log-normal':
+			return {policy: 'log-normal', mu: 0, sigma: 0.25};
+		case 'erlang':
+			return {policy: 'erlang', k: 3, lambda: 2.0};
+	}
+}
+
+function SamplePolicyEditor(props) {
+	let [desc, setDesc] = useLens(props.desc);
+	if (desc == null) desc = props.fallback;
+
+	const selid = useId();
+	const param1id = useId();
+	const param2id = useId();
+
+	function updateType(e) {
+		setDesc(makePolicy(e.currentTarget.value, props.courseDistance));
+	}
+
+	function update(p) {
+		return (e) => {
+			let value = +e.currentTarget.value;
+			if (p == 'sigma' || p == 'lambda') value = Math.max(value, Number.MIN_VALUE);
+			else if (p == 'k') value = Math.max(value, 1);
+			setDesc({...desc, [p]: value});
+		};
+	}
+
+	let params = null;
+	switch (desc.policy) {
+		case 'fixed':
+			params = <Fragment>
+				<input type="number" id={param1id} min="0" max={props.courseDistance} value={desc.pos} onInput={update('pos')} />
+				<label for={param1id}>m</label>
+			</Fragment>;
+			break;
+		case 'log-normal':
+			// currently we disable μ for log-normal and λ for erlang because due to the way the simulator works these
+			// parameters dont actually do anything, and it's somewhat confusing for them to be visible but useless.
+			params = <Fragment>
+				{/*<label for={param1id}>μ=</label>
+				*<input type="number" id={param1id} step="0.01" value={desc.mu.toFixed(2)} onInput={update('mu')} />*/}
+				<label for={param2id}>σ=</label>
+				{/* mathematically, min for both this and λ below should exclude 0, but no way to do that for input type="number" */}
+				<input type="number" id={param2id} min="0" step="0.01" value={desc.sigma.toFixed(2)} onInput={update('sigma')} />
+			</Fragment>;
+			break;
+		case 'erlang':
+			params = <Fragment>
+				<label for={param1id}>k=</label>
+				<input type="number" id={param1id} min="1" value={desc.k} onInput={update('k')} />
+				{/*<label for={param2id}>λ=</label>
+				<input type="number" id={param2id} min="0" step="0.05" value={desc.lambda.toFixed(2)} onInput={update('lambda')} />*/}
+			</Fragment>;
+			break;
+	}
+	return (
+		<div class="skillDetailsSection skillActivationEditor">
+			<label for={selid}><Text id="activationlabel" /></label>
+			<select id={selid} onChange={updateType}>
+				{['immediate', 'fixed', 'random', 'log-normal', 'erlang', 'straight-random', 'all-corner-random'].map(k =>
+					<option value={k} selected={k == desc.policy}><Text id={`samplepolicies.${k}`} /></option>
+				)}
+			</select>
+			<div class="skillActivationParams">{params}</div>
+		</div>
+	);
+}
+
 export function ExpandedSkillDetails(props) {
 	const skill = skilldata[props.id];
 	const lang = useLanguage();
@@ -466,6 +609,7 @@ export function ExpandedSkillDetails(props) {
 							}
 						</div>
 					)}
+					{props.samplePolicy != null && <SamplePolicyEditor desc={props.samplePolicy} fallback={defaultSamplePolicyForSkill(props.id)} courseDistance={props.distanceFactor} />}
 				</div>
 			</div>
 		</IntlProvider>

@@ -138,6 +138,8 @@ function horseEquals(h1, h2) {
 		if (k == 'skills') {
 			const s1 = h1.skills, s2 = h2.skills;
 			return s1.size == s2.size && Array.from(s1.keys()).reduce((b,k) => b && s1.get(k) == s2.get(k), true);
+		} else if (k == 'samplePolicies') {
+			return Array.from(h1.skills.values()).every(id => shallowEquals(h1.samplePolicies.get(id), h2.samplePolicies.get(id))) && Array.from(h2.skills.values()).every(id => shallowEquals(h1.samplePolicies.get(id), h2.samplePolicies.get(id)));
 		} else {
 			return Object.is(h1[k], h2[k]);
 		}
@@ -430,8 +432,8 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		usePosKeep,
 		useIntChecks,
 		racedef,
-		uma1: {...uma1, skills: Array.from(uma1.skills.values())},
-		uma2: {...uma2, skills: Array.from(uma2.skills.values())},
+		uma1: {...uma1, skills: Array.from(uma1.skills.values()), samplePolicies: Object.fromEntries(uma1.samplePolicies)},
+		uma2: {...uma2, skills: Array.from(uma2.skills.values()), samplePolicies: Object.fromEntries(uma2.samplePolicies)},
 	};
 	if (chartMode != null) o.chartMode = chartMode;
 	if (chartSkills != null) o.chartSkills = chartSkills;
@@ -456,7 +458,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 	}
 }
 
-const NEW_HORSE_FIELDS = Object.freeze({mood: 2, popularity: 1});  // v5
+const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */});
 async function deserialize(hash) {
 	const zipped = atob(decodeURIComponent(hash));
 	const buf = new Uint8Array(zipped.split('').map(c => c.charCodeAt(0)));
@@ -482,8 +484,8 @@ async function deserialize(hash) {
 					usePosKeep: o.usePosKeep,
 					useIntChecks: o.useIntChecks || false,  // v3
 					racedef: o.racedef,
-					uma1: Object.assign({}, NEW_HORSE_FIELDS, o.uma1, {skills: SkillSet(o.uma1.skills)}),
-					uma2: Object.assign({}, NEW_HORSE_FIELDS, o.uma2, {skills: SkillSet(o.uma2.skills)}),
+					uma1: Object.assign({}, NEW_HORSE_FIELDS, o.uma1, {skills: SkillSet(o.uma1.skills), samplePolicies: /* v6 */ new Map(Object.entries(o.uma1.samplePolicies))}),
+					uma2: Object.assign({}, NEW_HORSE_FIELDS, o.uma2, {skills: SkillSet(o.uma2.skills), samplePolicies: /* v6 */ new Map(Object.entries(o.uma2.samplePolicies))}),
 					// optional fields (only added when serialized from basinn chart screen)
 					chartMode: o.chartMode || 'all',  // v6
 					chartSkills: o.chartSkills || null  // v4

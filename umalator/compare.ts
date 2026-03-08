@@ -1,12 +1,40 @@
 import { CourseData } from '../uma-skill-tools/CourseData';
+import { Region, RegionList } from '../uma-skill-tools/Region';
 import { RaceParameters } from '../uma-skill-tools/RaceParameters';
 import { RaceSolver } from '../uma-skill-tools/RaceSolver';
 import { RaceSolverBuilder, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
 import { Rule30CARng } from '../uma-skill-tools/Random';
+import { ActivationSamplePolicy, ImmediatePolicy, RandomPolicy, LogNormalRandomPolicy, ErlangRandomPolicy, StraightRandomPolicy, AllCornerRandomPolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 
-import { HorseState } from '../components/HorseDefTypes';
+import { HorseState, SamplePolicyDesc } from '../components/HorseDefTypes';
 
 import skillmeta from '../skill_meta.json';
+
+class FixedDistancePolicy {
+	constructor(readonly pos: number) {}
+	sample(_0: RegionList, nsamples: number, _1: PRNG) { return Array.from({length: nsamples}, _ => new Region(this.pos, this.pos + 10)); }
+
+	// these should never be called because this policy is only used as an override and never reconciled with anything
+	reconcile(other: ActivationSamplePolicy) { console.assert(false); }
+	reconcileImmediate(other: ActivationSamplePolicy) { console.assert(false); }
+	reconcileDistributionRandom(other: ActivationSamplePolicy) { console.assert(false); }
+	reconcileRandom(other: ActivationSamplePolicy) { console.assert(false); }
+	reconcileStraightRandom(other: ActivationSamplePolicy) { console.assert(false); }
+	reconcileAllCornerRandom(other: ActivationSamplePolicy) { console.assert(false); }
+}
+
+function instantiateSamplePolicy(desc: SamplePolicyDesc | undefined): ActivationSamplePolicy | undefined {
+	if (desc == null) return undefined;
+	switch (desc.policy) {
+		case 'immediate': return ImmediatePolicy;
+		case 'random': return RandomPolicy;
+		case 'straight-random': return StraightRandomPolicy;
+		case 'all-corner-random': return AllCornerRandomPolicy;
+		case 'log-normal': return new LogNormalRandomPolicy(desc.mu, desc.sigma);
+		case 'erlang': return new ErlangRandomPolicy(desc.k, desc.lambda);
+		case 'fixed': return new FixedDistancePolicy(desc.pos);
+	}
+}
 
 export function runComparison(nsamples: number, course: CourseData, racedef: RaceParameters, uma1: HorseState, uma2: HorseState, seed: [number,number], options) {
 	const standard = new RaceSolverBuilder(nsamples)
@@ -38,19 +66,19 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
 	Array.from(uma1.skills.values()).sort(sort).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
-		standard.addSkill(id, Perspective.Self);
+		standard.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma1.samplePolicies.get(id)));
 	});
 	Array.from(uma2.skills.values()).sort(sort).forEach(id => {
 		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
 		wisdomSeeds.set(id, wisdomRng.pair());
-		compare.addSkill(id, Perspective.Self);
+		compare.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma2.samplePolicies.get(id)));
 	});
 	// iterating twice like this is VERY ANNOYING
 	// unfortunately, because we add every skill to both umas, if we add them in the same iteration uma2 will have all the
 	// Other skills before its Self skills, which can cause skill desync issues when there are debuffs
 	// TODO i don't really like this, this might just be masking some deeper underlying issue.
-	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other));
-	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other));
+	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other, instantiateSamplePolicy(uma1.samplePolicies.get(id))));
+	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other, instantiateSamplePolicy(uma2.samplePolicies.get(id))));
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
 		compare.withAsiwotameru().withStaminaSyoubu();

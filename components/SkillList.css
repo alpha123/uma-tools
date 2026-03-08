@@ -224,6 +224,46 @@
 	margin-top: 0.5em;
 }
 
+.skillActivationEditor {
+	column-gap: 12px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+}
+
+.skillActivationEditor > select, .skillActivationParams > input[type="number"] {
+	background: none;
+	border: none;
+	color: rgb(121, 64, 22);
+	font-weight: bold;
+	padding: 0;
+}
+
+.skillActivationParams {
+	display: flex;
+	grid-column-start: 2;
+	margin-left: 4px;  /* chrome seems to render the select element above not quite exactly starting at its left edge, so add a bit of margin here to re-align with it */
+}
+
+@-moz-document url-prefix() {
+	.skillActivationParams { margin-left: 0; }
+}
+
+.skillActivationParams > label {
+	font-size: 0.833em;
+	font-weight: bold;
+}
+
+.skillActivationParams > input[type="number"] {
+	margin-right: 4px;
+	width: calc(5ch + 16px);
+}
+
+/* force chrome to always show spinbutton arrows */
+.skillActivationParams > input[type="number"]::-webkit-outer-spin-button,
+.skillActivationParams > input[type="number"]::-webkit-inner-spin-button {
+	opacity: 1;
+}
+
 @media (orientation: portrait) {
 	.skillList {
 		grid-template-columns: 1fr;
