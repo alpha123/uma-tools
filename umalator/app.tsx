@@ -57,8 +57,9 @@ const UI_ja = Object.freeze({
 		'copylink': 'リンクをコピー'
 	}),
 	'basinnchartselection': Object.freeze({
-		'all': 'All skills',
-		'selected': 'Selected skills',
+		'all': '全スキル',
+		'inherit': '継承固有スキル',
+		'selected': '選択したスキル',
 		'addskill': '+ スキル追加'
 	}),
 	'kakari': '掛かり'
@@ -87,6 +88,7 @@ const UI_en = Object.freeze({
 	}),
 	'basinnchartselection': Object.freeze({
 		'all': 'All skills',
+		'inherit': 'Inherited uniques',
 		'selected': 'Selected skills',
 		'addskill': '+ Add Skill'
 	}),
@@ -420,7 +422,7 @@ function emptySimStateForCid(cid) {
 	return {courseId: cid, results: [], runData: null};
 }
 
-async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, chartSkills: string[] | null) {
+async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
 		nsamples,
@@ -431,6 +433,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		uma1: {...uma1, skills: Array.from(uma1.skills.values())},
 		uma2: {...uma2, skills: Array.from(uma2.skills.values())},
 	};
+	if (chartMode != null) o.chartMode = chartMode;
 	if (chartSkills != null) o.chartSkills = chartSkills;
 	const json = JSON.stringify(o);
 	const enc = new TextEncoder();
@@ -453,7 +456,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 	}
 }
 
-const NEW_HORSE_FIELDS = Object.freeze({mood: 2, popularity: 1});  // added later
+const NEW_HORSE_FIELDS = Object.freeze({mood: 2, popularity: 1});  // v5
 async function deserialize(hash) {
 	const zipped = atob(decodeURIComponent(hash));
 	const buf = new Uint8Array(zipped.split('').map(c => c.charCodeAt(0)));
@@ -475,13 +478,15 @@ async function deserialize(hash) {
 				return {
 					simState: emptySimStateForCid(o.courseId),
 					nsamples: o.nsamples,
-					seed: o.seed || DEFAULT_SEED,  // field added later, could be undefined when loading state from existing links
+					seed: o.seed || DEFAULT_SEED,  // field added later (v2), could be undefined when loading state from existing links
 					usePosKeep: o.usePosKeep,
-					useIntChecks: o.useIntChecks || false,  // added later
+					useIntChecks: o.useIntChecks || false,  // v3
 					racedef: o.racedef,
 					uma1: Object.assign({}, NEW_HORSE_FIELDS, o.uma1, {skills: SkillSet(o.uma1.skills)}),
 					uma2: Object.assign({}, NEW_HORSE_FIELDS, o.uma2, {skills: SkillSet(o.uma2.skills)}),
-					chartSkills: o.chartSkills || null  // added later
+					// optional fields (only added when serialized from basinn chart screen)
+					chartMode: o.chartMode || 'all',  // v6
+					chartSkills: o.chartSkills || null  // v4
 				};
 			} catch (_) {
 				return {
@@ -493,6 +498,7 @@ async function deserialize(hash) {
 					racedef: DEFAULT_RACE_PARAMS,
 					uma1: DEFAULT_HORSE_STATE,
 					uma2: DEFAULT_HORSE_STATE,
+					chartMode: 'all',
 					chartSkills: null
 				};
 			}
@@ -619,7 +625,7 @@ function Umalator(props) {
 
 	const loadedChartSkills = useGetter(O.chartSkills);
 	const [chartSkills, setChartSkills] = useState(loadedChartSkills || []);
-	const [chartMode, setChartMode] = useState(loadedChartSkills == null ? 'all' : 'selected');
+	const [chartMode, setChartMode] = useLens(O.chartMode);
 	const chartSkillsMap = useMemo(() => {
 		const m = new Map();
 		chartSkills.forEach(id => m.set(id,id));
@@ -630,9 +636,7 @@ function Umalator(props) {
 
 	// update when state is loaded from url
 	useEffect(() => {
-		if (loadedChartSkills != null) {
-			setTableData(getNullTableData(loadedChartSkills));
-		}
+		setTableData(getNullTableData(chartSkillsForMode(chartMode)));
 	}, []);
 
 	const [lastChartRun, setLastChartRun] = useState({
@@ -643,11 +647,19 @@ function Umalator(props) {
 		fresh: true
 	});
 
+	function chartSkillsForMode(mode) {
+		switch (mode) {
+		case 'selected': return chartSkills;
+		case 'inherit': return baseSkillsToTest.filter(id => id[0] == '9');
+		default: return baseSkillsToTest;
+		}
+	}
+
 	function switchChartMode(e) {
 		const newMode = e.currentTarget.value;
 		setChartMode(newMode);
 		if (newMode != chartMode) {
-			setTableData(getNullTableData(newMode == 'selected' ? chartSkills : baseSkillsToTest));
+			setTableData(getNullTableData(chartSkillsForMode(newMode)));
 			setLastChartRun({...lastChartRun, skills: [], fresh: true});
 		}
 	}
@@ -693,7 +705,7 @@ function Umalator(props) {
 
 	function doSerialize() {
 		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2,
-			mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
+			mode == Mode.Chart ? chartMode : null, mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
 		);
 	}
 
@@ -763,7 +775,7 @@ function Umalator(props) {
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = chartMode == 'selected' ? chartSkills : getActivateableSkills(baseSkillsToTest.filter(id => {
+		const skills = chartMode != 'all' ? chartSkillsForMode(chartMode) : getActivateableSkills(baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
 			const group = skillGroups.get(skillmeta[id].groupId);
 			const skillSet = Array.from(uma1.skills.values());
@@ -999,6 +1011,10 @@ function Umalator(props) {
 											<label for="basinnChartSelectAll"><Text id="ui.basinnchartselection.all" /></label>
 										</div>
 										<div>
+											<input type="radio" id="basinnChartSelectInherit" name="basinnChartSelection" value="inherit" checked={chartMode == 'inherit'} onClick={switchChartMode} />
+											<label for="basinnChartSelectInherit"><Text id="ui.basinnchartselection.inherit" /></label>
+										</div>
+										<div>
 											<input type="radio" id="basinnChartSelectSelected" name="basinnChartSelection" value="selected" checked={chartMode == 'selected'} onClick={switchChartMode} />
 											<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
 										</div>
@@ -1032,6 +1048,7 @@ function App(props) {
 		displayedRun: 'meanrun',
 		tableData: getNullTableData(baseSkillsToTest),
 		hintLevels: new Map(allSkills.map(id => [id,0])),
+		chartMode: 'all',
 		chartSkills: null
 	}));
 
