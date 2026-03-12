@@ -92,16 +92,6 @@
 	border-right: none;
 }
 
-.racetrackStatThresholds {
-	font-size: 0.8em;
-	left: 50%;
-	line-height: 2.8em;
-	position: absolute;
-	text-align: center;
-	bottom: -2.8em;
-	transform: translate(-50%, 0);
-}
-
 #addSkill {
 	background: none;
 	border: 1px solid rgb(148, 150, 189);
