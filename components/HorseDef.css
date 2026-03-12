@@ -298,7 +298,7 @@
 .horseSkillList {
 	display: grid;
 	gap: 16px 10px;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, 50%);
 	list-style-type: none;
 	margin: 0 auto;
 	padding: 12px;
