@@ -148,8 +148,12 @@ function horseEquals(h1, h2) {
 
 const enum EventType { CM, LOH }
 
+//  ja: 良   稍重     重   不良
+//  en: good yielding soft heavy
+// gbl: firm good     soft heavy
 const presets = (CC_GLOBAL ? [
-	{type: EventType.CM, name: 'Aquarius Cup', date: '2026-03-10' /* TODO date */, courseId: 10611, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, name: 'Pisces Cup', date: '2026-03-30', courseId: 10914, season: Season.Spring, ground: GroundCondition.Heavy, weather: Weather.Rainy, time: Time.Midday},
+	{type: EventType.CM, name: 'Aquarius Cup', date: '2026-03-06', courseId: 10611, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Capricorn Cup', date: '2026-02-13', courseId: 10701, season: Season.Winter, ground: GroundCondition.Soft, weather: Weather.Snowy, time: Time.Midday},
 	{type: EventType.CM, name: 'Sagittarius Cup', date: '2026-01-23', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Scorpio Cup', date: '2026-01-01', courseId: 10604, season: Season.Autumn, ground: GroundCondition.Soft, weather: Weather.Rainy, time: Time.Midday},
