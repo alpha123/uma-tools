@@ -128,6 +128,7 @@ const DEFAULT_RACE_PARAMS = {
 };
 
 function shallowEquals(o1, o2) {
+	if (o1 == null || o2 == null) return o1 === o2;
 	// assume o1 and o2 have the same shape
 	return Object.keys(o1).reduce((b,k) => b && Object.is(o1[k], o2[k]), true);
 }
