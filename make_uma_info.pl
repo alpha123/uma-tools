@@ -69,14 +69,12 @@ my $select_trained_icon = $metadb->prepare('SELECT n, h, e FROM a WHERE n LIKE (
 
 $select_umas->execute;
 
-my ($id, $ja_name);
-$select_umas->bind_columns(\($id, $ja_name));
+$select_umas->bind_columns(\my ($id, $ja_name));
 
 while ($select_umas->fetch) {
 	if (!$umas->{$id}) {
-		my ($icon_path, $icon_hash, $icon_keyint);
 		$select_chara_icon->execute($id);
-		$select_chara_icon->bind_columns(\($icon_path, $icon_hash, $icon_keyint));
+		$select_chara_icon->bind_columns(\my ($icon_path, $icon_hash, $icon_keyint));
 		$select_chara_icon->fetch;
 
 		my $en_name = $en_names{$id};
@@ -93,21 +91,23 @@ while ($select_umas->fetch) {
 		extract_asset($datadir, $icon_hash, $icon_keyint);
 	}
 	my @outfit_ids;
-	my $o_id;
-	my $epithet;
 	$select_outfits->execute($id);
-	$select_outfits->bind_columns(\($o_id, $epithet));
+	$select_outfits->bind_columns(\my ($o_id, $epithet));
 	while ($select_outfits->fetch) {
 		push @outfit_ids, $o_id;
 		$umas->{$id}->{outfits}->{$o_id} = Encode::decode('utf8', $epithet);
 	}
 
-	my ($icon_path, $icon_hash, $icon_keyint);
+	next unless @outfit_ids;
 	$select_trained_icon->execute($id);
-	$select_trained_icon->bind_columns(\($icon_path, $icon_hash, $icon_keyint));
+	$select_trained_icon->bind_columns(\my ($icon_path, $icon_hash, $icon_keyint));
 	my $i = 0;
 	while ($select_trained_icon->fetch) {
-		next if $icons->{$outfit_ids[$i]};
+		if (defined $icons->{$outfit_ids[$i]}) {
+			$select_trained_icon->fetch;  # advance
+			++$i;
+			next;
+		}
 		my $base1 = basename($icon_path);
 		extract_asset($datadir, $icon_hash, $icon_keyint);
 		# icons come in pairs (_01 and _02), fetch the next
