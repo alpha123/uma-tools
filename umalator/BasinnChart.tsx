@@ -72,6 +72,7 @@ function formatBasinn(info) {
 }
 
 function outfitIdForUniqueSkill(sid: keyof typeof skilldata) {
+	if (sid.length > 6) return outfitIdForUniqueSkill(sid.slice(2));  // evolved unique inherits are 9\d + un-inherited id
 	return (100000 + +sid.slice(2,-1) * 100 + +sid.slice(1,2) + 1).toString();
 }
 
