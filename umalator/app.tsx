@@ -788,7 +788,7 @@ function Umalator(props) {
 			return !(
 				existing == id || group.indexOf(id) < group.indexOf(existing)
 				|| id[0] == '9' && skillSet.includes('1' + id.slice(1))  // reject inherited uniques if we already have the regular version
-				|| id == '92111091' && skillSet.includes('111091')  // reject rhein kraft pink inherited unique on her (not covered by the above check since the ID is different)
+				|| id[0] == '9' && id.length > 6 && skillSet.includes(id.slice(2))  // evolved inherited uniques
 			);
 		}), uma1, course, params);
 		setLastChartRun({uma: uma1, courseId, racedef, skills, fresh: false});

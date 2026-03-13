@@ -293,7 +293,7 @@ export function PopularitySelect(props) {
 }
 
 const nonUniqueSkills = Object.keys(skilldata).filter(id => skilldata[id].rarity < 3 || skilldata[id].rarity > 5);
-const universallyAccessiblePinks = ['92111091' /* welfare kraft alt pink unique inherit */].concat(Object.keys(skilldata).filter(id => id[0] == '4'));
+const universallyAccessiblePinks = Object.keys(skilldata).filter(id => id[0] == '4' || id[0] == '9' && id.length > 6);
 
 export function isGeneralSkill(id: string) {
 	return skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) > -1;
