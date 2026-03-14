@@ -990,11 +990,6 @@ function Umalator(props) {
 				</div>
 				<div id="nonUmaPanes">
 					<div id="midPane" class={chartData ? 'hasResults' : ''}>
-						<div id="modeBar">
-							<button class={`modeBtn${mode == Mode.Compare ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Compare)}><Text id="ui.mode.compare" /></button>
-							<button class={`modeBtn${mode == Mode.Chart ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Chart)}><Text id="ui.mode.chart" /></button>
-							<button class={`modeBtn${mode == Mode.StaCalc ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.StaCalc)}><Text id="ui.mode.stacalc" /></button>
-						</div>
 						<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseEnter={rtMouseEnter} mouseLeave={rtMouseLeave} regions={skillActivations}>
 							<VelocityLines data={chartData} courseDistance={course.distance} width={960} height={250} xOffset={20} showHp={showHp} />
 							<g id="rtMouseOverBox">
@@ -1012,6 +1007,11 @@ function Umalator(props) {
 								<WeatherSelect w={O.racedef.weather} />
 							</div>
 							<SeasonSelect s={O.racedef.season} />
+						</div>
+						<div id="modeBar">
+							<button class={`modeBtn${mode == Mode.Compare ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Compare)}><Text id="ui.mode.compare" /></button>
+							<button class={`modeBtn${mode == Mode.Chart ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Chart)}><Text id="ui.mode.chart" /></button>
+							<button class={`modeBtn${mode == Mode.StaCalc ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.StaCalc)}><Text id="ui.mode.stacalc" /></button>
 						</div>
 						{resultsPane}
 					</div>

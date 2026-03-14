@@ -1,15 +1,16 @@
 .basinnChartWrapper {
+	background: #fff;
 	/*border: 2px solid rgb(224,214,204);*/
 	border: 2px solid rgb(181,174,187);
-	border-radius: 6px;
-	height: 55vh;
+	border-radius: 6px 6px 0 0;
+	height: calc(55vh - 2px);
 	overflow-x: hidden;
 	overflow-y: auto;
 	width: 100%;
 }
 
 .basinnChartWrapper.dirty {
-	border: 2px solid rgb(222, 161, 87);
+	border-color: rgb(222, 161, 87);
 }
 
 .basinnChart {

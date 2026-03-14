@@ -10,17 +10,22 @@
 
 body {
 	font-family: Inter, "Noto Sans JP", sans-serif;
+	overflow: hidden;
 }
 
 .hidden { display: none; }
 
 #app {
 	display: flex;
-	height: 98vh;
+	height: 99vh;
 }
 
 #nonUmaPanes {
+	background: rgb(248, 248, 248);
+	border: 2px solid rgb(170, 221, 154);
+	border-radius: 12px;
 	display: flex;
+	margin: 0 -4px 0 4px;
 	width: 100%;
 }
 
@@ -105,7 +110,7 @@ body {
 #buttonsRow {
 	align-items: center;
 	display: flex;
-	gap: 25px;
+	gap: 8px;
 	margin-left: 20px;
 	margin-top: -10px;
 	position: relative;
@@ -118,16 +123,17 @@ body {
 }
 
 .presetSelect > legend {
-	background: rgb(148, 150, 189);
+	background: rgb(224, 214, 204);
 	border-top-left-radius: 8px;
-	color: white;
+	color: rgb(121, 64, 22);
 	font-size: 0.6em;
+	font-weight: bold;
 	line-height: 1.2em;
 	position: absolute;
 }
 
 .presetSelect > legend::after {
-	border-color: rgb(148, 150, 189) transparent transparent transparent;
+	border-color: rgb(224, 214, 204) transparent transparent transparent;
 	border-style: solid;
 	border-width: 1.2em 0.34em 0 0;
 	content: '';
@@ -138,16 +144,20 @@ body {
 }
 
 .presetSelect > select {
-	background: none;
-	border: 1px solid rgb(148, 150, 189);
+	background: #fff;
+	border: 2px solid rgb(224, 214, 204);
 	border-radius: 8px;
+	color: rgb(121, 64, 22);
+	font-weight: bold;
 	padding: 0.7em;
 }
 
 .trackSelect > select {
-	background: none;
-	border: 1px solid rgb(148, 150, 189);
+	background: #fff;
+	border: 2px solid rgb(224, 214, 204);
 	border-radius: 0 8px 8px 0;
+	color: rgb(121, 64, 22);
+	font-weight: bold;
 	padding: 0.7em;
 }
 
@@ -235,7 +245,7 @@ body {
 }
 
 #resultsSummary > tbody td {
-	background: rgb(248, 248, 248);
+	background: #fff;
 	border: 2px solid rgb(224, 214, 204);
 	border-radius: 100px;
 	color: rgb(121, 64, 22);
