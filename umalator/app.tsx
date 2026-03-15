@@ -428,10 +428,6 @@ function racedefToParams({mood, ground, weather, season, time, grade}: RaceParam
 	};
 }
 
-function emptySimStateForCid(cid) {
-	return {courseId: cid, results: [], runData: null};
-}
-
 async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
@@ -486,7 +482,7 @@ async function deserialize(hash) {
 			try {
 				const o = JSON.parse(json);
 				return {
-					simState: emptySimStateForCid(o.courseId),
+					courseId: o.courseId,
 					nsamples: o.nsamples,
 					seed: o.seed || DEFAULT_SEED,  // field added later (v2), could be undefined when loading state from existing links
 					usePosKeep: o.usePosKeep,
@@ -500,7 +496,7 @@ async function deserialize(hash) {
 				};
 			} catch (_) {
 				return {
-					simState: emptySimStateForCid(DEFAULT_COURSE_ID),
+					courseId: DEFAULT_COURSE_ID,
 					nsamples: DEFAULT_SAMPLES,
 					seed: DEFAULT_SEED,
 					usePosKeep: true,
@@ -590,6 +586,8 @@ function useRoute<T>(base: string, getRouteDesc: () => Record<string,T>, default
 
 const enum Mode { Compare, Chart, StaCalc }
 
+const NULL_RESULTS = Object.freeze({results: [], runData: null});
+
 function Umalator(props) {
 	//const [language, setLanguage] = useLanguageSelect();
 	const [racedef] = useLens(O.racedef);
@@ -598,14 +596,22 @@ function Umalator(props) {
 	const [usePosKeep, setPosKeep] = useLens(O.usePosKeep); const togglePosKeep = () => setPosKeep(toggle);
 	const [useIntChecks, setIntChecks] = useLens(O.useIntChecks); const toggleIntChecks = () => setIntChecks(toggle);
 	const [showHp, setShowHp] = useLens(O.useShowHp); const toggleShowHp = () => setShowHp(toggle);
-	const [{courseId, results, runData}, setSimState] = useLens(O.simState);
+	const [courseId, setCourseId_] = useLens(O.courseId);
 	const [displaying, setChartData] = useLens(O.displayedRun);
-	const chartData = runData && runData[displaying];
 	const course = useMemo(() => CourseHelpers.getCourse(courseId), [courseId]);
-	const setCourseId = c(setSimState, emptySimStateForCid);
-	function setResults(o) {
-		setSimState(s => ({...s, results: o.results, runData: o.runData}));
-	}
+
+	const [mode, setMode] = useRoute(CC_GLOBAL ? '/uma-tools/umalator-global' : '/uma-tools/umalator', () => ({
+		'/compare': Mode.Compare,
+		'/skills': Mode.Chart,
+		'/stamina': Mode.StaCalc
+	}), Mode.Compare);
+
+	const [compareResults, setCompareResults] = useState(NULL_RESULTS);
+	const [chartSelectionResults, setChartSelectionResults] = useState(NULL_RESULTS);
+	const [stacalcResults, setStacalcResults] = useState(NULL_RESULTS);
+	const {results, runData} = [compareResults, chartSelectionResults, stacalcResults][mode];
+	const chartData = runData && runData[displaying];
+
 	const [tableData, setTableData] = useLens(O.tableData);
 	function updateTableData(newData) {
 		setTableData(data => {
@@ -616,14 +622,16 @@ function Umalator(props) {
 		});
 	}
 
+	function setCourseId(cid) {
+		setCourseId_(cid);
+		setCompareResults(null);
+		setChartSelectionResults(null);
+		setStacalcResults(null);
+	}
+
 	const [uma1, setUma1] = useLens(O.uma1);
 	const [uma2, setUma2] = useLens(O.uma2);
 
-	const [mode, setMode] = useRoute(CC_GLOBAL ? '/uma-tools/umalator-global' : '/uma-tools/umalator', () => ({
-		'/compare': Mode.Compare,
-		'/skills': Mode.Chart,
-		'/stamina': Mode.StaCalc
-	}), Mode.Compare);
 	const [currentIdx_, setCurrentIdx] = useState(0);
 	const currentIdx = mode != Mode.Compare ? 0 : currentIdx_;
 	const [expanded_, setExpanded] = useState(false);
@@ -704,8 +712,10 @@ function Umalator(props) {
 			const {type, results} = e.data;
 			switch (type) {
 				case 'compare':
+					setCompareResults(results);
+					break;
 				case 'hpcalc':
-					setResults(results);
+					setStacalcResults(results);
 					break;
 				case 'chart':
 					updateTableData(results);
@@ -819,7 +829,7 @@ function Umalator(props) {
 
 	function basinnChartSelection(skillId) {
 		const r = tableData.get(skillId);
-		if (r.runData != null) setResults(r);
+		if (r.runData != null) setChartSelectionResults(r);
 	}
 
 	function addSkillFromTable(skillId) {
@@ -999,7 +1009,7 @@ function Umalator(props) {
 						</RaceTrack>
 						<div id="buttonsRow">
 							<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
-							<RacePresets courseId={O.simState._iso(ss => ss.courseId, emptySimStateForCid)} racedef={O.racedef} />
+							<RacePresets courseId={O.courseId} racedef={O.racedef} />
 							<div id="buttonsRowSpace" />
 							<TimeOfDaySelect t={O.racedef.time} />
 							<div>
@@ -1094,7 +1104,7 @@ function App(props) {
 		showHp: false,
 		uma1: DEFAULT_HORSE_STATE,
 		uma2: DEFAULT_HORSE_STATE,
-		simState: emptySimStateForCid(DEFAULT_COURSE_ID),
+		courseId: DEFAULT_COURSE_ID,
 		displayedRun: 'meanrun',
 		tableData: getNullTableData(baseSkillsToTest),
 		hintLevels: new Map(allSkills.map(id => [id,0])),
