@@ -26,13 +26,14 @@ body {
 	border-radius: 12px;
 	display: flex;
 	margin: 0 -4px 0 4px;
+	padding-top: 4px;
 	width: 100%;
 }
 
 #midPane {
 	display: flex;
 	flex-direction: column;
-	gap: 15px;
+	gap: 12px;
 	margin-left: 20px;
 	width: 980px;
 }
@@ -217,7 +218,14 @@ body {
 }
 
 #resultsPaneWrapper {
+	background: rgb(242, 242, 242);
+	border-radius: 4px;
 	display: flex;
+	margin: 0 -4px;
+	min-width: 100%;
+	padding: 4px 4px 0 4px;
+	position: relative;
+	width: fit-content;
 }
 
 #resultsPane {
@@ -277,11 +285,10 @@ body {
 
 #infoTables {
 	height: 54vh;
-	left: 80px;
+	margin-left: 80px;
 	margin-top: 10px;
 	min-width: 500px;
 	overflow-y: auto;
-	position: relative;
 }
 
 #infoTables > table {

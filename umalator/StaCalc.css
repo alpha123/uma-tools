@@ -1,5 +1,6 @@
 .stacalcWrapper {
 	display: flex;
+	padding: 0 12px;
 }
 
 .stacalcPane {
@@ -9,8 +10,27 @@
 	flex-direction: column;
 }
 
+.stacalcPane > h1 {
+	color: rgb(121, 64, 22);
+	font-size: 1em;
+	margin: 0 0 6px 0;
+	width: 100%;
+}
+
+.reqStamCalc {
+	color: rgb(121, 64, 22);
+	font-weight: bold;
+}
+
+.reqStamCalc > label {
+	cursor: text;
+}
+
 .reqStamCalc > input {
+	background: unset;
 	border: none;
+	color: rgb(121, 64, 22);
 	font-size: 0.95em;
+	font-weight: bold;
 	text-align: right;
 }
