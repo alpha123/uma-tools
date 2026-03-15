@@ -15,7 +15,9 @@ function maxHpToStamina(strategy: 'Nige' | 'Senkou' | 'Sasi' | 'Oikomi' | 'Oonig
 		'Oikomi': 0.995,
 		'Oonige': 0.86
 	}[strategy];
-	return 1.25 * (hp - distance) / coef;
+	let stam = 1.25 * (hp - distance) / coef;
+	if (stam > 1200) stam = 1200 + (stam - 1200) * 2;
+	return stam;
 }
 
 export function StaCalcResults(props) {
