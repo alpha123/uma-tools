@@ -282,6 +282,7 @@
 	color: white;
 	font-size: 1.2em;
 	font-weight: bold;
+	line-height: 1.667em;
 	margin: 16px auto;
 	text-align: center;
 	width: calc(100% - 16px);
