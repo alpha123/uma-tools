@@ -182,6 +182,10 @@ export function RaceTrack(props) {
 		props.mouseMove && props.mouseMove(x / w);
 	}
 
+	function doMouseEnter(e) {
+		props.mouseEnter && props.mouseEnter();
+	}
+
 	function doMouseLeave(e) {
 		const svg = e.currentTarget;
 		const line = svg.querySelector('.mouseoverLine');
@@ -403,7 +407,7 @@ export function RaceTrack(props) {
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="racetrackWrapper" style={`width:${props.width + xOffset + xExtra}px`}>
 				{trackNameHeader}
-				<svg version="1.1" width={props.width + xOffset + xExtra} height={props.height + yOffset + yExtra} xmlns="http://www.w3.org/2000/svg" class="racetrackView" data-courseid={props.courseid} onMouseMove={doMouseMove} onMouseLeave={doMouseLeave}>
+				<svg version="1.1" width={props.width + xOffset + xExtra} height={props.height + yOffset + yExtra} xmlns="http://www.w3.org/2000/svg" class="racetrackView" data-courseid={props.courseid} onMouseMove={doMouseMove} onMouseEnter={doMouseEnter} onMouseLeave={doMouseLeave}>
 					<svg x={props.xOffset} y={props.yOffset} width={props.width} height={props.height}>
 						{almostEverything}
 						{regions}

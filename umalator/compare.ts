@@ -3,6 +3,7 @@ import { Region, RegionList } from '../uma-skill-tools/Region';
 import { RaceParameters } from '../uma-skill-tools/RaceParameters';
 import { RaceSolver } from '../uma-skill-tools/RaceSolver';
 import { RaceSolverBuilder, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
+import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 import { Rule30CARng } from '../uma-skill-tools/Random';
 import { ActivationSamplePolicy, ImmediatePolicy, RandomPolicy, LogNormalRandomPolicy, ErlangRandomPolicy, StraightRandomPolicy, AllCornerRandomPolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 
@@ -23,7 +24,7 @@ class FixedDistancePolicy {
 	reconcileAllCornerRandom(other: ActivationSamplePolicy) { console.assert(false); }
 }
 
-function instantiateSamplePolicy(desc: SamplePolicyDesc | undefined): ActivationSamplePolicy | undefined {
+export function instantiateSamplePolicy(desc: SamplePolicyDesc | undefined): ActivationSamplePolicy | undefined {
 	if (desc == null) return undefined;
 	switch (desc.policy) {
 		case 'immediate': return ImmediatePolicy;
@@ -34,6 +35,36 @@ function instantiateSamplePolicy(desc: SamplePolicyDesc | undefined): Activation
 		case 'erlang': return new ErlangRandomPolicy(desc.k, desc.lambda);
 		case 'fixed': return new FixedDistancePolicy(desc.pos);
 	}
+}
+
+export function getActivator(skillSet) {
+	return function (s, id, persp) {
+		if (id == 'downhill') {
+			if (!skillSet.has('downhill')) skillSet.set('downhill', 0);
+			skillSet.set('downhill', skillSet.get('downhill') - s.accumulatetime.t);
+		} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+			if (!skillSet.has(id)) skillSet.set(id, []);
+			skillSet.get(id).push([s.pos, -1]);
+		}
+	};
+}
+export function getDeactivator(skillSet, course) {
+	return function (s, id, persp) {
+		if (id == 'downhill') {
+			skillSet.set('downhill', skillSet.get('downhill') + s.accumulatetime.t);
+		} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+			const ar = skillSet.get(id);  // activation record
+			// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
+			// activation has finished (as each copy has the same ID), so we can't just access a specific index
+			// (-1).
+			// assume that multiple activations of a skill always deactivate in the same order (probably true?) so
+			// just seach for the first record that hasn't had its deactivation location filled out yet.
+			const r = ar.find(x => x[1] == -1);
+			// onSkillDeactivate gets called twice for skills that have both speed and accel components, so the end
+			// position could already have been filled out and r will be undefined
+			if (r != null) r[1] = Math.min(s.pos, course.distance);
+		}
+	};
 }
 
 export function runComparison(nsamples: number, course: CourseData, racedef: RaceParameters, uma1: HorseState, uma2: HorseState, seed: [number,number], options) {
@@ -91,39 +122,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		compare.withWisdomChecks(wisdomSeeds);
 	}
 	const skillPos1 = new Map(), skillPos2 = new Map();
-	function getActivator(skillSet) {
-		return function (s, id, persp) {
-			if (id == 'downhill') {
-				if (!skillSet.has('downhill')) skillSet.set('downhill', 0);
-				skillSet.set('downhill', skillSet.get('downhill') - s.accumulatetime.t);
-			} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
-				if (!skillSet.has(id)) skillSet.set(id, []);
-				skillSet.get(id).push([s.pos, -1]);
-			}
-		};
-	}
-	function getDeactivator(skillSet) {
-		return function (s, id, persp) {
-			if (id == 'downhill') {
-				skillSet.set('downhill', skillSet.get('downhill') + s.accumulatetime.t);
-			} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
-				const ar = skillSet.get(id);  // activation record
-				// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
-				// activation has finished (as each copy has the same ID), so we can't just access a specific index
-				// (-1).
-				// assume that multiple activations of a skill always deactivate in the same order (probably true?) so
-				// just seach for the first record that hasn't had its deactivation location filled out yet.
-				const r = ar.find(x => x[1] == -1);
-				// onSkillDeactivate gets called twice for skills that have both speed and accel components, so the end
-				// position could already have been filled out and r will be undefined
-				if (r != null) r[1] = Math.min(s.pos, course.distance);
-			}
-		};
-	}
 	standard.onSkillActivate(getActivator(skillPos1));
-	standard.onSkillDeactivate(getDeactivator(skillPos1));
+	standard.onSkillDeactivate(getDeactivator(skillPos1, course));
 	compare.onSkillActivate(getActivator(skillPos2));
-	compare.onSkillDeactivate(getDeactivator(skillPos2));
+	compare.onSkillDeactivate(getDeactivator(skillPos2, course));
 	let a = standard.build(), b = compare.build();
 	let ai = 1, bi = 0;
 	let sign = 1;

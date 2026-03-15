@@ -206,7 +206,7 @@ body {
 	flex-direction: column;
 }
 
-#resultsPane.mode-compare {
+#resultsPane.mode-compare, #resultsPane.mode-stacalc {
 	margin-top: 10px;
 }
 
@@ -472,7 +472,7 @@ body {
 	width: 100%;
 }
 
-#basinnChartOptionsRow {
+#extendedOptionsRow {
 	align-items: center;
 	display: flex;
 	flex-direction: column;

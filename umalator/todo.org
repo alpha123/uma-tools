@@ -19,9 +19,9 @@ might be cool to animate e.g., the histogram bars popping up
 *** DONE also implement downhills
 **** TODO show downhill mode procs on race chart
 ** DONE chart line
-** TODO show % max spurt rate, average excess hp, etc
+** DONE show % max spurt rate, average excess hp, etc
 possibly presented as another "tab" underneath the chart (tabbed with min/max/mean/median basinn gain tab)
-** TODO eventually, stamina calculator mode
+** DONE eventually, stamina calculator mode
 * TODO unique skill levels
 also implement unique scaling in sim
 * DONE run compare simulator in worker

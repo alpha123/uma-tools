@@ -1,0 +1,16 @@
+.stacalcWrapper {
+	display: flex;
+}
+
+.stacalcPane {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+
+.reqStamCalc > input {
+	border: none;
+	font-size: 0.95em;
+	text-align: right;
+}

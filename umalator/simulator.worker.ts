@@ -4,6 +4,7 @@ import { Rule30CARng } from '../uma-skill-tools/Random';
 
 import { HorseState } from '../components/HorseDefTypes';
 import { runComparison } from './compare';
+import { runHpCalc } from './hpcalc';
 
 import skillmeta from '../skill_meta.json';
 
@@ -56,7 +57,7 @@ function run1Round(nsamples: number, skills: string[], course: CourseData, raced
 	return data;
 }
 
-function runChart({skills, course, racedef, uma, options}) {
+function doChart({skills, course, racedef, uma, options}) {
 	const seedgen = new Rule30CARng(options.seed);
 	let results = run1Round(3, skills, course, racedef, uma, seedgen.pair(), options);
 	postMessage({type: 'chart', results});
@@ -76,7 +77,7 @@ function runChart({skills, course, racedef, uma, options}) {
 	postMessage({type: 'chart', results});
 }
 
-function runCompare({nsamples, course, racedef, uma1, uma2, options}) {
+function doCompare({nsamples, course, racedef, uma1, uma2, options}) {
 	const seedgen = new Rule30CARng(options.seed);
 	let results;
 	for (let n = Math.min(20, nsamples), mul = 6; n < nsamples; n = Math.min(n * mul, nsamples), mul = Math.max(mul - 1, 2)) {
@@ -87,14 +88,28 @@ function runCompare({nsamples, course, racedef, uma1, uma2, options}) {
 	postMessage({type: 'compare', results});
 }
 
+function doHpCalc({nsamples, course, racedef, uma, options}) {
+	const seedgen = new Rule30CARng(options.seed);
+	let results;
+	for (let n = Math.min(20, nsamples), mul = 6; n < nsamples; n = Math.min(n * mul, nsamples), mul = Math.max(mul - 1, 2)) {
+		results = runHpCalc(n, course, racedef, uma, seedgen.pair(), options);
+		postMessage({type: 'hpcalc', results});
+	}
+	results = runHpCalc(nsamples, course, racedef, uma, seedgen.pair(), options);
+	postMessage({type: 'hpcalc', results});
+}
+
 self.addEventListener('message', function (e) {
 	const {msg, data} = e.data;
 	switch (msg) {
 		case 'chart':
-			runChart(data);
+			doChart(data);
 			break;
 		case 'compare':
-			runCompare(data);
+			doCompare(data);
+			break;
+		case 'hpcalc':
+			doHpCalc(data);
 			break;
 	}
 });

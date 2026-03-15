@@ -20,6 +20,7 @@ import { SkillList } from '../components/SkillList';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
 import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, BasinnChart } from './BasinnChart';
+import { StaCalcResults } from './StaCalc';
 
 import { initTelemetry, postEvent } from './telemetry';
 
@@ -41,7 +42,8 @@ const UI_ja = Object.freeze({
 	'uma2': '第二ウマ娘',
 	'mode': Object.freeze({
 		'compare': '真っ向勝負',
-		'chart': 'スキル効果値'
+		'chart': 'スキル効果値',
+		'stacalc': 'Stamina calculator'
 	}),
 	'sidebar': Object.freeze({
 		'samples': '標本数',
@@ -51,7 +53,8 @@ const UI_ja = Object.freeze({
 		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
 			'compare': '比べる',
-			'chart': '実行する'
+			'chart': '実行する',
+			'stacalc': 'Calculate'
 		}),
 		'copylink': 'リンクをコピー'
 	}),
@@ -70,7 +73,8 @@ const UI_en = Object.freeze({
 	'uma2': 'Umamusume 2',
 	'mode': Object.freeze({
 		'compare': 'Compare',
-		'chart': 'Skill table'
+		'chart': 'Skill table',
+		'stacalc': 'Stamina calculator'
 	}),
 	'sidebar': Object.freeze({
 		'samples': 'Samples:',
@@ -80,7 +84,8 @@ const UI_en = Object.freeze({
 		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
 			'compare': 'COMPARE',
-			'chart': 'RUN'
+			'chart': 'RUN',
+			'stacalc': 'CALCULATE'
 		}),
 		'copylink': 'Copy link'
 	}),
@@ -583,7 +588,7 @@ function useRoute<T>(base: string, getRouteDesc: () => Record<string,T>, default
 	return [current, navigate];
 }
 
-const enum Mode { Compare, Chart }
+const enum Mode { Compare, Chart, StaCalc }
 
 function Umalator(props) {
 	//const [language, setLanguage] = useLanguageSelect();
@@ -616,7 +621,8 @@ function Umalator(props) {
 
 	const [mode, setMode] = useRoute(CC_GLOBAL ? '/uma-tools/umalator-global' : '/uma-tools/umalator', () => ({
 		'/compare': Mode.Compare,
-		'/skills': Mode.Chart
+		'/skills': Mode.Chart,
+		'/stamina': Mode.StaCalc
 	}), Mode.Compare);
 	const [currentIdx_, setCurrentIdx] = useState(0);
 	const currentIdx = mode != Mode.Compare ? 0 : currentIdx_;
@@ -627,6 +633,8 @@ function Umalator(props) {
 		postEvent('toggleExpand', {expand: !expanded});
 		setExpanded(!expanded_);
 	}
+
+	const [forceFullSpurt, toggleForceFullSpurt] = useReducer(b => !b, true);
 
 	const loadedChartSkills = useGetter(O.chartSkills);
 	const [chartSkills, setChartSkills] = useState(loadedChartSkills || []);
@@ -696,6 +704,7 @@ function Umalator(props) {
 			const {type, results} = e.data;
 			switch (type) {
 				case 'compare':
+				case 'hpcalc':
 					setResults(results);
 					break;
 				case 'chart':
@@ -767,6 +776,20 @@ function Umalator(props) {
 		});
 	}
 
+	function doStaCalc() {
+		postEvent('doStaCalc', {});
+		workers[0].postMessage({
+			msg: 'hpcalc',
+			data: {
+				nsamples,
+				course,
+				racedef: racedefToParams(racedef),
+				uma: uma1,
+				options: {seed, usePosKeep, useIntChecks, forceFullSpurt}
+			}
+		});
+	}
+
 	function runBasinnChart(uma, params, skills) {
 		const filler = getNullTableData(skills);
 		setTableData(filler);
@@ -817,20 +840,26 @@ function Umalator(props) {
 
 	function rtMouseMove(pos) {
 		if (chartData == null) return;
-		document.getElementById('rtMouseOverBox').style.display = 'block';
 		const x = pos * course.distance;
-		const i0 = binSearch(chartData.p[0], x), i1 = binSearch(chartData.p[1], x);
+		const i0 = binSearch(chartData.p[0], x);
 		document.getElementById('rtV1').textContent = `${chartData.v[0][i0].toFixed(2)} m/s  t=${chartData.t[0][i0].toFixed(2)} s  (${chartData.hp[0][i0].toFixed(0)} hp remaining)`;
-		document.getElementById('rtV2').textContent = `${chartData.v[1][i1].toFixed(2)} m/s  t=${chartData.t[1][i1].toFixed(2)} s  (${chartData.hp[1][i1].toFixed(0)} hp remaining)`;
+		if (chartData.t.length > 1) {
+			const i1 = binSearch(chartData.p[1], x);
+			document.getElementById('rtV2').textContent = `${chartData.v[1][i1].toFixed(2)} m/s  t=${chartData.t[1][i1].toFixed(2)} s  (${chartData.hp[1][i1].toFixed(0)} hp remaining)`;
+		}
+	}
+
+	function rtMouseEnter() {
+		if (chartData != null) {
+			document.getElementById('rtV1').style.display = 'block';
+			if (chartData.t.length > 1) document.getElementById('rtV2').style.display = 'block';
+		}
 	}
 
 	function rtMouseLeave() {
-		document.getElementById('rtMouseOverBox').style.display = 'none';
+		document.getElementById('rtV1').style.display = 'none';
+		document.getElementById('rtV2').style.display = 'none';
 	}
-
-	const mid = Math.floor(results.length / 2);
-	const median = results.length % 2 == 0 ? (results[mid-1] + results[mid]) / 2 : results[mid];
-	const mean = results.reduce((a,b) => a+b, 0) / results.length;
 
 	const colors = [
 		{stroke: 'rgb(42, 119, 197)', fill: 'rgba(42, 119, 197, 0.7)'},
@@ -857,6 +886,9 @@ function Umalator(props) {
 
 	let resultsPane;
 	if (mode == Mode.Compare && results.length > 0) {
+		const mid = Math.floor(results.length / 2);
+		const median = results.length % 2 == 0 ? (results[mid-1] + results[mid]) / 2 : results[mid];
+		const mean = results.reduce((a,b) => a+b, 0) / results.length;
 		resultsPane = (
 			<div id="resultsPaneWrapper">
 				<div id="resultsPane" class="mode-compare">
@@ -890,6 +922,14 @@ function Umalator(props) {
 						<ResultsTable caption={<Text id="ui.uma1" />} color="#2a77c5" chartData={chartData} idx={0} spurtRate={runData.nspurt[0] / results.length} />
 						<ResultsTable caption={<Text id="ui.uma2" />} color="#c52a2a" chartData={chartData} idx={1} spurtRate={runData.nspurt[1] / results.length} />
 					</Localizer>
+				</div>
+			</div>
+		);
+	} else if (mode == Mode.StaCalc && results.remainingHp != null) {
+		resultsPane = (
+			<div id="resultsPaneWrapper">
+				<div id="resultsPane" class="mode-stacalc">
+					<StaCalcResults course={course} uma={uma1} results={results} nspurt={runData.nspurt} displayedRun={O.displayedRun} Histogram={Histogram} />
 				</div>
 			</div>
 		);
@@ -953,13 +993,13 @@ function Umalator(props) {
 						<div id="modeBar">
 							<button class={`modeBtn${mode == Mode.Compare ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Compare)}><Text id="ui.mode.compare" /></button>
 							<button class={`modeBtn${mode == Mode.Chart ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.Chart)}><Text id="ui.mode.chart" /></button>
-
+							<button class={`modeBtn${mode == Mode.StaCalc ? ' modeBtnActive' : ''}`} onClick={() => setMode(Mode.StaCalc)}><Text id="ui.mode.stacalc" /></button>
 						</div>
-						<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseLeave={rtMouseLeave} regions={skillActivations}>
+						<RaceTrack courseid={courseId} width={960} height={240} xOffset={20} yOffset={15} yExtra={20} mouseMove={rtMouseMove} mouseEnter={rtMouseEnter} mouseLeave={rtMouseLeave} regions={skillActivations}>
 							<VelocityLines data={chartData} courseDistance={course.distance} width={960} height={250} xOffset={20} showHp={showHp} />
-							<g id="rtMouseOverBox" style="display:none">
-								<text id="rtV1" x="25" y="10" fill="#2a77c5" font-size="10px"></text>
-								<text id="rtV2" x="25" y="20" fill="#c52a2a" font-size="10px"></text>
+							<g id="rtMouseOverBox">
+								<text id="rtV1" x="25" y="10" fill="#2a77c5" font-size="10px" style="display:none"></text>
+								<text id="rtV2" x="25" y="20" fill="#c52a2a" font-size="10px" style="display:none"></text>
 							</g>
 						</RaceTrack>
 						<div id="buttonsRow">
@@ -996,14 +1036,16 @@ function Umalator(props) {
 							<input type="checkbox" id="showhp" checked={showHp} onClick={toggleShowHp} />
 						</div>
 						{
-							mode == Mode.Compare
-								? <button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>
-								: <button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>
+							[
+								<button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>,
+								<button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>,
+								<button id="run" onClick={doStaCalc} tabindex={1}><Text id="ui.sidebar.run.stacalc" /></button>,
+							][mode]
 						}
 						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
 						{
 							mode == Mode.Chart &&
-								<div id="basinnChartOptionsRow">
+								<div id="extendedOptionsRow">
 									<fieldset id="basinnChartSelect">
 										<div>
 											<input type="radio" id="basinnChartSelectAll" name="basinnChartSelection" value="all" checked={chartMode == 'all'} onClick={switchChartMode} />
@@ -1022,6 +1064,15 @@ function Umalator(props) {
 									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
 									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
 										<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
+									</div>
+								</div>
+						}
+						{
+							mode == Mode.StaCalc &&
+								<div id="extendedOptionsRow">
+									<div>
+										<label for="stacalcForceMaxSpurt">Force full spurt</label>
+										<input type="checkbox" id="stacalcForceMaxSpurt" checked={forceFullSpurt} onClick={toggleForceFullSpurt} />
 									</div>
 								</div>
 						}
