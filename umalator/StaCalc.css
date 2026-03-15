@@ -4,22 +4,21 @@
 }
 
 .stacalcPane {
-	align-items: center;
+	color: rgb(121, 64, 22);
 	display: flex;
 	flex: 1;
 	flex-direction: column;
+	font-weight: bold;
+}
+
+.stacalcPane:first-child {
+	align-items: center;
 }
 
 .stacalcPane > h1 {
-	color: rgb(121, 64, 22);
 	font-size: 1em;
 	margin: 0 0 6px 0;
 	width: 100%;
-}
-
-.reqStamCalc {
-	color: rgb(121, 64, 22);
-	font-weight: bold;
 }
 
 .reqStamCalc > label {

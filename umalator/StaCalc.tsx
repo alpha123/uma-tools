@@ -20,7 +20,7 @@ function maxHpToStamina(strategy: 'Nige' | 'Senkou' | 'Sasi' | 'Oikomi' | 'Oonig
 
 export function StaCalcResults(props) {
 	const [displaying, setChartData] = useLens(props.displayedRun);
-	const {remainingHp, requiredHp} = props.results;
+	const {remainingHp, requiredHp, downhillSave} = props.results;
 	const Histogram = props.Histogram;
 
 	const [spurtPerc, setSpurtPerc] = useState(95);
@@ -60,12 +60,13 @@ export function StaCalcResults(props) {
 				<Histogram width={500} height={333} data={remainingHp} />
 			</div>
 			<div class="stacalcPane">
-				<h1>Full spurt rate: {(props.nspurt / remainingHp.length * 100).toFixed(2)}%</h1>
+				<div><span>Full spurt rate: {(props.nspurt / remainingHp.length * 100).toFixed(2)}%</span></div>
 				<div class="reqStamCalc">
 					<label for={spurtPercId}>Stamina required for</label>
 					<input type="number" id={spurtPercId} min="1" max="100" value={spurtPerc} onInput={e => setSpurtPerc(+e.currentTarget.value)} />
 					<span>% spurt rate: {Math.round(maxHpToStamina(props.uma.strategy, requiredHp[Math.ceil(requiredHp.length * (spurtPerc / 100)) - 1], props.course.distance))}</span>
 				</div>
+				<div><span>HP saved on downhills: {Math.round(downhillSave[0])} – {Math.round(downhillSave[downhillSave.length-1])} (avg {Math.round(downhillSave.reduce((a,b) => a+b) / downhillSave.length)})</span></div>
 			</div>
 		</div>
 	);

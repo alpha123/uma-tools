@@ -128,7 +128,7 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 			data.t[0].push(s0.accumulatetime.t);
 			data.p[0].push(s0.pos);
 			data.v[0].push(s0.currentSpeed + (s0.modifiers.currentSpeed.acc + s0.modifiers.currentSpeed.err));
-			data.hp[0].push((s0.hp as GameHpPolicy).hp);
+			data.hp[0].push((s0.hp as ForceFullSpurtHpPolicy).hp);
 		}
 		s0.cleanup();
 		data.sdly = s0.startDelay;
