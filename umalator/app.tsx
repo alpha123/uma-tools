@@ -910,7 +910,7 @@ function Umalator(props) {
 				type: RegionDisplayType.Textbox,
 				color: colors[i],
 				text: id == 'kakari' ? UI_STRINGS[props.lang]['kakari'] : skillnames[id][0],
-				regions: [{start: ar[0], end: ar[1]}]
+				regions: [{start: ar[0], end: ar[1] == -1 ? ar[0] + course.distance * 0.078 /* somewhat arbitrary */ : ar[1]}]
 			}));
 		});
 	});
