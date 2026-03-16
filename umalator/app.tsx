@@ -315,7 +315,7 @@ const Histogram = memo(function Histogram(props) {
 	}, [data, width, height]);
 
 	const rects = buckets.map((b,i) =>
-		<rect key={i} fill={b.x1 <= 0 ? "#2a77c5" : "#c52a2a"} stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
+		<rect key={i} fill={b.x1 <= 0 || !props.splitColors ? "#2a77c5" : "#c52a2a"} stroke="black" x={x(b.x0)} y={y(b.length)} width={x(b.x1) - x(b.x0)} height={height - xH - y(b.length)} />
 	);
 	return (
 		<svg id="histogram" width={width} height={height}>
@@ -343,7 +343,7 @@ function BasinnChartPopover(props) {
 	return (
 		<div class="basinnChartPopover" tabindex="1000" style="visibility:hidden" ref={popover}>
 			<ExpandedSkillDetails id={props.skillid} distanceFactor={props.courseDistance} dismissable={false} />
-			<Histogram width={500} height={333} data={props.results} />
+			<Histogram width={500} height={333} data={props.results} splitColors={true} />
 		</div>
 	);
 }
@@ -950,7 +950,7 @@ function Umalator(props) {
 						</tbody>
 					</table>
 					<div id="resultsHelp"><MarkupText id="ui.resultshelp" /></div>
-					<Histogram width={500} height={333} data={results} />
+					<Histogram width={500} height={333} data={results} splitColors={true} />
 				</div>
 				<div id="infoTables">
 					<Localizer>

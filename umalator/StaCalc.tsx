@@ -59,7 +59,7 @@ export function StaCalcResults(props) {
 						</tr>
 					</tbody>
 				</table>
-				<Histogram width={500} height={333} data={remainingHp} />
+				<Histogram width={500} height={333} data={remainingHp} splitColors={false} />
 			</div>
 			<div class="stacalcPane">
 				<div><span>Full spurt rate: {(props.nspurt / remainingHp.length * 100).toFixed(2)}%</span></div>
