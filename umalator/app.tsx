@@ -368,7 +368,6 @@ const VelocityLines = memo(function VelocityLines(props) {
 		}
 	}, [props.data, props.courseDistance, props.width, props.height]);
 	const colors = [UMA1_COLOR, UMA2_COLOR];
-	const hpColors = ['#688aab', '#ab6868'];
 	return (
 		<Fragment>
 			<g transform={`translate(${props.xOffset},5)`}>
@@ -377,7 +376,7 @@ const VelocityLines = memo(function VelocityLines(props) {
 						d3.line().x(j => x(data.p[i][j])).y(j => y(v[j]))(data.p[i].map((_,j) => j))
 					} />
 				).concat(props.showHp ? data.hp.map((hp,i) =>
-					<path fill="none" stroke={hpColors[i]} stroke-width="2.5" d={
+					<path fill="none" stroke={colors[i]} stroke-width="2.5" stroke-dasharray="5,2" d={
 						d3.line().x(j => x(data.p[i][j])).y(j => hpY(hp[j]))(data.p[i].map((_,j) => j))
 					} />
 				) : [])}
