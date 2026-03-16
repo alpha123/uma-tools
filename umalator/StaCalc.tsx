@@ -36,7 +36,7 @@ export function StaCalcResults(props) {
 	return (
 		<div class="stacalcWrapper">
 			<div class="stacalcPane">
-				<h1>Remaining HP</h1>
+				<h1>Remaining HP <span class="hasTooltip" style="">ⓘ<span class="tooltip">If ‘Force full spurt’ is checked, this also accounts for the amount of stamina required to pass the check for a full speed/duration last spurt, meaning it can be negative even if the uma finishes the race with positive remaining HP.<span class="arrow"></span></span></span></h1>
 				<table id="resultsSummary">
 					<tfoot>
 						<tr>
@@ -62,7 +62,7 @@ export function StaCalcResults(props) {
 				<Histogram width={500} height={333} data={remainingHp} splitColors={false} />
 			</div>
 			<div class="stacalcPane">
-				<div><span>Full spurt rate: {(props.nspurt / remainingHp.length * 100).toFixed(2)}%</span></div>
+				<div><span>Full spurt rate <span class="hasTooltip" style="">ⓘ<span class="tooltip">Shows the real spurt rate regardless of whether ‘Force full spurt’ is checked<span class="arrow"></span></span></span>: {(props.nspurt / remainingHp.length * 100).toFixed(2)}%</span></div>
 				<div class="reqStamCalc">
 					<label for={spurtPercId}>Stamina required for</label>
 					<input type="number" id={spurtPercId} min="1" max="100" value={spurtPerc} onInput={e => setSpurtPerc(+e.currentTarget.value)} />
