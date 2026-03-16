@@ -645,6 +645,10 @@ strong.uma2 { color: var(--uma2-color); }
 }
 
 @media (orientation: portrait) {
+	body {
+		overflow: unset;
+	}
+
 	#app {
 		flex-direction: column;
 	}
