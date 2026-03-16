@@ -645,9 +645,9 @@ function Umalator(props) {
 
 	function setCourseId(cid) {
 		setCourseId_(cid);
-		setCompareResults(null);
-		setChartSelectionResults(null);
-		setStacalcResults(null);
+		setCompareResults(NULL_RESULTS);
+		setChartSelectionResults(NULL_RESULTS);
+		setStacalcResults(NULL_RESULTS);
 	}
 
 	const [uma1, setUma1] = useLens(O.uma1);
