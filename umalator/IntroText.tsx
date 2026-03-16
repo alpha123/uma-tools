@@ -40,6 +40,22 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-03-16</h2>
+					<ul>
+						<li>
+							<details>
+								<summary>Introduce a stamina calculator mode</summary>
+								<p>This shows you the minimum/maximum/mean/median HP remaining from the set of simulations. Note that HP is not 1 to 1 with stamina. The formula for HP is the course distance plus 0.8 × stamina × a value between 0.86–1.0 depending on running style.</p>
+								<p>When ‘Force full spurt’ is checked the simulations always start the last spurt as soon as possible and with maximum speed. When this option is enabled (as it is by default) the numbers given for remaining HP account for how much HP the uma would have to have to pass the check for a full speed/duration spurt. It is possible for this to be higher than the amount of HP required to actually finish the race at top speed due to the presence of downhills. In this case there will be a discrepancy between the numbers given for remaining HP and the HP consumption actually shown on the chart. Mousing over the chart shows how much HP you actually used, and the remaining HP numbers are that minus however much extra HP you would have needed to pass the last spurt check.</p>
+							</details>
+						</li>
+						<li>Modest UI design changes, hopefully pleasant</li>
+						<li>Skills with scaling effects are now simulated more accurately</li>
+						<li>Fix a bug where debuffs that have a running style condition would depend on the running style of the debuffed uma rather than the debuffer</li>
+						<li>Minor other bug fixes</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-03-08</h2>
 					<ul>
 						<li>
