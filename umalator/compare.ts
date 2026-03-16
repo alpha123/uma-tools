@@ -37,22 +37,24 @@ export function instantiateSamplePolicy(desc: SamplePolicyDesc | undefined): Act
 	}
 }
 
-export function getActivator(skillSet) {
+export function getActivator(selfSet: Map<string, [number,number]>, otherSet: Map<String, [number,number]> | null) {
 	return function (s, id, persp) {
+		const skillSet = persp == Perspective.Self ? selfSet : otherSet;
 		if (id == 'downhill') {
 			if (!skillSet.has('downhill')) skillSet.set('downhill', 0);
 			skillSet.set('downhill', skillSet.get('downhill') - s.accumulatetime.t);
-		} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+		} else if (skillSet != null && id != 'asitame' && id != 'staminasyoubu') {
 			if (!skillSet.has(id)) skillSet.set(id, []);
 			skillSet.get(id).push([s.pos, -1]);
 		}
 	};
 }
-export function getDeactivator(skillSet, course) {
+export function getDeactivator(selfSet: Map<string, [number,number]>, otherSet: Map<String, [number,number]> | null, course) {
 	return function (s, id, persp) {
+		const skillSet = persp == Perspective.Self ? selfSet : otherSet;
 		if (id == 'downhill') {
 			skillSet.set('downhill', skillSet.get('downhill') + s.accumulatetime.t);
-		} else if (persp == Perspective.Self && id != 'asitame' && id != 'staminasyoubu') {
+		} else if (skillSet != null && id != 'asitame' && id != 'staminasyoubu') {
 			const ar = skillSet.get(id);  // activation record
 			// in the case of adding multiple copies of speed debuffs a skill can activate again before the first
 			// activation has finished (as each copy has the same ID), so we can't just access a specific index
@@ -122,10 +124,10 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 		compare.withWisdomChecks(wisdomSeeds);
 	}
 	const skillPos1 = new Map(), skillPos2 = new Map();
-	standard.onSkillActivate(getActivator(skillPos1));
-	standard.onSkillDeactivate(getDeactivator(skillPos1, course));
-	compare.onSkillActivate(getActivator(skillPos2));
-	compare.onSkillDeactivate(getDeactivator(skillPos2, course));
+	standard.onSkillActivate(getActivator(skillPos1, null));
+	standard.onSkillDeactivate(getDeactivator(skillPos1, null, course));
+	compare.onSkillActivate(getActivator(skillPos2, null));
+	compare.onSkillDeactivate(getDeactivator(skillPos2, null, course));
 	let a = standard.build(), b = compare.build();
 	let ai = 1, bi = 0;
 	let sign = 1;

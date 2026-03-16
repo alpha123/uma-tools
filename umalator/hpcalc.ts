@@ -79,7 +79,7 @@ class CalcRequiredHpPolicy {
 	}
 }
 
-export function runHpCalc(nsamples: number, course: CourseData, racedef: RaceParamters, uma: HorseState, seed: [number,number], options) {
+export function runHpCalc(nsamples: number, course: CourseData, racedef: RaceParamters, uma: HorseState, debufUma: HorseState, seed: [number,number], options) {
 	const b0 = new RaceSolverBuilder(nsamples)
 		.seed(...seed)
 		.course(course)
@@ -96,12 +96,17 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 			.order(racedef.orderRange[0], racedef.orderRange[1])
 			.numUmas(racedef.numUmas);
 	}
+	b0.otherRawWisdom(debufUma.wisdom, debufUma.mood);
 	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(...seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();
 	Array.from(uma.skills.values()).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
 		b0.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma.samplePolicies.get(id)));
+	});
+	Array.from(debufUma.skills.values()).forEach(id => {
+		wisdomSeeds.set(id, wisdomRng.pair());
+		b0.addSkill(id, Perspective.Other, instantiateSamplePolicy(debufUma.samplePolicies.get(id)));
 	});
 	if (!CC_GLOBAL) b0.withAsiwotameru().withStaminaSyoubu();
 	if (options.usePosKeep) b0.useDefaultPacer();
@@ -110,7 +115,8 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 		.fork()
 		.hpPolicyFactory((course, params, rng) => new CalcRequiredHpPolicy(course, params.groundCondition, rng));
 	const skillActivations = new Map();
-	b0.onSkillActivate(getActivator(skillActivations)).onSkillDeactivate(getDeactivator(skillActivations, course));
+	const debuffActivations = new Map();
+	b0.onSkillActivate(getActivator(skillActivations, debuffActivations)).onSkillDeactivate(getDeactivator(skillActivations, debuffActivations, course));
 
 	b0.hpPolicyFactory((course, params, rng) => new ForceFullSpurtHpPolicy(options.forceFullSpurt, course, params.groundCondition, rng));
 
@@ -122,7 +128,7 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 	const sampleCutoff = Math.max(Math.floor(nsamples * 0.8), nsamples - 200);
 	for (let i = 0; i < nsamples; ++i) {
 		const s0 = g0.next().value as RaceSolver;
-		const data = {t: [[]], p: [[]], v: [[]], hp: [[]], sk: [null], sdly: 0, dh: 0};
+		const data = {t: [[]], p: [[]], v: [[]], hp: [[]], sk: [null,null], sdly: 0, dh: 0};
 		while (s0.pos < course.distance) {
 			s0.step(1/15);
 			data.t[0].push(s0.accumulatetime.t);
@@ -134,7 +140,9 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 		data.sdly = s0.startDelay;
 		data.dh = skillActivations.get('downhill') || 0; skillActivations.delete('downhill');
 		data.sk[0] = new Map(skillActivations);
+		data.sk[1] = new Map(debuffActivations);
 		skillActivations.clear();
+		debuffActivations.clear();
 		const hpp = s0.hp as ForceFullSpurtHpPolicy;
 		nspurt += +hpp.wasFullSpurt;
 		downhillSave.push(hpp.downhillSave);

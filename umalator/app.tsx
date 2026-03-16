@@ -38,8 +38,10 @@ const DEFAULT_SEED = 2615953739;
 const UI_ja = Object.freeze({
 	'lengthsunit': 'バ身',
 	'resultshelp': '負の数とは<strong style="color:#2a77c5">第一ウマ娘</strong>の方が速い。正の数とは<strong style="color:#c52a2a">第二ウマ娘</strong>の方が速い。',
+	'uma': 'ウマ娘',
 	'uma1': '第一ウマ娘',
 	'uma2': '第二ウマ娘',
+	'debuffer': 'デバフ',
 	'mode': Object.freeze({
 		'compare': '真っ向勝負',
 		'chart': 'スキル効果値',
@@ -69,8 +71,10 @@ const UI_ja = Object.freeze({
 const UI_en = Object.freeze({
 	'lengthsunit': 'bashin',
 	'resultshelp': 'Negative numbers mean <strong style="color:#2a77c5">Umamusume 1</strong> is faster, positive numbers mean <strong style="color:#c52a2a">Umamusume 2</strong> is faster.',
+	'uma': 'Umamusume',
 	'uma1': 'Umamusume 1',
 	'uma2': 'Umamusume 2',
+	'debuffer': 'Debuffer',
 	'mode': Object.freeze({
 		'compare': 'Compare',
 		'chart': 'Skill table',
@@ -428,7 +432,11 @@ function racedefToParams({mood, ground, weather, season, time, grade}: RaceParam
 	};
 }
 
-async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, chartMode: string | null, chartSkills: string[] | null) {
+function serializeUma(uma) {
+	return {...uma, skills: Array.from(uma.skills.values()), samplePolicies: Object.fromEntries(uma.samplePolicies)};
+}
+
+async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
 		nsamples,
@@ -436,11 +444,17 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		usePosKeep,
 		useIntChecks,
 		racedef,
-		uma1: {...uma1, skills: Array.from(uma1.skills.values()), samplePolicies: Object.fromEntries(uma1.samplePolicies)},
-		uma2: {...uma2, skills: Array.from(uma2.skills.values()), samplePolicies: Object.fromEntries(uma2.samplePolicies)},
+		uma1: serializeUma(uma1),
+		uma2: serializeUma(uma2),
 	};
 	if (chartMode != null) o.chartMode = chartMode;
 	if (chartSkills != null) o.chartSkills = chartSkills;
+	// not serializing this unless it has been modified means that when DEFAULT_HORSE_STATE changes (eg with stat cap updates)
+	// we'll load a different uma, but given that presumably DEFAULT_HORSE_STATE will never include any debuffs that doens't
+	// actually matter
+	if (!horseEquals(debufUma, DEFAULT_HORSE_STATE)) {
+		o.debufUma = serializeUma(debufUma);
+	}
 	const json = JSON.stringify(o);
 	const enc = new TextEncoder();
 	const stringStream = new ReadableStream({
@@ -463,6 +477,11 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 }
 
 const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */});
+
+function deserializeUma(umaObj) {
+	return Object.assign({}, NEW_HORSE_FIELDS, umaObj, {skills: SkillSet(umaObj.skills), samplePolicies: /* v6 */ new Map(Object.entries(umaObj.samplePolicies))});
+}
+
 async function deserialize(hash) {
 	const zipped = atob(decodeURIComponent(hash));
 	const buf = new Uint8Array(zipped.split('').map(c => c.charCodeAt(0)));
@@ -488,8 +507,9 @@ async function deserialize(hash) {
 					usePosKeep: o.usePosKeep,
 					useIntChecks: o.useIntChecks || false,  // v3
 					racedef: o.racedef,
-					uma1: Object.assign({}, NEW_HORSE_FIELDS, o.uma1, {skills: SkillSet(o.uma1.skills), samplePolicies: /* v6 */ new Map(Object.entries(o.uma1.samplePolicies))}),
-					uma2: Object.assign({}, NEW_HORSE_FIELDS, o.uma2, {skills: SkillSet(o.uma2.skills), samplePolicies: /* v6 */ new Map(Object.entries(o.uma2.samplePolicies))}),
+					uma1: deserializeUma(o.uma1),
+					uma2: deserializeUma(o.uma2),
+					debufUma: deserializeUma(o.debufUma || serializeUma(DEFAULT_HORSE_STATE)),  // v7
 					// optional fields (only added when serialized from basinn chart screen)
 					chartMode: o.chartMode || 'all',  // v6
 					chartSkills: o.chartSkills || null  // v4
@@ -504,6 +524,7 @@ async function deserialize(hash) {
 					racedef: DEFAULT_RACE_PARAMS,
 					uma1: DEFAULT_HORSE_STATE,
 					uma2: DEFAULT_HORSE_STATE,
+					debufUma: DEFAULT_HORSE_STATE,
 					chartMode: 'all',
 					chartSkills: null
 				};
@@ -631,11 +652,12 @@ function Umalator(props) {
 
 	const [uma1, setUma1] = useLens(O.uma1);
 	const [uma2, setUma2] = useLens(O.uma2);
+	const [debufUma, setDebufUma] = useLens(O.debufUma);
 
 	const [currentIdx_, setCurrentIdx] = useState(0);
-	const currentIdx = mode != Mode.Compare ? 0 : currentIdx_;
+	const currentIdx = mode == Mode.Chart ? 0 : currentIdx_;
 	const [expanded_, setExpanded] = useState(false);
-	const expanded = mode == Mode.Compare && expanded_;
+	const expanded = mode != Mode.Chart && expanded_;
 	function toggleExpand(e: Event) {
 		e.stopPropagation();
 		postEvent('toggleExpand', {expand: !expanded});
@@ -728,7 +750,7 @@ function Umalator(props) {
 	const copyLinkLink = useRef(null);
 
 	function doSerialize() {
-		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2,
+		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2, debufUma,
 			mode == Mode.Chart ? chartMode : null, mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
 		);
 	}
@@ -751,20 +773,22 @@ function Umalator(props) {
 		});
 	}
 
+	const leftUma = uma1, rightUma = mode == Mode.StaCalc ? debufUma : uma2;
+	const setLeftUma = setUma1, setRightUma = mode == Mode.StaCalc ? setDebufUma : setUma2;
 	function copyUmaToRight() {
 		postEvent('copyUma', {direction: 'to-right'});
-		setUma2(uma1);
+		setRightUma(leftUma);
 	}
 
 	function copyUmaToLeft() {
 		postEvent('copyUma', {direction: 'to-left'});
-		setUma1(uma2);
+		setLeftUma(rightUma);
 	}
 
 	function swapUmas() {
 		postEvent('copyUma', {direction: 'swap'});
-		setUma1(uma2);
-		setUma2(uma1);
+		setLeftUma(rightUma);
+		setRightUma(leftUma);
 	}
 
 	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: COMMON_STRINGS[props.lang], ui: UI_STRINGS[props.lang]};
@@ -795,6 +819,7 @@ function Umalator(props) {
 				course,
 				racedef: racedefToParams(racedef),
 				uma: uma1,
+				debufUma,
 				options: {seed, usePosKeep, useIntChecks, forceFullSpurt}
 			}
 		});
@@ -889,8 +914,8 @@ function Umalator(props) {
 
 	const umaTabs = useMemo(() => (
 		<Fragment>
-			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => setCurrentIdx(0)}>Umamusume 1</div>
-			{mode == Mode.Compare && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => setCurrentIdx(1)}>Umamusume 2<div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
+			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => setCurrentIdx(0)}><Text id={mode == Mode.Compare ? "ui.uma1" : "ui.uma"} /></div>
+			{mode != Mode.Chart && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => setCurrentIdx(1)}><Text id={mode == Mode.Compare ? "ui.uma2" : "ui.debuffer"} /><div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
 		</Fragment>
 	), [currentIdx, mode]);
 
@@ -982,7 +1007,7 @@ function Umalator(props) {
 				<div id={expanded ? 'umaOverlay' : 'umaPane'}>
 					<div class={!expanded && currentIdx == 0 ? 'selected' : ''}>
 						<HorseDef key={uma1.outfitId} state={O.uma1} courseDistance={course.distance} tabstart={() => 4}>
-							{expanded ? 'Umamusume 1' : umaTabs}
+							{expanded ? <Text id={mode == Mode.Compare ? "ui.uma1" : "ui.uma"} /> : umaTabs}
 						</HorseDef>
 					</div>
 					{expanded &&
@@ -991,10 +1016,15 @@ function Umalator(props) {
 							<div id="copyUmaToLeft" title="Copy uma 2 to uma 1" onClick={copyUmaToLeft} />
 							<div id="swapUmas" title="Swap umas" onClick={swapUmas}>⮂</div>
 						</div>}
-					{mode == Mode.Compare && <div class={!expanded && currentIdx == 1 ? 'selected' : ''}>
-						<HorseDef key={uma2.outfitId} state={O.uma2} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
-							{expanded ? 'Umamusume 2' : umaTabs}
-						</HorseDef>
+					{mode != Mode.Chart && <div class={!expanded && currentIdx == 1 ? 'selected' : ''}>
+						{mode == Mode.StaCalc
+							? <HorseDef key={'d'+debufUma.outfitId} state={O.debufUma} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
+								{expanded ? <Text id="ui.debuffer" /> : umaTabs}
+							</HorseDef>
+							: <HorseDef key={uma2.outfitId} state={O.uma2} courseDistance={course.distance} tabstart={() => 4 + horseDefTabs()}>
+								{expanded ? <Text id="ui.uma2" /> : umaTabs}
+							</HorseDef>
+						}
 					</div>}
 					{expanded && <div id="closeUmaOverlay" title="Close panel" onClick={toggleExpand}>✕</div>}
 				</div>
@@ -1104,6 +1134,7 @@ function App(props) {
 		showHp: false,
 		uma1: DEFAULT_HORSE_STATE,
 		uma2: DEFAULT_HORSE_STATE,
+		debufUma: DEFAULT_HORSE_STATE,
 		courseId: DEFAULT_COURSE_ID,
 		displayedRun: 'meanrun',
 		tableData: getNullTableData(baseSkillsToTest),
