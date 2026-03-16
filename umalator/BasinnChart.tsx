@@ -49,13 +49,13 @@ export const skillGroups = Object.keys(skilldata).sort((a,b) =>
 
 export function getActivateableSkills(skills: string[], horse: HorseState, course: CourseData, racedef: RaceParameters) {
 	const parser = getParser();
-	const h2 = buildBaseStats(horse, racedef.mood);
+	const h2 = buildBaseStats(horse);
 	const wholeCourse = new RegionList();
 	wholeCourse.push(new Region(0, course.distance));
 	return skills.filter(id => {
 		let sd;
 		try {
-			sd = buildSkillData(h2, racedef, course, wholeCourse, parser, id, Perspective.Any);
+			sd = buildSkillData(h2, h2, racedef, course, wholeCourse, parser, id, Perspective.Any);
 		} catch (_) {
 			return false;
 		}

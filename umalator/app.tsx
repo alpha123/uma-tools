@@ -191,7 +191,6 @@ const presets = (CC_GLOBAL ? [
 		date: new Date(def.date),
 		courseId: def.courseId,
 		racedef: {
-			mood: 2 as Mood,
 			ground: def.type == EventType.CM ? def.ground : GroundCondition.Good,
 			weather: def.type == EventType.CM ? def.weather : Weather.Sunny,
 			season: def.season,
@@ -425,10 +424,9 @@ const ORDER_RANGE_FOR_STRATEGY = Object.freeze({
 	'Oonige': [1,1]
 });
 
-function racedefToParams({mood, ground, weather, season, time, grade}: RaceParams, includeOrder?: string): RaceParameters {
+function racedefToParams({ground, weather, season, time, grade}: RaceParams, includeOrder?: string): RaceParameters {
 	return {
-		mood, groundCondition: ground, weather, season, time, grade,
-		popularity: 1,
+		groundCondition: ground, weather, season, time, grade,
 		skillId: '',
 		orderRange: includeOrder != null ? ORDER_RANGE_FOR_STRATEGY[includeOrder] : null,
 		numUmas: 9
@@ -453,7 +451,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 	if (chartMode != null) o.chartMode = chartMode;
 	if (chartSkills != null) o.chartSkills = chartSkills;
 	// not serializing this unless it has been modified means that when DEFAULT_HORSE_STATE changes (eg with stat cap updates)
-	// we'll load a different uma, but given that presumably DEFAULT_HORSE_STATE will never include any debuffs that doens't
+	// we'll load a different uma, but given that presumably DEFAULT_HORSE_STATE will never include any debuffs that doesn't
 	// actually matter
 	if (!horseEquals(debufUma, DEFAULT_HORSE_STATE)) {
 		o.debufUma = serializeUma(debufUma);
