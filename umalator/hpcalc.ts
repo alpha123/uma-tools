@@ -83,20 +83,17 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 	const b0 = new RaceSolverBuilder(nsamples)
 		.seed(...seed)
 		.course(course)
-		.mood(racedef.mood)
 		.ground(racedef.groundCondition)
 		.weather(racedef.weather)
 		.season(racedef.season)
 		.time(racedef.time)
 		.horse(uma)
-		.mood(uma.mood)
-		.popularity(uma.popularity);
+		.otherHorse(debufUma);
 	if (racedef.orderRange != null) {
 		b0
 			.order(racedef.orderRange[0], racedef.orderRange[1])
 			.numUmas(racedef.numUmas);
 	}
-	b0.otherRawWisdom(debufUma.wisdom, debufUma.mood);
 	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(...seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();
