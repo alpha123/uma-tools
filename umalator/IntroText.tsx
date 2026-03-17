@@ -40,6 +40,12 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-03-17</h2>
+					<ul>
+						<li>Wit checks are now always enabled in stamina calculator mode, as results otherwise are kind of deceptive</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-03-16</h2>
 					<ul>
 						<li>

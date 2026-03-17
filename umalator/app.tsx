@@ -616,7 +616,7 @@ function Umalator(props) {
 	const [nsamples, setSamples] = useLens(O.nsamples);
 	const [seed, setSeed] = useLens(O.seed);
 	const [usePosKeep, setPosKeep] = useLens(O.usePosKeep); const togglePosKeep = () => setPosKeep(toggle);
-	const [useIntChecks, setIntChecks] = useLens(O.useIntChecks); const toggleIntChecks = () => setIntChecks(toggle);
+	const [useIntChecks_, setIntChecks] = useLens(O.useIntChecks); const toggleIntChecks = () => setIntChecks(toggle);
 	const [showHp, setShowHp] = useLens(O.useShowHp); const toggleShowHp = () => setShowHp(toggle);
 	const [courseId, setCourseId_] = useLens(O.courseId);
 	const [displaying, setChartData] = useLens(O.displayedRun);
@@ -627,6 +627,8 @@ function Umalator(props) {
 		'/skills': Mode.Chart,
 		'/stamina': Mode.StaCalc
 	}), Mode.Compare);
+
+	const useIntChecks = useIntChecks_ || mode == Mode.StaCalc;
 
 	const [compareResults, setCompareResults] = useState(NULL_RESULTS);
 	const [chartSelectionResults, setChartSelectionResults] = useState(NULL_RESULTS);
@@ -751,7 +753,7 @@ function Umalator(props) {
 	const copyLinkLink = useRef(null);
 
 	function doSerialize() {
-		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks, racedef, uma1, uma2, debufUma,
+		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks_, racedef, uma1, uma2, debufUma,
 			mode == Mode.Chart ? chartMode : null, mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
 		);
 	}
@@ -1070,7 +1072,7 @@ function Umalator(props) {
 						</div>
 						<div>
 							<label for="intchecks"><Text id="ui.sidebar.intchecks" /></label>
-							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} />
+							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} disabled={mode == Mode.StaCalc} />
 						</div>
 						<div>
 							<label for="showhp"><Text id="ui.sidebar.showhp" /></label>
