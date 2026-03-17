@@ -35,3 +35,9 @@
 	text-align: right;
 	width: 5ch;
 }
+
+/* force chrome to always show spinbutton arrows */
+.reqStamCalc > input[type="number"]::-webkit-outer-spin-button,
+.reqStamCalc > input[type="number"]::-webkit-inner-spin-button {
+	opacity: 1;
+}
