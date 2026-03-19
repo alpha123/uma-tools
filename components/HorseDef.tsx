@@ -286,7 +286,7 @@ export function PopularitySelect(props) {
 	return (
 		<Fragment>
 			<Text id="popularity.pre" />
-			<input type="number" dir={lang == 'ja' ? 'rtl' : 'ltr'} min="1" max="18" value={p} tabindex={props.tabindex} onInput={(e) => setP(+e.currentTarget.value)} />
+			<input type="number" min="1" max="18" value={p} tabindex={props.tabindex} onInput={(e) => setP(+e.currentTarget.value)} />
 			<Text id="popularity.post" />
 		</Fragment>
 	);
