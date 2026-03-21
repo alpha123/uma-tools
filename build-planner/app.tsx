@@ -8,7 +8,7 @@ import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../opt
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, skillGroups, costForId } from '../components/SkillList';
 import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
-import { HorseDef, uniqueSkillForUma } from '../components/HorseDef';
+import { HorseDef, horseDefTabs, uniqueSkillForUma } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
 import skills from '../uma-skill-tools/data/skill_data.json';
@@ -143,19 +143,20 @@ function Deck(props) {
 	const [clickedIdx, setClickedIdx] = useState(-1);
 
 	function addOrChange(e) {
-		const slot = e.target.closest('.addCard, .card');
+		const slot = e.target.closest('.deckSlot');
 		if (slot == null) return;
-		const idx = Array.from(slot.parentNode.children).indexOf(slot);
-		setClickedIdx(idx);
+		setClickedIdx(+slot.dataset.idx);
 		setCardPickerOpen(true);
 	}
 	
 	return (
 		<div class="deck">
 			<div class="cardset" onClick={addOrChange}>
-				{cards.map(id => id ? <Card id={id} /> : <div class="addCard">
-					<img src="/uma-tools/icons/utx_ico_plus_00.png" />
-				</div>)}
+				{cards.map((id,i) => <button class="deckSlot" tabindex={props.tabstart + i} data-idx={i}>
+					{id ? <Card id={id} /> : <div class="addCard">
+						<img src="/uma-tools/icons/utx_ico_plus_00.png" />
+					</div>}
+				</button>)}
 			</div>
 			<div class={`cardPickerOverlay${cardPickerOpen ? ' open' : ''}`} onClick={setCardPickerOpen.bind(null, false)} />
 			<div class={`cardPickerWrapper${cardPickerOpen ? ' open' : ''}`}>
@@ -334,7 +335,7 @@ function BuildPlanner(props) {
 					</HorseDef>
 				</div>
 				<div id="nonUmaPanes">
-					<Deck cards={O.deck} />
+					<Deck cards={O.deck} tabstart={horseDefTabs()} />
 					<div id="solutions" onDblClick={addCard} onMouseEnterCapture={updateHover} onMouseLeave={hoverEnd}>
 						{solutions.map(cardset => <div class="cardset" data-cardids={cardset.cards.join(',')}>
 							{cardset.cards.map(id => <Card id={id} />)}

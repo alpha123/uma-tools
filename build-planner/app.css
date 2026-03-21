@@ -75,6 +75,12 @@ body {
 	width: 28px;
 }
 
+.deckSlot {
+	background: unset;
+	border: unset;
+	padding: 0;
+}
+
 .addCard {
 	background: rgb(248, 248, 248);
 	border-radius: 16px;
