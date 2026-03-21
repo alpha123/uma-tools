@@ -267,9 +267,6 @@
 .skillCost {
 	align-items: flex-end;
 	display: flex;
-	gap: 10px;
-	justify-content: space-between;
-	margin-left: -36px;
 	width: fit-content;
 }
 
@@ -383,14 +380,15 @@
 }
 
 .hintedCost {
-	display: inline-block;
-	text-align: right;
+	font-weight: bold;
+	text-align: center;
 	width: 29px;
 }
 
 .hintLevel {
 	color: rgb(255, 145, 29);
-	margin-left: calc(0.5em - 10px);
+	font-weight: bold;
+	margin-left: 0.5em;
 }
 
 @media (orientation: portrait) {

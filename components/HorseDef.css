@@ -310,6 +310,15 @@
 	margin: 0;
 }
 
+.horseExpandedSkill .skillCost {
+	gap: 8px;
+	margin: 6px 3px;
+}
+
+.horseExpandedSkill .hintLevel {
+	margin-left: 0;
+}
+
 .horseSkillPickerWrapper {
 	background: white;
 	bottom: 0;

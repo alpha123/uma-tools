@@ -105,3 +105,17 @@
 	cursor: default;
 	font-weight: normal;
 }
+
+.basinnChart .skillCost {
+	gap: 10px;
+	justify-content: space-between;
+	margin-left: -36px;
+}
+
+.basinnChart .hintedCost {
+	text-align: right;
+}
+
+.basinnChart .hintLevel {
+	margin-left: calc(0.5em - 10px);
+}

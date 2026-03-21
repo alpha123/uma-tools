@@ -597,6 +597,7 @@ export function ExpandedSkillDetails(props) {
 					{props.dismissable && <span class="skillDismiss">✕</span>}
 				</div>
 				<div class="skillDetails">
+					{props.topChildren}
 					<div>
 						<Text id="skilldetails.id" />
 						{props.id}

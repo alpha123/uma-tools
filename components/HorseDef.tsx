@@ -6,7 +6,7 @@ import { IntlProvider, Text, Localizer, useText } from 'preact-i18n';
 import { O, c, id, useLens, useGetter, Delete } from '../optics';
 
 import { useLanguage } from '../components/Language';
-import { SkillList, Skill, ExpandedSkillDetails } from '../components/SkillList';
+import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components/SkillList';
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
@@ -419,7 +419,8 @@ export const HorseDef = memo(function HorseDef(props) {
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
 					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
-						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null} />
+						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null}
+						  topChildren={props.hintLevels && <SkillCost id={id} hints={props.hintLevels} ownedSkills={new Map() /* ignore the fact that we own them or the cost would always be 0 */} />} />
 					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 				: <li key={id} style="">
