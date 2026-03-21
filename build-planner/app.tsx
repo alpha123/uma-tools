@@ -1,74 +1,294 @@
 import { h, Fragment, render } from 'preact';
+import { useState, useMemo, useEffect } from 'preact/hooks';
 import { Text, IntlProvider } from 'preact-i18n';
+import GLPK from 'glpk.js';
 
+import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
+
+import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList } from '../components/SkillList';
-
-import { RaceTrack, RegionDisplayType } from '../components/RaceTrack';
+import { HorseState, SkillSet, skillGroups, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
+import { HorseDef } from '../components/HorseDef';
+import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
 import skills from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
+import skillmeta from '../skill_meta.json';
+import umas from '../umas.json';
+import icons from '../icons.json';
+import cards from './cards.json';
 
-import { Region, RegionList } from '../uma-skill-tools/Region';
-import { CourseData, CourseHelpers } from '../uma-skill-tools/CourseData';
-import { HorseParameters, Strategy, Aptitude } from '../uma-skill-tools/HorseTypes';
-import { buildSkillData, conditionsWithActivateCountsAsRandom } from '../uma-skill-tools/RaceSolverBuilder';
-import { ImmediatePolicy } from '../uma-skill-tools/ActivationSamplePolicy';
-import { immediate, noopImmediate } from '../uma-skill-tools/ActivationConditions';
+import './app.css';
 
-const horse = Object.freeze({
-	speed: 2000,
-	stamina: 2000,
-	power: 2000,
-	guts: 2000,
-	wisdom: 2000,
-	strategy: Strategy.Nige,
-	distanceAptitude: Aptitude.S,
-	surfaceAptitude: Aptitude.A,
-	strategyAptitde: Aptitude.A,
-	rawStamina: 2000
+const UI_ja = Object.freeze({
+	'umaheader': 'ウマ娘'
+});
+const UI_en = Object.freeze({
+	'umaheader': 'Umamusume'
+});
+const UI_global = extendStrings(UI_en, {
 });
 
-function baseSpeed(distance: number) {
-	return 20.0 - (distance - 2000) / 1000.0;
+const UI_STRINGS = Object.freeze({
+	'ja': UI_ja,
+	'en': UI_en,
+	'en-ja': UI_en,
+	'en-global': UI_global
+});
+
+const cards_skills = new Map(Object.keys(cards)/*.filter(id => cards[id].rarity > 0)*/.map(id => [id, new Set(cards[id].event.concat(cards[id].hints))]));
+
+function awakeningsForUma(outfitId) {
+	return outfitId ? new Set(umas[outfitId.slice(0,4)].outfits[outfitId].awakenings) : new Set();
 }
 
-const conditions = Object.freeze(Object.assign({}, conditionsWithActivateCountsAsRandom, {
-	accumulatetime: immediate({
-		filterGte(regions: RegionList, t: number, course: CourseData, _: HorseParameters) {
-			// obviously we can't know this condition without actually running the race, and the actual distance traveled depends on the uma's strategy, power stat,
-			// skills (opening leg accel skills), and other things that aren't available in a static environment like here. so intead guess approximately how far we
-			// travel in t seconds by just using the course base speed.
-			// this will typically be a bit high since umas need to accelerate and non-nige strategies have lower than 1.0 StrategyPhaseCoefficient for phase 0
-			// except for oonige in which case it could be a bit low since their phase 0 speed is so high
-			const estimate = new Region(baseSpeed(course.distance) * t, course.distance);
-			return regions.rmap(r => r.intersect(estimate));
-		}
-	}),
-	running_style: noopImmediate
-}));
-
-function regionsForSkill(course: CourseData, skillId: string) {
-	const wholeCourse = new RegionList();
-	wholeCourse.push(new Region(0, course.distance));
-	const sd = buildSkillData(horse, course, wholeCourse, conditions, skillId);
-	return {
-		type: sd.samplePolicy == ImmediatePolicy ? RegionDisplayType.Immediate : RegionDisplayType.Regions,
-		regions: sd.regions
-	};
-}
-
-function App(props) {
-	const skilldefs = {skillnames: {}};
-	const lang = +(props.lang == 'en');
-	Object.keys(skillnames).forEach(id => skilldefs.skillnames[id] = skillnames[id][lang]);
-	const c11203 = CourseHelpers.getCourse('11203'); 
+function Card(props) {
+	const {type, rarity} = cards[props.id];
 	return (
-		<IntlProvider definition={skilldefs}>
-			<RaceTrack courseid="11203" width="800" height="220" regions={[regionsForSkill(c11203, '201452')]} /><div style="width:1000px;height:50px;overflow:hidden" />
-			<RaceTrack courseid="10805" width="800" height="220" /><div style="width:1000px;height:50px;overflow:hidden" />
-			<RaceTrack courseid="10810" width="800" height="220" />
-			<SkillList ids={Object.keys(skills).filter(id => skills[id].rarity < 3 || skills[id].rarity > 5)} />
-		</IntlProvider>
+		<div class="card" data-cardid={props.id}>
+			<img src={`/uma-tools/icons/support/support_thumb_${props.id}.png`}  />
+			<img src={`/uma-tools/icons/supportcard_rarity_${(100+rarity).toString().slice(1)}.png`} />
+			<img src={`/uma-tools/icons/utx_ico_obtain_${(100+type).toString().slice(1)}.png`} />
+		</div>
+	);
+}
+
+function Deck(props) {
+	const [cards, setCards] = useLens(props.cards);
+	function remove(e) {
+		const card = e.target.closest('.card');
+		if (card == null) return;
+		setCards(cards.filter(cid => cid != card.dataset.cardid));
+	}
+	
+	return (
+		<div class="cardset" onDblClick={remove}>
+			{cards.map(id => <Card id={id} />)}
+			{Array.from({length: 6 - cards.length}, _ => <div class="addCard">
+				<img src="/uma-tools/icons/utx_ico_plus_00.png" />
+			</div>)}
+		</div>
+	);
+}
+
+function getBaseSkill(id) {
+	const grp = skillGroups.get(skillmeta[id].groupId);
+	switch (skills[id].rarity) {
+		case 1: return grp[0];  // ◎ → ○
+		case 6: return grp.find(id => skills[id].rarity == 2);  // pink → gold
+		default: return id;
+	}
+}
+
+function HintTips(props) {
+	const id = getBaseSkill(props.id);
+	return (
+		<div class="cardHintTip">
+			{props.awakenings.has(id) && <img src={`/uma-tools/icons/chara/${icons[props.outfitId][1]}.png`} />}
+			{props.deck.filter(cid => cards_skills.get(cid).has(id)).map(cid => <img src={`/uma-tools/icons/support/support_card_s_${cid}.png`} />)}
+		</div>
+	);
+}
+
+function greedyCover(skills, skip) {
+	const S = new Set(skills);
+	const candidates = new Map(cards_skills);
+	const cardSet = [];
+	while (cardSet.length < 6 && S.size > 0) {
+		let best;
+		do {
+			best = Array.from(candidates.entries()).reduce((best,[cid,sk]) => {
+				const n = sk.intersection(S).size;
+				if (n > best.n) {
+					best.n = n;
+					best.cid = cid;
+					best.sk = sk;
+				}
+				return best;
+			}, {n: 0, cid: '', sk: null});
+			candidates.delete(best.cid);
+		} while (skip-- > 0);
+		if (best.n == 0) break;
+		best.sk.forEach(sid => S.delete(sid));
+		cardSet.push(best.cid);
+	}
+	return cardSet;
+}
+
+function toCardSet(cc, result) {
+	const cardids = [];
+	Object.keys(result.result.vars).forEach(v => {
+		if (v[0] == 'c' && result.result.vars[v]) {
+			cardids.push(cc[+v.slice(2)].id);
+		}
+	});
+	return {n: result.result.z, cards: cardids};
+}
+
+function runSolver(glpk, skvars, ncc, constraints) {
+	const GLPK_OPTIONS = {msglev: glpk.GLP_MSG_ERR, presol: true};
+	const allvars = skvars.map((_,i) => `sk${i}`).concat(Array.from({length: ncc}, (_,j) => `cc${j}`));
+	return glpk.solve({
+		name: 'skillcover',
+		objective: {
+			direction: glpk.GLP_MAX,
+			name: '∑sk',
+			vars: skvars,
+		},
+		subjectTo: constraints,
+		binaries: allvars
+	}, GLPK_OPTIONS);
+}
+
+// solve a maximum coverage problem to find the optimal assignment of cards to maximize the number of skills provided
+// by hints/events.
+// unfortuately, there are realistic cases where the naive greedy algorithm fails to find an optimal solution.
+// for example, given the following skill ids:
+//   200012,200952,200362,200382,201312,201601,202712,202742,202802,202982,203122,203172,203312,203422,204162,210141
+// a basic greedy solver usually only manages to cover 14, but 15 are possible. thus we pull in GLPK….
+// other approaches are possible, for example randomizing card order and re-running the greedy algorithm a few times,
+// but it feels less robust. using an actual solver also makes it relatively easy to generate more results.
+// 
+// btw, there's nothing quite so humbling as implementing a basic branch-and-bound solver that solves nskills=6 instantly,
+// 9 in a few seconds, and 16 not within the limits of my patience, and then throwing an actual ILP solver like GLPK at it
+// and getting solutions for any size instantly.
+async function cover(glpk, target, k) {
+	// candidate cards
+	const cc = Object.keys(cards).flatMap(cid => {
+		const skills = new Set(cards[cid].event.concat(cards[cid].hints)).intersection(target);
+		if (skills.size > 0) {
+			return [{id: cid, skills}];
+		} else {
+			return [];
+		}
+	});
+	const skvars = Array.from(target).map((_,i) => ({name: `sk${i}`, coef: 1}));
+	const constraints = [{
+		name: '∑cc≤k',
+		vars: cc.map((_,j) => ({name: `cc${j}`, coef: 1})),
+		bnds: {type: glpk.GLP_UP, ub: k, lb: 0}
+	}].concat(Array.from(target).map((sid,i) => {
+		const vars = [{name: `sk${i}`, coef: 1}];
+		cc.forEach((c,j) => {
+			if (c.skills.has(sid)) {
+				vars.push({name: `cc${j}`, coef: -1});
+			}
+		});
+		if (vars.length > 1) {
+			return {
+				name: `cov${i}`,
+				vars,
+				bnds: {type: glpk.GLP_UP, ub: 0, lb: 0}
+			};
+		} else {
+			return {
+				name: `cov${i}`,
+				vars,
+				bnds: {type: glpk.GLP_FX, ub: 0, lb: 0}
+			};
+		}
+	}));
+	const result = await runSolver(glpk, skvars, cc.length, constraints);
+	const vars = result.result.vars;
+	const addl = Object.keys(vars).filter(v => v[0] == 'c' && vars[v]).map(async v => {
+		const r2 = await runSolver(glpk, skvars, cc.length, constraints.concat([{
+			name: `excl-${v}`,
+			vars: [{name: v, coef: 1}],
+			bnds: {type: glpk.GLP_FX, ub: 0, lb: 0}
+		}]));
+		return toCardSet(cc, r2);
+	});
+	return [toCardSet(cc, result), ...(await Promise.all(addl)).sort((a,b) => b.n - a.n)];
+}
+
+function BuildPlanner(props) {
+	const [uma, setUma] = useLens(O.uma);
+	const [deck, setDeck] = useLens(O.deck);
+
+	const [glpk, setGlpk] = useState(null);
+	useEffect(() => GLPK().then(setGlpk), []);
+	
+	const lang = +(props.lang == 'en');
+	const strings = {skillnames: {}, tracknames: TRACKNAMES_en, common: COMMON_STRINGS[props.lang], ui: UI_STRINGS[props.lang]};
+	const langid = CC_GLOBAL ? 0 : +(props.lang == 'en');
+	Object.keys(skillnames).forEach(id => strings.skillnames[id] = skillnames[id][langid]);
+
+	const [hover, setHover] = useState([]);
+	function updateHover(e) {
+		const cardset = e.target.closest('.cardset');
+		if (cardset == null) {
+			setHover([]);
+		} else {
+			setHover(cardset.dataset.cardids.split(','));
+		}
+	}
+	function hoverEnd() {
+		setHover([]);
+	}
+
+	function addCard(e) {
+		const card = e.target.closest('.card');
+		if (card == null || deck.length == 6) return;
+		setDeck(deck.concat([card.dataset.cardid]));
+	}
+
+	const awakenings = useMemo(() => awakeningsForUma(uma.outfitId), [uma.outfitId]);
+	const deckSkills = useMemo(() => new Set(deck.flatMap(cid => cards[cid].event.concat(cards[cid].hints))), [deck]);
+	const targetSkills = useMemo(() =>
+			new Set(Array.from(uma.skills.values()).map(getBaseSkill)).difference(awakenings).difference(deckSkills),
+		[uma.skills, awakenings, deckSkills]);
+	const [solutions, setSolutions] = useState([]);
+	useEffect(async () => {
+		const cardsets = glpk ? await cover(glpk, targetSkills, 6 - deck.length) : [];
+		setSolutions(cardsets);
+	}, [glpk, targetSkills, deck]);
+	
+	return (
+		<Language.Provider value={props.lang}>
+			<IntlProvider definition={strings}>
+				<div id="umaPane">
+					<HorseDef key={uma.outfitId} state={O.uma} courseDistance={0} showPolicyEd={false} tabstart={() => 0} skillExtra={<HintTips deck={hover} awakenings={awakenings} outfitId={uma.outfitId} />}>
+						<Text id="ui.umaheader" />
+					</HorseDef>
+				</div>
+				<div id="nonUmaPanes">
+					<Deck cards={O.deck} />
+					<div id="solutions" onDblClick={addCard} onMouseMove={updateHover} onMouseLeave={hoverEnd}>
+						{solutions.map(cardset => <div class="cardset" data-cardids={cardset.cards.join(',')}>
+							{cardset.cards.map(id => <Card id={id} />)}
+							<div class="cardsetinfo">
+								<div class="coverage">
+									<img src="/uma-tools/icons/hint.png" />
+									<span>{cardset.n}/{targetSkills.size}</span>
+								</div>
+							</div>
+						</div>)}
+					</div>
+				</div>
+			</IntlProvider>
+		</Language.Provider>
+	);
+}
+
+const dfsk = [200012,200952,200362,200382,201312,201601,202712,202742,202802,202982,203122,203172,203312,203422,204162,210141];
+//const dfsk = [200012,200952,201601,202712,202742,202802,202982,203122,203172,203312,203422];
+function App(props) {
+	const state = makeState(() => ({
+		uma: {...DEFAULT_HORSE_STATE, samplePolicies: null, skills: SkillSet(dfsk.map(x=>x.toString()))},
+		deck: []
+		//deck: ['30265', '30077']
+		//deck: ['10137', '30017', '30173', '30175', '30275', '30283']
+		//deck: [30275,30175,10111,10137,30238,10092].map(x=>x.toString())
+		//deck :[10137, 30208, 30175, 30275, 30232].map(x=>x.toString())
+		//deck:['20032', '30044', '30184', '30259', '30269', '30282']
+		//deck:[10098, 10137, 30017, 30175, 30275, 30283].map(x=>x.toString())
+		//deck:[20091, 30017, 30105, 30233, 30275, 30283].map(x=>x.toString())
+	}));
+
+	return (
+		<State.Provider value={state}>
+			<BuildPlanner lang={props.lang} />
+		</State.Provider>
 	);
 }
 

@@ -13,6 +13,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
     "d3": "^7.9.0",
+    "glpk.js": "^5.0.0",
     "posthog-js": "^1.257.0",
     "preact": "^10.18.1",
     "preact-i18n": "^2.4.0-preactx",

@@ -1,0 +1,121 @@
+@font-face {
+	font-family: "Inter";
+	src: local("Inter"), url("/uma-tools/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Noto Sans JP";
+	src: local("Noto Sans JP"), url("/uma-tools/fonts/NotoSansJP-VariableFont_wght.ttf") format("truetype");
+}
+
+body {
+	font-family: Inter, "Noto Sans JP", sans-serif;
+	overflow: hidden;
+}
+
+#app {
+	display: flex;
+	gap: 8px;
+	height: 99vh;
+}
+
+.horseDef {
+	border-top: none;
+	height: 99vh;
+}
+
+.horseSkillList {
+	padding-top: 16px;
+}
+
+.horseSkillList > li {
+	position: relative;
+}
+
+.cardHintTip {
+	display: flex;
+	gap: 2px;
+	position: absolute;
+	right: 3px;
+	top: -16px;
+}
+
+.cardHintTip > img {
+	height: 32px;
+	width: 32px;
+}
+
+.cardset {
+	display: flex;
+	padding: 8px;
+}
+
+.card {
+	height: 200px;
+	position: relative;
+	width: 150px;
+}
+
+.card > img:first-child {
+	height: 100%;
+	width: 100%;
+}
+
+.card > img:nth-child(2) {
+	height: 35px;
+	left: 8px;
+	position: absolute;
+	width: 35px;
+}
+
+.card > img:last-child {
+	height: 28px;
+	position: absolute;
+	right: 4px;
+	width: 28px;
+}
+
+.addCard {
+	background: rgb(248, 248, 248);
+	border-radius: 16px;
+	box-shadow: inset 0px 16px 15px -10px rgb(214, 212, 214),
+				inset -10px 0 15px -10px rgb(214, 212, 214),
+				inset 10px 0 15px -10px rgb(214, 212, 214),
+				inset 0px -5px 15px -10px rgb(214, 212, 214);
+	height: 195px;
+	margin: 0 3px;
+	position: relative;
+	width: 144px;
+}
+
+.addCard > img {
+	height: 28px;
+	left: calc(50% - 14px);
+	position: absolute;
+	top: calc(50% - 14px);
+	width: 28px;
+}
+
+#solutions {
+	height: 100%;
+	overflow-y: auto;
+	width: calc(100vw - 800px);
+}
+
+#solutions > .cardset:hover {
+	background: rgb(242, 242, 242);
+}
+
+.cardsetinfo {
+	color: rgb(121, 64, 22);
+	font-weight: bold;
+}
+
+.coverage {
+	align-items: center;
+	display: flex;
+}
+
+.coverage > img {
+	height: 2em;
+}
