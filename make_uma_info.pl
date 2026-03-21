@@ -53,6 +53,20 @@ $db->{RaiseError} = 1;
 my $select_umas = $db->prepare('SELECT [index], text FROM text_data WHERE category = 6 AND [index] < 2000;');
 my $select_outfits = $db->prepare('SELECT [index], text FROM text_data WHERE category = 5 AND [index] BETWEEN (?1 * 100) AND ((?1 + 1) * 100) ORDER BY [index] ASC;');
 
+my $APTITUDES = q(
+	proper_distance_short, proper_distance_mile, proper_distance_middle, proper_distance_long,
+	proper_running_style_nige, proper_running_style_senko, proper_running_style_sashi, proper_running_style_oikomi,
+	proper_ground_turf, proper_ground_dirt
+);
+my $select_aptitudes_awakenings = $db->prepare("
+	SELECT json_array($APTITUDES), json_group_array(skill_id)
+	  FROM available_skill_set
+INNER JOIN (SELECT card_id, $APTITUDES FROM card_rarity_data GROUP BY card_id)
+		ON available_skill_set_id = card_id
+	 WHERE available_skill_set_id = ?1
+  GROUP BY available_skill_set_id;
+");
+
 my $metadb = DBI->connect("dbi:SQLite:$meta", undef, undef, {
 	sqlite_open_flags => SQLITE_OPEN_READONLY
 });
@@ -95,7 +109,14 @@ while ($select_umas->fetch) {
 	$select_outfits->bind_columns(\my ($o_id, $epithet));
 	while ($select_outfits->fetch) {
 		push @outfit_ids, $o_id;
-		$umas->{$id}->{outfits}->{$o_id} = Encode::decode('utf8', $epithet);
+		$select_aptitudes_awakenings->execute($o_id);
+		$select_aptitudes_awakenings->bind_columns(\my ($aptitudes, $awakenings));
+		$select_aptitudes_awakenings->fetch;
+		$umas->{$id}->{outfits}->{$o_id} = {
+			aptitudes => decode_json($aptitudes),
+			awakenings => [map { "$_" } @{decode_json($awakenings)}],
+			epithet => Encode::decode('utf8', $epithet)
+		};
 	}
 
 	next unless @outfit_ids;

@@ -167,7 +167,7 @@ export function UmaSelector(props) {
 				<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} />
 				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" />
 			</div>
-			<div class="umaEpithet"><span>{value && u.outfits[value]}</span></div>
+			<div class="umaEpithet"><span>{value && u.outfits[value].epithet}</span></div>
 			<div class="umaSelectWrapper">
 				<input type="text" class="umaSelectInput" value={query.input} tabindex={props.tabindex} onInput={handleInput} onKeyDown={handleKeyDown} onFocus={() => setOpen(true)} onBlur={handleBlur} ref={input} />
 				<ul class={`umaSuggestions ${open ? 'open' : ''}`} onMouseDown={handleClick} ref={suggestionsContainer}>
@@ -175,7 +175,7 @@ export function UmaSelector(props) {
 						const uid = oid.slice(0,4);
 						return (
 							<li key={oid} data-uma-id={oid} class={`umaSuggestion ${i == activeIdx ? 'selected' : ''}`}>
-								<img src={`/uma-tools/icons/chara/${icons[oid][1]}.png`} loading="lazy" /><span>{umas[uid].outfits[oid]} {umas[uid].name[1]}</span>
+								<img src={`/uma-tools/icons/chara/${icons[oid][1]}.png`} loading="lazy" /><span>{umas[uid].outfits[oid].epithet} {umas[uid].name[1]}</span>
 							</li>
 						);
 					})}
