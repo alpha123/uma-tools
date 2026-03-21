@@ -601,7 +601,7 @@ export function ExpandedSkillDetails(props) {
 								)}
 							</div>
 							{alt.baseDuration > 0 && <span class="skillDuration"><Text id="skilldetails.baseduration" />{' '}<Text id="skilldetails.seconds" fields={{n: alt.baseDuration / 10000}} /></span>}
-							{props.distanceFactor && alt.baseDuration > 0 &&
+							{props.distanceFactor > 0 && alt.baseDuration > 0 &&
 								<span class="skillDuration">
 									<Text id="skilldetails.effectiveduration" fields={{distance: props.distanceFactor}} />{' '}
 									<Text id="skilldetails.seconds" fields={{n: +(alt.baseDuration / 10000 * (props.distanceFactor / 1000)).toFixed(2)}} />
