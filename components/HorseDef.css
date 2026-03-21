@@ -181,12 +181,12 @@
 .horseAptitudes {
 	align-items: center;
 	display: grid;
-	grid-template-columns: repeat(2, 8fr) 5fr;
 	gap: 8px 12px;
+	grid-template-columns: repeat(2, 8fr) 5fr;
 	margin: 0 36px;
 }
 
-.horseAptitudes > div {
+.horseAptitudes > div, .horseFullAptitudes > div {
 	align-items: center;
 	border: 2px solid rgb(224, 214, 204);
 	border-radius: 6px;
@@ -199,9 +199,13 @@
 	position: relative;
 }
 
-.horseAptitudes > div:nth-child(3n) {
-	border: unset;
+.horseAptitudes > div > span, .horseFullAptitudes > div > span {
+	flex: 1;
+}
+
+.horseAptitudes > div:nth-child(3n), .horseFullAptitudes > div:nth-child(4), .horseFullAptitudes > div:nth-child(5) {
 	background: unset;
+	border: unset;
 	justify-content: end;
 }
 
@@ -216,11 +220,24 @@
 	width: calc(2ch + 16px);
 }
 
+.horseFullAptitudes {
+	display: grid;
+	gap: 8px 12px;
+	grid-template-columns: repeat(5, 1fr);
+	margin: 0 36px;
+}
+
+.horseFullAptitudes > div:nth-child(5n+1) {
+	background: unset;
+	border: unset;
+}
+
+.horseFullAptitudes > div > span {
+	text-align: center;
+}
+
 .horseAptitudeSelect {
-	display: inline-block;
-	position: absolute;
-	right: 10px;
-	top: 4px;
+	margin: -8px 2px 0 0;
 }
 
 .horseAptitudeSelect > span::after {

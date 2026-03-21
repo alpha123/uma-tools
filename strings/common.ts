@@ -15,6 +15,7 @@ export function extendStrings(o,e) {
 export const COMMON_ja = Object.freeze({
 	'stat': Object.freeze(['なし', 'スピード', 'スタミナ', 'パワー', '根性', '賢さ']),
 	'joiner': '、',
+	'surface': Object.freeze(['', '芝', 'ダート']),
 	'distance': Object.freeze(['', '短距離', 'マイル', '中距離', '長距離']),
 	'ground': Object.freeze(['', '良', '稍重', '重', '不良']),
 	'weather': Object.freeze(['', '晴れ', '曇り', '雨', '雪']),
@@ -27,6 +28,7 @@ export const COMMON_ja = Object.freeze({
 export const COMMON_en = Object.freeze({
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wisdom']),
 	'joiner': ', ',
+	'surface': Object.freeze(['', 'Turf', 'Dirt']),
 	'distance': Object.freeze(['', 'Short', 'Mile', 'Medium', 'Long']),
 	'ground': Object.freeze(['', 'Good', 'Yielding', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),
@@ -39,6 +41,7 @@ export const COMMON_en = Object.freeze({
 export const COMMON_global = Object.freeze({
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wit']),
 	'joiner': ', ',
+	'surface': Object.freeze(['', 'Turf', 'Dirt']),
 	'distance': Object.freeze(['', 'Sprint', 'Mile', 'Medium', 'Long']),
 	'ground': Object.freeze(['', 'Firm', 'Good', 'Soft', 'Heavy']),
 	'weather': Object.freeze(['', 'Sunny', 'Cloudy', 'Rainy', 'Snowy']),

@@ -303,7 +303,7 @@ function assertIsSkill(sid: string): asserts sid is keyof typeof skilldata {
 	console.assert(skilldata[sid] != null);
 }
 
-function uniqueSkillForUma(oid: typeof umaAltIds[number]): keyof typeof skilldata {
+export function uniqueSkillForUma(oid: typeof umaAltIds[number]): keyof typeof skilldata {
 	const i = +oid.slice(1, -2), v = +oid.slice(-2);
 	const sid = (100000 + 10000 * (v - 1) + i * 10 + 1).toString();
 	assertIsSkill(sid);
@@ -362,11 +362,13 @@ export const HorseDef = memo(function HorseDef(props) {
 		const id = f(state.outfitId);
 		const newSkills = new Map();
 		state.skills.forEach((id,g) => isGeneralSkill(id) && newSkills.set(g, id));
+		let aptitudes = ['S','S','S','S','A','A','A','A','A','A'];
 		if (id) {
 			const uid = uniqueSkillForUma(id);
 			newSkills.set(skillmeta[uid].groupId, uid);
+			aptitudes = umas[id.slice(0,4)].outfits[id].aptitudes.map(i => ' GFEDCBA'[i]);
 		}
-		return {...state, outfitId: id, skills: newSkills};
+		return {...state, outfitId: id, skills: newSkills, aptitudes};
 	}), [props.state]);
 	const umaId = useGetter(l_umaId);
 	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata[id].rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
@@ -413,40 +415,11 @@ export const HorseDef = memo(function HorseDef(props) {
 		});
 	}, [expanded]);
 
-	const skillList = useMemo(function () {
-		const u = uniqueSkillForUma(umaId);
-		return Array.from(skills.values()).sort(skillOrder).map(id =>
-			expanded.has(id)
-				? <li key={id} class="horseExpandedSkill">
-					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
-						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null}
-						  topChildren={props.hintLevels && <SkillCost id={id} hints={props.hintLevels} ownedSkills={new Map() /* ignore the fact that we own them or the cost would always be 0 */} />} />
-					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
-				  </li>
-				: <li key={id} style="">
-					  <Skill id={id} selected={false} dismissable={id != u} />
-					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
-				  </li>
-		);
-	}, [skills, umaId, expanded, props.courseDistance, props.showPolicyEd, props.skillExtra]);
-
-	return (
-		<IntlProvider definition={STRINGS[lang]}>
-			<div class="horseDef">
-				<div class="horseDefHeader">{props.children}</div>
-				<UmaSelector outfitId={l_umaId} tabindex={tabnext()} />
-				<div class="horseParams">
-					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>
-					<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span><Text id="common.stat.2" /></span></div>
-					<div class="horseParamHeader"><img src="/uma-tools/icons/status_02.png" /><span><Text id="common.stat.3" /></span></div>
-					<div class="horseParamHeader"><img src="/uma-tools/icons/status_03.png" /><span><Text id="common.stat.4" /></span></div>
-					<div class="horseParamHeader"><img src="/uma-tools/icons/status_04.png" /><span><Text id="common.stat.5" /></span></div>
-					<Stat value={props.state.speed} tabindex={tabnext()} />
-					<Stat value={props.state.stamina} tabindex={tabnext()} />
-					<Stat value={props.state.power} tabindex={tabnext()} />
-					<Stat value={props.state.guts} tabindex={tabnext()} />
-					<Stat value={props.state.wisdom} tabindex={tabnext()} />
-				</div>
+	// calls tabnext() so must be called in the place it is used
+	function getAptitudesSection() {
+		switch (props.aptitudesMode) {
+		case 'simulation':
+			return (
 				<div class="horseAptitudes">
 					<div>
 						<span><Text id="select.surfaceaptitude" /></span>
@@ -467,6 +440,101 @@ export const HorseDef = memo(function HorseDef(props) {
 					</div>
 					<div><PopularitySelect p={props.state.popularity} tabindex={tabnext()} /></div>
 				</div>
+			);
+		case 'full':
+			return (
+				<div class="horseFullAptitudes">
+					<div>
+						<span><Text id="select.surfaceaptitude" /></span>
+					</div>
+					<div>
+						<span><Text id="common.surface.1" /></span>
+						<AptitudeSelect a={props.state.aptitudes[8]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.surface.2" /></span>
+						<AptitudeSelect a={props.state.aptitudes[9]} tabindex={tabnext()} />
+					</div>
+					<div></div>
+					<div></div>
+					<div>
+						<span><Text id="select.distanceaptitude" /></span>
+					</div>
+					<div>
+						<span><Text id="common.distance.1" /></span>
+						<AptitudeSelect a={props.state.aptitudes[0]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.distance.2" /></span>
+						<AptitudeSelect a={props.state.aptitudes[1]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.distance.3" /></span>
+						<AptitudeSelect a={props.state.aptitudes[2]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.distance.4" /></span>
+						<AptitudeSelect a={props.state.aptitudes[3]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="select.strategyaptitude" /></span>
+					</div>
+					<div>
+						<span><Text id="common.strategy.1" /></span>
+						<AptitudeSelect a={props.state.aptitudes[4]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.strategy.2" /></span>
+						<AptitudeSelect a={props.state.aptitudes[5]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.strategy.3" /></span>
+						<AptitudeSelect a={props.state.aptitudes[6]} tabindex={tabnext()} />
+					</div>
+					<div>
+						<span><Text id="common.strategy.4" /></span>
+						<AptitudeSelect a={props.state.aptitudes[7]} tabindex={tabnext()} />
+					</div>
+				</div>
+			);
+		}
+	}
+
+	const skillList = useMemo(function () {
+		const u = uniqueSkillForUma(umaId);
+		return Array.from(skills.values()).sort(skillOrder).map(id =>
+			expanded.has(id)
+				? <li key={id} class="horseExpandedSkill">
+					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
+						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null}
+						  topChildren={props.hintLevels && <SkillCost id={id} hints={props.hintLevels} ownedSkills={new Map() /* ignore the fact that we own them or the cost would always be 0 */} />} />
+					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
+				  </li>
+				: <li key={id} style="">
+					  <Skill id={id} selected={false} dismissable={id != u} />
+					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
+				  </li>
+		);
+	}, [skills, umaId, expanded, props.courseDistance, props.hintLevels, props.showPolicyEd, props.skillExtra]);
+
+	return (
+		<IntlProvider definition={STRINGS[lang]}>
+			<div class="horseDef">
+				<div class="horseDefHeader">{props.children}</div>
+				<UmaSelector outfitId={l_umaId} tabindex={tabnext()} />
+				<div class="horseParams">
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span><Text id="common.stat.2" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_02.png" /><span><Text id="common.stat.3" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_03.png" /><span><Text id="common.stat.4" /></span></div>
+					<div class="horseParamHeader"><img src="/uma-tools/icons/status_04.png" /><span><Text id="common.stat.5" /></span></div>
+					<Stat value={props.state.speed} tabindex={tabnext()} />
+					<Stat value={props.state.stamina} tabindex={tabnext()} />
+					<Stat value={props.state.power} tabindex={tabnext()} />
+					<Stat value={props.state.guts} tabindex={tabnext()} />
+					<Stat value={props.state.wisdom} tabindex={tabnext()} />
+				</div>
+				{getAptitudesSection()}
 				<div class="horseSkillHeader">{props.skillHeader || <Text id="skillheader" />}</div>
 				<div class="horseSkillListWrapper" onClick={handleSkillClick}>
 					<ul class="horseSkillList">

@@ -227,8 +227,8 @@ function BuildPlanner(props) {
 		<Language.Provider value={props.lang}>
 			<IntlProvider definition={strings}>
 				<div id="umaPane">
-					<HorseDef key={uma.outfitId} state={O.uma} courseDistance={0} showPolicyEd={false} tabstart={() => 0}
-						skillExtra={<HintTips deck={hover} awakenings={awakenings} outfitId={uma.outfitId} />}
+					<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" courseDistance={0} showPolicyEd={false} tabstart={() => 1}
+						skillExtra={<HintTips deck={deck} extra={hover} awakenings={awakenings} outfitId={uma.outfitId} />}
 						hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
 					>
 						<Text id="ui.umaheader" />

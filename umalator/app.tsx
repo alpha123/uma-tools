@@ -1006,7 +1006,7 @@ function Umalator(props) {
 				{expanded && <div id="umaPane" />}
 				<div id={expanded ? 'umaOverlay' : 'umaPane'}>
 					<div class={!expanded && currentIdx == 0 ? 'selected' : ''}>
-						<HorseDef key={uma1.outfitId} state={O.uma1} courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4}>
+						<HorseDef key={uma1.outfitId} state={O.uma1} aptitudesMode="simulation" courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4}>
 							{expanded ? <Text id={mode == Mode.Compare ? "ui.uma1" : "ui.uma"} /> : umaTabs}
 						</HorseDef>
 					</div>
@@ -1018,10 +1018,10 @@ function Umalator(props) {
 						</div>}
 					{mode != Mode.Chart && <div class={!expanded && currentIdx == 1 ? 'selected' : ''}>
 						{mode == Mode.StaCalc
-							? <HorseDef key={'d'+debufUma.outfitId} state={O.debufUma} courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4 + horseDefTabs()}>
+							? <HorseDef key={'d'+debufUma.outfitId} state={O.debufUma} aptitudesMode="simulation" courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4 + horseDefTabs()}>
 								{expanded ? <Text id="ui.debuffer" /> : umaTabs}
 							</HorseDef>
-							: <HorseDef key={uma2.outfitId} state={O.uma2} courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4 + horseDefTabs()}>
+							: <HorseDef key={uma2.outfitId} state={O.uma2} aptitudesMode="simulation" courseDistance={course.distance} showPolicyEd={true} tabstart={() => 4 + horseDefTabs()}>
 								{expanded ? <Text id="ui.uma2" /> : umaTabs}
 							</HorseDef>
 						}
