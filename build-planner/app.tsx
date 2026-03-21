@@ -90,31 +90,6 @@ function HintTips(props) {
 	);
 }
 
-function greedyCover(skills, skip) {
-	const S = new Set(skills);
-	const candidates = new Map(cards_skills);
-	const cardSet = [];
-	while (cardSet.length < 6 && S.size > 0) {
-		let best;
-		do {
-			best = Array.from(candidates.entries()).reduce((best,[cid,sk]) => {
-				const n = sk.intersection(S).size;
-				if (n > best.n) {
-					best.n = n;
-					best.cid = cid;
-					best.sk = sk;
-				}
-				return best;
-			}, {n: 0, cid: '', sk: null});
-			candidates.delete(best.cid);
-		} while (skip-- > 0);
-		if (best.n == 0) break;
-		best.sk.forEach(sid => S.delete(sid));
-		cardSet.push(best.cid);
-	}
-	return cardSet;
-}
-
 function toCardSet(cc, result) {
 	const cardids = [];
 	Object.keys(result.result.vars).forEach(v => {
