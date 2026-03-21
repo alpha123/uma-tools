@@ -8,7 +8,7 @@ import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../opt
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, skillGroups, costForId } from '../components/SkillList';
 import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
-import { HorseDef } from '../components/HorseDef';
+import { HorseDef, uniqueSkillForUma } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
 import skills from '../uma-skill-tools/data/skill_data.json';
@@ -84,10 +84,11 @@ function getBaseSkill(id) {
 
 function HintTips(props) {
 	const id = getBaseSkill(props.id);
+	const cards = props.deck.concat(props.extra).filter(cid => cards_skills.get(cid).has(id)).sort((a,b) => +a - +b);
 	return (
 		<div class="cardHintTip">
 			{props.awakenings.has(id) && <img src={`/uma-tools/icons/chara/${icons[props.outfitId][1]}.png`} />}
-			{props.deck.filter(cid => cards_skills.get(cid).has(id)).map(cid => <img src={`/uma-tools/icons/support/support_card_s_${cid}.png`} />)}
+			{cards.map(cid => <img src={`/uma-tools/icons/support/support_card_s_${cid}.png`} />)}
 		</div>
 	);
 }
@@ -214,9 +215,12 @@ function BuildPlanner(props) {
 
 	const awakenings = useMemo(() => awakeningsForUma(uma.outfitId), [uma.outfitId]);
 	const deckSkills = useMemo(() => new Set(deck.flatMap(cid => cards[cid].event.concat(cards[cid].hints))), [deck]);
-	const targetSkills = useMemo(() =>
-			new Set(Array.from(uma.skills.values()).map(getBaseSkill)).difference(awakenings).difference(deckSkills),
-		[uma.skills, awakenings, deckSkills]);
+	const targetSkills = useMemo(() => {
+		const s = new Set(Array.from(uma.skills.values()).map(getBaseSkill))
+			.difference(awakenings).difference(deckSkills);
+		s.delete(uniqueSkillForUma(uma.outfitId));
+		return s;
+	}, [uma.skills, awakenings, deckSkills]);
 	const [solutions, setSolutions] = useState([]);
 	useEffect(async () => {
 		const cardsets = glpk ? await cover(glpk, targetSkills, 6 - deck.length) : [];
