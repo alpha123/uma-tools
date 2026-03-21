@@ -1,4 +1,4 @@
-import { h, Fragment } from 'preact';
+import { h, Fragment, cloneElement } from 'preact';
 import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { IntlProvider, Text, Localizer, useText } from 'preact-i18n';
@@ -419,13 +419,15 @@ export const HorseDef = memo(function HorseDef(props) {
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
 					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
-						  samplePolicy={props.state.samplePolicies.get(id)} />
+						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null} />
+					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 				: <li key={id} style="">
 					  <Skill id={id} selected={false} dismissable={id != u} />
+					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 		);
-	}, [skills, umaId, expanded, props.courseDistance]);
+	}, [skills, umaId, expanded, props.courseDistance, props.showPolicyEd, props.skillExtra]);
 
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
