@@ -838,7 +838,7 @@ function Umalator(props) {
 	function doBasinnChart() {
 		postEvent('doBasinnChart', {});
 		const params = racedefToParams(racedef, uma1.strategy);
-		const skills = chartMode != 'all' ? chartSkillsForMode(chartMode) : getActivateableSkills(baseSkillsToTest.filter(id => {
+		const skills = getActivateableSkills(chartMode != 'all' ? chartSkillsForMode(chartMode) : baseSkillsToTest.filter(id => {
 			const existing = uma1.skills.get(skillmeta[id].groupId);
 			const group = skillGroups.get(skillmeta[id].groupId);
 			const skillSet = Array.from(uma1.skills.values());
