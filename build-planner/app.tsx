@@ -240,7 +240,7 @@ function BuildPlanner(props) {
 				</div>
 				<div id="nonUmaPanes">
 					<Deck cards={O.deck} />
-					<div id="solutions" onDblClick={addCard} onMouseMove={updateHover} onMouseLeave={hoverEnd}>
+					<div id="solutions" onDblClick={addCard} onMouseEnterCapture={updateHover} onMouseLeave={hoverEnd}>
 						{solutions.map(cardset => <div class="cardset" data-cardids={cardset.cards.join(',')}>
 							{cardset.cards.map(id => <Card id={id} />)}
 							<div class="cardsetinfo">
