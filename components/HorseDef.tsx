@@ -27,7 +27,7 @@ const STRINGS_ja = Object.freeze({
 		'strategyaptitude': '脚質適正'
 	}),
 	'skillheader': 'スキル',
-	'addskill': '+ スキル追加',
+	'addskill': 'スキル追加',
 	'moodfmt': '調子：{{mood}}',
 	'popularity': Object.freeze({
 		'pre': '',
@@ -540,9 +540,9 @@ export const HorseDef = memo(function HorseDef(props) {
 					<ul class="horseSkillList">
 						{skillList}
 						<li key="add">
-							<div class="skill addSkillButton" onClick={openSkillPicker} tabindex={tabnext()}>
+							<button class="skill addSkillButton" onClick={openSkillPicker} tabindex={tabnext()}>
 								<span>+</span><Text id="addskill" />
-							</div>
+							</button>
 						</li>
 					</ul>
 				</div>

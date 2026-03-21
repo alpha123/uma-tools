@@ -13,6 +13,8 @@ body {
 	overflow: hidden;
 }
 
+button { font-family: Inter, "Noto Sans JP", sans-serif; }
+
 #app {
 	display: flex;
 	gap: 8px;

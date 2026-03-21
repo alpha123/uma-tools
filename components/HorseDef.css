@@ -374,6 +374,8 @@
 	background: white;
 	border: 1px solid rgb(224, 214, 204);
 	color: rgb(121, 64, 22);
+	font-size: 1em;
+	width: 100%;
 }
 
 .addSkillButton > span {

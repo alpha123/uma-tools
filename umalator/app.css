@@ -20,6 +20,8 @@ body {
 	overflow: hidden;
 }
 
+button { font-family: Inter, "Noto Sans JP", sans-serif; }
+
 .hidden { display: none; }
 
 #app {
