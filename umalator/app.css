@@ -17,7 +17,7 @@
 
 body {
 	font-family: Inter, "Noto Sans JP", sans-serif;
-	overflow: hidden;
+	margin-bottom: 0;
 }
 
 button { font-family: Inter, "Noto Sans JP", sans-serif; }
