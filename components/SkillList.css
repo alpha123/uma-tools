@@ -264,6 +264,135 @@
 	opacity: 1;
 }
 
+.skillCost {
+	align-items: flex-end;
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	margin-left: -36px;
+	width: fit-content;
+}
+
+.hintbtn {
+	border: none;
+	border-radius: 4px;
+	display: inline-block;
+	height: 18px;
+	position: relative;
+	text-align: center;
+	width: 26px;
+}
+
+.hintbtn.hintDown {
+	background: linear-gradient(rgb(228, 224, 233), rgb(255, 255, 255));
+	outline: 2px solid rgb(181, 174, 187);
+}
+
+.hintbtn.hintUp {
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22));
+	outline: 2px solid rgb(85, 143, 24);
+}
+
+.hintbtn::before, .hintbtn::after {
+	content: "";
+	height: 12px;
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	width: 18px;
+}
+
+.hintbtn.hintDown::before, .hintbtn.hintDown::after {
+	border-top: 2px solid rgb(181, 174, 187);
+}
+
+.hintbtn.hintUp::before, .hintbtn.hintUp::after {
+	border-top: 2px solid rgb(85, 143, 24);
+}
+
+.hintbtn::before {
+	border-top-left-radius: 3px;
+	border-top-right-radius: 4px;
+	left: -1px;
+	transform: rotate(-36deg);
+	transform-origin: top left;
+}
+
+.hintbtn.hintDown::before {
+	background: linear-gradient(36deg, rgb(245, 243, 247), rgb(228, 224, 233) 50%);
+}
+
+.hintbtn.hintUp::before {
+	background: linear-gradient(36deg, rgb(118, 189, 17), rgb(168, 227, 5) 50%);
+}
+
+.hintbtn::after {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 3px;
+	right: -1px;
+	transform: rotate(36deg);
+	transform-origin: top right;
+}
+
+.hintbtnDummyBackground {
+	height: 5px;
+	pointer-events: none;
+	position: absolute;
+	right: 2px;
+	top: -4px;
+	transform: rotate(36deg);
+	width: 12px;
+}
+
+.hintDown .hintbtnDummyBackground {
+	background: linear-gradient(-36deg, rgb(233, 229, 237), rgb(228, 224, 233) 30%);
+}
+
+.hintUp .hintbtnDummyBackground {
+	background: linear-gradient(-36deg, rgb(153, 216, 9), rgb(168, 227, 5) 30%);
+}
+
+.hintbtnText {
+	font-size: 18px;
+	font-weight: bold;
+	position: relative;
+	top: -3px;
+}
+
+.hintDown .hintbtnText {
+	color: rgb(121, 64, 22);
+}
+
+.hintUp .hintbtnText {
+	color: white;
+}
+
+.hintbtn[disabled] {
+	filter: brightness(0.5);
+}
+
+.hintDown {
+	margin-bottom: 2px;
+	transform: scaleY(-1);
+	vertical-align: text-bottom;
+}
+
+.hintUp {
+	margin-bottom: 2px;
+	vertical-align: text-bottom;
+}
+
+.hintedCost {
+	display: inline-block;
+	text-align: right;
+	width: 29px;
+}
+
+.hintLevel {
+	color: rgb(255, 145, 29);
+	margin-left: calc(0.5em - 10px);
+}
+
 @media (orientation: portrait) {
 	.skillList {
 		grid-template-columns: 1fr;

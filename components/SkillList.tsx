@@ -1,8 +1,9 @@
 import { h, Fragment, cloneElement } from 'preact';
 import { useState, useContext, useMemo, useEffect, useRef, useId } from 'preact/hooks';
+import { memo } from 'preact/compat';
 import { IntlProvider, Text, Localizer } from 'preact-i18n';
 
-import { useLens } from '../optics';
+import { O, useLens } from '../optics';
 
 import { getParser } from '../uma-skill-tools/ConditionParser';
 import * as Matcher from '../uma-skill-tools/tools/ConditionMatcher';
@@ -20,6 +21,27 @@ import './SkillList.css';
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 import skillmeta from '../skill_meta.json';
+
+export function isPurpleSkill(id) {
+	const iconId = skillmeta[id].iconId;
+	return iconId[iconId.length-1] == '4';
+}
+
+export const skillGroups = Object.keys(skilldata).sort((a,b) =>
+	// sort by:
+	//   - rarity (lowest to highest, white → gold → pink)
+	//   - if rarity is the same, sort ○ before ◎ (◎ skills always have a lower ID than their ○ counterparts)
+	//   - sort purple versions of a skill last (to avoid counting towards the total cost)
+	isPurpleSkill(a) - isPurpleSkill(b) || skilldata[a].rarity - skilldata[b].rarity || +b - +a
+).reduce((groups, id) => {
+	const groupId = skillmeta[id].groupId;
+	if (groups.has(groupId)) {
+		groups.get(groupId).push(id);
+	} else {
+		groups.set(groupId, [id]);
+	}
+	return groups;
+}, new Map());
 
 const Parser = getParser(Matcher.mockConditions);
 
@@ -615,6 +637,49 @@ export function ExpandedSkillDetails(props) {
 		</IntlProvider>
 	);
 }
+
+function scaleBaseCost(baseCost: number, hint: number) {
+	return Math.floor(baseCost * (1 - (hint <= 3 ? 0.1 * hint : 0.3 + 0.05 * (hint - 3))));
+}
+
+export function costForId(id, hints, owned) {
+	const group = skillGroups.get(skillmeta[id].groupId);
+	const existing = owned.get(skillmeta[id].groupId);
+	let cost = 0;
+	for (let i = 0; i < group.length; ++i) {
+		if (group[i] != existing) {
+			cost += scaleBaseCost(skillmeta[group[i]].baseCost, hints.get(group[i]));
+		}
+		if (group[i] == id) {
+			break;
+		}
+	}
+	return cost;
+}
+
+export const SkillCost = memo(function SkillCost(props) {
+	const [hints, setHints] = useLens(props.hints);
+	const hint = hints.get(props.id);
+	const incrHint = useMemo(() => new (O.get(props.id))(x => x + 1), [props.id]);
+	const decrHint = useMemo(() => new (O.get(props.id))(x => x - 1), [props.id]);
+	const baseCost = skillmeta[props.id].baseCost;
+	return (
+		<div class="skillCost">
+			{baseCost > 0 && <button class="hintbtn hintDown" disabled={hint == 0}
+				onClick={() => setHints(decrHint)}>
+				<div class="hintbtnDummyBackground"></div>
+				<span class="hintbtnText">−</span>
+			</button>}
+			<span class="hintedCost">{costForId(props.id, hints, props.ownedSkills)}</span>
+			{baseCost > 0 && <button class="hintbtn hintUp" disabled={hint == 5}
+				onClick={() => setHints(incrHint)}>
+				<div class="hintbtnDummyBackground"></div>
+				<span class="hintbtnText">+</span>
+			</button>}
+			{hint > 0 && <span class="hintLevel">{hint}</span>}
+		</div>
+	);
+}, (prev, next) => prev.id == next.id && prev.ownedSkills == next.ownedSkills);
 
 // they really just gave up with the ids for scenario pinks
 const iconIdPrefixes = Object.freeze({

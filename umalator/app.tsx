@@ -12,9 +12,9 @@ import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
-import { SkillList, ExpandedSkillDetails } from '../components/SkillList';
+import { SkillList, ExpandedSkillDetails, skillGroups, isPurpleSkill } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
-import { HorseState, SkillSet, DEFAULT_HORSE_STATE, skillGroups, isPurpleSkill } from '../components/HorseDefTypes';
+import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 

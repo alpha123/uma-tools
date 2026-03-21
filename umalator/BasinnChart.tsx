@@ -17,7 +17,7 @@ import { getParser } from '../uma-skill-tools/ConditionParser';
 import { buildBaseStats, buildSkillData, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
 
 import type { HorseState } from '../components/HorseDef';
-import { skillGroups } from '../components/HorseDefTypes';
+import { SkillCost, costForId } from '../components/SkillList';
 import { runComparison } from './compare';
 
 import './BasinnChart.css';
@@ -68,49 +68,6 @@ const SkillNameCell = memo(function SkillNameCell(props) {
 	);
 });
 
-function scaleBaseCost(baseCost: number, hint: number) {
-	return Math.floor(baseCost * (1 - (hint <= 3 ? 0.1 * hint : 0.3 + 0.05 * (hint - 3))));
-}
-
-function costForId(id, hints, owned) {
-	const group = skillGroups.get(skillmeta[id].groupId);
-	const existing = owned.get(skillmeta[id].groupId);
-	let cost = 0;
-	for (let i = 0; i < group.length; ++i) {
-		if (group[i] != existing) {
-			cost += scaleBaseCost(skillmeta[group[i]].baseCost, hints.get(group[i]));
-		}
-		if (group[i] == id) {
-			break;
-		}
-	}
-	return cost;
-}
-
-const SkillCostCell = memo(function SkillCostCell(props) {
-	const [hints, setHints] = useLens(props.hintLevels);
-	const hint = hints.get(props.id);
-	const incrHint = useMemo(() => new (O.get(props.id))(x => x + 1), [props.id]);
-	const decrHint = useMemo(() => new (O.get(props.id))(x => x - 1), [props.id]);
-	const baseCost = skillmeta[props.id].baseCost;
-	return (
-		<Fragment>
-			{baseCost > 0 && <button class={`hintbtn hintDown${hint == 0 ? ' hintbtnDisabled' : ''}`} disabled={hint == 0}
-				onClick={() => setHints(decrHint)}>
-				<div class="hintbtnDummyBackground"></div>
-				<span class="hintbtnText">−</span>
-			</button>}
-			<span class="hintedCost">{costForId(props.id, hints, props.ownedSkills)}</span>
-			{baseCost > 0 && <button class={`hintbtn hintUp${hint == 5 ? ' hintbtnDisabled' : ''}`} disabled={hint == 5}
-				onClick={() => setHints(incrHint)}>
-				<div class="hintbtnDummyBackground"></div>
-				<span class="hintbtnText">+</span>
-			</button>}
-			{hint > 0 && <span class="hintLevel">{hint}</span>}
-		</Fragment>
-	);
-}, (prev, next) => prev.id == next.id && prev.ownedSkills == next.ownedSkills);
-
 function headerRenderer(radioGroup, selectedType, type, text, onClick) {
 	function click(e) {
 		e.stopPropagation();
@@ -158,7 +115,7 @@ export function BasinnChart(props) {
 		header: (c) => <span onClick={c.header.column.getToggleSortingHandler()}>SP Cost</span>,
 		id: 'spcost',
 		accessorFn: (row) => ({id: row.id}),
-		cell: (info) => <SkillCostCell {...info.getValue()} hintLevels={props.hintLevels} ownedSkills={props.hasSkills} />,
+		cell: (info) => <SkillCost {...info.getValue()} hints={props.hintLevels} ownedSkills={props.hasSkills} />,
 		sortFn: (a,b) => {
 			const ac = costForId(a.getValue('id'), hints, props.hasSkills),
 				  bc = costForId(b.getValue('id'), hints, props.hasSkills);
