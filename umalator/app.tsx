@@ -12,14 +12,13 @@ import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
-import { ExpandedSkillDetails } from '../components/SkillList';
+import { SkillList, ExpandedSkillDetails } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
-import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
+import { HorseState, SkillSet, DEFAULT_HORSE_STATE, skillGroups, isPurpleSkill } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
-import { SkillList } from '../components/SkillList';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
-import { getActivateableSkills, skillGroups, isPurpleSkill, getNullRow, BasinnChart } from './BasinnChart';
+import { getActivateableSkills, getNullRow, BasinnChart } from './BasinnChart';
 import { StaCalcResults } from './StaCalc';
 
 import { initTelemetry, postEvent } from './telemetry';
@@ -117,7 +116,6 @@ const UI_STRINGS = Object.freeze({
 });
 
 interface RaceParams {
-	mood: Mood
 	ground: GroundCondition
 	weather: Weather
 	season: Season
@@ -126,7 +124,6 @@ interface RaceParams {
 }
 
 const DEFAULT_RACE_PARAMS = {
-	mood: 2 as Mood,
 	ground: GroundCondition.Good,
 	weather: Weather.Sunny,
 	season: Season.Spring,
