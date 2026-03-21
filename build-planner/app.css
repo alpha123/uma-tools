@@ -97,7 +97,7 @@ body {
 }
 
 #solutions {
-	height: 100%;
+	height: calc(100% - 220px);
 	overflow-y: auto;
 	width: calc(100vw - 800px);
 }
