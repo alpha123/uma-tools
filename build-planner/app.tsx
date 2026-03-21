@@ -1,6 +1,6 @@
 import { h, Fragment, render } from 'preact';
-import { useState, useMemo, useEffect } from 'preact/hooks';
-import { Text, IntlProvider } from 'preact-i18n';
+import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
+import { Text, Localizer, IntlProvider } from 'preact-i18n';
 import GLPK from 'glpk.js';
 
 import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
@@ -21,10 +21,12 @@ import cards from './cards.json';
 import './app.css';
 
 const UI_ja = Object.freeze({
+	'cardsearch': '',
 	'umaheader': 'ウマ娘',
 	'skillheader': 'スキル：{{sp}}Pt'
 });
 const UI_en = Object.freeze({
+	'cardsearch': 'Search',
 	'umaheader': 'Umamusume',
 	'skillheader': 'Skills ({{sp}} SP)'
 });
@@ -38,7 +40,12 @@ const UI_STRINGS = Object.freeze({
 	'en-global': UI_global
 });
 
+const allCards = Object.keys(cards);
 const cards_skills = new Map(Object.keys(cards)/*.filter(id => cards[id].rarity > 0)*/.map(id => [id, new Set(cards[id].event.concat(cards[id].hints))]));
+const SEARCH_NAME = {};
+allCards.forEach(cid => {
+	SEARCH_NAME[cid] = cards[cid].name.map(s => s.toUpperCase().replaceAll(/\.|\s/g, ''));
+});
 
 function awakeningsForUma(outfitId) {
 	return outfitId ? new Set(umas[outfitId.slice(0,4)].outfits[outfitId].awakenings) : new Set();
@@ -48,27 +55,112 @@ function Card(props) {
 	const {type, rarity} = cards[props.id];
 	return (
 		<div class="card" data-cardid={props.id}>
-			<img src={`/uma-tools/icons/support/support_thumb_${props.id}.png`}  />
+			<img src={`/uma-tools/icons/support/support_thumb_${props.id}.png`} loading="lazy" />
 			<img src={`/uma-tools/icons/supportcard_rarity_${(100+rarity).toString().slice(1)}.png`} />
 			<img src={`/uma-tools/icons/utx_ico_obtain_${(100+type).toString().slice(1)}.png`} />
 		</div>
 	);
 }
 
-function Deck(props) {
-	const [cards, setCards] = useLens(props.cards);
-	function remove(e) {
+function CardList(props) {
+	const [selected, setSelected] = useLens(props.selected);
+
+	const [typeFilter, setTypeFilter] = useState(0x7f);
+	const [rarityFilter, setRarityFilter] = useState(0x07);
+	const searchInput = useRef(null);
+	const [searchText, setSearchText] = useState('');
+
+	useEffect(function () {
+		if (props.isOpen && searchInput.current) {
+			searchInput.current.focus();
+			searchInput.current.select();
+		}
+	}, [props.isOpen]);
+
+	function select(e) {
 		const card = e.target.closest('.card');
 		if (card == null) return;
-		setCards(cards.filter(cid => cid != card.dataset.cardid));
+		const newSelected = selected.slice();
+		newSelected[props.idx] = card.dataset.cardid;
+		setSelected(newSelected);
+		props.close();
+	}
+
+	function updateFilters(e) {
+		if (e.target.tagName == 'INPUT') {
+			setSearchText(e.target.value);
+		} else if (e.target.tagName == 'BUTTON') {
+			const idx = +e.target.dataset.filter;
+			switch (e.target.parentElement.dataset.filterGroup) {
+				case 'type':
+					setTypeFilter(typeFilter == (1 << idx) ? 0x7f : 1 << idx);
+					break;
+				case 'rarity':
+					setRarityFilter(rarityFilter == (1 << idx) ? 0x07 : 1 << idx);
+					break;
+			}
+		}
+	}
+
+	const items = useMemo(() => {
+		const needle = searchText.toUpperCase().replace(/\.|\s/g, '');
+		const secondary = /^AY(?:A|AB|ABE)?\s*$/.test(needle) || /アヤベ?\s*$/.test(needle) ? 'ADMIREVEGA' : '';
+		return props.ids.map(id => {
+			const c = cards[id];
+			const visible = (typeFilter & (1 << c.type)) && (rarityFilter & (1 << c.rarity)) && SEARCH_NAME[id].some(s =>
+				s.indexOf(needle) > -1 || (secondary && s.indexOf(secondary) > -1));
+			return <li key={id} class={visible ? '' : 'hidden'}>
+				<Card id={id} />
+			</li>;
+		})
+	}, [props.ids, selected, typeFilter, rarityFilter, searchText]);
+
+	return (
+		<Fragment>
+			<div class="cardFilters" onClick={updateFilters}>
+				<div data-filter-group="search">
+					<Localizer><input type="text" class="filterSearch" value={searchText} placeholder={<Text id="ui.cardsearch" />} onInput={updateFilters} ref={searchInput} /></Localizer>
+				</div>
+				<div data-filter-group="type">
+					{Array.from({length: 7}, (_,i) => <button data-filter={i} class={`iconFilterButton${typeFilter & (1 << i) ? ' active' : ''}`} style={`background-image:url(/uma-tools/icons/utx_ico_obtain_${(100+i).toString().slice(1)}.png)`} />)}
+				</div>
+				<div data-filter-group="rarity">
+					{Array.from({length: 3}, (_,i) => <button data-filter={i} class={`iconFilterButton${rarityFilter & (1 << i) ? ' active' : ''}`} style={`background-image:url(/uma-tools/icons/supportcard_rarity_${(100+i).toString().slice(1)}.png`} />)}
+				</div>
+			</div>
+			<ul class="cardList" onClick={select}>
+				<div class="card" data-cardid=""><img src="/uma-tools/icons/support/support_thumb_00000.png" /><div></div></div>
+				{items}
+			</ul>
+		</Fragment>
+	);
+}
+
+function Deck(props) {
+	const [cards, setCards] = useLens(props.cards);
+
+	const [cardPickerOpen, setCardPickerOpen] = useState(false);
+	const [clickedIdx, setClickedIdx] = useState(-1);
+
+	function addOrChange(e) {
+		const slot = e.target.closest('.addCard, .card');
+		if (slot == null) return;
+		const idx = Array.from(slot.parentNode.children).indexOf(slot);
+		setClickedIdx(idx);
+		setCardPickerOpen(true);
 	}
 	
 	return (
-		<div class="cardset" onDblClick={remove}>
-			{cards.map(id => <Card id={id} />)}
-			{Array.from({length: 6 - cards.length}, _ => <div class="addCard">
-				<img src="/uma-tools/icons/utx_ico_plus_00.png" />
-			</div>)}
+		<div class="deck">
+			<div class="cardset" onClick={addOrChange}>
+				{cards.map(id => id ? <Card id={id} /> : <div class="addCard">
+					<img src="/uma-tools/icons/utx_ico_plus_00.png" />
+				</div>)}
+			</div>
+			<div class={`cardPickerOverlay${cardPickerOpen ? ' open' : ''}`} onClick={setCardPickerOpen.bind(null, false)} />
+			<div class={`cardPickerWrapper${cardPickerOpen ? ' open' : ''}`}>
+				<CardList ids={allCards} selected={O.deck} close={setCardPickerOpen.bind(null, false)} idx={clickedIdx} isOpen={cardPickerOpen} />
+			</div>
 		</div>
 	);
 }
@@ -84,7 +176,7 @@ function getBaseSkill(id) {
 
 function HintTips(props) {
 	const id = getBaseSkill(props.id);
-	const cards = props.deck.concat(props.extra).filter(cid => cards_skills.get(cid).has(id)).sort((a,b) => +a - +b);
+	const cards = props.deck.concat(props.extra).filter(cid => cid && cards_skills.get(cid).has(id)).sort((a,b) => +a - +b);
 	return (
 		<div class="cardHintTip">
 			{props.awakenings.has(id) && <img src={`/uma-tools/icons/chara/${icons[props.outfitId][1]}.png`} />}
@@ -207,14 +299,17 @@ function BuildPlanner(props) {
 
 	function addCard(e) {
 		const card = e.target.closest('.card');
-		if (card == null || deck.length == 6) return;
-		setDeck(deck.concat([card.dataset.cardid]));
+		const next = deck.indexOf('');
+		if (card == null || next == -1) return;
+		const newDeck = deck.slice();
+		newDeck[next] = card.dataset.cardid;
+		setDeck(newDeck);
 	}
 
 	const totalSpCost = useMemo(() => Array.from(uma.skills.values()).reduce((acc,id) => acc + costForId(id, hints, new Map()), 0), [uma.skills, hints]);
 
 	const awakenings = useMemo(() => awakeningsForUma(uma.outfitId), [uma.outfitId]);
-	const deckSkills = useMemo(() => new Set(deck.flatMap(cid => cards[cid].event.concat(cards[cid].hints))), [deck]);
+	const deckSkills = useMemo(() => new Set(deck.flatMap(cid => cid ? cards[cid].event.concat(cards[cid].hints) : [])), [deck]);
 	const targetSkills = useMemo(() => {
 		const s = new Set(Array.from(uma.skills.values()).map(getBaseSkill))
 			.difference(awakenings).difference(deckSkills);
@@ -223,7 +318,7 @@ function BuildPlanner(props) {
 	}, [uma.skills, awakenings, deckSkills]);
 	const [solutions, setSolutions] = useState([]);
 	useEffect(async () => {
-		const cardsets = glpk ? await cover(glpk, targetSkills, 6 - deck.length) : [];
+		const cardsets = glpk ? await cover(glpk, targetSkills, 6 - deck.filter(x => x).length) : [];
 		setSolutions(cardsets);
 	}, [glpk, targetSkills, deck]);
 	
@@ -262,7 +357,7 @@ const dfsk = [200012,200952,200362,200382,201312,201601,202712,202742,202802,202
 function App(props) {
 	const state = makeState(() => ({
 		uma: {...DEFAULT_HORSE_STATE, samplePolicies: null, skills: SkillSet(dfsk.map(x=>x.toString()))},
-		deck: [],
+		deck: ['','','','','',''],
 		hints: new Map(Object.keys(skills).map(id => [id,0]))
 		//deck: ['30265', '30077']
 		//deck: ['10137', '30017', '30173', '30175', '30275', '30283']
