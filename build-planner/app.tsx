@@ -6,8 +6,8 @@ import GLPK from 'glpk.js';
 import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
-import { SkillList } from '../components/SkillList';
-import { HorseState, SkillSet, skillGroups, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
+import { SkillList, skillGroups, costForId } from '../components/SkillList';
+import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
 import { HorseDef } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
@@ -21,10 +21,12 @@ import cards from './cards.json';
 import './app.css';
 
 const UI_ja = Object.freeze({
-	'umaheader': 'ウマ娘'
+	'umaheader': 'ウマ娘',
+	'skillheader': 'スキル：{{sp}}Pt'
 });
 const UI_en = Object.freeze({
-	'umaheader': 'Umamusume'
+	'umaheader': 'Umamusume',
+	'skillheader': 'Skills ({{sp}} SP)'
 });
 const UI_global = extendStrings(UI_en, {
 });
@@ -179,6 +181,7 @@ async function cover(glpk, target, k) {
 function BuildPlanner(props) {
 	const [uma, setUma] = useLens(O.uma);
 	const [deck, setDeck] = useLens(O.deck);
+	const hints = useGetter(O.hints);
 
 	const [glpk, setGlpk] = useState(null);
 	useEffect(() => GLPK().then(setGlpk), []);
@@ -207,6 +210,8 @@ function BuildPlanner(props) {
 		setDeck(deck.concat([card.dataset.cardid]));
 	}
 
+	const totalSpCost = useMemo(() => Array.from(uma.skills.values()).reduce((acc,id) => acc + costForId(id, hints, new Map()), 0), [uma.skills, hints]);
+
 	const awakenings = useMemo(() => awakeningsForUma(uma.outfitId), [uma.outfitId]);
 	const deckSkills = useMemo(() => new Set(deck.flatMap(cid => cards[cid].event.concat(cards[cid].hints))), [deck]);
 	const targetSkills = useMemo(() =>
@@ -222,7 +227,10 @@ function BuildPlanner(props) {
 		<Language.Provider value={props.lang}>
 			<IntlProvider definition={strings}>
 				<div id="umaPane">
-					<HorseDef key={uma.outfitId} state={O.uma} courseDistance={0} showPolicyEd={false} tabstart={() => 0} skillExtra={<HintTips deck={hover} awakenings={awakenings} outfitId={uma.outfitId} />}>
+					<HorseDef key={uma.outfitId} state={O.uma} courseDistance={0} showPolicyEd={false} tabstart={() => 0}
+						skillExtra={<HintTips deck={hover} awakenings={awakenings} outfitId={uma.outfitId} />}
+						hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
+					>
 						<Text id="ui.umaheader" />
 					</HorseDef>
 				</div>
@@ -250,7 +258,8 @@ const dfsk = [200012,200952,200362,200382,201312,201601,202712,202742,202802,202
 function App(props) {
 	const state = makeState(() => ({
 		uma: {...DEFAULT_HORSE_STATE, samplePolicies: null, skills: SkillSet(dfsk.map(x=>x.toString()))},
-		deck: []
+		deck: [],
+		hints: new Map(Object.keys(skills).map(id => [id,0]))
 		//deck: ['30265', '30077']
 		//deck: ['10137', '30017', '30173', '30175', '30275', '30283']
 		//deck: [30275,30175,10111,10137,30238,10092].map(x=>x.toString())

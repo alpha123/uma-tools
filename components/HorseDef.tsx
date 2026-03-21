@@ -467,7 +467,7 @@ export const HorseDef = memo(function HorseDef(props) {
 					</div>
 					<div><PopularitySelect p={props.state.popularity} tabindex={tabnext()} /></div>
 				</div>
-				<div class="horseSkillHeader"><Text id="skillheader" /></div>
+				<div class="horseSkillHeader">{props.skillHeader || <Text id="skillheader" />}</div>
 				<div class="horseSkillListWrapper" onClick={handleSkillClick}>
 					<ul class="horseSkillList">
 						{skillList}
