@@ -54,17 +54,19 @@ my $select_umas = $db->prepare('SELECT [index], text FROM text_data WHERE catego
 my $select_outfits = $db->prepare('SELECT [index], text FROM text_data WHERE category = 5 AND [index] BETWEEN (?1 * 100) AND ((?1 + 1) * 100) ORDER BY [index] ASC;');
 
 my $APTITUDES = q(
-	proper_distance_short, proper_distance_mile, proper_distance_middle, proper_distance_long,
-	proper_running_style_nige, proper_running_style_senko, proper_running_style_sashi, proper_running_style_oikomi,
-	proper_ground_turf, proper_ground_dirt
+	cr.proper_distance_short, cr.proper_distance_mile, cr.proper_distance_middle, cr.proper_distance_long,
+	cr.proper_running_style_nige, cr.proper_running_style_senko, cr.proper_running_style_sashi, cr.proper_running_style_oikomi,
+	cr.proper_ground_turf, cr.proper_ground_dirt
 );
-my $select_aptitudes_awakenings = $db->prepare("
-	SELECT json_array($APTITUDES), json_group_array(skill_id)
-	  FROM available_skill_set
-INNER JOIN (SELECT card_id, $APTITUDES FROM card_rarity_data GROUP BY card_id)
-		ON available_skill_set_id = card_id
-	 WHERE available_skill_set_id = ?1
-  GROUP BY available_skill_set_id;
+my $select_outfit_data = $db->prepare("
+    SELECT c.default_rarity, json_array($APTITUDES), json_group_array(ss.skill_id)
+      FROM card_data c
+INNER JOIN available_skill_set ss
+        ON c.available_skill_set_id = ss.available_skill_set_id
+INNER JOIN (SELECT card_id, $APTITUDES FROM card_rarity_data cr GROUP BY card_id) cr
+        ON c.id = cr.card_id
+     WHERE c.id = ?1
+  GROUP BY ss.available_skill_set_id;
 ");
 
 my $metadb = DBI->connect("dbi:SQLite:$meta", undef, undef, {
@@ -109,13 +111,14 @@ while ($select_umas->fetch) {
 	$select_outfits->bind_columns(\my ($o_id, $epithet));
 	while ($select_outfits->fetch) {
 		push @outfit_ids, $o_id;
-		$select_aptitudes_awakenings->execute($o_id);
-		$select_aptitudes_awakenings->bind_columns(\my ($aptitudes, $awakenings));
-		$select_aptitudes_awakenings->fetch;
+		$select_outfit_data->execute($o_id);
+		$select_outfit_data->bind_columns(\my ($default_rarity, $aptitudes, $awakenings));
+		$select_outfit_data->fetch;
 		$umas->{$id}->{outfits}->{$o_id} = {
+			epithet => Encode::decode('utf8', $epithet),
+			rarity => $default_rarity,
 			aptitudes => decode_json($aptitudes),
-			awakenings => [map { "$_" } @{decode_json($awakenings)}],
-			epithet => Encode::decode('utf8', $epithet)
+			awakenings => [map { "$_" } @{decode_json($awakenings)}]
 		};
 	}
 

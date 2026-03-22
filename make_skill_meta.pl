@@ -42,6 +42,9 @@ $select->bind_columns(\($id, $group_id, $icon_id, $sp_cost, $disp_order));
 
 my $skills = {};
 while ($select->fetch) {
+	if ($group_id >= 1000 && $group_id < 2000) {  # put 1★/2★ uniques in the same group as their 3★ versions
+		$group_id += 9000;
+	}
 	$skills->{$id} = {groupId => "$group_id", iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
 }
 

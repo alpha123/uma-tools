@@ -86,10 +86,20 @@ function searchNames(query) {
 	return umaAltIds.filter(oid => umaNamesForSearch[oid].indexOf(q) > -1);
 }
 
+function Star(props) {
+	const {starCount, minStarCount, n} = props;
+	const cls = ['umaStar'];
+	if (starCount >= n) cls.push('umaStarGte');
+	if (n <= minStarCount) cls.push('umaStarMin');
+	return <div class={cls.join(' ')} style={`z-index:${5-n}`} data-n={n}></div>
+}
+
 export function UmaSelector(props) {
 	const randomMob = useMemo(() => `/uma-tools/icons/mob/trained_mob_chr_icon_${8000 + Math.floor(Math.random() * 624)}_000001_01.png`, []);
 	const [value, setOutfitId] = useLens(props.outfitId);
+	const [starCount, setStarCount] = useLens(props.starCount);
 	const u = value && umas[value.slice(0,4)];
+	const minStarCount = u ? u.outfits[value].rarity : 1;
 
 	const input = useRef(null);
 	const suggestionsContainer = useRef(null);
@@ -161,11 +171,36 @@ export function UmaSelector(props) {
 		setOpen(false);
 	}
 
+	function handleStarClick(e) {
+		const star = e.target.closest('.umaStar');
+		if (star == null) return;
+		setStarCount(Math.max(minStarCount, +star.dataset.n));
+	}
+
 	return (
 		<div class="umaSelector">
-			<div class="umaSelectorIconsBox" onClick={focus}>
-				<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} />
-				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" />
+			<div class="umaSelectorIconsBox">
+				<div>
+					<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} onClick={focus} />
+					<div class="umaStarsRow" onClick={handleStarClick}>
+						<div class="umaStarContainer">
+							<Star starCount={starCount} minStarCount={minStarCount} n={1} />
+							<div class="umaStarContainer">
+								<Star starCount={starCount} minStarCount={minStarCount} n={2} />
+								<div class="umaStarContainer">
+									<Star starCount={starCount} minStarCount={minStarCount} n={3} />
+									<div class="umaStarContainer">
+										<Star starCount={starCount} minStarCount={minStarCount} n={4} />
+										<div class="umaStarContainer">
+											<Star starCount={starCount} minStarCount={minStarCount} n={5} />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" onClick={focus} />
 			</div>
 			<div class="umaEpithet"><span>{value && u.outfits[value].epithet}</span></div>
 			<div class="umaSelectWrapper">
@@ -303,9 +338,9 @@ function assertIsSkill(sid: string): asserts sid is keyof typeof skilldata {
 	console.assert(skilldata[sid] != null);
 }
 
-export function uniqueSkillForUma(oid: typeof umaAltIds[number]): keyof typeof skilldata {
+export function uniqueSkillForUma(oid: typeof umaAltIds[number], starCount: 1 | 2 | 3 | 4 | 5): keyof typeof skilldata {
 	const i = +oid.slice(1, -2), v = +oid.slice(-2);
-	const sid = (100000 + 10000 * (v - 1) + i * 10 + 1).toString();
+	const sid = (10000 * (1 + 9 * +(starCount > 2)) + 10000 * (v - 1) + i * 10 + 1).toString();
 	assertIsSkill(sid);
 	return sid;
 }
@@ -363,15 +398,30 @@ export const HorseDef = memo(function HorseDef(props) {
 		const newSkills = new Map();
 		state.skills.forEach((id,g) => isGeneralSkill(id) && newSkills.set(g, id));
 		let aptitudes = ['S','S','S','S','A','A','A','A','A','A'];
+		let starCount = state.starCount;
 		if (id) {
-			const uid = uniqueSkillForUma(id);
+			const u = umas[id.slice(0,4)].outfits[id];
+			aptitudes = u.aptitudes.map(i => ' GFEDCBA'[i]);
+			starCount = Math.max(starCount, u.rarity);
+			const uid = uniqueSkillForUma(id, starCount);
 			newSkills.set(skillmeta[uid].groupId, uid);
-			aptitudes = umas[id.slice(0,4)].outfits[id].aptitudes.map(i => ' GFEDCBA'[i]);
 		}
-		return {...state, outfitId: id, skills: newSkills, aptitudes};
+		return {...state, outfitId: id, starCount, skills: newSkills, aptitudes};
 	}), [props.state]);
 	const umaId = useGetter(l_umaId);
 	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata[id].rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
+
+	const l_starCount = useMemo(() => props.state._lens(x => x.starCount, (f,state) => {
+		const starCount = f(state.starCount);
+		let skills = state.skills;
+		if (state.outfitId) {
+			skills = new Map(state.skills);
+			const uid = uniqueSkillForUma(state.outfitId, starCount);
+			skills.set(skillmeta[uid].groupId, uid);
+		}
+		return {...state, starCount, skills};
+	}), [props.state]);
+	const starCount = useGetter(l_starCount);
 
 	const l_strategy = useMemo(() => props.state.strategy._lens(id, (f,strat) => {
 		const newStrat = f(strat);
@@ -501,7 +551,7 @@ export const HorseDef = memo(function HorseDef(props) {
 	}
 
 	const skillList = useMemo(function () {
-		const u = uniqueSkillForUma(umaId);
+		const u = uniqueSkillForUma(umaId, starCount);
 		return Array.from(skills.values()).sort(skillOrder).map(id =>
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
@@ -521,7 +571,7 @@ export const HorseDef = memo(function HorseDef(props) {
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
-				<UmaSelector outfitId={l_umaId} tabindex={tabnext()} />
+				<UmaSelector outfitId={l_umaId} starCount={l_starCount} tabindex={tabnext()} />
 				<div class="horseParams">
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span><Text id="common.stat.2" /></span></div>

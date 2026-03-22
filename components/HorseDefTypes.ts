@@ -33,6 +33,7 @@ export type Aptitude = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
 export interface HorseState {
 	outfitId: string
+	starCount: 1 | 2 | 3 | 4 | 5
 	speed: number
 	stamina: number
 	power: number
@@ -51,6 +52,7 @@ export interface HorseState {
 
 export const DEFAULT_HORSE_STATE = {
 	outfitId: '',
+	starCount: 3,
 	speed:   CC_GLOBAL ? 1200 : 1850,
 	stamina: CC_GLOBAL ? 1200 : 1700,
 	power:   CC_GLOBAL ? 800 : 1700,

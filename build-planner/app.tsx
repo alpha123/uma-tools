@@ -314,7 +314,7 @@ function BuildPlanner(props) {
 	const targetSkills = useMemo(() => {
 		const s = new Set(Array.from(uma.skills.values()).map(getBaseSkill))
 			.difference(awakenings).difference(deckSkills);
-		s.delete(uniqueSkillForUma(uma.outfitId));
+		s.delete(uniqueSkillForUma(uma.outfitId, uma.starCount));
 		return s;
 	}, [uma.skills, awakenings, deckSkills]);
 	const [solutions, setSolutions] = useState([]);
