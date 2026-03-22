@@ -27,7 +27,7 @@ also implement unique scaling in sim
 * DONE run compare simulator in worker
 should probably not be run on the main UI thread
 * TODO cleanup
-** TODO build system
+** DONE build system
 convert non-global to use build.mjs. refactor shared parts (most of it except the plugins and defines) to a common file.
 skill visualizer should also be changed to use this, and global skill visualizer can share the data intercept plugin
 with global umalator.
@@ -94,7 +94,7 @@ HpPolicy is instantiated before greens are activated; need some kind of explicit
 first round of skill activation
 reproduce: https://alpha123.github.io/uma-tools/umalator-global/#H4sIAAAAAAAACtWOzUoEMRCE36XPOSRRB5nbHkUQwaPsIUx6xuDkh6TDIMu8u937g%2BgbeKsuur6qE0y514ZPHkajBz0oSM3FsmKD8UFrBb3ha27PiAVGqh0VVDehxxnGE8ScOWgVLDX3JAwFGzr6wHrWDV3L6fxBIeL11XmUNr0zPTojoNxpDiQrADhWEAVmZUAjF0Nyt7PkTeCPopdOPPNe5Baaz%2FF6NKqOcPli2ktYkIk%2BMCZNeCgUqEs%2FvElRr7P75R7gJ%2F7X%2Fgzryn3vx8tw%2B%2B%2BGAw%2FRd5YtFuYmrLkIM2gDx33%2FBpiw3qEUAgAA
 
-** TODO skill id 104901111 always drains 100% stamina             :simulator:
+** DONE skill id 104901111 always drains 100% stamina             :simulator:
 as a result of no scaling being implemented
 this seems to be kind of weird since it does cause a fresh regression checkpoint to fail
 ** DONE seems like a skill desync bug
