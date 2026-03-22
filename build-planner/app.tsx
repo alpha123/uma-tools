@@ -21,13 +21,13 @@ import cards from './cards.json';
 import './app.css';
 
 const UI_ja = Object.freeze({
-	'cardsearch': '',
-	'umaheader': 'ウマ娘',
+	'cardsearch': 'サポートカードを検索',
+	'umaheader': 'ウマ娘詳細',
 	'skillheader': 'スキル：{{sp}}Pt'
 });
 const UI_en = Object.freeze({
 	'cardsearch': 'Search',
-	'umaheader': 'Umamusume',
+	'umaheader': 'Umamusume Details',
 	'skillheader': 'Skills ({{sp}} SP)'
 });
 const UI_global = extendStrings(UI_en, {
