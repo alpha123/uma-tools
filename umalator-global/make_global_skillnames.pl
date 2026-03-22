@@ -6,7 +6,7 @@ use utf8;
 use DBI;
 use DBD::SQLite::Constants qw(:file_open);
 use JSON::PP;
-use Encoding qw(encode decode);
+use Encode qw(encode decode);
 
 if (!@ARGV) {
 	die 'Usage: make_global_skillnames.pl master.mdb';
