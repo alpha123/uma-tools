@@ -399,14 +399,16 @@ export const HorseDef = memo(function HorseDef(props) {
 		state.skills.forEach((id,g) => isGeneralSkill(id) && newSkills.set(g, id));
 		let aptitudes = ['S','S','S','S','A','A','A','A','A','A'];
 		let starCount = state.starCount;
+		let strategy = state.strategy;
 		if (id) {
 			const u = umas[id.slice(0,4)].outfits[id];
 			aptitudes = u.aptitudes.map(i => ' GFEDCBA'[i]);
 			starCount = Math.max(starCount, u.rarity);
+			strategy = ['', 'Nige', 'Senkou', 'Sasi', 'Oikomi'][u.strategy];
 			const uid = uniqueSkillForUma(id, starCount);
 			newSkills.set(skillmeta[uid].groupId, uid);
 		}
-		return {...state, outfitId: id, starCount, skills: newSkills, aptitudes};
+		return {...state, outfitId: id, starCount, strategy, skills: newSkills, aptitudes};
 	}), [props.state]);
 	const umaId = useGetter(l_umaId);
 	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata[id].rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);

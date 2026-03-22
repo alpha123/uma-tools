@@ -59,7 +59,7 @@ my $APTITUDES = q(
 	cr.proper_ground_turf, cr.proper_ground_dirt
 );
 my $select_outfit_data = $db->prepare("
-    SELECT c.default_rarity, json_array($APTITUDES), json_group_array(ss.skill_id)
+    SELECT c.default_rarity, c.running_style, json_array($APTITUDES), json_group_array(ss.skill_id)
       FROM card_data c
 INNER JOIN available_skill_set ss
         ON c.available_skill_set_id = ss.available_skill_set_id
@@ -112,11 +112,12 @@ while ($select_umas->fetch) {
 	while ($select_outfits->fetch) {
 		push @outfit_ids, $o_id;
 		$select_outfit_data->execute($o_id);
-		$select_outfit_data->bind_columns(\my ($default_rarity, $aptitudes, $awakenings));
+		$select_outfit_data->bind_columns(\my ($default_rarity, $running_style, $aptitudes, $awakenings));
 		$select_outfit_data->fetch;
 		$umas->{$id}->{outfits}->{$o_id} = {
 			epithet => Encode::decode('utf8', $epithet),
 			rarity => $default_rarity,
+			strategy => $running_style,
 			aptitudes => decode_json($aptitudes),
 			awakenings => [map { "$_" } @{decode_json($awakenings)}]
 		};
