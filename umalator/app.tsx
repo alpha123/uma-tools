@@ -474,7 +474,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 	}
 }
 
-const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */, starCount: 3 /* v8 */});
+const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */, starCount: 3 /* v8 */, uniqueLv: 1 /* v8 */});
 
 function deserializeUma(umaObj) {
 	return Object.assign({}, NEW_HORSE_FIELDS, umaObj, {skills: SkillSet(umaObj.skills), samplePolicies: /* v6 */ new Map(Object.entries(umaObj.samplePolicies))});
