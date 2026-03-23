@@ -82,6 +82,10 @@
 	font-size: 1em;
 	width: 28px;
 }
+.skillLv > input::-webkit-outer-spin-button,
+.skillLv > input::-webkit-inner-spin-button {
+	opacity: 1;
+}
 
 .skillIcon {
 	height: 2.2em;
