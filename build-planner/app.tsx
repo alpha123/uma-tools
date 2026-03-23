@@ -7,9 +7,11 @@ import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../opt
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, skillGroups, costForId } from '../components/SkillList';
-import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
-import { HorseDef, horseDefTabs, uniqueSkillForUma } from '../components/HorseDef';
+import { HorseState, SkillSet, uniqueSkillForUma, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
+import { HorseDef, horseDefTabs } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
+
+import { scoreUma } from './scorecalc';
 
 import skills from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
@@ -332,6 +334,7 @@ function BuildPlanner(props) {
 						hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
 					>
 						<Text id="ui.umaheader" />
+						{scoreUma(uma)}
 					</HorseDef>
 				</div>
 				<div id="nonUmaPanes">
