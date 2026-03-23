@@ -44,6 +44,8 @@ my $skills = {};
 while ($select->fetch) {
 	if ($group_id >= 1000 && $group_id < 2000) {  # put 1★/2★ uniques in the same group as their 3★ versions
 		$group_id += 9000;
+	} elsif ($group_id >= 9000000) {  # put evolved unique inherits in the same group as the unevolved version
+		$group_id = 90000 + $group_id % 10000;
 	}
 	$skills->{$id} = {groupId => "$group_id", iconId => "$icon_id", baseCost => $sp_cost, order => $disp_order};
 }
