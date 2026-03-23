@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import { useState, useMemo, useId } from 'preact/hooks';
+import { useState, useMemo, useEffect, useRef, useId } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { Text, Localizer } from 'preact-i18n';
 
@@ -178,8 +178,22 @@ export function BasinnChart(props) {
 		props.onDblClickRow(id);
 	}
 
+	const root = useRef(null);
+	const inView = useRef(new Map());
+	const [_obj, forceRerender] = useState(false);
+	const obs = useMemo(function () {
+		return new IntersectionObserver((entries) => {
+			entries.forEach(entry => inView.current.set(entry.target.dataset.skillid, entry.isIntersecting));
+			forceRerender({});
+		}, {
+			root: root.current,
+			rootMargin: "68px 0px 68px 0px"
+		});
+	}, [props.data]);
+	useEffect(() => () => obs.disconnect(), [props.data]);
+
 	return (
-		<div class={`basinnChartWrapper${props.dirty ? ' dirty' : ''}`}>
+		<div class={`basinnChartWrapper${props.dirty ? ' dirty' : ''}`} ref={root}>
 			<table class="basinnChart">
 				<thead>
 					{table.getHeaderGroups().map(headerGroup => (
@@ -210,13 +224,17 @@ export function BasinnChart(props) {
 				<tbody onClick={handleClick} onDblClick={handleDblClick}>
 					{table.getRowModel().rows.map(row => {
 						const id = row.getValue('id');
-						return (
-							<tr key={row.id} data-skillid={id} class={id == selected && 'selected'}>
-								{row.getAllCells().map(cell => (
-									<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-								))}
-							</tr>
-						);
+						if (inView.current.get(id)) {
+							return (
+								<tr key={row.id} data-skillid={id} class={id == selected && 'selected'}>
+									{row.getAllCells().map(cell => (
+										<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+									))}
+								</tr>
+							);
+						} else {
+							return <tr key={row.id} data-skillid={id} ref={el => el && obs.observe(el)}><Text id={`skillnames.${id}`} /></tr>
+						}
 					})}
 				</tbody>
 			</table>
