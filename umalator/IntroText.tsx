@@ -24,12 +24,6 @@ export function IntroText(props) {
 					</li>
 					<li>
 						<details>
-							<summary>Unique skill scaling with levels is not implemented</summary>
-							Unique skills are always simulated as a base level 3★ unique.
-						</details>
-					</li>
-					<li>
-						<details>
 							<summary>Speed up mode on Front Runners is not implemented</summary>
 							Front Runners have a chance to temporarily speed up based on their wit stat. This is difficult to model and not useful for skill comparisons so it is not implemented, but consider that wit on Front Runners is very slightly more useful than the simulator reports.
 						</details>
@@ -39,6 +33,16 @@ export function IntroText(props) {
 			</details>
 			<details open={true}>
 				<summary>Changelog</summary>
+				<section>
+					<h2>2026-03-22</h2>
+					<ul>
+						<li>Uma star count can now be changed to select 1★/2★ versions of uniques</li>
+						<li>Implemented unique skill scaling with levels</li>
+						<li>Running style now defaults to a more appropriate one for the selected uma rather than Pace Chaser all the time</li>
+						<li>Performance improvements to the skill table</li>
+						<li>Miscellaneous bug fixes</li>
+					</ul>
+				</section>
 				<section>
 					<h2>2026-03-17</h2>
 					<ul>
