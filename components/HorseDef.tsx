@@ -10,7 +10,7 @@ import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
-import { SkillSet, HorseState } from './HorseDefTypes';
+import { SkillSet, HorseState, uniqueSkillForUma } from './HorseDefTypes';
 
 import './HorseDef.css';
 
@@ -334,17 +334,6 @@ export function isGeneralSkill(id: string) {
 	return skilldata[id].rarity < 3 || universallyAccessiblePinks.indexOf(id) > -1;
 }
 
-function assertIsSkill(sid: string): asserts sid is keyof typeof skilldata {
-	console.assert(skilldata[sid] != null);
-}
-
-export function uniqueSkillForUma(oid: typeof umaAltIds[number], starCount: 1 | 2 | 3 | 4 | 5): keyof typeof skilldata {
-	const i = +oid.slice(1, -2), v = +oid.slice(-2);
-	const sid = (10000 * (1 + 9 * +(starCount > 2)) + 10000 * (v - 1) + i * 10 + 1).toString();
-	assertIsSkill(sid);
-	return sid;
-}
-
 function skillOrder(a, b) {
 	const x = skillmeta[a].order, y = skillmeta[b].order;
 	return +(y < x) - +(x < y) || +(b < a) - +(a < b);
@@ -408,7 +397,8 @@ export const HorseDef = memo(function HorseDef(props) {
 			const uid = uniqueSkillForUma(id, starCount);
 			newSkills.set(skillmeta[uid].groupId, uid);
 		}
-		return {...state, outfitId: id, starCount, strategy, skills: newSkills, aptitudes};
+		const uniqueLv = starCount % 3 + Math.floor(starCount / 3);
+		return {...state, outfitId: id, starCount, uniqueLv, strategy, skills: newSkills, aptitudes};
 	}), [props.state]);
 	const umaId = useGetter(l_umaId);
 	const selectableSkills = useMemo(() => nonUniqueSkills.filter(id => skilldata[id].rarity != 6 || id.startsWith(umaId) || universallyAccessiblePinks.indexOf(id) != -1), [umaId]);
@@ -416,14 +406,22 @@ export const HorseDef = memo(function HorseDef(props) {
 	const l_starCount = useMemo(() => props.state._lens(x => x.starCount, (f,state) => {
 		const starCount = f(state.starCount);
 		let skills = state.skills;
+		const uniqueLv = starCount % 3 + Math.floor(starCount / 3);
 		if (state.outfitId) {
 			skills = new Map(state.skills);
 			const uid = uniqueSkillForUma(state.outfitId, starCount);
 			skills.set(skillmeta[uid].groupId, uid);
 		}
-		return {...state, starCount, skills};
+		return {...state, starCount, uniqueLv, skills};
 	}), [props.state]);
 	const starCount = useGetter(l_starCount);
+
+	const l_uniqueLv = useMemo(() => props.state._lens(state => {
+		const min = state.starCount % 3 + Math.floor(state.starCount / 3);
+		const max = min + 3;
+		return [state.uniqueLv, min, max];
+	}, (f,state) => ({...state, uniqueLv: f(state.uniqueLv)})),
+	[props.state]);
 
 	const l_strategy = useMemo(() => props.state.strategy._lens(id, (f,strat) => {
 		const newStrat = f(strat);
@@ -557,13 +555,13 @@ export const HorseDef = memo(function HorseDef(props) {
 		return Array.from(skills.values()).sort(skillOrder).map(id =>
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
-					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} dismissable={id != u}
+					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} lv={id == u && l_uniqueLv} dismissable={id != u}
 						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null}
 						  topChildren={props.hintLevels && <SkillCost id={id} hints={props.hintLevels} ownedSkills={new Map() /* ignore the fact that we own them or the cost would always be 0 */} />} />
 					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 				: <li key={id} style="">
-					  <Skill id={id} selected={false} dismissable={id != u} />
+					  <Skill id={id} selected={false} lv={id == u && l_uniqueLv} dismissable={id != u} />
 					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 		);

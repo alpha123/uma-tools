@@ -65,15 +65,22 @@
 	display: none;
 }
 
-.skillName {
+.skillName, .skillLv > label, .skillLv > input {
 	color: rgb(121,64,22);
-	display: flex;
-	flex: 1;
 	overflow: hidden;
 	text-stroke: 1px rgb(121,64,22);
 	-webkit-text-stroke: 1px rgb(121,64,22);
 	text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
 	text-wrap: nowrap;
+}
+
+.skillName { flex: 1; }
+.skillLv { padding-left: 4px; }
+.skillLv > input {
+	background: none;
+	border: none;
+	font-size: 1em;
+	width: 28px;
 }
 
 .skillIcon {

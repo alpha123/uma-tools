@@ -6,7 +6,7 @@ import { RaceSolverBuilder, Perspective } from '../uma-skill-tools/RaceSolverBui
 import { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 import { PRNG, Rule30CARng } from '../uma-skill-tools/Random';
 
-import { HorseState, SamplePolicyDesc } from '../components/HorseDefTypes';
+import { HorseState, SamplePolicyDesc, uniqueSkillForUma } from '../components/HorseDefTypes';
 
 import { instantiateSamplePolicy, getActivator, getDeactivator } from './compare';
 
@@ -97,13 +97,15 @@ export function runHpCalc(nsamples: number, course: CourseData, racedef: RacePar
 	const wisdomSeeds = new Map<string, [number,number]>();
 	const wisdomRng = new Rule30CARng(...seed);
 	for (let i = 0; i < 20; ++i) wisdomRng.pair();
+	const uid = uniqueSkillForUma(uma.outfitId, uma.starCount);
 	Array.from(uma.skills.values()).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
-		b0.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma.samplePolicies.get(id)));
+		b0.addSkill(id, Perspective.Self, id == uid ? uma.uniqueLv : 1, instantiateSamplePolicy(uma.samplePolicies.get(id)));
 	});
+	const did = uniqueSkillForUma(debufUma.outfitId, debufUma.starCount);
 	Array.from(debufUma.skills.values()).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
-		b0.addSkill(id, Perspective.Other, instantiateSamplePolicy(debufUma.samplePolicies.get(id)));
+		b0.addSkill(id, Perspective.Other, id == did ? debufUma.uniqueLv : 1, instantiateSamplePolicy(debufUma.samplePolicies.get(id)));
 	});
 	if (!CC_GLOBAL) b0.withAsiwotameru().withStaminaSyoubu();
 	if (options.usePosKeep) b0.useDefaultPacer();

@@ -7,7 +7,7 @@ import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 import { Rule30CARng } from '../uma-skill-tools/Random';
 import { ActivationSamplePolicy, ImmediatePolicy, RandomPolicy, LogNormalRandomPolicy, ErlangRandomPolicy, StraightRandomPolicy, AllCornerRandomPolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 
-import { HorseState, SamplePolicyDesc } from '../components/HorseDefTypes';
+import { HorseState, SamplePolicyDesc, uniqueSkillForUma } from '../components/HorseDefTypes';
 
 import skillmeta from '../skill_meta.json';
 
@@ -94,21 +94,23 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	const common = Array.from(new Set(uma1.skills.keys()).intersection(new Set(uma2.skills.keys()))).sort((a,b) => +a - +b);
 	const commonIdx = (id) => { let i = common.indexOf(skillmeta[id].groupId); return i > -1 ? i : common.length; };
 	const sort = (a,b) => commonIdx(a) - commonIdx(b) || +a - +b;
+	const u1id = uniqueSkillForUma(uma1.outfitId, uma1.starCount);
+	const u2id = uniqueSkillForUma(uma2.outfitId, uma2.starCount);
 	Array.from(uma1.skills.values()).sort(sort).forEach(id => {
 		wisdomSeeds.set(id, wisdomRng.pair());
-		standard.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma1.samplePolicies.get(id)));
+		standard.addSkill(id, Perspective.Self, id == u1id ? uma1.uniqueLv : 1, instantiateSamplePolicy(uma1.samplePolicies.get(id)));
 	});
 	Array.from(uma2.skills.values()).sort(sort).forEach(id => {
 		// this means that the second set of rolls 'wins' for skills on both, but this doesn't actually matter
 		wisdomSeeds.set(id, wisdomRng.pair());
-		compare.addSkill(id, Perspective.Self, instantiateSamplePolicy(uma2.samplePolicies.get(id)));
+		compare.addSkill(id, Perspective.Self, id == u2id ? uma2.uniqueLv : 1, instantiateSamplePolicy(uma2.samplePolicies.get(id)));
 	});
 	// iterating twice like this is VERY ANNOYING
 	// unfortunately, because we add every skill to both umas, if we add them in the same iteration uma2 will have all the
 	// Other skills before its Self skills, which can cause skill desync issues when there are debuffs
 	// TODO i don't really like this, this might just be masking some deeper underlying issue.
-	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other, instantiateSamplePolicy(uma1.samplePolicies.get(id))));
-	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other, instantiateSamplePolicy(uma2.samplePolicies.get(id))));
+	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other, id == u1id ? uma1.uniqueLv : 1, instantiateSamplePolicy(uma1.samplePolicies.get(id))));
+	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other, id == u2id ? uma2.uniqueLv : 1, instantiateSamplePolicy(uma2.samplePolicies.get(id))));
 	if (!CC_GLOBAL) {
 		standard.withAsiwotameru().withStaminaSyoubu();
 		compare.withAsiwotameru().withStaminaSyoubu();

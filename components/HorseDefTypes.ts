@@ -23,6 +23,18 @@ export function SkillSet(ids): Map<(typeof skillmeta)['groupId'], keyof typeof s
 	}, {entries: [], ndebuff: 0}).entries);
 }
 
+function assertIsSkill(sid: string): asserts sid is keyof typeof skilldata {
+	console.assert(skills[sid] != null);
+}
+
+export function uniqueSkillForUma(oid: string, starCount: 1 | 2 | 3 | 4 | 5): keyof typeof skills | '' {
+	if (oid.length == 0) return '';
+	const i = +oid.slice(1, -2), v = +oid.slice(-2);
+	const sid = (10000 * (1 + 9 * +(starCount > 2)) + 10000 * (v - 1) + i * 10 + 1).toString();
+	assertIsSkill(sid);
+	return sid;
+}
+
 // pass these plain objects around instead of actual ActivationSamplePolicy instances since we need to send them
 // between web workers, so we need something serializable.
 export type SamplePolicyDesc = {policy: 'immediate'} | {policy: 'fixed', pos: number}
@@ -46,6 +58,7 @@ export interface HorseState {
 	aptitudes: Aptitude[10]
 	skills: Map<(typeof skillmeta)['groupId'], keyof typeof skills>
 	samplePolicies: Map<keyof typeof skills, SamplePolicyDesc>
+	uniqueLv: number
 	mood: -2 | -1 | 0 | 1 | 2;
 	popularity: number
 }
@@ -65,6 +78,7 @@ export const DEFAULT_HORSE_STATE = {
 	aptitudes: ['S','S','S','S','A','A','A','A','A','A'],
 	skills: SkillSet([]),
 	samplePolicies: new Map(),
+	uniqueLv: 1,
 	mood: 2,
 	popularity: 1
 };

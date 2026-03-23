@@ -3,11 +3,12 @@ import { useState, useContext, useMemo, useEffect, useRef, useId } from 'preact/
 import { memo } from 'preact/compat';
 import { IntlProvider, Text, Localizer } from 'preact-i18n';
 
-import { O, useLens } from '../optics';
+import { O, K, useLens, useGetter } from '../optics';
 
 import { getParser } from '../uma-skill-tools/ConditionParser';
 import * as Matcher from '../uma-skill-tools/tools/ConditionMatcher';
 import { SkillRarity } from '../uma-skill-tools/RaceSolver';
+import { levelScalingCoef } from '../uma-skill-tools/RaceSolverBuilder';
 import { ImmediatePolicy, RandomPolicy, UniformRandomPolicy, LogNormalRandomPolicy, ErlangRandomPolicy, StraightRandomPolicy, AllCornerRandomPolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 
 import { useLanguage } from './Language';
@@ -114,6 +115,7 @@ const STRINGS_ja = Object.freeze({
 		'weather': COMMON_ja['weather']
 	}),
 	'activationlabel': '発動：',
+	'skilllv': 'Lv',
 	'samplepolicies': Object.freeze({
 		'immediate': 'Immediate',
 		'fixed': 'Fixed distance',
@@ -194,6 +196,7 @@ const STRINGS_en = Object.freeze({
 		'weather': COMMON_en['weather']
 	}),
 	'activationlabel': 'Activation:',
+	'skilllv': 'Lv',
 	'samplepolicies': Object.freeze({
 		'immediate': 'Immediate',
 		'fixed': 'Fixed distance',
@@ -231,7 +234,8 @@ const STRINGS_global = extendStrings(STRINGS_en, {
 		'season': COMMON_global['season'],
 		'weather': COMMON_global['weather'],
 		'time': COMMON_global['time']
-	})
+	}),
+	'skilllv': 'Lvl '
 });
 
 const STRINGS = {
@@ -287,6 +291,18 @@ function matchRarity(id, testRarity) {
 	}
 }
 
+function SkillLevelEdit(props) {
+	const lang = useLanguage();  // TODO bit hacky
+	const [[lv, min, max], setLv] = useLens(props.lv);
+	const id = useId();
+	return (
+		<div class="skillLv" onClick={e => e.stopPropagation()}>
+			<label for={id}>{STRINGS[lang]['skilllv']}</label>
+			<input type="number" id={id} min={min} max={max} value={lv} onInput={e => setLv(+e.currentTarget.value)} />
+		</div>
+	);
+}
+
 const classnames = Object.freeze(['', 'skill-white', 'skill-gold', 'skill-unique', 'skill-unique', 'skill-unique', 'skill-pink']);
 
 export function Skill(props) {
@@ -294,6 +310,7 @@ export function Skill(props) {
 		<div class={`skill ${classnames[skilldata[props.id].rarity]} ${props.selected ? 'selected' : ''}`} data-skillid={props.id}>
 			<img class="skillIcon" src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} loading="lazy" /> 
 			<span class="skillName"><Text id={`skillnames.${props.id}`} /></span>
+			{props.lv && <SkillLevelEdit lv={props.lv} />}
 			{props.dismissable && <span class="skillDismiss">✕</span>}
 		</div>
 	);
@@ -440,7 +457,8 @@ const FormatParser = getParser<ConditionFormatter,OpFormatter>(conditionFormatte
 });
 
 function forceSign(n: number) {
-	return n <= 0 ? n.toString() : '+' + n;
+	const s = n.toFixed(4).replace(/\.?0+$/, '');
+	return n <= 0 ? s : '+' + s;
 }
 
 const formatStat = forceSign;
@@ -588,12 +606,14 @@ function SamplePolicyEditor(props) {
 export function ExpandedSkillDetails(props) {
 	const skill = skilldata[props.id];
 	const lang = useLanguage();
+	const lv = useGetter(props.lv ? props.lv[0] : K(1));
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class={`expandedSkill ${classnames[skill.rarity]}`} data-skillid={props.id}>
 				<div class="expandedSkillHeader">
 					<img class="skillIcon" src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} />
 					<span class="skillName"><Text id={`skillnames.${props.id}`} /></span>
+					{props.lv && <SkillLevelEdit lv={props.lv} />}
 					{props.dismissable && <span class="skillDismiss">✕</span>}
 				</div>
 				<div class="skillDetails">
@@ -616,12 +636,13 @@ export function ExpandedSkillDetails(props) {
 							</div>
 							<Text id="skilldetails.effects" />
 							<div class="skillEffects">
-								{alt.effects.map(ef =>
-									<div class="skillEffect">
+								{alt.effects.map(ef => {
+									const mod = ef.modifier / 10000 * levelScalingCoef(ef.type, lv);
+									return <div class="skillEffect">
 										<span class="skillEffectType"><Text id={`skilleffecttypes.${ef.type}`}>{ef.type}</Text></span>
-										<span class="skillEffectValue">{ef.type in formatEffect ? formatEffect[ef.type](ef.modifier / 10000) : ef.modifier / 10000}</span>
-									</div>
-								)}
+										<span class="skillEffectValue">{ef.type in formatEffect ? formatEffect[ef.type](mod) : mod}</span>
+									</div>;
+								})}
 							</div>
 							{alt.baseDuration > 0 && <span class="skillDuration"><Text id="skilldetails.baseduration" />{' '}<Text id="skilldetails.seconds" fields={{n: alt.baseDuration / 10000}} /></span>}
 							{props.distanceFactor > 0 && alt.baseDuration > 0 &&
