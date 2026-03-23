@@ -420,6 +420,7 @@
 
 .addSkillButton > span {
 	font-size: 2em;
+	line-height: 2em;
 	margin: 0 6px;
 }
 
