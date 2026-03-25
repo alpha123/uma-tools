@@ -16,7 +16,6 @@
     "glpk.js": "^5.0.0",
     "posthog-js": "^1.257.0",
     "preact": "^10.18.1",
-    "preact-i18n": "^2.4.0-preactx",
-    "unassert-cli": "github:unassert-js/unassert-cli"
+    "preact-i18n": "^2.4.0-preactx"
   }
 }
