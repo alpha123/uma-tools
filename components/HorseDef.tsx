@@ -11,6 +11,7 @@ import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
 import { SkillSet, HorseState, uniqueSkillForUma } from './HorseDefTypes';
+import { HorseOcr } from './HorseOcr';
 
 import './HorseDef.css';
 
@@ -347,6 +348,7 @@ export function horseDefTabs() {
 export const HorseDef = memo(function HorseDef(props) {
 	const lang = useLanguage();
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
+	const [ocrOpen, setOcrOpen] = useState(false);
 	const [expanded, setExpanded] = useState(new Set());
 	const strategy = useGetter(props.state.strategy);
 	// essentially what we want to do is:
@@ -572,6 +574,11 @@ export const HorseDef = memo(function HorseDef(props) {
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
 				<UmaSelector outfitId={l_umaId} starCount={l_starCount} tabindex={tabnext()} />
+				<button onClick={setOcrOpen.bind(null, true)}>OCR</button>
+				<div class={`horseSkillPickerOverlay ${ocrOpen ? "open" : ""}`} onClick={setOcrOpen.bind(null, false)} />
+				<div class={`horseSkillPickerWrapper ${ocrOpen ? "open" : ""}`}>
+					<HorseOcr />
+				</div>
 				<div class="horseParams">
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_01.png" /><span><Text id="common.stat.2" /></span></div>

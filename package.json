@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@tesseract.js-data/jpn": "^1.0.0",
     "d3": "^7.9.0",
     "glpk.js": "^5.0.0",
     "posthog-js": "^1.257.0",
     "preact": "^10.18.1",
-    "preact-i18n": "^2.4.0-preactx"
+    "preact-i18n": "^2.4.0-preactx",
+    "tesseract.js": "^5.1.1"
   }
 }

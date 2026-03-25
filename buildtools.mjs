@@ -66,7 +66,7 @@ export async function buildOrServe(buildDesc) {
 		outdir: '.',
 		write: !serve,
 		define: {CC_DEBUG: debug.toString(), CC_GLOBAL: buildDesc.cc_global.toString()},
-		external: ['*.ttf', '*.png'],
+		external: ['*.ttf', '*.png', '../vendor/opencv.js'],
 		plugins: [getMockAssertPlugin(debug), getRedirPlugin(buildDesc.redirect ?? {})]
 	};
 
