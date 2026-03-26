@@ -1,0 +1,149 @@
+.btnType1 {
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22)) padding-box, linear-gradient(rgb(183, 241, 43), rgb(118, 205, 40)) border-box;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	box-shadow: 0px 5px 0 rgb(180, 178, 192);
+	color: white;
+	font-size: 1em;
+	font-weight: bold;
+	height: 2.7em;
+	min-width: 6em;
+	outline: 1px solid rgb(55, 108, 2);
+	padding: 0 0.7em;
+}
+
+.btnType1:active {
+	box-shadow: none;
+}
+
+.btnType2 {
+	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	box-shadow: 0px 5px 0 rgb(180, 178, 192);
+	color: rgb(121, 64, 22);
+	font-size: 1em;
+	font-weight: bold;
+	height: 2.7em;
+	min-width: 6em;
+	outline: 1px solid rgb(99, 93, 123);
+	padding: 0 0.7em;
+}
+
+.btnType2:active {
+	box-shadow: none;
+}
+
+.circleBtn2 {
+	align-items: flex-end;
+	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
+	border: 2px solid transparent;
+	border-radius: 36px;
+	box-shadow: 1px 3px 0 rgb(180, 178, 192), -1px 3px 0 rgb(180, 178, 192);
+	color: rgb(121, 64, 22);
+	display: flex;
+	font-size: 1.4em;
+	font-weight: bold;
+	height: 36px;
+	line-height: 1.5em;
+	justify-content: center;
+	margin: 10px 10px 0 0;
+	outline: 1px solid rgb(99, 93, 123);
+	padding: 0;
+	width: 36px;
+}
+
+.circleBtn2:active {
+	box-shadow: none;
+}
+
+/* input[type="checkbox"] */
+.onoff {
+	appearance: none;
+	background: linear-gradient(rgb(179, 177, 188) 0 2px, rgb(197, 196, 205) 2px, rgb(222, 222, 225)) padding-box, linear-gradient(rgb(154, 153, 162), rgb(193, 193, 205)) border-box;
+	border: 2px solid transparent;
+	border-radius: 2em;
+	height: 2em;
+	line-height: 2em;
+	position: relative;
+	width: 5.5em;
+}
+
+@-moz-document url-prefix() {
+	.onoff {
+		/* to be honest not exactly sure what is up with the rendering difference here, can't find a better way to solve this */
+		line-height: calc(2em - 4px);
+	}
+}
+
+.onoff:checked {
+	background: linear-gradient(rgb(89, 173, 8) 0 2px, rgb(104, 187, 8) 2px, rgb(147, 216, 8)) padding-box, linear-gradient(rgb(91, 172, 15), rgb(136, 202, 23)) border-box;
+}
+
+.onoff::before {
+	color: rgb(121, 64, 22);
+	content: 'OFF';
+	display: block;
+	font-size: 1.1em;
+	font-weight: bold;
+	letter-spacing: 0.1em;
+	padding: 0 0.5em 0 calc(1ch + 0.25em);
+	text-align: right;
+	text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+}
+
+.onoff:checked::before {
+	color: white;
+	content: 'ON';
+	letter-spacing: 0.25em;
+	text-align: left;
+	text-shadow: -1px -1px 0 rgb(126, 203, 10), 1px -1px 0 rgb(126, 203, 10), -1px 1px 0 rgb(126, 203, 10), 1px 1px 0 rgb(126, 203, 10);
+}
+
+.onoff::after {
+	background: linear-gradient(135deg, rgb(255, 255, 255) 0 50%, rgb(239, 236, 239) 50%, rgb(255, 255, 255)) padding-box, linear-gradient(rgb(150, 147, 165), rgb(115, 112, 133)) border-box;
+	border: 2px solid transparent;
+	border-radius: 2em;
+	box-sizing: border-box;
+	content: '';
+	height: 2em;
+	left: -2px;
+	position: absolute;
+	top: -2px;
+	width: 2em;
+}
+
+.onoff:checked::after {
+	left: calc(100% - 2em + 2px);
+}
+
+/*
+input[type="radio"] {
+	appearance: none;
+	background: linear-gradient(rgb(255, 255, 255), rgb(232, 231, 239)) padding-box, linear-gradient(rgb(208, 208, 208), rgb(156, 155, 163)) border-box;
+	border: 2px solid transparent;
+	border-radius: 2em;
+	box-shadow: 0px 2px 0 rgb(180, 178, 192);
+	height: 2em;
+	width: 2em;
+}
+
+input[type="radio"]::after {
+	background: rgb(217, 216, 221);
+	border: 2px solid rgb(201, 201, 207);
+	border-radius: 1.25em;
+	box-sizing: border-box;
+	content: '';
+	display: block;
+	height: 1.25em;
+	left: calc(50% - 1.25em / 2);
+	position: relative;
+	top: calc(50% - 1.25em / 2);
+	width: 1.25em;
+}
+
+input[type="radio"]:checked::after {
+	background: linear-gradient(rgb(189, 234, 49), rgb(111, 191, 36)) padding-box, linear-gradient(rgb(187, 225, 85), rgb(110, 189, 39)) border-box;
+	border: 2px solid transparent;
+}
+*/

@@ -29,6 +29,7 @@ import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 import skillmeta from '../skill_meta.json';
 
+import '../UmaUI.css';
 import './app.css';
 
 const DEFAULT_SAMPLES = 500;
@@ -1077,9 +1078,9 @@ function Umalator(props) {
 						</div>
 						{
 							[
-								<button id="run" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>,
-								<button id="run" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>,
-								<button id="run" onClick={doStaCalc} tabindex={1}><Text id="ui.sidebar.run.stacalc" /></button>,
+								<button id="run" class="btnType1" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>,
+								<button id="run" class="btnType1" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>,
+								<button id="run" class="btnType1" onClick={doStaCalc} tabindex={1}><Text id="ui.sidebar.run.stacalc" /></button>,
 							][mode]
 						}
 						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
@@ -1100,7 +1101,7 @@ function Umalator(props) {
 											<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
 										</div>
 									</fieldset>
-									<button id="basinnChartAddSkill" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+									<button id="basinnChartAddSkill" class="btnType2" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
 									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
 									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
 										<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />

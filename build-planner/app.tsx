@@ -20,6 +20,7 @@ import umas from '../umas.json';
 import icons from '../icons.json';
 import cards from './cards.json';
 
+import '../UmaUI.css';
 import './app.css';
 
 const UI_ja = Object.freeze({
