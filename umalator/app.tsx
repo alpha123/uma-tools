@@ -914,10 +914,10 @@ function Umalator(props) {
 	});
 
 	const umaTabs = useMemo(() => (
-		<Fragment>
-			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => setCurrentIdx(0)}><Text id={mode == Mode.Compare ? "ui.uma1" : "ui.uma"} /></div>
-			{mode != Mode.Chart && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => setCurrentIdx(1)}><Text id={mode == Mode.Compare ? "ui.uma2" : "ui.debuffer"} /><div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
-		</Fragment>
+		<div class="umaTabs">
+			<div class={`umaTab ${currentIdx == 0 ? 'selected' : ''}`} onClick={() => setCurrentIdx(0)}><span><Text id={mode == Mode.Compare ? "ui.uma1" : "ui.uma"} /></span></div>
+			{mode != Mode.Chart && <div class={`umaTab ${currentIdx == 1 ? 'selected' : ''}`} onClick={() => setCurrentIdx(1)}><span><Text id={mode == Mode.Compare ? "ui.uma2" : "ui.debuffer"} /></span><div id="expandBtn" title="Expand panel" onClick={toggleExpand} /></div>}
+		</div>
 	), [currentIdx, mode]);
 
 	let resultsPane;

@@ -425,20 +425,26 @@ strong.uma2 { color: var(--uma2-color); }
 	border-top: none;
 }
 
-#umaPane .horseDefHeader {
+.umaTabs {
 	background: none;
 	display: flex;
+	margin: -6px 0;
 	padding: 0;
 	text-align: left;
 }
 
 .umaTab {
+	align-items: center;
 	background: linear-gradient(white, rgb(228, 227, 234));
 	color: rgb(121,64,22);
-	flex-basis: 0;
-	flex-grow: 1;
+	display: flex;
+	flex: 1;
 	outline: 2px solid rgb(216, 217, 220);
 	padding: 6px 0 6px 20px;
+}
+
+.umaTab > span {
+	flex: 1;
 }
 
 .umaTab:first-child {
@@ -461,9 +467,8 @@ strong.uma2 { color: var(--uma2-color); }
 	border: 2px solid rgb(170,221,154);
 	border-radius: 6px;
 	cursor: default;
-	float: right;
 	height: 34px;
-	margin: 8px 10px 0 0;
+	margin-right: 10px;
 	position: relative;
 	width: 34px;
 }
