@@ -15,11 +15,12 @@ import './HorseOcr.css';
 
 import umas from '../umas.json';
 
-function makeUma(stats, skills) {
+function makeUma(stats, uniqueLv, skills) {
 	console.assert(skills[0][0] == '1');
 	const outfitId = umaForUniqueSkill(skills[0]);
 	const u = umas[outfitId.slice(0,4)].outfits[outfitId];
-	const starCount = skills[0].length == 5 ? 2 : 3;
+	// lowest star count that can reach this unique level
+	const starCount = skills[0].length == 5 ? uniqueLv - 3 : uniqueLv - 1;
 	return {
 		...DEFAULT_HORSE_STATE,
 		outfitId,
@@ -31,7 +32,8 @@ function makeUma(stats, skills) {
 		wisdom: stats[4],
 		strategy: ['', 'Nige', 'Senkou', 'Sasi', 'Oikomi'][u.strategy],
 		aptitudes: u.aptitudes.map(i => ' GFEDCBA'[i]),
-		skills: SkillSet(skills)
+		skills: SkillSet(skills),
+		uniqueLv
 	};
 }
 
@@ -68,7 +70,7 @@ export function HorseOcr(props) {
 	const cv = useRef(null);
 
 	const [cvimg, setCvimg] = useState(null);
-	const [stats, setStats] = useState([]);
+	const [partialOcrResults, setPartialOcrResults] = useState<{stats: number[], uniqueLv: number}>(null);
 	const [conflicts, setConflicts] = useState([]);
 	const [settled, setSettled] = useState([]);
 
@@ -92,7 +94,7 @@ export function HorseOcr(props) {
 		setImgData(null);
 		setLoading(false);
 		setCvimg(null);
-		setStats([]);
+		setPartialOcrResults(null);
 		setConflicts([]);
 		setSettled([]);
 	}
@@ -113,8 +115,8 @@ export function HorseOcr(props) {
 		setLoading(true);
 		Promise.all([getOpenCv(), makeWorkers()]).then(async ([cvModule, workers]) => {
 			cv.current = cvModule;
-			const {stats, skills, img: newCvimg} = await readUma(cvModule, workers, img.current, canv.current);
-			setStats(stats);
+			const {stats, skills, uniqueLv, img: newCvimg} = await readUma(cvModule, workers, img.current, canv.current);
+			setPartialOcrResults({stats, uniqueLv});
 			setCvimg(newCvimg);
 			setLoading(false);
 			const newConflicts = [], newSettled = [];
@@ -148,7 +150,7 @@ export function HorseOcr(props) {
 		setSettled(newSettled);
 		setConflicts(newConflicts);
 		if (newConflicts.length == 0) {
-			setUma(makeUma(stats, newSettled));
+			setUma(makeUma(partialOcrResults.stats, partialOcrResults.uniqueLv, newSettled));
 		}
 	}
 
@@ -175,7 +177,7 @@ export function HorseOcr(props) {
 			</div>
 			<div class="horseOcrButtons">
 				<button class="btnType2" onClick={close}>Close</button>
-				{stats.length == 0
+				{partialOcrResults == null
 					? <button class="btnType1" disabled={imgData == null || loading} onClick={recognize}>Recognize</button>
 					: <button class="btnType1" disabled={uma == null} onClick={accept}>Accept</button>
 				}

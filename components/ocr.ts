@@ -255,8 +255,7 @@ const normalnames = Object.fromEntries(Object.entries(skillnames).map(([id,names
 	return [id, {s, kanamap: s.split('').map(isKana), kanjimap: s.split('').map(isKanji)}];
 }));
 
-function closest(text) {
-	const s = normalize(text).replace(/Lv.$/,'');
+function closest(s) {
 	const sk = {s, kanamap: s.split('').map(isKana), kanjimap: s.split('').map(isKanji)};
 
 	// there are some entries in skillnames that don't have real skilldata (for non-general skills i guess)
@@ -281,6 +280,15 @@ export async function readUma(cv, workers, img, canv) {
 	const r = findBounds(cv, src);
 	src = resize(cv, src.roi(r));
 	const {stats, skleft, skright} = await readStatsSkills(cv, workers, canv, src);
-	const skills = skleft.concat(skright).map(line => ({candidates: closest(line.text), bbox: line.bbox}));
-	return {stats, skills, img: src};
+	let uniqueLv = 0;
+	const skills = skleft.concat(skright).map(line => {
+		// any potential \s already stripped by normalize
+		const s = normalize(line.text).replace(CC_GLOBAL ? /Lvl(\d)$/ : /Lv(\d)$/, (_, lv) => {
+			uniqueLv = +lv;
+			return '';
+		});
+		return {candidates: closest(s), bbox: line.bbox};
+	});
+	uniqueLv = Math.min(Math.max(uniqueLv, 1), 10);
+	return {stats, skills, uniqueLv, img: src};
 }
