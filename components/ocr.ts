@@ -271,8 +271,22 @@ function closest(s) {
 	}, {ids: [], min: Infinity}).ids;
 }
 
-function matchSkills(lines) {
-	return Object.fromEntries(lines.map(l => [l.text,{n:closest(l.text), b:l.bbox}]));
+// global has some skills that span two lines. they get detected as two skills, so merge anything with very
+// close bounding boxes.
+function cleanMultilineSkills(lines) {
+	return lines.reduce((cleaned, line) => {
+		if (cleaned.length == 0) { cleaned.push(line); return cleaned; }
+		const prev = cleaned[cleaned.length-1];
+		if (line.bbox.y0 - prev.bbox.y1 < 20) {
+			prev.text += line.text;
+			prev.bbox.x0 = Math.min(prev.bbox.x0, line.bbox.x0);
+			prev.bbox.x1 = Math.max(prev.bbox.x1, line.bbox.x1);
+			prev.bbox.y1 = line.bbox.y1;
+		} else {
+			cleaned.push(line);
+		}
+		return cleaned;
+	}, []);
 }
 
 export async function readUma(cv, workers, img, canv) {
@@ -281,7 +295,7 @@ export async function readUma(cv, workers, img, canv) {
 	src = resize(cv, src.roi(r));
 	const {stats, skleft, skright} = await readStatsSkills(cv, workers, canv, src);
 	let uniqueLv = 0;
-	const skills = skleft.concat(skright).map(line => {
+	const skills = cleanMultilineSkills(skleft).concat(cleanMultilineSkills(skright)).map(line => {
 		// any potential \s already stripped by normalize
 		const s = normalize(line.text).replace(CC_GLOBAL ? /Lvl(\d)$/ : /Lv(\d)$/, (_, lv) => {
 			uniqueLv = +lv;
