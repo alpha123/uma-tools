@@ -20,8 +20,13 @@
 	text-align: center;
 }
 
+.horseTopSection {
+	display: flex;
+}
+
 .umaSelector {
 	display: grid;
+	flex: 1;
 	grid-template-columns: 120px 360px;
 	grid-template-rows: repeat(2, 60px);
 	padding: 0 50px 10px 50px;

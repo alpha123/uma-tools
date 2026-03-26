@@ -13,6 +13,7 @@ export function extendStrings(o,e) {
 }
 
 export const COMMON_ja = Object.freeze({
+	'umaheader': 'ウマ娘詳細',
 	'stat': Object.freeze(['なし', 'スピード', 'スタミナ', 'パワー', '根性', '賢さ']),
 	'joiner': '、',
 	'surface': Object.freeze(['', '芝', 'ダート']),
@@ -26,6 +27,7 @@ export const COMMON_ja = Object.freeze({
 });
 
 export const COMMON_en = Object.freeze({
+	'umaheader': 'Umamusume Details',
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wisdom']),
 	'joiner': ', ',
 	'surface': Object.freeze(['', 'Turf', 'Dirt']),
@@ -39,6 +41,7 @@ export const COMMON_en = Object.freeze({
 });
 
 export const COMMON_global = Object.freeze({
+	'umaheader': 'Umamusume Details',
 	'stat': Object.freeze(['None', 'Speed', 'Stamina', 'Power', 'Guts', 'Wit']),
 	'joiner': ', ',
 	'surface': Object.freeze(['', 'Turf', 'Dirt']),

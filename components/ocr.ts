@@ -1,5 +1,4 @@
-import { HorseState, SkillSet } from './HorseDefTypes';
-
+import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 
 export async function getOpenCv() {
@@ -13,6 +12,8 @@ export async function getOpenCv() {
 			return;
 		}
 		
+		// TODO need to go back through and figure out how much of this is really necessary if we patch it to remove
+		// Module.then
 		const script = document.createElement('script');
 		script.src = '../vendor/opencv.js';
 		script.async = true;
@@ -27,7 +28,7 @@ export async function getOpenCv() {
 			setTimeout(function () {
 				clearInterval(poll);
 				reject(new Error('opencv'));
-			}, 3000);
+			}, 300);
 		};
 		window.Module = {
 			onRuntimeInitialized() {
@@ -50,7 +51,7 @@ export async function makeWorkers() {
 	await stat.setParameters({tessedit_char_whitelist: '0123456789 ', tessjs_create_hocr: '0', tessjs_create_tsv: '0'});
 
 	const skSched = createScheduler();
-	const workers = await Promise.all(Array.from({length: 2}, () => createWorker('jpn', 1, tessPaths)));
+	const workers = await Promise.all(Array.from({length: 2}, () => createWorker(CC_GLOBAL ? 'eng' : 'jpn', 1, tessPaths)));
 	for (let i = 0; i < workers.length; ++i) {
 		const w = workers[i];
 		await w.setParameters({tessjs_create_hocr: '0', tessjs_create_tsv: '0'});
@@ -92,16 +93,16 @@ async function readStatsSkills(cv, workers, canv, src) {
 		workers.skSched.addJob('recognize', canv, {rectangle: {top: stl.y, left: stl.x + m + 62, width: m - 62, height: sbr.y - stl.y}}, {text: true, hocr: false, tsv: false})
 	]);
 
-	// a couple rounds of dilate/erode occasionally improves stat results by mostly getting rid of the stat rank icons
-	// not clear if the second round helps or if more than 2 would help more, since it doesnt fully get rid of it
-	// raising kernel to 4x4 makes it worse though
+	// dilate/erode occasionally improves stat results by mostly getting rid of the stat rank icons
+	// second round sometimes helps and sometimes hurts
+	// raising kernel to 4x4 makes it worse, 3x3 is sometimes better and sometimes worse
 	// do this after recognizing skills since it makes that much worse
-	const kern = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(3,3));
+	const kern = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(2,2));
 	const p = new cv.Point(-1,-1);
 	cv.dilate(dst, dst, kern, p, 1);
 	cv.erode(dst, dst, kern, p, 1);
-	cv.dilate(dst, dst, kern, p, 1);
-	cv.erode(dst, dst, kern, p, 1);
+	//cv.dilate(dst, dst, kern, p, 1);
+	//cv.erode(dst, dst, kern, p, 1);
 	const tl = {x: 52, y: 490}, br = {x: 1115, y: 562};
 	cv.imshow(canv, dst);
 	dst.delete();
@@ -258,7 +259,9 @@ function closest(text) {
 	const s = normalize(text).replace(/Lv.$/,'');
 	const sk = {s, kanamap: s.split('').map(isKana), kanjimap: s.split('').map(isKanji)};
 
-	return Object.keys(skillnames).reduce(({ids,min},id) => {
+	// there are some entries in skillnames that don't have real skilldata (for non-general skills i guess)
+	// so iterate skilldata even though we only need the names
+	return Object.keys(skilldata).reduce(({ids,min},id) => {
 		const dist = levendist(normalnames[id], sk);
 		if (dist < min) {
 			return {ids: [id], min: dist};

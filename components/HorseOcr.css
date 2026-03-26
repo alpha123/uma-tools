@@ -1,0 +1,76 @@
+.horseOcr {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+
+.horseOcrContent {
+	align-items: center;
+	display: flex;
+	gap: 60px;
+	height: calc(100% - 2.7em - 4px);
+}
+
+.horseOcrButtons {
+	display: flex;
+	gap: 12px;
+	margin: 10px auto;
+	width: 252px;
+}
+
+.horseOcrButtons > button {
+	flex: 1;
+}
+
+.ocrUpload {
+	background: none;
+	border: none;
+	color: rgb(121, 64, 22);
+	flex: 1;
+	font-weight: bold;
+	font-size: 1.5em;
+	height: 120px;
+	position: relative;
+}
+
+.ocrUpload::before {
+	border-bottom: 2px solid rgb(121, 64, 22);
+	border-image: linear-gradient(to top, rgb(121, 64, 22) 40%, transparent 40%) 1;
+	border-width: 7px;
+	border-style: solid;
+	border-top: none;
+	color: rgb(121, 64, 22);
+	content: '🡑';
+	font-size: 3.25em;
+	height: 120px;
+	left: calc(50% - 60px);
+	padding: 0 24px;
+	position: absolute;
+	top: -100px;
+	width: 60px;
+}
+
+.ocrRightPane {
+	flex: 1;
+	height: 100%;
+}
+
+.ocrLoading {
+	display: block;
+	font-size: 2em;
+	margin-top: calc(50% - 1em);
+	text-align: center;
+}
+
+.ocrResolvePrompt > span {
+	font-size: 1.2em;
+}
+
+/* perhaps ill advised attempt to make the sizes match screenshots more closely, which in my opinion makes comparing easier */
+.ocrRightPane .horseDef { font-size: 14px; }
+.ocrRightPane .horseParam { padding: 6px; }
+.ocrRightPane .horseAptitudes > div, .horseFullAptitudes > div { height: 1.6em; }
+.ocrRightPane .horseFullAptitudes { gap: 6px 10px; }
+.ocrRightPane .horseSkillHeader { margin: 10px auto; }
+.ocrRightPane .horseDef { width: 640px; }

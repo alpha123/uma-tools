@@ -3,7 +3,7 @@ import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/h
 import { memo } from 'preact/compat';
 import { IntlProvider, Text, Localizer, useText } from 'preact-i18n';
 
-import { O, c, id, useLens, useGetter, Delete } from '../optics';
+import { O, c, id, useLens, useGetter, useSetter, Delete } from '../optics';
 
 import { useLanguage } from '../components/Language';
 import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components/SkillList';
@@ -21,6 +21,7 @@ import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillmeta from '../skill_meta.json';
 
 const STRINGS_ja = Object.freeze({
+	'ocrtip': 'Read from screenshot (beta)',
 	'select': Object.freeze({
 		'strategy': '作戦',
 		'surfaceaptitude': 'バ場適性',
@@ -42,6 +43,7 @@ const STRINGS_ja = Object.freeze({
 });
 
 const STRINGS_en = Object.freeze({
+	'ocrtip': 'Read from screenshot (beta)',
 	'select': Object.freeze({
 		'strategy': 'Strategy:',
 		'surfaceaptitude': 'Surface aptitude:',
@@ -63,6 +65,7 @@ const STRINGS_en = Object.freeze({
 });
 
 const STRINGS_global = Object.freeze({
+	'ocrtip': 'Read from screenshot (beta)',
 	'select': Object.freeze({
 		'strategy': 'Style:',
 		'surfaceaptitude': 'Surface aptitude:',
@@ -365,6 +368,7 @@ export const HorseDef = memo(function HorseDef(props) {
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
 	const [ocrOpen, setOcrOpen] = useState(false);
 	const [expanded, setExpanded] = useState(new Set());
+	const setUma = useSetter(props.state);
 	const strategy = useGetter(props.state.strategy);
 	// essentially what we want to do is:
 	//   - when the user selects oonige, the strategy should be set to oonige
@@ -588,11 +592,16 @@ export const HorseDef = memo(function HorseDef(props) {
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
-				<UmaSelector outfitId={l_umaId} starCount={l_starCount} tabindex={tabnext()} />
-				<button onClick={setOcrOpen.bind(null, true)}>OCR</button>
-				<div class={`horseSkillPickerOverlay ${ocrOpen ? "open" : ""}`} onClick={setOcrOpen.bind(null, false)} />
-				<div class={`horseSkillPickerWrapper ${ocrOpen ? "open" : ""}`}>
-					<HorseOcr />
+				<div class="horseTopSection">
+					<UmaSelector outfitId={l_umaId} starCount={l_starCount} tabindex={tabnext()} />
+					{props.showOcr !== false &&
+						<Fragment>
+							<div><Localizer><button class="circleBtn2" title={<Text id="ocrtip" />} onClick={setOcrOpen.bind(null, true)}>📷&#xFE0E;</button></Localizer></div>
+							<div class={`horseSkillPickerOverlay ${ocrOpen ? "open" : ""}`} onClick={setOcrOpen.bind(null, false)} />
+							<div class={`horseSkillPickerWrapper ${ocrOpen ? "open" : ""}`}>
+								<HorseOcr isOpen={ocrOpen} onAccept={(uma) => setUma(uma)} onClose={setOcrOpen.bind(null, false)} />
+							</div>
+						</Fragment>}
 				</div>
 				<div class="horseParams">
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>

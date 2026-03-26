@@ -16,7 +16,7 @@ import { RaceParameters } from '../uma-skill-tools/RaceParameters';
 import { getParser } from '../uma-skill-tools/ConditionParser';
 import { buildBaseStats, buildSkillData, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
 
-import type { HorseState } from '../components/HorseDef';
+import { HorseState, umaForUniqueSkill } from '../components/HorseDefTypes';
 import { SkillCost, costForId } from '../components/SkillList';
 import { runComparison } from './compare';
 
@@ -51,18 +51,13 @@ function formatBasinn(info) {
 	return info.getValue().toFixed(2).replace('-0.00', '0.00') + ' L';
 }
 
-function outfitIdForUniqueSkill(sid: keyof typeof skilldata) {
-	if (sid.length > 6) return outfitIdForUniqueSkill(sid.slice(2));  // evolved unique inherits are 9\d + un-inherited id
-	return (100000 + +sid.slice(2,-1) * 100 + +sid.slice(1,2) + 1).toString();
-}
-
 const SkillNameCell = memo(function SkillNameCell(props) {
 	const r = skilldata[props.id].rarity;
 	return (
 		<div class="chartSkillName">
 			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
 			<img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} />
-			{(r >= 3 && r <= 5 || props.id[0] == '9') && <img src={`/uma-tools/icons/chara/${icons[outfitIdForUniqueSkill(props.id)][+(props.id[0] != '9')]}.png`} loading="lazy" />}
+			{(r >= 3 && r <= 5 || props.id[0] == '9') && <img src={`/uma-tools/icons/chara/${icons[umaForUniqueSkill(props.id)][+(props.id[0] != '9')]}.png`} loading="lazy" />}
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);

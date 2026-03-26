@@ -203,17 +203,17 @@ function reactSetter(l, ref, setState) {
 	return (f) => setState(setter(f, ref.current.state));
 }
 
-export function useLens(l) {
-	const {ref, setState} = useContext(State);
+export function useLens(l, state) {
+	const {ref, setState} = state != null ? state : useContext(State);
 	return [reactGetter(l, ref), reactSetter(l, ref, setState)];
 }
 
-export function useGetter(l) {
-	const {ref} = useContext(State);
+export function useGetter(l, state) {
+	const {ref} = state != null ? state : useContext(State);
 	return reactGetter(l, ref);
 }
 
-export function useSetter(l) {
-	const {ref, setState} = useContext(State);
+export function useSetter(l, state) {
+	const {ref, setState} = state != null ? state : useContext(State);
 	return reactSetter(l, ref, setState);
 }

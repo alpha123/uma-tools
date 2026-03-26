@@ -35,6 +35,12 @@ export function uniqueSkillForUma(oid: string, starCount: 1 | 2 | 3 | 4 | 5): ke
 	return sid;
 }
 
+export function umaForUniqueSkill(sid: keyof typeof skilldata) {
+	if (sid.length > 6) return umaForUniqueSkill(sid.slice(2));  // evolved unique inherits are 9\d + un-inherited id
+	else if (sid.length == 5) return (Math.floor(+sid / 10) * 100 + +sid % 10).toString();
+	return (100000 + +sid.slice(2,-1) * 100 + +sid.slice(1,2) + 1).toString();
+}
+
 // pass these plain objects around instead of actual ActivationSamplePolicy instances since we need to send them
 // between web workers, so we need something serializable.
 export type SamplePolicyDesc = {policy: 'immediate'} | {policy: 'fixed', pos: number}

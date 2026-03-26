@@ -25,12 +25,10 @@ import './app.css';
 
 const UI_ja = Object.freeze({
 	'cardsearch': 'サポートカードを検索',
-	'umaheader': 'ウマ娘詳細',
 	'skillheader': 'スキル：{{sp}}Pt'
 });
 const UI_en = Object.freeze({
 	'cardsearch': 'Search',
-	'umaheader': 'Umamusume Details',
 	'skillheader': 'Skills ({{sp}} SP)'
 });
 const UI_global = extendStrings(UI_en, {
@@ -334,7 +332,7 @@ function BuildPlanner(props) {
 						skillExtra={<HintTips deck={deck} extra={hover} awakenings={awakenings} outfitId={uma.outfitId} />}
 						hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
 					>
-						<Text id="ui.umaheader" />
+						<Text id="common.umaheader" />
 						{scoreUma(uma)}
 					</HorseDef>
 				</div>
