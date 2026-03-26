@@ -139,8 +139,12 @@ export function HorseOcr(props) {
 					}
 				}
 			});
-			setConflicts(newConflicts);
-			setSettled(newSettled);
+			if (newConflicts.length == 0) {
+				setUma(makeUma(stats, uniqueLv, newSettled));
+			} else {
+				setConflicts(newConflicts);
+				setSettled(newSettled);
+			}
 		});
 	}
 
