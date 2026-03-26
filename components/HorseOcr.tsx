@@ -132,6 +132,7 @@ export function HorseOcr(props) {
 		Promise.all([getOpenCv(), makeWorkers()]).then(async ([cvModule, workers]) => {
 			cv.current = cvModule;
 			const {stats, skills, uniqueLv, img: newCvimg} = await readUma(cvModule, workers, img.current, canv.current);
+			killWorkers(workers);
 			setPartialOcrResults({stats, uniqueLv});
 			setCvimg(newCvimg);
 			setLoading(false);
