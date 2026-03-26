@@ -5,7 +5,7 @@ import { IntlProvider, Text } from 'preact-i18n';
 
 import { O, State, makeState, useLens } from '../optics';
 
-import { Skill } from './SkillList';
+import { Skill, SkillList } from './SkillList';
 import { HorseState, SkillSet, umaForUniqueSkill, DEFAULT_HORSE_STATE } from './HorseDefTypes';
 import { HorseDef } from './HorseDef';
 
@@ -13,6 +13,7 @@ import { getOpenCv, makeWorkers, killWorkers, readUma } from './ocr';
 
 import './HorseOcr.css';
 
+import skilldata from '../uma-skill-tools/data/skill_data.json';
 import umas from '../umas.json';
 
 function makeUma(stats, uniqueLv, skills) {
@@ -38,18 +39,26 @@ function makeUma(stats, uniqueLv, skills) {
 }
 
 function ResolvePrompt(props) {
+	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
 	const canv = useRef(null);
 	useEffect(function () {
 		const cv = props.cv;
 		const b = props.bbox;
 		const r = new cv.Rect(b.x0 - 80, b.y0 - 40, 120 - b.x0 + b.x1, 80 - b.y0 + b.y1);
 		cv.imshow(canv.current, props.img.roi(r));
-	}, [props.img, props.bbox])
+	}, [props.img, props.bbox]);
+
 	function handleClick(e) {
 		const se = e.target.closest('div.skill');
 		if (se == null) return;
 		props.resolve(se.dataset.skillid);
 	}
+
+	function selectOther(skills) {
+		setSkillPickerOpen(false);
+		props.resolve(Array.from(skills.values())[0]);
+	}
+
 	return (
 		<div class="ocrResolvePrompt">
 			<span>Computer had trouble reading some skills. Please help it out.</span>
@@ -57,7 +66,14 @@ function ResolvePrompt(props) {
 			<canvas ref={canv} />
 			<ul class="skillList" onClick={handleClick}>
 				{props.candidates.map(id => <li key={id}><Skill id={id} selected={false} /></li>)}
+				<li key="add">
+					<button class="skill addSkillButton" onClick={setSkillPickerOpen.bind(null, true)}><span></span>Other</button>
+				</li>
 			</ul>
+			<div class={`horseSkillPickerOverlay ${skillPickerOpen ? "open" : ""}`} onClick={setSkillPickerOpen.bind(null, false)} />
+			<div class={`horseSkillPickerWrapper ${skillPickerOpen ? "open" : ""}`}>
+				<SkillList ids={Object.keys(skilldata)} selected={new Map()} setSelected={selectOther} isOpen={skillPickerOpen} />
+			</div>
 		</div>
 	);
 }
