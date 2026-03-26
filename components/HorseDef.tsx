@@ -7,6 +7,7 @@ import { O, c, id, useLens, useGetter, useSetter, Delete } from '../optics';
 
 import { useLanguage } from '../components/Language';
 import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components/SkillList';
+import { COMMON_STRINGS } from '../strings/common';
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
@@ -33,6 +34,7 @@ const STRINGS_ja = Object.freeze({
 		'distanceaptitude': '距離適正',
 		'strategyaptitude': '脚質適正'
 	}),
+	'shortstrategy': COMMON_STRINGS['ja']['strategy'],
 	'skillheader': 'スキル',
 	'addskill': 'スキル追加',
 	'moodfmt': '調子：{{mood}}',
@@ -55,6 +57,7 @@ const STRINGS_en = Object.freeze({
 		'distanceaptitude': 'Distance',
 		'strategyaptitude': 'Strategy'
 	}),
+	'shortstrategy': COMMON_STRINGS['en']['strategy'],
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
 	'moodfmt': 'Motivation: {{mood}}',
@@ -77,6 +80,7 @@ const STRINGS_global = Object.freeze({
 		'distanceaptitude': 'Distance',
 		'strategyaptitude': 'Style'
 	}),
+	'shortstrategy': Object.freeze(['', 'Front', 'Pace', 'Late', 'End']),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
 	'moodfmt': 'Mood: {{mood}}',
@@ -551,19 +555,19 @@ export const HorseDef = memo(function HorseDef(props) {
 						<span><Text id="selectshort.strategyaptitude" /></span>
 					</div>
 					<div>
-						<span><Text id="common.strategy.1" /></span>
+						<span><Text id="shortstrategy.1" /></span>
 						<AptitudeSelect a={props.state.aptitudes[4]} tabindex={tabnext()} />
 					</div>
 					<div>
-						<span><Text id="common.strategy.2" /></span>
+						<span><Text id="shortstrategy.2" /></span>
 						<AptitudeSelect a={props.state.aptitudes[5]} tabindex={tabnext()} />
 					</div>
 					<div>
-						<span><Text id="common.strategy.3" /></span>
+						<span><Text id="shortstrategy.3" /></span>
 						<AptitudeSelect a={props.state.aptitudes[6]} tabindex={tabnext()} />
 					</div>
 					<div>
-						<span><Text id="common.strategy.4" /></span>
+						<span><Text id="shortstrategy.4" /></span>
 						<AptitudeSelect a={props.state.aptitudes[7]} tabindex={tabnext()} />
 					</div>
 				</div>
