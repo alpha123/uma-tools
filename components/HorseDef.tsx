@@ -27,6 +27,11 @@ const STRINGS_ja = Object.freeze({
 		'distanceaptitude': '距離適正',
 		'strategyaptitude': '脚質適正'
 	}),
+	'selectshort': Object.freeze({
+		'surfaceaptitude': 'バ場適性',
+		'distanceaptitude': '距離適正',
+		'strategyaptitude': '脚質適正'
+	}),
 	'skillheader': 'スキル',
 	'addskill': 'スキル追加',
 	'moodfmt': '調子：{{mood}}',
@@ -43,6 +48,11 @@ const STRINGS_en = Object.freeze({
 		'distanceaptitude': 'Distance aptitude:',
 		'strategyaptitude': 'Strategy aptitude:'
 	}),
+	'selectshort': Object.freeze({
+		'surfaceaptitude': 'Surface',
+		'distanceaptitude': 'Distance',
+		'strategyaptitude': 'Strategy'
+	}),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
 	'moodfmt': 'Motivation: {{mood}}',
@@ -58,6 +68,11 @@ const STRINGS_global = Object.freeze({
 		'surfaceaptitude': 'Surface aptitude:',
 		'distanceaptitude': 'Distance aptitude:',
 		'strategyaptitude': 'Style aptitude:'
+	}),
+	'selectshort': Object.freeze({
+		'surfaceaptitude': 'Track',
+		'distanceaptitude': 'Distance',
+		'strategyaptitude': 'Style'
 	}),
 	'skillheader': 'Skills',
 	'addskill': 'Add Skill',
@@ -497,7 +512,7 @@ export const HorseDef = memo(function HorseDef(props) {
 			return (
 				<div class="horseFullAptitudes">
 					<div>
-						<span><Text id="select.surfaceaptitude" /></span>
+						<span><Text id="selectshort.surfaceaptitude" /></span>
 					</div>
 					<div>
 						<span><Text id="common.surface.1" /></span>
@@ -510,7 +525,7 @@ export const HorseDef = memo(function HorseDef(props) {
 					<div></div>
 					<div></div>
 					<div>
-						<span><Text id="select.distanceaptitude" /></span>
+						<span><Text id="selectshort.distanceaptitude" /></span>
 					</div>
 					<div>
 						<span><Text id="common.distance.1" /></span>
@@ -529,7 +544,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						<AptitudeSelect a={props.state.aptitudes[3]} tabindex={tabnext()} />
 					</div>
 					<div>
-						<span><Text id="select.strategyaptitude" /></span>
+						<span><Text id="selectshort.strategyaptitude" /></span>
 					</div>
 					<div>
 						<span><Text id="common.strategy.1" /></span>
