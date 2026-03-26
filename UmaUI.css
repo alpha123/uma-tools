@@ -12,10 +12,6 @@
 	padding: 0 0.7em;
 }
 
-.btnType1:active {
-	box-shadow: none;
-}
-
 .btnType2 {
 	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
 	border: 2px solid transparent;
@@ -30,8 +26,12 @@
 	padding: 0 0.7em;
 }
 
-.btnType2:active {
+.btnType1:not([disabled]):active, .btnType2:not([disabled]):active {
 	box-shadow: none;
+}
+
+.btnType1[disabled], .btnType2[disabled] {
+	filter: brightness(0.8);
 }
 
 .circleBtn2 {
