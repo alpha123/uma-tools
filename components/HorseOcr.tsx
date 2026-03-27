@@ -89,6 +89,7 @@ export function HorseOcr(props) {
 	const canv = useRef(null);
 	const cv = useRef(null);
 	const cvimgs = useRef([]);
+	const fileInput = useRef(null);
 
 	const [partialOcrResults, setPartialOcrResults] = useState<{stats: number[], aptitudes: HorseState['aptitudes'], uniqueLv: number}>(null);
 	const [conflicts, setConflicts] = useState([]);
@@ -100,26 +101,41 @@ export function HorseOcr(props) {
 	useEffect(function () {
 		if (!props.isOpen) return;
 		function paste(e) {
+			const newBlobs = [];
 			for (const it of e.clipboardData.items) {
 				if (it.kind == 'file') {
-					setImgData(imgData.concat([URL.createObjectURL(it.getAsFile())]));
+					newBlobs.push(URL.createObjectURL(it.getAsFile()));
 				}
 			}
+			setImgData(imgData.concat(newBlobs));
 		}
 		window.addEventListener('paste', paste);
 		return () => window.removeEventListener('paste', paste);
 	}, [props.isOpen, imgData]);
 
+	function acceptFileUpload(e) {
+		if (ocrState != OcrState.Uploading) return;
+		e.preventDefault();
+		const newBlobs = [];
+		const files = e instanceof DragEvent ? e.dataTransfer.files : e.currentTarget.files;
+		for (const f of files) {
+			newBlobs.push(URL.createObjectURL(f));
+		}
+		setImgData(imgData.concat(newBlobs));
+	}
+
 	function imageGridClick(e) {
 		const btn = e.target.closest('button');
 		if (btn == null) return;
 		const newImgData = imgData.slice();
-		newImgData.splice(+btn.dataset.idx, 1);
+		const blob = newImgData.splice(+btn.dataset.idx, 1)[0];
+		URL.revokeObjectURL(blob);
 		setImgData(newImgData);
 	}
 
 	function reset() {
 		setOcrState(OcrState.Uploading);
+		imgData.forEach(blob => URL.revokeObjectURL(blob));
 		setImgData([]);
 		setPartialOcrResults(null);
 		setConflicts([]);
@@ -209,7 +225,7 @@ export function HorseOcr(props) {
 
 	return (
 		<div class="horseOcr">
-			<div class="horseOcrContent">
+			<div class="horseOcrContent" onDragOver={e => e.preventDefault()} ondrop={acceptFileUpload}>
 				{imgData.map((d,i) => <img src={d} style="display:none" ref={(el) => imgs.current[i] = el} />)}
 				<canvas ref={canv} style="display:none" />
 				<div class="ocrImageGrid" onClick={imageGridClick}>
@@ -225,9 +241,10 @@ export function HorseOcr(props) {
 						switch (ocrState) {
 							case OcrState.Uploading:
 								return <div class="ocrUploadWrapper">
-									<button class="ocrUpload">
+									<button class="ocrUpload" onClick={() => fileInput.current.click()}>
 										<span>🡑</span><span>Upload or paste</span>
 									</button>
+									<input type="file" accept="image/*" multiple onChange={acceptFileUpload} ref={fileInput} />
 								</div>;
 							case OcrState.Loading:
 							case OcrState.Loading2:
