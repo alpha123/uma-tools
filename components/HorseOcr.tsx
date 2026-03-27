@@ -19,8 +19,8 @@ import umas from '../umas.json';
 function makeUma(stats, aptitudes, uniqueLv, skills) {
 	const unique = skills.find(sid => sid.length <= 6 && sid[0] == '1');  // pinks also start with 1xx
 	console.assert(unique != null);
-	const outfitId = umaForUniqueSkill(unique);
-	const u = umas[outfitId.slice(0,4)].outfits[outfitId];
+	const outfitId = unique == null ? '' : umaForUniqueSkill(unique);
+	const u = outfitId && umas[outfitId.slice(0,4)].outfits[outfitId];
 	// lowest star count that can reach this unique level
 	const starCount = skills[0].length == 5 ? uniqueLv - 3 : uniqueLv - 1;
 	return {
@@ -32,7 +32,7 @@ function makeUma(stats, aptitudes, uniqueLv, skills) {
 		power: stats[2],
 		guts: stats[3],
 		wisdom: stats[4],
-		strategy: ['', 'Nige', 'Senkou', 'Sasi', 'Oikomi'][u.strategy],
+		strategy: u ? ['', 'Nige', 'Senkou', 'Sasi', 'Oikomi'][u.strategy] : 'Senkou',
 		aptitudes: aptitudes.slice(2).concat(aptitudes.slice(0,2)),
 		skills: SkillSet(skills),
 		uniqueLv
