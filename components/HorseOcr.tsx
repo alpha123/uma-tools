@@ -188,7 +188,7 @@ export function HorseOcr(props) {
 						{conflicts.length > 0 && <ResolvePrompt cv={cv.current} img={cvimg} bbox={conflicts[0].bbox} candidates={conflicts[0].candidates} resolve={resolve} />}
 						{uma != null &&
 							<State.Provider value={umaState}>
-								<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" courseDistance={0} showPolicyEd={false} showOcr={false} tabstart={() => 1}>
+								<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" course={null} showPolicyEd={false} showOcr={false} tabstart={() => 1}>
 									<Text id="common.umaheader" />
 								</HorseDef>
 							</State.Provider>

@@ -490,6 +490,15 @@ export const HorseDef = memo(function HorseDef(props) {
 		});
 	}, [expanded]);
 
+	function handleOcrAccept(ocrUma) {
+		if (props.course != null) {
+			ocrUma.distanceAptitude = ocrUma.aptitudes[props.course.distanceType - 1];
+			ocrUma.surfaceAptitude = ocrUma.aptitudes[7 + props.course.surface];
+			ocrUma.strategyAptitude = ocrUma.aptitudes[4 + ['Nige', 'Senkou', 'Sasi', 'Oikomi'].indexOf(ocrUma.strategy.replace('Oonige', 'Nige'))];
+		}
+		setUma(ocrUma);
+	}
+
 	// calls tabnext() so must be called in the place it is used
 	function getAptitudesSection() {
 		switch (props.aptitudesMode) {
@@ -575,12 +584,13 @@ export const HorseDef = memo(function HorseDef(props) {
 		}
 	}
 
+	const courseDistance = props.course ? props.course.distance : 0;
 	const skillList = useMemo(function () {
 		const u = uniqueSkillForUma(umaId, starCount);
 		return Array.from(skills.values()).sort(skillOrder).map(id =>
 			expanded.has(id)
 				? <li key={id} class="horseExpandedSkill">
-					  <ExpandedSkillDetails id={id} distanceFactor={props.courseDistance} lv={id == u && l_uniqueLv} dismissable={id != u}
+					  <ExpandedSkillDetails id={id} distanceFactor={courseDistance} lv={id == u && l_uniqueLv} dismissable={id != u}
 						  samplePolicy={props.showPolicyEd ? props.state.samplePolicies.get(id) : null}
 						  topChildren={props.hintLevels && <SkillCost id={id} hints={props.hintLevels} ownedSkills={new Map() /* ignore the fact that we own them or the cost would always be 0 */} />} />
 					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
@@ -590,7 +600,7 @@ export const HorseDef = memo(function HorseDef(props) {
 					  {props.skillExtra && cloneElement(props.skillExtra, {id})}
 				  </li>
 		);
-	}, [skills, umaId, expanded, props.courseDistance, props.hintLevels, props.showPolicyEd, props.skillExtra]);
+	}, [skills, umaId, expanded, courseDistance, props.hintLevels, props.showPolicyEd, props.skillExtra]);
 
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
@@ -603,7 +613,7 @@ export const HorseDef = memo(function HorseDef(props) {
 							<div><Localizer><button class="circleBtn2" title={<Text id="ocrtip" />} onClick={setOcrOpen.bind(null, true)}>📷&#xFE0E;</button></Localizer></div>
 							<div class={`horseSkillPickerOverlay ${ocrOpen ? "open" : ""}`} onClick={setOcrOpen.bind(null, false)} />
 							<div class={`horseSkillPickerWrapper ${ocrOpen ? "open" : ""}`}>
-								<HorseOcr isOpen={ocrOpen} onAccept={(uma) => setUma(uma)} onClose={setOcrOpen.bind(null, false)} />
+								<HorseOcr isOpen={ocrOpen} onAccept={handleOcrAccept} onClose={setOcrOpen.bind(null, false)} />
 							</div>
 						</Fragment>}
 				</div>
