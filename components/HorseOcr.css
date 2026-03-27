@@ -107,3 +107,9 @@
 .ocrRightPane .horseFullAptitudes { gap: 6px 10px; }
 .ocrRightPane .horseSkillHeader { margin: 10px auto; }
 .ocrRightPane .horseDef { width: 640px; }
+
+@media (orientation: portrait) {
+	.horseOcrContent {
+		flex-direction: column;
+	}
+}
