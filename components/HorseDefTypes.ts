@@ -81,6 +81,7 @@ export const DEFAULT_HORSE_STATE = {
 	distanceAptitude: 'S',
 	surfaceAptitude: 'A',
 	strategyAptitude: 'A',
+	// short mile medium long nige senkou sasi oikomi turf dirt
 	aptitudes: ['S','S','S','S','A','A','A','A','A','A'],
 	skills: SkillSet([]),
 	samplePolicies: new Map(),

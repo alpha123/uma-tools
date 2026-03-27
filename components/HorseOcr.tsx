@@ -16,7 +16,7 @@ import './HorseOcr.css';
 import skilldata from '../uma-skill-tools/data/skill_data.json';
 import umas from '../umas.json';
 
-function makeUma(stats, uniqueLv, skills) {
+function makeUma(stats, aptitudes, uniqueLv, skills) {
 	console.assert(skills[0][0] == '1');
 	const outfitId = umaForUniqueSkill(skills[0]);
 	const u = umas[outfitId.slice(0,4)].outfits[outfitId];
@@ -32,7 +32,7 @@ function makeUma(stats, uniqueLv, skills) {
 		guts: stats[3],
 		wisdom: stats[4],
 		strategy: ['', 'Nige', 'Senkou', 'Sasi', 'Oikomi'][u.strategy],
-		aptitudes: u.aptitudes.map(i => ' GFEDCBA'[i]),
+		aptitudes: aptitudes.slice(2).concat(aptitudes.slice(0,2)),
 		skills: SkillSet(skills),
 		uniqueLv
 	};
@@ -86,7 +86,7 @@ export function HorseOcr(props) {
 	const cv = useRef(null);
 
 	const [cvimg, setCvimg] = useState(null);
-	const [partialOcrResults, setPartialOcrResults] = useState<{stats: number[], uniqueLv: number}>(null);
+	const [partialOcrResults, setPartialOcrResults] = useState<{stats: number[], aptitudes: HorseState['aptitudes'], uniqueLv: number}>(null);
 	const [conflicts, setConflicts] = useState([]);
 	const [settled, setSettled] = useState([]);
 
@@ -131,9 +131,9 @@ export function HorseOcr(props) {
 		setLoading(true);
 		Promise.all([getOpenCv(), makeWorkers()]).then(async ([cvModule, workers]) => {
 			cv.current = cvModule;
-			const {stats, skills, uniqueLv, img: newCvimg} = await readUma(cvModule, workers, img.current, canv.current);
+			const {stats, aptitudes, skills, uniqueLv, img: newCvimg} = await readUma(cvModule, workers, img.current, canv.current);
 			killWorkers(workers);
-			setPartialOcrResults({stats, uniqueLv});
+			setPartialOcrResults({stats, aptitudes, uniqueLv});
 			setCvimg(newCvimg);
 			setLoading(false);
 			const newConflicts = [], newSettled = [];
@@ -157,7 +157,7 @@ export function HorseOcr(props) {
 				}
 			});
 			if (newConflicts.length == 0) {
-				setUma(makeUma(stats, uniqueLv, newSettled));
+				setUma(makeUma(stats, aptitudes, uniqueLv, newSettled));
 			} else {
 				setConflicts(newConflicts);
 				setSettled(newSettled);
@@ -171,7 +171,7 @@ export function HorseOcr(props) {
 		setSettled(newSettled);
 		setConflicts(newConflicts);
 		if (newConflicts.length == 0) {
-			setUma(makeUma(partialOcrResults.stats, partialOcrResults.uniqueLv, newSettled));
+			setUma(makeUma(partialOcrResults.stats, partialOcrResults.aptitudes, partialOcrResults.uniqueLv, newSettled));
 		}
 	}
 

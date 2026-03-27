@@ -119,6 +119,49 @@ async function readStatsSkills(cv, workers, canv, src) {
 	return {stats, skleft: skleft.data.lines, skright: skright.data.lines};
 }
 
+function readAptitudes(cv, src, APTITUDES) {
+	const apt = src.roi(new cv.Rect(220, 590, 889, 210));
+	const rgb = new cv.Mat();
+	cv.cvtColor(apt, rgb, cv.COLOR_RGBA2RGB);
+	const hsv = new cv.Mat();
+	cv.cvtColor(rgb, hsv, cv.COLOR_RGB2HSV);
+
+	// find locations of each color, sort by y and then by x, order is
+	// turf dirt short mile medium long nige senkou sasi oikomi
+	// note that the expected order for a HorseState has surface moved to the back
+	const kern = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(3,3));
+	const p = new cv.Point(-1,-1);
+	const mask = new cv.Mat();
+	const _hierarchy = new cv.Mat();
+	const contours = new cv.MatVector();
+	const rects = [];
+	Object.keys(APTITUDES).forEach(a => {
+		const [lo,hi] = APTITUDES[a];
+		cv.inRange(hsv, lo, hi, mask);
+		cv.erode(mask, mask, kern, p, 2);
+		cv.dilate(mask, mask, kern, p, 5);
+		cv.findContours(mask, contours, _hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+		for (let i = 0; i < contours.size(); ++i) {
+			const c = contours.get(i);
+			const r = cv.boundingRect(c);
+			rects.push({letter: a, rect: r});
+			c.delete();
+		}
+	});
+	contours.delete();
+	_hierarchy.delete();
+	hsv.delete();
+	rgb.delete();
+
+	console.assert(rects.length >= 10);
+	// filter to 10 largest by area to remove noise
+	return rects
+		.sort((a,b) => b.rect.width*b.rect.height - a.rect.width*a.rect.height)
+		.slice(0,10)
+		.sort((a,b) => Math.floor(a.rect.y/70) - Math.floor(b.rect.y/70) || a.rect.x - b.rect.x)
+		.map(a => a.letter);
+}
+
 function findBounds(cv, src) {
 	const greenLo = new cv.Mat(src.rows, src.cols, src.type(), [107, 182, 7, 0]),
 		greenHi = new cv.Mat(src.rows, src.cols, src.type(), [173, 234, 126, 255]);
@@ -289,10 +332,33 @@ function cleanMultilineSkills(lines) {
 	}, []);
 }
 
+function getAptitudeRanges(cv) {
+	const makeApt = (lo, hi) => [
+		new cv.Mat(210, 889, cv.CV_8UC3, lo.concat([0])),
+		new cv.Mat(210, 889, cv.CV_8UC3, hi.concat([255]))
+	];
+	const
+		S = makeApt([20, 120, 133], [24, 255, 255]),
+		A = makeApt([9, 119, 145], [14, 236, 255]),
+		B = makeApt([168, 69, 145], [172, 210, 255]),
+		C = makeApt([48, 70, 94], [56, 214, 235]),
+		D = makeApt([99, 85, 130], [106, 217, 255]),
+		E = makeApt([140, 79, 129], [144, 184, 255]),
+		F = makeApt([120, 50, 140], [125, 130, 242]),
+		G = makeApt([0, 0, 68], [165, 32, 209]);
+	return {S,A,B,C,D,E,F,G};
+}
+
+function deleteAptitudeRanges(aptRanges) {
+	Object.values(aptRanges).forEach(pairs => pairs.forEach(a => a.delete()));
+}
+
 export async function readUma(cv, workers, img, canv) {
 	let src = cv.imread(img);
 	const r = findBounds(cv, src);
 	src = resize(cv, src.roi(r));
+	const aptRanges = getAptitudeRanges(cv);
+	const aptitudes = readAptitudes(cv, src, aptRanges);
 	const {stats, skleft, skright} = await readStatsSkills(cv, workers, canv, src);
 	let uniqueLv = 0;
 	const skills = cleanMultilineSkills(skleft).concat(cleanMultilineSkills(skright)).map(line => {
@@ -304,5 +370,6 @@ export async function readUma(cv, workers, img, canv) {
 		return {candidates: closest(s), bbox: line.bbox};
 	});
 	uniqueLv = Math.min(Math.max(uniqueLv, 1), 10);
-	return {stats, skills, uniqueLv, img: src};
+	deleteAptitudeRanges(aptRanges);
+	return {stats, aptitudes, skills, uniqueLv, img: src};
 }
