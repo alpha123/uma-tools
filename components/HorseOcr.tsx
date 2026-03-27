@@ -21,6 +21,7 @@ function makeUma(stats, aptitudes, uniqueLv, skills) {
 	console.assert(unique != null);
 	const outfitId = unique == null ? '' : umaForUniqueSkill(unique);
 	const u = outfitId && umas[outfitId.slice(0,4)].outfits[outfitId];
+	uniqueLv = Math.min(Math.max(uniqueLv, 1), 10);
 	// lowest star count that can reach this unique level
 	const starCount = skills[0].length == 5 ? uniqueLv - 3 : uniqueLv - 1;
 	return {

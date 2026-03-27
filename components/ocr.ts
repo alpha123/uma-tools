@@ -363,13 +363,12 @@ export async function readUma(cv, workers, img, canv) {
 	let uniqueLv = 0;
 	const skills = cleanMultilineSkills(skleft).concat(cleanMultilineSkills(skright)).map(line => {
 		// any potential \s already stripped by normalize
-		const s = normalize(line.text).replace(CC_GLOBAL ? /Lvl(\d)$/ : /Lv(\d)$/, (_, lv) => {
+		const s = normalize(line.text).replace(CC_GLOBAL ? /Lvl(\d)$/m : /Lv(\d)$/, (_, lv) => {
 			uniqueLv = +lv;
 			return '';
 		});
 		return {candidates: closest(s), bbox: line.bbox};
 	});
-	uniqueLv = Math.min(Math.max(uniqueLv, 1), 10);
 	deleteAptitudeRanges(aptRanges);
 	return {stats, aptitudes, skills, uniqueLv, img: src};
 }
