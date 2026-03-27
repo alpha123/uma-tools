@@ -34,6 +34,12 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-03-27</h2>
+					<ul>
+						<li><strong>Experimental:</strong> You can now load umas from in-game screenshots. Press the 📷&#xFE0E; button in the uma editor. Please let me know if this works particularly well or particularly poorly for you.</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-03-22</h2>
 					<ul>
 						<li>Uma star count can now be changed to select 1★/2★ versions of uniques</li>
