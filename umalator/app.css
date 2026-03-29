@@ -180,7 +180,7 @@ button { font-family: Inter, "Noto Sans JP", sans-serif; }
 	display: flex;
 }
 
-#buttonsRowSpace {
+.spacer {
 	flex: 1;
 }
 
@@ -578,11 +578,7 @@ strong.uma2 { color: var(--uma2-color); }
 	align-items: center;
 	display: flex;
 	flex-direction: column;
-	margin-top: 24px;
-}
-
-#stacalcForceMaxSpurt {
-	margin-top: 50px;
+	height: calc(55vh - 2px);
 }
 
 #basinnChartSelect {

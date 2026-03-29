@@ -1041,7 +1041,7 @@ function Umalator(props) {
 						<div id="buttonsRow">
 							<TrackSelect key={courseId} courseid={courseId} setCourseid={setCourseId} tabindex={2} />
 							<RacePresets courseId={O.courseId} racedef={O.racedef} />
-							<div id="buttonsRowSpace" />
+							<div class="spacer" />
 							<TimeOfDaySelect t={O.racedef.time} />
 							<div>
 								<GroundSelect g={O.racedef.ground} />
@@ -1084,6 +1084,7 @@ function Umalator(props) {
 							][mode]
 						}
 						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
+						<div class="spacer" />
 						{
 							mode == Mode.Chart &&
 								<div id="extendedOptionsRow">
