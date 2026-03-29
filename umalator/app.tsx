@@ -170,8 +170,9 @@ const presets = (CC_GLOBAL ? [
 	{type: EventType.CM, name: 'Gemini Cup', date: '2025-09-11', courseId: 10811, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Taurus Cup', date: '2025-08-21', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday}
 ] : [
+	{type: EventType.CM, date: '2026-06-30' /* TODO date */, courseId: 10606, season: Season.Spring, ground: GroundCondition.Soft, weather: Weather.Cloudy, time: Time.Midday},
 	{type: EventType.LOH, date: '2026-05-31' /* TODO date */, courseId: 10801, season: Season.Spring, time: Time.Midday},
-	{type: EventType.CM, date: '2026-04-30' /* TODO date */, courseId: 11709, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, date: '2026-04-23', courseId: 11709, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, date: '2026-03-22', courseId: 11703, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.LOH, date: '2026-02-15', courseId: 10602, season: Season.Winter, time: Time.Midday},
 	{type: EventType.CM, date: '2026-01-22', courseId: 10506, season: Season.Winter, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
