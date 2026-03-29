@@ -64,7 +64,8 @@ const UI_ja = Object.freeze({
 		'all': '全スキル',
 		'inherit': '継承固有スキル',
 		'selected': '選択したスキル',
-		'addskill': '+ スキル追加'
+		'addskill': '+ スキル追加',
+		'clear': 'クリア'
 	}),
 	'kakari': '掛かり'
 });
@@ -97,7 +98,8 @@ const UI_en = Object.freeze({
 		'all': 'All skills',
 		'inherit': 'Inherited uniques',
 		'selected': 'Selected skills',
-		'addskill': '+ Add Skill'
+		'addskill': '+ Add Skill',
+		'clear': 'Clear'
 	}),
 	'kakari': 'Kakari'
 });
@@ -730,6 +732,12 @@ function Umalator(props) {
 		setLastChartRun({...lastChartRun, skills: lastChartRun.skills.filter(x => x != id)});
 	}
 
+	function clearChartSkills() {
+		setChartSkills([]);
+		setTableData(new Map());
+		setLastChartRun({...lastChartRun, skills: [], fresh: true});
+	}
+
 	const workers = [1,2,3,4].map(_ => useMemo(() => {
 		const w = new Worker('./simulator.worker.js');
 		w.addEventListener('message', function (e) {
@@ -1103,7 +1111,10 @@ function Umalator(props) {
 											<label for="basinnChartSelectSelected"><Text id="ui.basinnchartselection.selected" /></label>
 										</div>
 									</fieldset>
-									<button id="basinnChartAddSkill" class="btnType2" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+									<div id="basinnChartSelectButtons">
+										<button class="btnType2" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={clearChartSkills}><Text id="ui.basinnchartselection.clear" /></button>
+										<button class="btnType1" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+									</div>
 									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
 									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
 										<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />

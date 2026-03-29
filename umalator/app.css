@@ -587,6 +587,15 @@ strong.uma2 { color: var(--uma2-color); }
 	flex-direction: column;
 }
 
+#basinnChartSelectButtons {
+	display: flex;
+	gap: 6px;
+}
+
+#basinnChartSelectButtons > button {
+	min-width: 0;
+}
+
 #basinnChartRefresh {
 	background: unset;
 	border: unset;
