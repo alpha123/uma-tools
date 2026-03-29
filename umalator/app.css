@@ -118,7 +118,7 @@ button { font-family: Inter, "Noto Sans JP", sans-serif; }
 #buttonsRow {
 	align-items: center;
 	display: flex;
-	gap: 8px;
+	gap: 20px;
 	margin-left: 20px;
 	margin-top: -10px;
 	position: relative;
@@ -127,6 +127,7 @@ button { font-family: Inter, "Noto Sans JP", sans-serif; }
 
 .presetSelect {
 	border: none;
+	margin-left: -16px;
 	padding: 0;
 }
 
