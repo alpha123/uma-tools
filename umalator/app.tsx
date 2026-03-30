@@ -559,8 +559,10 @@ const RacePresets = memo(function RacePresets(props) {
 	);
 }, K(true));
 
-const allSkills = Object.keys(skilldata);
-const baseSkillsToTest = allSkills.filter(id => isGeneralSkill(id) && !isPurpleSkill(id));
+const NOT_REAL_UNIQUES = ['1400011', '1400021'];  // ?? what are these
+const allSkills = Object.keys(skilldata).filter(id => NOT_REAL_UNIQUES.indexOf(id) == -1);
+const nonPurpleSkills = allSkills.filter(id => !isPurpleSkill(id));
+const baseSkillsToTest = nonPurpleSkills.filter(isGeneralSkill);
 
 function getNullTableData(skills) {
 	const filler = new Map();

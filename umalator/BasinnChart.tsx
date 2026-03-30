@@ -57,7 +57,7 @@ const SkillNameCell = memo(function SkillNameCell(props) {
 		<div class="chartSkillName">
 			{props.dismissable && <span class="chartSkillDismiss">✕</span>}
 			<img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[props.id].iconId}.png`} />
-			{(r >= 3 && r <= 5 || props.id[0] == '9') && <img src={`/uma-tools/icons/chara/${icons[umaForUniqueSkill(props.id)][+(props.id[0] != '9')]}.png`} loading="lazy" />}
+			{(r >= 3 && r <= 5 || props.id[0] == '9') && <img src={`/uma-tools/icons/chara/${icons[umaForUniqueSkill(props.id,3)][+(props.id[0] != '9')]}.png`} loading="lazy" />}
 			<span><Text id={`skillnames.${props.id}`} /></span>
 		</div>
 	);
