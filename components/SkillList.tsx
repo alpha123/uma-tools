@@ -124,7 +124,8 @@ const STRINGS_ja = Object.freeze({
 		'erlang': 'Random (Erlang)',
 		'straight-random': 'straight_random',
 		'all-corner-random': 'all_corner_random'
-	})
+	}),
+	'selectall': 'すべて選択'
 });
 
 const STRINGS_en = Object.freeze({
@@ -205,7 +206,8 @@ const STRINGS_en = Object.freeze({
 		'erlang': 'Random (Erlang)',
 		'straight-random': 'straight_random',
 		'all-corner-random': 'all_corner_random'
-	})
+	}),
+	'selectall': 'Select All'
 });
 
 const STRINGS_global = extendStrings(STRINGS_en, {
@@ -768,10 +770,10 @@ export function SkillList(props) {
 	const [searchText, setSearchText] = useState('');
 
 	// group - allow selecting one skill per group
-	// single - select each skill individually
+	// all - select skills independently of group; show "select all" button
 	const selectionMode = props.selectionMode || 'group';
 	function groupIdFor(id) {
-		return selectionMode == 'single' ? id : skillmeta[id].groupId;
+		return selectionMode == 'all' ? id : skillmeta[id].groupId;
 	}
 
 	useEffect(function () {
@@ -799,6 +801,12 @@ export function SkillList(props) {
 		} else {
 			newSelected.set(groupId, id);
 		}
+		props.setSelected(newSelected);
+	}
+
+	function selectAll(e) {
+		const newSelected = new Map(props.selected);
+		Array.from(visible).forEach(id => newSelected.set(groupIdFor(id), id));
 		props.setSelected(newSelected);
 	}
 
@@ -905,6 +913,10 @@ export function SkillList(props) {
 				</FilterGroup>
 			</div>
 			<ul class="skillList" onClick={toggleSelected}>{items}</ul>
+			{selectionMode == 'all' &&
+				<div class="skillListButtonsRow">
+					<button class="btnType2" onClick={selectAll}><Text id="selectall" /></button>
+				</div>}
 		</IntlProvider>
 	);
 }

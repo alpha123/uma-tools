@@ -1119,7 +1119,7 @@ function Umalator(props) {
 									</div>
 									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
 									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>
-										<SkillList ids={allSkills} selectionMode="single" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
+										<SkillList ids={nonPurpleSkills} selectionMode="all" selected={chartSkillsMap} setSelected={setChartSkillsAndClose} isOpen={chartSkillPickerOpen} />
 									</div>
 								</div>
 						}
