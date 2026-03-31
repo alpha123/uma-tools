@@ -101,7 +101,7 @@
 }
 
 /* perhaps ill advised attempt to make the sizes match screenshots more closely, which in my opinion makes comparing easier */
-.ocrRightPane .horseDef { font-size: 14px; }
+.ocrRightPane .horseDef { font-size: 14px; height: 100%; }
 .ocrRightPane .horseParam { padding: 6px; }
 .ocrRightPane .horseAptitudes > div, .horseFullAptitudes > div { height: 1.6em; }
 .ocrRightPane .horseFullAptitudes { gap: 6px 10px; }
