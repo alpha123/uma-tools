@@ -13,6 +13,7 @@ import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
 import { SkillSet, HorseState, uniqueSkillForUma } from './HorseDefTypes';
 import { HorseOcr } from './HorseOcr';
+import { scoreUma, RankThresholds } from './scorecalc';
 
 import './HorseDef.css';
 
@@ -200,11 +201,13 @@ export function UmaSelector(props) {
 		setStarCount(Math.max(minStarCount, +star.dataset.n));
 	}
 
+	const rankIdx = useMemo(() => RankThresholds.findIndex(x => x > props.score), [props.score]);
+
 	return (
 		<div class="umaSelector">
 			<div class="umaSelectorIconsBox">
 				<div>
-					<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} onClick={focus} />
+					<img src={value ? `/uma-tools/icons/chara/${icons[value][1]}.png` : randomMob} width="120" height="120" onClick={focus} />
 					<div class="umaStarsRow" onClick={handleStarClick}>
 						<div class="umaStarContainer">
 							<Star starCount={starCount} minStarCount={minStarCount} n={1} />
@@ -222,23 +225,31 @@ export function UmaSelector(props) {
 							</div>
 						</div>
 					</div>
+					{props.score > -1 && <span class="umaScore">{props.score.toLocaleString('ja-JP')}</span>}
 				</div>
-				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" onClick={focus} />
+				{props.score > -1
+					? <img src={`/uma-tools/icons/rank/utx_txt_rank_${rankIdx}.png`} width="56" height="56" />
+					: <img src="/uma-tools/icons/utx_ico_umamusume_00.png" width="56" height="56" onClick={focus} />}
 			</div>
-			<div class="umaEpithet"><span>{value && u.outfits[value].epithet}</span></div>
-			<div class="umaSelectWrapper">
-				<input type="text" class="umaSelectInput" value={query.input} tabindex={props.tabindex} onInput={handleInput} onKeyDown={handleKeyDown} onFocus={() => setOpen(true)} onBlur={handleBlur} ref={input} />
-				<ul class={`umaSuggestions ${open ? 'open' : ''}`} onMouseDown={handleClick} ref={suggestionsContainer}>
-					{query.suggestions.map((oid, i) => {
-						const uid = oid.slice(0,4);
-						return (
-							<li key={oid} data-uma-id={oid} class={`umaSuggestion ${i == activeIdx ? 'selected' : ''}`}>
-								<img src={`/uma-tools/icons/chara/${icons[oid][1]}.png`} loading="lazy" /><span>{umas[uid].outfits[oid].epithet} {umas[uid].name[1]}</span>
-							</li>
-						);
-					})}
-				</ul>
+			<div class="umaNameBox">
+				<div class="umaEpithet"><span>{value && u.outfits[value].epithet}</span></div>
+				<div class="umaSelectWrapper">
+					<input type="text" class="umaSelectInput" value={query.input} tabindex={props.tabindex} onInput={handleInput} onKeyDown={handleKeyDown} onFocus={() => setOpen(true)} onBlur={handleBlur} ref={input} />
+					<ul class={`umaSuggestions ${open ? 'open' : ''}`} onMouseDown={handleClick} ref={suggestionsContainer}>
+						{query.suggestions.map((oid, i) => {
+							const uid = oid.slice(0,4);
+							return (
+								<li key={oid} data-uma-id={oid} class={`umaSuggestion ${i == activeIdx ? 'selected' : ''}`}>
+									<img src={`/uma-tools/icons/chara/${icons[oid][1]}.png`} loading="lazy" /><span>{umas[uid].outfits[oid].epithet} {umas[uid].name[1]}</span>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
 			</div>
+			{props.score > -1 && <div class="umaChangeImgBox">
+				<img src="/uma-tools/icons/utx_ico_umamusume_00.png" width="56" height="56" onClick={focus} />
+			</div>}
 		</div>
 	);
 }
@@ -602,12 +613,18 @@ export const HorseDef = memo(function HorseDef(props) {
 		);
 	}, [skills, umaId, expanded, courseDistance, props.hintLevels, props.showPolicyEd, props.skillExtra]);
 
+	let score = -1;
+	if (props.showScore) {
+		const uma_ = useGetter(props.state);  // OK to call hook; props.showScore doesn't change
+		score = useMemo(() => scoreUma(uma_), [uma_]);
+	}
+
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="horseDef">
 				<div class="horseDefHeader">{props.children}</div>
 				<div class="horseTopSection">
-					<UmaSelector outfitId={l_umaId} starCount={l_starCount} tabindex={tabnext()} />
+					<UmaSelector outfitId={l_umaId} starCount={l_starCount} score={score} tabindex={tabnext()} />
 					{props.showOcr !== false &&
 						<Fragment>
 							<div><Localizer><button class="circleBtn2" title={<Text id="ocrtip" />} onClick={setOcrOpen.bind(null, true)}>📷&#xFE0E;</button></Localizer></div>

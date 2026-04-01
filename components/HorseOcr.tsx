@@ -256,7 +256,7 @@ export function HorseOcr(props) {
 										   candidates={conflicts[0].candidates} resolve={resolve} />;
 							case OcrState.Accepting:
 								return <State.Provider value={umaState}>
-									<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" course={null} showPolicyEd={false} showOcr={false} tabstart={() => 1}>
+									<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" course={null} showPolicyEd={false} showOcr={false} showScore={true} tabstart={() => 1}>
 										<Text id="common.umaheader" />
 									</HorseDef>
 								</State.Provider>;

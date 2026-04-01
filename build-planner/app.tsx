@@ -11,8 +11,6 @@ import { HorseState, SkillSet, uniqueSkillForUma, DEFAULT_HORSE_STATE } from '..
 import { HorseDef, horseDefTabs } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
-import { scoreUma } from './scorecalc';
-
 import skills from '../uma-skill-tools/data/skill_data.json';
 import skillnames from '../uma-skill-tools/data/skillnames.json';
 import skillmeta from '../skill_meta.json';
@@ -328,12 +326,13 @@ function BuildPlanner(props) {
 		<Language.Provider value={props.lang}>
 			<IntlProvider definition={strings}>
 				<div id="umaPane">
-					<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" course={null} showPolicyEd={false} tabstart={() => 1}
-						skillExtra={<HintTips deck={deck} extra={hover} awakenings={awakenings} outfitId={uma.outfitId} />}
-						hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
+					<HorseDef key={uma.outfitId} state={O.uma} aptitudesMode="full" course={null} tabstart={() => 1}
+						showPolicyEd={false} showScore={true}
+						skillExtra={
+							<HintTips deck={deck} extra={hover} awakenings={awakenings} outfitId={uma.outfitId} />
+						} hintLevels={O.hints} skillHeader={<Text id="ui.skillheader" fields={{sp: totalSpCost}} />}
 					>
 						<Text id="common.umaheader" />
-						{scoreUma(uma)}
 					</HorseDef>
 				</div>
 				<div id="nonUmaPanes">
