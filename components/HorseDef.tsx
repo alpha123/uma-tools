@@ -232,7 +232,7 @@ export function UmaSelector(props) {
 					: <img src="/uma-tools/icons/utx_ico_umamusume_00.png" width="56" height="56" onClick={focus} />}
 			</div>
 			<div class="umaNameBox">
-				<div class="umaEpithet"><span>{value && u.outfits[value].epithet}</span></div>
+				<div class="umaEpithet" onClick={focus}><span>{value && u.outfits[value].epithet}</span></div>
 				<div class="umaSelectWrapper">
 					<input type="text" class="umaSelectInput" value={query.input} tabindex={props.tabindex} onInput={handleInput} onKeyDown={handleKeyDown} onFocus={() => setOpen(true)} onBlur={handleBlur} ref={input} />
 					<ul class={`umaSuggestions ${open ? 'open' : ''}`} onMouseDown={handleClick} ref={suggestionsContainer}>
