@@ -673,8 +673,12 @@ strong.uma2 { color: var(--uma2-color); }
 		flex-direction: column;
 	}
 
-	#basinnChartOptionsRow {
+	#extendedOptionsRow {
 		flex-direction: row;
-		margin-top: unset;
+		height: auto;
+	}
+
+	#basinnChartSelect {
+		flex-direction: row;
 	}
 }
