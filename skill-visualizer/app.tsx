@@ -203,4 +203,14 @@ function App(props) {
 	);
 }
 
-render(<App lang={CC_GLOBAL?"en-global":"ja"} />, document.getElementById('app'));
+// see the comments at the bottom of umalator/app.tsx
+try {
+	window.parent && window.parent.location.hostname;
+	render(<App lang={CC_GLOBAL?"en-global":"ja"} />, document.getElementById('app'));
+} catch (e) {
+	if (e instanceof DOMException) {
+		document.getElementById('app').innerHTML = '<p style="font-size:22px"><span style="border:3px solid orange;border-radius:3em;color:orange;display:inline-block;font-weight:bold;height:1.8em;line-height:1.8em;text-align:center;width:1.8em">!</span> You are probably on some kind of scummy ad-infested rehosting site. The official URL for the Skill Visualizer is <a href="https://alpha123.github.io/uma-tools/skill-visualizer-global/" target="_blank">https://alpha123.github.io/uma-tools/skill-visualizer-global/</a>.</p>'
+	} else {
+		throw e;
+	}
+}
