@@ -2,6 +2,8 @@ import { h, render } from 'preact';
 import { useState, useMemo, useEffect } from 'preact/hooks';
 import { Text, IntlProvider } from 'preact-i18n';
 
+import { State, makeState } from '../optics';
+
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, ExpandedSkillDetails } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
@@ -15,7 +17,7 @@ import { Region, RegionList } from '../uma-skill-tools/Region';
 import { CourseData, CourseHelpers } from '../uma-skill-tools/CourseData';
 import { HorseParameters, Strategy, Aptitude } from '../uma-skill-tools/HorseTypes';
 import { getParser } from '../uma-skill-tools/ConditionParser';
-import { buildSkillData, conditionsWithActivateCountsAsRandom } from '../uma-skill-tools/RaceSolverBuilder';
+import { buildSkillData, conditionsWithActivateCountsAsRandom, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
 import { ImmediatePolicy } from '../uma-skill-tools/ActivationSamplePolicy';
 import { immediate, noopImmediate } from '../uma-skill-tools/ActivationConditions';
 
@@ -97,7 +99,7 @@ function regionsForSkill(course: CourseData, skillId: string, color: {stroke: st
 	const wholeCourse = new RegionList();
 	wholeCourse.push(new Region(0, course.distance));
 	try {
-		const sds = buildSkillData(horse, {}, course, wholeCourse, parser, skillId, true);
+		const sds = buildSkillData(horse, horse, {}, course, wholeCourse, parser, skillId, Perspective.Any, true);
 		if (sds.length == 0) return [{err: false, type: RegionDisplayType.Immediate, regions: [], color}];
 		return sds.map(sd => ({
 			err: false,
@@ -179,27 +181,29 @@ function App(props) {
 			);
 		});
 	}, [selectedSkills, course, regions]);
-	
+
 	return (
-		<Language.Provider value={language}>
-			<IntlProvider definition={strings}>
-				<div id="overlay" class={skillsOpen ? "skillListWrapper-open" : ""} onClick={hideSkillSelector} />
-				{!CC_GLOBAL && <LanguageSelect language={language} setLanguage={setLanguage} />}
-				<RaceTrack courseid={courseId} width={960} height={240} xOffset={0} yOffset={0} yExtra={0} regions={regions} />
-				<div id="buttonsRow">
-					<TrackSelect courseid={courseId} setCourseid={setCourseId} />
-					<button id="addSkill" onClick={showSkillSelector}><Text id="ui.addskill" /></button>
-				</div>
-				<div id="skillDetailsWrapper" onClick={removeSkill}>
-					<ul class="skillDetailsList">
-						{skillDetails}
-					</ul>
-				</div>
-				<div id="skillListWrapper" class={skillsOpen ? "skillListWrapper-open" : ""}>
-					<SkillList ids={Object.keys(skills)} selected={selectedSkills} setSelected={setSelectedSkillsAndClose} />
-				</div>
-			</IntlProvider>
-		</Language.Provider>
+		<State.Provider value={makeState(() => ({}))}>
+			<Language.Provider value={language}>
+				<IntlProvider definition={strings}>
+					<div id="overlay" class={skillsOpen ? "skillListWrapper-open" : ""} onClick={hideSkillSelector} />
+					{!CC_GLOBAL && <LanguageSelect language={language} setLanguage={setLanguage} />}
+					<RaceTrack courseid={courseId} width={960} height={240} xOffset={0} yOffset={0} yExtra={0} regions={regions} />
+					<div id="buttonsRow">
+						<TrackSelect courseid={courseId} setCourseid={setCourseId} />
+						<button id="addSkill" onClick={showSkillSelector}><Text id="ui.addskill" /></button>
+					</div>
+					<div id="skillDetailsWrapper" onClick={removeSkill}>
+						<ul class="skillDetailsList">
+							{skillDetails}
+						</ul>
+					</div>
+					<div id="skillListWrapper" class={skillsOpen ? "skillListWrapper-open" : ""}>
+						<SkillList ids={Object.keys(skills)} selected={selectedSkills} setSelected={setSelectedSkillsAndClose} />
+					</div>
+				</IntlProvider>
+			</Language.Provider>
+		</State.Provider>
 	);
 }
 
