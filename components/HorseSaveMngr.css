@@ -26,6 +26,7 @@
 	background: #fff;
 	border: 2px solid rgb(181,174,187);
 	border-radius: 6px;
+	flex: 1;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
@@ -35,6 +36,7 @@
 	color: #794016;
 	font-weight: bold;
 	table-layout: fixed;
+	width: 100%;
 }
 
 .savedHorseTable > thead {
