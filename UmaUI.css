@@ -1,4 +1,4 @@
-.btnType1 {
+.stdBtn {
 	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22)) padding-box, linear-gradient(rgb(183, 241, 43), rgb(118, 205, 40)) border-box;
 	border: 2px solid transparent;
 	border-radius: 8px;
@@ -12,44 +12,49 @@
 	padding: 0 0.7em;
 }
 
-.btnType2 {
-	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
-	border: 2px solid transparent;
-	border-radius: 8px;
-	box-shadow: 0px 5px 0 rgb(180, 178, 192);
-	color: rgb(121, 64, 22);
-	font-size: 1em;
-	font-weight: bold;
-	height: 2.7em;
-	min-width: 6em;
-	outline: 1px solid rgb(99, 93, 123);
-	padding: 0 0.7em;
+.btnType1 {
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22)) padding-box, linear-gradient(rgb(183, 241, 43), rgb(118, 205, 40)) border-box;
+	color: white;
+	outline: 1px solid rgb(55, 108, 2);
 }
 
-.btnType1:not([disabled]):active, .btnType2:not([disabled]):active {
+.btnType2 {
+	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
+	color: rgb(121, 64, 22);
+	outline: 1px solid rgb(99, 93, 123);
+}
+
+.stdBtn:not([disabled]):active {
 	box-shadow: none;
 }
 
-.btnType1[disabled], .btnType2[disabled] {
+.stdBtn[disabled] {
 	filter: brightness(0.8);
 }
 
-.circleBtn2 {
+.pillBtn, .circleBtn {
 	align-items: flex-end;
-	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
 	border: 2px solid transparent;
 	border-radius: 36px;
 	box-shadow: 1px 3px 0 rgb(180, 178, 192), -1px 3px 0 rgb(180, 178, 192);
-	color: rgb(121, 64, 22);
+	box-sizing: border-box;
+	cursor: default;  /* this + box-sizing are added in case its used on a div */
 	display: flex;
-	font-size: 1.4em;
 	font-weight: bold;
 	height: 36px;
-	line-height: 1.5em;
+	line-height: 2em;
 	justify-content: center;
 	margin: 10px 10px 0 0;
-	outline: 1px solid rgb(99, 93, 123);
 	padding: 0;
+}
+
+.pillBtn:active, .circleBtn:active {
+	box-shadow: none;
+}
+
+.circleBtn {
+	font-size: 1.4em;
+	line-height: 1.5em;
 	width: 36px;
 }
 

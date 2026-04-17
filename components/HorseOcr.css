@@ -16,11 +16,11 @@
 	display: flex;
 	gap: 12px;
 	margin: 10px auto;
-	width: 252px;
+	width: fit-content;
 }
 
 .horseOcrButtons > button {
-	flex: 1;
+	min-width: 120px;
 }
 
 .ocrImageGrid {
@@ -42,7 +42,7 @@
 	height: 100%;
 }
 
-.ocrImageWrapper > .circleBtn2 {
+.ocrImageWrapper > .circleBtn {
 	box-shadow: none;
 	height: 24px;
 	line-height: 22px;

@@ -1090,9 +1090,9 @@ function Umalator(props) {
 						</div>
 						{
 							[
-								<button id="run" class="btnType1" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>,
-								<button id="run" class="btnType1" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>,
-								<button id="run" class="btnType1" onClick={doStaCalc} tabindex={1}><Text id="ui.sidebar.run.stacalc" /></button>,
+								<button id="run" class="stdBtn btnType1" onClick={doComparison} tabindex={1}><Text id="ui.sidebar.run.compare" /></button>,
+								<button id="run" class="stdBtn btnType1" onClick={doBasinnChart} tabindex={1}><Text id="ui.sidebar.run.chart" /></button>,
+								<button id="run" class="stdBtn btnType1" onClick={doStaCalc} tabindex={1}><Text id="ui.sidebar.run.stacalc" /></button>,
 							][mode]
 						}
 						<a ref={copyLinkLink} href="#" onClick={copyStateUrl} onContextMenu={updateCopyLinkHref}><Text id="ui.sidebar.copylink" /></a>
@@ -1115,8 +1115,8 @@ function Umalator(props) {
 										</div>
 									</fieldset>
 									<div id="basinnChartSelectButtons">
-										<button class="btnType2" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={clearChartSkills}><Text id="ui.basinnchartselection.clear" /></button>
-										<button class="btnType1" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
+										<button class="stdBtn btnType2" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={clearChartSkills}><Text id="ui.basinnchartselection.clear" /></button>
+										<button class="stdBtn btnType1" style={chartMode == 'selected' ? '' : 'visibility:hidden'} onClick={setChartSkillPickerOpen.bind(null, true)}><Text id="ui.basinnchartselection.addskill" /></button>
 									</div>
 									<div class={`horseSkillPickerOverlay ${chartSkillPickerOpen ? "open" : ""}`} onClick={setChartSkillPickerOpen.bind(null, false)} />
 									<div class={`horseSkillPickerWrapper ${chartSkillPickerOpen ? "open" : ""}`}>

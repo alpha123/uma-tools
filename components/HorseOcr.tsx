@@ -232,7 +232,7 @@ export function HorseOcr(props) {
 					{imgData.map((d,i) => (
 						<div class="ocrImageWrapper">
 							<img src={d} />
-							{ocrState == OcrState.Uploading && <button class="circleBtn2" data-idx={i}>×</button>}
+							{ocrState == OcrState.Uploading && <button class="circleBtn btnType2" data-idx={i}>×</button>}
 						</div>
 					))}
 				</div>
@@ -265,10 +265,10 @@ export function HorseOcr(props) {
 				</div>
 			</div>
 			<div class="horseOcrButtons">
-				<button class="btnType2" onClick={close}>Close</button>
+				<button class="stdBtn btnType2" onClick={close}>Close</button>
 				{ocrState < OcrState.Resolving
-					? <button class="btnType1" disabled={imgData.length == 0 || ocrState != OcrState.Uploading} onClick={recognize}>Recognize</button>
-					: <button class="btnType1" disabled={ocrState != OcrState.Accepting} onClick={accept}>Accept</button>
+					? <button class="stdBtn btnType1" disabled={imgData.length == 0 || ocrState != OcrState.Uploading} onClick={recognize}>Recognize</button>
+					: <button class="stdBtn btnType1" disabled={ocrState != OcrState.Accepting} onClick={accept}>Accept</button>
 				}
 			</div>
 		</div>

@@ -915,7 +915,7 @@ export function SkillList(props) {
 			<ul class="skillList" onClick={toggleSelected}>{items}</ul>
 			{selectionMode == 'all' &&
 				<div class="skillListButtonsRow">
-					<button class="btnType2" onClick={selectAll}><Text id="selectall" /></button>
+					<button class="stdBtn btnType2" onClick={selectAll}><Text id="selectall" /></button>
 				</div>}
 		</IntlProvider>
 	);
