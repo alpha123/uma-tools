@@ -217,3 +217,10 @@ export function useSetter(l, state) {
 	const {ref, setState} = state != null ? state : useContext(State);
 	return reactSetter(l, ref, setState);
 }
+
+// retrieve a value from state without subscribing to updates
+// be careful
+export function useInspectState(l, state) {
+	const {ref} = state != null ? state : useContext(State);
+	return () => l(ref.current.state);
+}

@@ -91,25 +91,14 @@ async function setSavedTitle(id: number, title: string) {
 }
 
 export function HorseSaveManager(props) {
-	// this is kind of ugly; really we should be passed the draft as an object and not a lens
-	// the only reason it works like this is that we don't want to have `useGetter(props.state)` in HorseDef,
-	// which would force a rerender on every change, even if it only uses the full state to pass here as `draft`
-	// so instead we reify the lens here (which only renders if the save manager is open), and then immediately
-	// pass it into a new state which we use for displaying it
-	// TODO this feels wrong
-	// if we ever force score display on in HorseDef in all cases then it has to unconditionally reify its entire
-	// state anyway, so we could simplify this
-	// alternatively, we should really add a read-only option to HorseDef, in which case we can just pass it the
-	// lens that we got directly?
-	const draft_ = useGetter(props.draft);
 	const state = makeState(() => ({draft: DEFAULT_HORSE_STATE}));
 	const [draft, setDraft] = useLens(O.draft, state);
 	const [title, setTitle] = useState('');
 	// TODO yuck
 	useEffect(() => {
-		setDraft(draft_);
+		setDraft(props.draft);
 		setTitle('Untitled Umamusume ' + new Date().toLocaleDateString());
-	}, [draft_]);
+	}, [props.draft]);
 	const savedUmas = useSavedUmas(store => store.index('modified').iterate(null, 'prev'), []);
 	const [editing, setEditing] = useState(-1);
 
@@ -182,6 +171,8 @@ export function HorseSaveManager(props) {
 			setDraft(deserializeUma(savedUmas.find(u => u.id == id).uma));
 		}
 	}
+
+	// TODO should probably add a read-only option to HorseDef?
 
 	return (
 		<div class="horseSaveMngr">

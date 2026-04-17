@@ -3,7 +3,7 @@ import { useState, useReducer, useMemo, useLayoutEffect, useRef } from 'preact/h
 import { memo } from 'preact/compat';
 import { IntlProvider, Text, Localizer, useText } from 'preact-i18n';
 
-import { O, c, id, useLens, useGetter, useSetter, Delete } from '../optics';
+import { O, c, id, useLens, useGetter, useSetter, useInspectState, Delete } from '../optics';
 
 import { useLanguage } from '../components/Language';
 import { SkillList, Skill, ExpandedSkillDetails, SkillCost } from '../components/SkillList';
@@ -11,7 +11,7 @@ import { COMMON_STRINGS } from '../strings/common';
 
 import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
-import { SkillSet, HorseState, uniqueSkillForUma } from './HorseDefTypes';
+import { SkillSet, HorseState, uniqueSkillForUma, serializeUma, deserializeUma } from './HorseDefTypes';
 import { HorseOcr } from './HorseOcr';
 import { HorseSaveManager } from './HorseSaveMngr';
 import { scoreUma, RankThresholds } from './scorecalc';
@@ -629,6 +629,22 @@ export const HorseDef = memo(function HorseDef(props) {
 		score = useMemo(() => scoreUma(uma_), [uma_]);
 	}
 
+	const uma_GetCurrent = useInspectState(props.state);
+	function clipbdCopy() {
+		window.navigator.clipboard.writeText(JSON.stringify(serializeUma(uma_GetCurrent())));
+		document.activeElement.blur();
+	}
+
+	async function clipbdPaste() {
+		const umaObj = await navigator.clipboard.readText().then(JSON.parse);
+		// do some basic validation; `deserializeUma()` will ensure we have all other fields, but check that we at least got
+		// something vaguely uma-shaped to avoid overwriting the uma in case the user pasted something completely unrelated
+		if (umaObj.hasOwnProperty('outfitId') && umaObj.hasOwnProperty('skills')) {
+			setUma(deserializeUma(umaObj));
+		}
+		document.activeElement.blur();
+	}
+
 	return (
 		<IntlProvider definition={STRINGS[lang]}>
 			<div class="horseDef">
@@ -642,8 +658,8 @@ export const HorseDef = memo(function HorseDef(props) {
 								<div aria-haspopup="menu" tabindex="-1">
 									<span>⌄</span>
 									<ul aria-role="menu">
-										<li><button>Copy to clipboard</button></li>
-										<li><button>Paste from clipboard</button></li>
+										<li><button onClick={clipbdCopy}>Copy to clipboard</button></li>
+										<li><button onClick={clipbdPaste}>Paste from clipboard</button></li>
 										{/*<li></li>
 										<li>Recent:</li>*/}
 									</ul>
@@ -659,7 +675,7 @@ export const HorseDef = memo(function HorseDef(props) {
 						</div>}
 					{saveMngrOpen &&
 						<div class="horseSkillPickerWrapper open">
-							<HorseSaveManager draft={props.state} onLoad={handleMngrLoad} onClose={setSaveMngrOpen.bind(null, false)} />
+							<HorseSaveManager draft={uma_GetCurrent()} onLoad={handleMngrLoad} onClose={setSaveMngrOpen.bind(null, false)} />
 						</div>}
 				</div>
 				<div class="horseParams">

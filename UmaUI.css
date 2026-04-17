@@ -58,8 +58,75 @@
 	width: 36px;
 }
 
-.circleBtn2:active {
+.splitBtn {
+	position: relative;
+}
+
+.splitBtn:active {
+	box-shadow: 1px 3px 0 rgb(180, 178, 192), -1px 3px 0 rgb(180, 178, 192);
+}
+
+.splitBtn:has(> button:active) {
 	box-shadow: none;
+}
+
+.splitBtn button {
+	all: unset;
+}
+
+.splitBtn > button {
+	padding: 0 6px 0 8px;
+}
+
+.splitBtn > div {
+	border-left: 2px solid transparent;
+	border-radius: 0 36px 36px 0;
+	height: 100%;
+	line-height: 1.7em;
+	padding: 0 6px 0 4px;
+}
+
+.splitBtn.btnType1 > div {
+	background: linear-gradient(rgb(168, 227, 5), rgb(97, 174, 22)) padding-box, linear-gradient(rgb(183, 241, 43), rgb(118, 205, 40)) border-box;
+	color: white;
+}
+
+.splitBtn.btnType2 > div {
+	background: linear-gradient(rgb(255, 255, 255), rgb(226, 223, 230)) padding-box, linear-gradient(rgb(255, 255, 255), rgb(246, 242, 255)) border-box;
+	color: rgb(121, 64, 22);
+}
+
+.splitBtn > div > ul {
+	background: white;
+	border: 2px solid rgb(224, 214, 204);
+	border-radius: 8px;
+	color: rgb(121, 64, 22);
+	display: none;
+	list-style-type: none;
+	padding: 0 8px;
+	position: absolute;
+	right: 0;
+	top: calc(1em + 4px);
+	width: max-content;
+	z-index: 10;
+}
+
+.splitBtn > div:focus-within > ul {
+	display: block;
+}
+
+.splitBtn > div > ul button {
+	width: 100%;
+}
+
+.splitBtn > div > ul button:hover {
+	background: rgb(0, 120, 215);
+	color: white;
+}
+
+.splitBtn > div > ul > li:empty {
+	border-bottom: 1px solid rgb(224, 214, 204);
+	margin-top: 4px;
 }
 
 /* input[type="checkbox"] */
