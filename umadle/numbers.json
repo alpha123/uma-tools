@@ -32,7 +32,7 @@
     "North Flight": [82, 51, 80, 156],
     "Sakura Chiyono O": [80, 55, 83, 156],
     "Smart Falcon": [78, 55, 80, 156],
-    "TM Opera O": [76, 55, 80, 156],
+    "T.M. Opera O": [76, 55, 80, 156],
     "Vivlos": [81, 51, 86, 156],
     "Yukino Bijin": [80, 55, 80, 156],
     "Admire Vega": [85, 57, 82, 157],
@@ -128,5 +128,16 @@
     "Fenomeno": [81, 59, 82, 171],
     "Loves Only You": [88, 58, 88, 158],
     "Chrono Genesis": [77, 54, 76, 152],
-    "Curren Bouquetd'or": [78, 53, 77, 153]
+    "Curren Bouquetd'or": [78, 53, 77, 153],
+    "Admire Groove": [88, 57, 84, 165],
+    "Stay Gold": [67, 49, 68, 142],
+    "Red Desire": [74, 55, 79, 160],
+    "Kiseki": [86, 56, 84, 166],
+    "Forever Young": [90, 60, 89, 167],
+    "Marche Lorraine": [90, 59, 89, 157],
+    "Epiphaneia": [81, 56, 83, 159],
+    "Logotype": [83, 56, 84, 160],
+    "Victoire Pisa": [80, 53, 78, 161],
+    "Rose Kingdom": [74, 54, 77, 155],
+    "Rulership": [90, 57, 86, 160]
 }
