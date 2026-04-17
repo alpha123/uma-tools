@@ -17,6 +17,7 @@ import { scoreUma, RankThresholds } from './scorecalc';
 
 import './HorseSaveMngr.css';
 
+import umas from '../umas.json';
 import icons from '../icons.json';
 
 interface SavedUma {
@@ -97,7 +98,8 @@ export function HorseSaveManager(props) {
 	// TODO yuck
 	useEffect(() => {
 		setDraft(props.draft);
-		setTitle('Untitled Umamusume ' + new Date().toLocaleDateString());
+		const umaName = props.draft.outfitId ? umas[props.draft.outfitId.slice(0,4)].name[1] : 'Umamusume';
+		setTitle(`Untitled ${umaName} ${new Date().toLocaleDateString()}`);
 	}, [props.draft]);
 	const savedUmas = useSavedUmas(store => store.index('modified').iterate(null, 'prev'), []);
 	const [editing, setEditing] = useState(-1);
