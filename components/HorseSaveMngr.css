@@ -1,0 +1,136 @@
+.horseSaveMngr {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.horseSaveMngr > :first-child {
+	display: flex;
+	flex: 1;
+	gap: 12px;
+	height: 0;
+}
+
+.horseSaveMngr > :last-child {
+	display: flex;
+	gap: 12px;
+	margin: 10px auto 0 auto;
+	width: fit-content;
+}
+
+.horseSaveMngr > :last-child > button {
+	min-width: 120px;
+}
+
+.savedHorseTableWrapper {
+	background: #fff;
+	border: 2px solid rgb(181,174,187);
+	border-radius: 6px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.savedHorseTable {
+	border-collapse: collapse;
+	color: #794016;
+	font-weight: bold;
+	table-layout: fixed;
+}
+
+.savedHorseTable > thead {
+	line-height: 1.625em;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.savedHorseTable th {
+	background: linear-gradient(#fff,#e4e0e9);
+}
+
+.savedHorseTable th:first-child {
+	width: 60%;
+}
+
+.savedHorseTable th:last-child {
+	text-align: left;
+}
+
+.savedHorseTable .columnHeader {
+	border-bottom: 2px solid rgb(181, 174, 187);
+	margin-left: -2px;
+	padding: 0 2px;
+	width: 100%;
+}
+
+.savedHorseTable .columnHeader span {
+	cursor: pointer;
+	position: relative;
+}
+
+.savedHorseTableSortedAsc span::after, .savedHorseTableSortedDesc span::after {
+	border-bottom: 2px solid #794016;
+	border-right: 2px solid #794016;
+	content: "";
+	display: block;
+	height: 4px;
+	position: absolute;
+	right: -10px;
+	top: calc(50% - 2px);
+	width: 4px;
+}
+
+.savedHorseTableSortedAsc span::after {
+	transform: rotate(-135deg);
+}
+
+.savedHorseTableSortedDesc span::after {
+	transform: rotate(45deg);
+}
+
+.savedHorseTable > tbody > tr {
+	height: 2em;
+}
+
+.savedHorseTable > tbody > tr.selected {
+	background: rgb(121, 216, 35);
+}
+
+.savedHorseTable > tbody td:first-child > div, .savedHorseTable > tbody td:nth-child(2) > div {
+	align-items: center;
+	display: flex;
+	gap: 4px;
+}
+
+.savedHorseTable > tbody td:first-child {
+	margin-left: 4px;
+}
+
+.savedHorseTable > tbody td:first-child span {
+	margin-left: 28px;
+}
+
+.savedHorseTable > tbody td:first-child img + span {
+	margin-left: 0;
+}
+
+.savedHorseTable button {
+	box-shadow: none;
+	height: 1.8em;
+	line-height: 1.8em;
+	margin: 0;
+	padding: 0 6px;
+}
+
+.savedHorseTable .circleBtn {
+	font-size: 14px;
+	margin: 2px;
+	padding: 0;
+	width: 1.8em;
+}
+
+.savedHorseTable input {
+	color: inherit;
+	font: inherit;
+	width: 100%;
+}

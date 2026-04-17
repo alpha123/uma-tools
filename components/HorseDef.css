@@ -24,6 +24,10 @@
 	display: flex;
 }
 
+.horseTopButtonsRow {
+	display: flex;
+}
+
 .umaSelector {
 	align-items: center;
 	display: flex;

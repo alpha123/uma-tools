@@ -13,6 +13,7 @@ import { HorseParameters } from '../uma-skill-tools/HorseTypes';
 
 import { SkillSet, HorseState, uniqueSkillForUma } from './HorseDefTypes';
 import { HorseOcr } from './HorseOcr';
+import { HorseSaveManager } from './HorseSaveMngr';
 import { scoreUma, RankThresholds } from './scorecalc';
 
 import './HorseDef.css';
@@ -385,6 +386,7 @@ export const HorseDef = memo(function HorseDef(props) {
 	const lang = useLanguage();
 	const [skillPickerOpen, setSkillPickerOpen] = useState(false);
 	const [ocrOpen, setOcrOpen] = useState(false);
+	const [saveMngrOpen, setSaveMngrOpen] = useState(false);
 	const [expanded, setExpanded] = useState(new Set());
 	const setUma = useSetter(props.state);
 	const strategy = useGetter(props.state.strategy);
@@ -513,6 +515,11 @@ export const HorseDef = memo(function HorseDef(props) {
 		setUma(ocrUma);
 	}
 
+	function handleMngrLoad(loadedUma) {
+		setUma(loadedUma);
+		setSaveMngrOpen(false);
+	}
+
 	// calls tabnext() so must be called in the place it is used
 	function getAptitudesSection() {
 		switch (props.aptitudesMode) {
@@ -628,14 +635,32 @@ export const HorseDef = memo(function HorseDef(props) {
 				<div class="horseDefHeader">{props.children}</div>
 				<div class="horseTopSection">
 					<UmaSelector outfitId={l_umaId} starCount={l_starCount} score={score} tabindex={tabnext()} />
-					{props.showOcr !== false &&
-						<Fragment>
-							<div><Localizer><button class="circleBtn2" title={<Text id="ocrtip" />} onClick={setOcrOpen.bind(null, true)}>📷&#xFE0E;</button></Localizer></div>
-							<div class={`horseSkillPickerOverlay ${ocrOpen ? "open" : ""}`} onClick={setOcrOpen.bind(null, false)} />
-							<div class={`horseSkillPickerWrapper ${ocrOpen ? "open" : ""}`}>
-								<HorseOcr isOpen={ocrOpen} onAccept={handleOcrAccept} onClose={setOcrOpen.bind(null, false)} />
-							</div>
-						</Fragment>}
+					<div class="horseTopButtonsRow">
+						{props.showSaveMngr !== false &&
+							<div class="pillBtn splitBtn btnType1">
+								<button onClick={() => setSaveMngrOpen(true)}>Save &amp; load</button>
+								<div aria-haspopup="menu" tabindex="-1">
+									<span>⌄</span>
+									<ul aria-role="menu">
+										<li><button>Copy to clipboard</button></li>
+										<li><button>Paste from clipboard</button></li>
+										{/*<li></li>
+										<li>Recent:</li>*/}
+									</ul>
+								</div>
+							</div>}
+						{props.showOcr !== false &&
+							<Localizer><button class="circleBtn btnType2" title={<Text id="ocrtip" />} onClick={setOcrOpen.bind(null, true)}>📷&#xFE0E;</button></Localizer>}
+					</div>
+					<div class={`horseSkillPickerOverlay ${ocrOpen || saveMngrOpen ? "open" : ""}`} onClick={() => {setOcrOpen(false); setSaveMngrOpen(false);}} />
+					{ocrOpen &&
+						<div class="horseSkillPickerWrapper open">
+							<HorseOcr isOpen={ocrOpen} onAccept={handleOcrAccept} onClose={setOcrOpen.bind(null, false)} />
+						</div>}
+					{saveMngrOpen &&
+						<div class="horseSkillPickerWrapper open">
+							<HorseSaveManager draft={props.state} onLoad={handleMngrLoad} onClose={setSaveMngrOpen.bind(null, false)} />
+						</div>}
 				</div>
 				<div class="horseParams">
 					<div class="horseParamHeader"><img src="/uma-tools/icons/status_00.png" /><span><Text id="common.stat.1" /></span></div>

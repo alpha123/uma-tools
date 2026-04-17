@@ -14,7 +14,7 @@ import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../opt
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, ExpandedSkillDetails, skillGroups, isPurpleSkill } from '../components/SkillList';
 import { RaceTrack, TrackSelect, RegionDisplayType } from '../components/RaceTrack';
-import { HorseState, SkillSet, DEFAULT_HORSE_STATE } from '../components/HorseDefTypes';
+import { HorseState, DEFAULT_HORSE_STATE, serializeUma, deserializeUma } from '../components/HorseDefTypes';
 import { HorseDef, horseDefTabs, isGeneralSkill } from '../components/HorseDef';
 import { extendStrings, TRACKNAMES_ja, TRACKNAMES_en, COMMON_STRINGS } from '../strings/common';
 
@@ -435,10 +435,6 @@ function racedefToParams({ground, weather, season, time, grade}: RaceParams, inc
 	};
 }
 
-function serializeUma(uma) {
-	return {...uma, skills: Array.from(uma.skills.values()), samplePolicies: Object.fromEntries(uma.samplePolicies)};
-}
-
 async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
@@ -477,12 +473,6 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 			buf = new Uint8Array([...buf, ...result.value]);
 		}
 	}
-}
-
-const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */, starCount: 3 /* v8 */, uniqueLv: 1 /* v8 */});
-
-function deserializeUma(umaObj) {
-	return Object.assign({}, NEW_HORSE_FIELDS, umaObj, {skills: SkillSet(umaObj.skills), samplePolicies: /* v6 */ new Map(Object.entries(umaObj.samplePolicies))});
 }
 
 async function deserialize(hash) {

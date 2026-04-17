@@ -89,3 +89,19 @@ export const DEFAULT_HORSE_STATE = {
 	mood: 2,
 	popularity: 1
 };
+
+export function serializeUma(uma) {
+	const obj = {...uma, skills: Array.from(uma.skills.values())};
+	if (uma.samplePolicies.size > 0) {
+		obj.samplePolicies = Object.fromEntries(uma.samplePolicies);
+	} else {
+		delete obj.samplePolicies;
+	}
+	return obj;
+}
+
+const NEW_HORSE_FIELDS = Object.freeze({mood: 2 /* v5 */, popularity: 1 /* v5 */, starCount: 3 /* v8 */, uniqueLv: 1 /* v8 */});
+
+export function deserializeUma(umaObj) {
+	return Object.assign({}, NEW_HORSE_FIELDS, umaObj, {skills: SkillSet(umaObj.skills), samplePolicies: /* v6 */ new Map(Object.entries(umaObj.samplePolicies || {}))});
+}
