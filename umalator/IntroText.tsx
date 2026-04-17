@@ -34,6 +34,12 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-04-17</h2>
+					<ul>
+						<li>Implement saving and loading uma builds as well as copying them to/pasting from the clipboard</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-03-27</h2>
 					<ul>
 						<li><strong>Experimental:</strong> You can now load umas from in-game screenshots. Press the 📷&#xFE0E; button in the uma editor. Please let me know if this works particularly well or particularly poorly for you.</li>
