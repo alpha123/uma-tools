@@ -35,6 +35,7 @@
 	border-collapse: collapse;
 	color: #794016;
 	font-weight: bold;
+	text-align: center;
 	width: 100%;
 }
 
@@ -50,7 +51,11 @@
 }
 
 .savedHorseTable th:first-child {
-	width: 60%;
+	width: 58%;
+}
+
+.savedHorseTable th:nth-child(3) {
+	width: 24%;
 }
 
 .savedHorseTable th:last-child {
@@ -101,6 +106,7 @@
 	align-items: center;
 	display: flex;
 	gap: 4px;
+	margin-left: 4px;
 }
 
 .savedHorseTable > tbody td:first-child {
@@ -118,8 +124,8 @@
 .savedHorseTable button {
 	box-shadow: none;
 	height: 1.8em;
-	line-height: 1.8em;
-	margin: 0;
+	line-height: 1.6em;
+	margin: 0 4px 0 0;
 	padding: 0 6px;
 }
 
