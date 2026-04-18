@@ -51,6 +51,7 @@ const UI_ja = Object.freeze({
 		'samples': '標本数',
 		'seed': '乱数シード',
 		'poskeep': 'Simulate pos keep',
+		'competetop': '位置取り争いを発動する',
 		'intchecks': 'Wisdom checks for skills',
 		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
@@ -67,7 +68,8 @@ const UI_ja = Object.freeze({
 		'addskill': '+ スキル追加',
 		'clear': 'クリア'
 	}),
-	'kakari': '掛かり'
+	'kakari': '掛かり',
+	'itidoriarasoi': '位置取り争い'
 });
 const UI_en = Object.freeze({
 	'lengthsunit': 'bashin',
@@ -85,6 +87,7 @@ const UI_en = Object.freeze({
 		'samples': 'Samples:',
 		'seed': 'Seed:',
 		'poskeep': 'Simulate pos keep',
+		'competetop': 'Enable lead compete',
 		'intchecks': 'Wisdom checks for skills',
 		'showhp': 'Show HP consumption',
 		'run': Object.freeze({
@@ -101,14 +104,17 @@ const UI_en = Object.freeze({
 		'addskill': '+ Add Skill',
 		'clear': 'Clear'
 	}),
-	'kakari': 'Kakari'
+	'kakari': 'Kakari',
+	'itidoriarasoi': 'Lead Compete'
 });
 const UI_global = extendStrings(UI_en, {
 	'lengthsunit': 'lengths',
 	'sidebar': extendStrings(UI_en['sidebar'], {
+		'competetop': 'Enable Spot Struggle',
 		'intchecks': 'Wit checks for skills'
 	}),
-	'kakari': 'Rushed'
+	'kakari': 'Rushed',
+	'itidoriarasoi': 'Spot Struggle'
 });
 
 const UI_STRINGS = Object.freeze({
@@ -401,7 +407,7 @@ const ResultsTable = memo(function ResultsTable(props) {
 			</tbody>
 			{chartData.sk[idx].size > 0 &&
 				<tbody>
-					{Array.from(chartData.sk[idx].entries()).flatMap(([id,ars]) => id == 'kakari' ? [] : ars.map(pos =>
+					{Array.from(chartData.sk[idx].entries()).flatMap(([id,ars]) => SPECIAL_SKILLS.indexOf(id) > -1 ? [] : ars.map(pos =>
 						<tr>
 							<th><img src={`/uma-tools/icons/skill/utx_ico_skill_${skillmeta[id].iconId}.png`} /><span>{skillnames[id][0]}</span></th>
 							<td>{pos[1] == -1 ? `${pos[0].toFixed(2)} m` : `${pos[0].toFixed(2)} m – ${pos[1].toFixed(2)} m`}</td>
@@ -417,6 +423,8 @@ const NO_SHOW = Object.freeze([
 	'40011',
 	'20061', '20062', '20066'
 ]);
+
+const SPECIAL_SKILLS = Object.freeze(['kakari', 'itidoriarasoi']);
 
 const ORDER_RANGE_FOR_STRATEGY = Object.freeze({
 	'Nige': [1,1],
@@ -435,12 +443,13 @@ function racedefToParams({ground, weather, season, time, grade}: RaceParams, inc
 	};
 }
 
-async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
+async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useCompeteTop: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
 		nsamples,
 		seed,
 		usePosKeep,
+		useCompeteTop,
 		useIntChecks,
 		racedef,
 		uma1: serializeUma(uma1),
@@ -498,6 +507,7 @@ async function deserialize(hash) {
 					nsamples: o.nsamples,
 					seed: o.seed || DEFAULT_SEED,  // field added later (v2), could be undefined when loading state from existing links
 					usePosKeep: o.usePosKeep,
+					useCompeteTop: o.useCompeteTop ?? true,  // v9
 					useIntChecks: o.useIntChecks || false,  // v3
 					racedef: o.racedef,
 					uma1: deserializeUma(o.uma1),
@@ -513,6 +523,7 @@ async function deserialize(hash) {
 					nsamples: DEFAULT_SAMPLES,
 					seed: DEFAULT_SEED,
 					usePosKeep: true,
+					useCompeteTop: true,
 					useIntChecks: false,
 					racedef: DEFAULT_RACE_PARAMS,
 					uma1: DEFAULT_HORSE_STATE,
@@ -610,6 +621,7 @@ function Umalator(props) {
 	const [nsamples, setSamples] = useLens(O.nsamples);
 	const [seed, setSeed] = useLens(O.seed);
 	const [usePosKeep, setPosKeep] = useLens(O.usePosKeep); const togglePosKeep = () => setPosKeep(toggle);
+	const [useCompeteTop, setCompeteTop] = useLens(O.useCompeteTop); const toggleCompeteTop = () => setCompeteTop(toggle);
 	const [useIntChecks_, setIntChecks] = useLens(O.useIntChecks); const toggleIntChecks = () => setIntChecks(toggle);
 	const [showHp, setShowHp] = useLens(O.useShowHp); const toggleShowHp = () => setShowHp(toggle);
 	const [courseId, setCourseId_] = useLens(O.courseId);
@@ -753,7 +765,7 @@ function Umalator(props) {
 	const copyLinkLink = useRef(null);
 
 	function doSerialize() {
-		return serialize(courseId, nsamples, seed, usePosKeep, useIntChecks_, racedef, uma1, uma2, debufUma,
+		return serialize(courseId, nsamples, seed, usePosKeep, useCompeteTop, useIntChecks_, racedef, uma1, uma2, debufUma,
 			mode == Mode.Chart ? chartMode : null, mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
 		);
 	}
@@ -808,7 +820,7 @@ function Umalator(props) {
 				racedef: racedefToParams(racedef),
 				uma1: uma1,
 				uma2: uma2,
-				options: {seed, usePosKeep, useIntChecks}
+				options: {seed, usePosKeep, useCompeteTop, useIntChecks}
 			}
 		});
 	}
@@ -823,7 +835,7 @@ function Umalator(props) {
 				racedef: racedefToParams(racedef),
 				uma: uma1,
 				debufUma,
-				options: {seed, usePosKeep, useIntChecks, forceFullSpurt}
+				options: {seed, usePosKeep, useCompeteTop, useIntChecks, forceFullSpurt}
 			}
 		});
 	}
@@ -833,7 +845,7 @@ function Umalator(props) {
 		setTableData(filler);
 		const nPerWorker = Math.ceil(skills.length/workers.length);
 		workers.reduce((skills, w) => {
-			w.postMessage({msg: 'chart', data: {skills: skills.slice(0, nPerWorker), course, racedef: params, uma, options: {seed, usePosKeep, useIntChecks: false}}});
+			w.postMessage({msg: 'chart', data: {skills: skills.slice(0, nPerWorker), course, racedef: params, uma, options: {seed, usePosKeep, useCompeteTop, useIntChecks: false}}});
 			return skills.slice(nPerWorker);
 		}, skills);
 	}
@@ -905,11 +917,12 @@ function Umalator(props) {
 	];
 	const skillActivations = chartData == null ? [] : chartData.sk.flatMap((a,i) => {
 		return Array.from(a.keys()).flatMap(id => {
-			if (id != 'kakari' && NO_SHOW.indexOf(skillmeta[id].iconId) > -1) return [];
+			const special = SPECIAL_SKILLS.indexOf(id) > -1;
+			if (!special && NO_SHOW.indexOf(skillmeta[id].iconId) > -1) return [];
 			else return a.get(id).map(ar => ({
 				type: RegionDisplayType.Textbox,
 				color: colors[i],
-				text: id == 'kakari' ? UI_STRINGS[props.lang]['kakari'] : skillnames[id][0],
+				text: special ? UI_STRINGS[props.lang][id] : skillnames[id][0],
 				regions: [{start: ar[0], end: ar[1] == -1 ? ar[0] + course.distance * 0.078 /* somewhat arbitrary */ : ar[1]}]
 			}));
 		});
@@ -1071,6 +1084,10 @@ function Umalator(props) {
 							<input type="checkbox" id="poskeep" checked={usePosKeep} onClick={togglePosKeep} />
 						</div>
 						<div>
+							<label for="competetop"><Text id="ui.sidebar.competetop" /></label>
+							<input type="checkbox" id="competetop" checked={useCompeteTop} onClick={toggleCompeteTop} />
+						</div>
+						<div>
 							<label for="intchecks"><Text id="ui.sidebar.intchecks" /></label>
 							<input type="checkbox" id="intchecks" checked={useIntChecks} onClick={toggleIntChecks} disabled={mode == Mode.StaCalc} />
 						</div>
@@ -1137,6 +1154,7 @@ function App(props) {
 		nsamples: DEFAULT_SAMPLES,
 		seed: DEFAULT_SEED,
 		usePosKeep: true,
+		useCompeteTop: true,
 		useIntChecks: false,
 		showHp: false,
 		uma1: DEFAULT_HORSE_STATE,

@@ -41,7 +41,7 @@ class ForceFullSpurtHpPolicy {
 	getLastSpurtPair(state: RaceState, maxSpeed: number, bts2: number) {
 		const maxDist = this.wrapped.distance - CourseHelpers.phaseStart(this.wrapped.distance, 2);
 		const s = (maxDist - 60) / maxSpeed;
-		const lastleg = {phase: 2 as Phase, isPaceDown: false, isDownhillMode: false, isKakari: false};
+		const lastleg = {phase: 2 as Phase, isPaceDown: false, isDownhillMode: false, isItidoriarasoi: false, isKakari: false};
 		this.balance = this.wrapped.hp - this.wrapped.hpPerSecond(lastleg, maxSpeed) * s;
 		this.wasFullSpurt = this.balance >= 0;
 		if (this.forceSpurt) {

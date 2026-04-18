@@ -118,6 +118,9 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	if (options.usePosKeep) {
 		standard.useDefaultPacer(); compare.useDefaultPacer();
 	}
+	if (options.useCompeteTop) {
+		standard.withItidoriarasoi(); compare.withItidoriarasoi();
+	}
 	if (options.useIntChecks) {
 		standard.withWisdomChecks(wisdomSeeds);
 		compare.withWisdomChecks(wisdomSeeds);
