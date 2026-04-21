@@ -15,4 +15,7 @@ buildOrServe({
 	cc_global: false,
 	entryPoints: [{in: './app.tsx', out: 'bundle'}],
 	artifacts: ['bundle.js', 'bundle.css'],
+	redirect: {
+		"^@tanstack/": args => path.join(dirname, '..', 'vendor', args.path.slice(10), 'index.ts')
+	}
 });
