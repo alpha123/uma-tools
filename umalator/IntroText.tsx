@@ -34,6 +34,17 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-04-21</h2>
+					<ul>
+						<li>
+							<details>
+								<summary>Implement Spot Struggle</summary>
+								Applies only to Front Runners. Currently it's either on (procs 100% of the time) or off (procs 0% of the time). In practice the frequency with which it procs depends very highly on the room composition so choose the option that you think is more likely.
+							</details>
+						</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-04-17</h2>
 					<ul>
 						<li>Implement saving and loading uma builds as well as copying them to/pasting from the clipboard</li>
