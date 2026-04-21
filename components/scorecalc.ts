@@ -1,5 +1,6 @@
 import { HorseState, uniqueSkillForUma } from '../components/HorseDefTypes';
 
+import skilldata from '../uma-skill-tools/data/skill_data.json';
 import skillmeta from '../skill_meta.json';
 
 // translation of the following J code:
@@ -66,13 +67,12 @@ function aptIdx(tag: number) {
 // scores as 156 here and yonkim and 157 on gamewith. i am not entirely sure what causes that.
 const AptitudeMultiplier = Object.freeze({'S':1.1,'A':1.1,'B':0.9,'C':0.9,'D':0.8,'E':0.8,'F':0.8,'G':0.7} as const);
 export function scoreForSkill(skillid: string, aptitudes: (keyof typeof AptitudeMultiplier)[10]) {
-	const sk = skillmeta[skillid];
-	const tg = Object.groupBy(sk.tags, t => Math.floor(t / 100))
+	const tg = Object.groupBy(skilldata[skillid].tags, t => Math.floor(t / 100))
 	let aptCoef = Object.values(tg).map(g => g.reduce((acc,t) => {
 		const idx = aptIdx(t);
 		return idx == -1 ? 1 : Math.max(acc, AptitudeMultiplier[aptitudes[idx]]);
 	}, 0)).reduce((a,b) => a * b);
-	return Math.round(sk.score * aptCoef);
+	return Math.round(skillmeta[skillid].score * aptCoef);
 }
 
 export function scoreUma(uma: HorseState) {

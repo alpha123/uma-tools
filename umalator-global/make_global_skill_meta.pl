@@ -19,7 +19,7 @@ $db->{RaiseError} = 1;
 
 my $select = $db->prepare(<<SQL
    SELECT s.id, s.group_id, s.icon_id, COALESCE(sp.need_skill_point,0),
-          s.tag_id, s.grade_value, s.disp_order
+          s.grade_value, s.disp_order
      FROM skill_data s
 LEFT JOIN single_mode_skill_need_point sp
        ON s.id = sp.id
@@ -29,7 +29,7 @@ SQL
 
 $select->execute;
 
-$select->bind_columns(\my ($id, $group_id, $icon_id, $sp_cost, $tag_id, $grade_value, $disp_order));
+$select->bind_columns(\my ($id, $group_id, $icon_id, $sp_cost, $grade_value, $disp_order));
 
 my $skills = {};
 while ($select->fetch) {
@@ -41,7 +41,6 @@ while ($select->fetch) {
 		iconId => "$icon_id",
 		baseCost => $sp_cost,
 		score => $grade_value,
-		tags => [map { $_ + 0 } split('/', $tag_id)],
 		order => $disp_order
 	};
 }
