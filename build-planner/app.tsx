@@ -358,7 +358,7 @@ const dfsk = [200012,200952,200362,200382,201312,201601,202712,202742,202802,202
 //const dfsk = [200012,200952,201601,202712,202742,202802,202982,203122,203172,203312,203422];
 function App(props) {
 	const state = makeState(() => ({
-		uma: {...DEFAULT_HORSE_STATE, samplePolicies: null, skills: SkillSet(dfsk.map(x=>x.toString()))},
+		uma: {...DEFAULT_HORSE_STATE, skills: SkillSet(dfsk.map(x=>x.toString()))},
 		deck: ['','','','','',''],
 		hints: new Map(Object.keys(skills).map(id => [id,0]))
 		//deck: ['30265', '30077']
