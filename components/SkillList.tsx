@@ -796,8 +796,11 @@ export function SkillList(props) {
 		// debuffs)
 		const newSelected = new Map(props.selected.entries());
 		if (isDebuffSkill(id)) {
-			const ndebuffs = Array.from(props.selected.values()).filter(isDebuffSkill).length;
-			newSelected.set(groupId + '-' + ndebuffs, id);
+			const nThisDebuff = Array.from(props.selected.keys()).reduce((n,gid) => {
+				const p = gid.split('-');
+				return p[0] == groupId ? +p[1] + 1 : n;
+			}, 0);
+			newSelected.set(groupId + '-' + nThisDebuff, id);
 		} else {
 			newSelected.set(groupId, id);
 		}
