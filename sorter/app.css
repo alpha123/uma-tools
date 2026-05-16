@@ -1,0 +1,28 @@
+#sortlist {
+	display: flex;
+	list-style-type: none;
+}
+
+#sortlist > li {
+	border: 1px solid black;
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	width: 50px;
+}
+
+.gu-mirror {
+	margin: 0;
+	opacity: 0.8;
+	position: fixed;
+	z-index: 9999;
+}
+.gu-hide { display: none; }
+.gu-unselectable {
+	-webkit-user-select: none;
+	user-select: none;
+}
+.gu-transit { opacity: 0.2; }
