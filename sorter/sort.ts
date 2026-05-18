@@ -21,6 +21,10 @@
  *   - this method of picking candidates makes cycles impossible no matter how the user sorts the candidates
  *
  * the tests in test/sort.ts are there to verify this is hopefully true.
+ *
+ * this approach is inspired by this stackoverflow answer https://stackoverflow.com/a/867740 but the selection heuristic
+ * they propose of most common maximum path length does not actually work very well in practice (it usually results in
+ * many more comparisons than the heuristic used here for example, sometimes twice as many in the worst case)
  */
 
 export function shuffle(a: number[]) {
@@ -30,60 +34,72 @@ export function shuffle(a: number[]) {
 	}
 }
 
-export function makeGraph(n: number) {
-	const graph = [Array.from({length: n+1}, (_,i) => +(i != 0))];
-	for (let i = 0; i < n; ++i) {
-		graph.push(Array(n+1).fill(0));
-
-	}
+export function makeGraph(n: number): Uint32Array {
+	const graph = new Uint32Array(Math.ceil(n*n/32));
+	graph[0] = (1<<Math.min(n-1,31))-1 << 1;
+	n -= Math.min(n,32);
+	const run = Math.floor(n/32);
+	graph.fill(0xffffffff, 1, 1+run);
+	n -= 32 * run;
+	graph[1+run] = (1<<n)-1|0;
 	return graph;
 }
 
-export function updateEdges(graph, order) {
+export function updateEdges(graph: Uint32Array, nvert: number, order: number[]) {
 	for (let i = 0; i < order.length; ++i) {
 		for (let j = i + 1; j < order.length; ++j) {
-			graph[order[i]][order[j]] = 1;
+			const idx = order[i] * nvert + order[j];
+			graph[idx>>>5] |= 1 << (idx&0x1f);
 		}
 	}
 }
 
-export function close(graph) {
-	const reachable = graph.map(uv => uv.map(e => !!e));
-	for (let k = 0; k < graph.length; ++k) {
-		for (let i = 0; i < graph.length; ++i) {
-			for (let j = 0; j < graph.length; ++j) {
-				reachable[i][j] ||= reachable[i][k] && reachable[k][j];
-			}
-		}
-	}
+export function close(graph: Uint32Array, vert: number[]) {
+	const n = vert.length;
+	const reachable = new Uint32Array(graph);
+	vert.forEach(k => {
+		vert.forEach(i => {
+			vert.forEach(j => {
+				const ij = i*n+j, ik = i*n+k, kj = k*n+j;
+				reachable[ij>>>5] |= ((reachable[ik>>>5]>>>(ik&0x1f)) & (reachable[kj>>>5]>>>(kj&0x1f)) & 1) << (ij&0x1f);
+			});
+		});
+	});
 	return reachable;
 }
 
-export function nextGroup(reachable, k) {
-	const lb = reachable.map((_,u) => reachable.reduce((a,uv) => a + +uv[u], 0)),
-		ub = reachable.map(uv => uv.length - uv.reduce((a,e) => a + +e, 0));
+export function nextGroup(reachable: Uint32Array, n: number, vert: number[], k: number) {
+	const lb = Array(n).fill(0), ub = Array(n).fill(n);
+	vert.forEach(u => {
+		vert.forEach(v => {
+			const uv = u*n+v, vu = v*n+u;
+			lb[u] += (reachable[vu>>>5]>>>(vu&0x1f)) & 1;
+			ub[u] -= (reachable[uv>>>5]>>>(uv&0x1f)) & 1;
+		});
+	});
+
 	const group = [];
-	const nodes = Array.from({length: reachable.length - 1}, (_,i) => i + 1);
-	// shuffling is not strictly necessary but because there may be many nodes with the same ub-lb uncertainty score and the
-	// first one "wins", shuffle to randomize which that will be to keep the initial comparisons more varied
-	shuffle(nodes);
 	for (let i = 0; i < k; ++i) {
-		const cand = nodes.filter(u => !group.some(v => u == v || reachable[u][v] || reachable[v][u]));
+		const cand = vert.filter(u => !group.some(v => {
+			const uv = u*n+v, vu = v*n+u;
+			return u == v || ((reachable[uv>>>5]>>>(uv&0x1f))&1) || ((reachable[vu>>>5]>>>(vu&0x1f))&1);
+		}));
 		if (cand.length == 0) break;
 		group.push(cand.reduce(({best,v},u) => ub[u] - lb[u] > best ? {best: ub[u] - lb[u], v: u} : {best,v}, {best: 0, v: 0}).v);
 	}
 	return group;
 }
 
-export function maxPaths(graph) {
-	const dist = graph.map(_ => 0);
-	const pred = graph.map(_ => -1);
-	for (let i = 0; i < graph.length - 1; ++i) {
-		graph.forEach((uv, u) => {
-			uv.forEach((e, v) => {
+export function maxPaths(graph: Uint32Array, vert: number[]) {
+	const n = vert.length;
+	const dist = Array(n).fill(0);
+	for (let i = 0; i < n - 1; ++i) {
+		vert.forEach(u => {
+			vert.forEach(v => {
+				const uv = u*n+v;
+				const e = (graph[uv>>>5]>>>(uv&0x1f)) & 1;
 				if (e && dist[u] - 1 < dist[v]) {
 					dist[v] = dist[u] - 1;
-					pred[v] = u;
 				}
 			});
 		});
