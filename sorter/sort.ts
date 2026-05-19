@@ -52,41 +52,24 @@ export function makeGraph(vert: number[]): Graph {
 	mat.fill(0xffffffff, 1, 1+run);
 	n -= 32 * run;
 	mat[1+run] = (1<<n)-1|0;
-	// note: this can be sped up significantly by uncommenting the `ord` lines below at the expense of higher memory
-	// consumption (this is fast enough for interactive use and keeping the graph size small reduces memory required for
-	// saving undo states, but changing it does make the test suite run about twice as fast)
-	//
-	// `mat` contains all reachability information while `ord` is only direct edges, and preserving this reduces the
-	// amount of nodes we have to check when computing `mat` to transitive closure significantly.
-	return {rows: r, cols: c, vert, mat/*, ord: new Uint32Array(mat)*/};
+	return {rows: r, cols: c, vert, mat};
 }
 
 export function updateEdges(graph: Graph, order: number[]) {
-	const {rows: r, cols: c, mat/*, ord*/} = graph;
-	const fix = [];
-	const fixset = new Set();
+	const {rows: r, cols: c, mat} = graph;
 	for (let i = order.length - 2; i >= 0; --i) {
 		const u = order[i], v = order[i+1];
 		for (let j = 0; j < c; ++j) {
 			mat[u*c+j] |= mat[v*c+j];
 		}
 		mat[(u*(c<<5)+v)>>>5] |= 1 << (v&0x1f);
-		//ord[(u*(c<<5)+v)>>>5] |= 1 << (v&0x1f);
-		fix.push(u);
-		fixset.add(u);
 	}
 
-	// TODO is there a better way to do this?
-	fix.reverse();
-	while (fix.length > 0) {
-		// breadth-first here is very important for some reason. changing this to .pop() makes the time required to run
-		// the tests go from ~4 minutes to >20.
-		const v = fix.shift();
-		fixset.delete(v);
+	for (let k = 0; k < order.length - 1; ++k) {
+		const v = order[k];
 		for (let u = 1; u < r; ++u) {
 			const i = u*(c<<5)+v;
-			if (/*ord*/mat[i>>>5] & (1 << (i&0x1f))) {
-				if (!fixset.has(u)) { fix.push(u); fixset.add(u); }
+			if (mat[i>>>5] & (1 << (i&0x1f))) {
 				for (let j = 0; j < c; ++j) {
 					mat[u*c+j] |= mat[v*c+j];
 				}
