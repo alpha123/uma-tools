@@ -47,7 +47,7 @@ export function makeGraph(vert: number[]): Graph {
 	const c = (r + 31) >>> 5;
 	const mat = new Uint32Array(r*c);
 	mat[0] = (1<<Math.min(n,31))-1 << 1;
-	n -= Math.min(n,32);
+	n -= Math.min(n,31);
 	const run = Math.floor(n/32);
 	mat.fill(0xffffffff, 1, 1+run);
 	n -= 32 * run;
