@@ -106,15 +106,15 @@ export function maxPaths(graph: Graph): number[] {
 	const {rows: r, cols: c, vert, mat} = graph;
 	const n = c<<5;
 	const dist = Array(r).fill(0);
-	for (let i = 0; i < r - 1; ++i) {
-		vert.forEach(u => {
-			vert.forEach(v => {
-				const uv = u*n+v;
-				const e = mat[uv>>>5] & (1 << (uv&0x1f));
-				if (e && dist[u] - 1 < dist[v]) {
-					dist[v] = dist[u] - 1;
-				}
-			});
+	for (let k = 0; k < r - 1; ++k) {
+		mat.forEach((x,i) => {
+			while (x > 0) {
+				const j = 31 - Math.clz32(x);
+				const u = (i/c)|0;
+				const v = (i%c << 5) + j;
+				dist[v] = Math.min(dist[v], dist[u] - 1);
+				x &= ~(1 << j);
+			}
 		});
 	}
 	return dist;

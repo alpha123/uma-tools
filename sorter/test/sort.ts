@@ -5,31 +5,32 @@ import { shuffle, makeGraph, updateEdges, nextGroup, maxPaths } from '../sort.ts
 
 function detectCycles(graph: Graph) {
 	const {rows: r, cols: c, vert, mat} = graph;
-	const n = c<<5;
 	const dist = Array(r).fill(0);
 	const pred = Array(r).fill(-1);
-	for (let i = 0; i < r - 1; ++i) {
-		vert.forEach(u => {
-			vert.forEach(v => {
-				const uv = u*n+v;
-				const e = mat[uv>>>5] & (1 << (uv&0x1f));
-				if (e && dist[u] - 1 < dist[v]) {
+	for (let k = 0; k < r - 1; ++k) {
+		mat.forEach((x,i) => {
+			while (x > 0) {
+				const j = 31 - Math.clz32(x);
+				const u = (i/c)|0;
+				const v = (i%c << 5) + j;
+				if (dist[u] - 1 < dist[v]) {
 					dist[v] = dist[u] - 1;
 					pred[v] = u;
 				}
-			});
+				x &= ~(1 << j);
+			}
 		});
 	}
 
-	for (let i = 0; i < vert.length; ++i) {
-		const u = vert[i];
-		for (let j = 0; j < vert.length; ++j) {
-			const v = vert[j];
-			const uv = u*n+v;
-			const e = mat[uv>>>5] & (1 << (uv&0x1f));
-			if (e && dist[u] - 1 < dist[v]) {
+	for (let i = 0; i < mat.length; ++i) {
+		let x = mat[i];
+		while (x > 0) {
+			const j = 31 - Math.clz32(x);
+			let u = (i/c)|0;
+			let v = (i%c << 5) + j;
+			if (dist[u] - 1 < dist[v]) {
 				pred[v] = u;
-				const visited = Array(n).fill(false);
+				const visited = Array(r).fill(false);
 				visited[v] = true;
 				while (!visited[u]) {
 					visited[u] = true;
@@ -45,6 +46,7 @@ function detectCycles(graph: Graph) {
 				console.error(cycle);
 				return true;
 			}
+			x &= ~(1 << j);
 		}
 	}
 	return false;
