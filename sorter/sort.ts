@@ -34,47 +34,76 @@ export function shuffle(a: number[]) {
 	}
 }
 
-export function makeGraph(n: number): Uint32Array {
-	const graph = new Uint32Array(Math.ceil(n*n/32));
-	graph[0] = (1<<Math.min(n-1,31))-1 << 1;
-	n -= Math.min(n,32);
-	const run = Math.floor(n/32);
-	graph.fill(0xffffffff, 1, 1+run);
-	n -= 32 * run;
-	graph[1+run] = (1<<n)-1|0;
-	return graph;
+interface Graph {
+	rows: number
+	cols: number
+	vert: number[]
+	mat: Uint32Array
 }
 
-export function updateEdges(graph: Uint32Array, nvert: number, order: number[]) {
-	for (let i = 0; i < order.length; ++i) {
-		for (let j = i + 1; j < order.length; ++j) {
-			const idx = order[i] * nvert + order[j];
-			graph[idx>>>5] |= 1 << (idx&0x1f);
+export function makeGraph(vert: number[]): Graph {
+	let n = vert.length;
+	const r = n + 1;
+	const c = (r + 31) >>> 5;
+	const mat = new Uint32Array(r*c);
+	mat[0] = (1<<Math.min(n,31))-1 << 1;
+	n -= Math.min(n,32);
+	const run = Math.floor(n/32);
+	mat.fill(0xffffffff, 1, 1+run);
+	n -= 32 * run;
+	mat[1+run] = (1<<n)-1|0;
+	// note: this can be sped up significantly by uncommenting the `ord` lines below at the expense of higher memory
+	// consumption (this is fast enough for interactive use and keeping the graph size small reduces memory required for
+	// saving undo states, but changing it does make the test suite run about twice as fast)
+	//
+	// `mat` contains all reachability information while `ord` is only direct edges, and preserving this reduces the
+	// amount of nodes we have to check when computing `mat` to transitive closure significantly.
+	return {rows: r, cols: c, vert, mat/*, ord: new Uint32Array(mat)*/};
+}
+
+export function updateEdges(graph: Graph, order: number[]) {
+	const {rows: r, cols: c, mat/*, ord*/} = graph;
+	const fix = [];
+	const fixset = new Set();
+	for (let i = order.length - 2; i >= 0; --i) {
+		const u = order[i], v = order[i+1];
+		for (let j = 0; j < c; ++j) {
+			mat[u*c+j] |= mat[v*c+j];
+		}
+		mat[(u*(c<<5)+v)>>>5] |= 1 << (v&0x1f);
+		//ord[(u*(c<<5)+v)>>>5] |= 1 << (v&0x1f);
+		fix.push(u);
+		fixset.add(u);
+	}
+
+	// TODO is there a better way to do this?
+	fix.reverse();
+	while (fix.length > 0) {
+		// breadth-first here is very important for some reason. changing this to .pop() makes the time required to run
+		// the tests go from ~4 minutes to >20.
+		const v = fix.shift();
+		fixset.delete(v);
+		for (let u = 1; u < r; ++u) {
+			const i = u*(c<<5)+v;
+			if (/*ord*/mat[i>>>5] & (1 << (i&0x1f))) {
+				if (!fixset.has(u)) { fix.push(u); fixset.add(u); }
+				for (let j = 0; j < c; ++j) {
+					mat[u*c+j] |= mat[v*c+j];
+				}
+			}
 		}
 	}
 }
 
-export function close(graph: Uint32Array, vert: number[]) {
-	const n = vert.length;
-	const reachable = new Uint32Array(graph);
-	vert.forEach(k => {
-		vert.forEach(i => {
-			vert.forEach(j => {
-				const ij = i*n+j, ik = i*n+k, kj = k*n+j;
-				reachable[ij>>>5] |= ((reachable[ik>>>5]>>>(ik&0x1f)) & (reachable[kj>>>5]>>>(kj&0x1f)) & 1) << (ij&0x1f);
-			});
-		});
-	});
-	return reachable;
-}
-
-export function nextGroup(reachable: Uint32Array, n: number, vert: number[], k: number) {
-	const lb = Array(n).fill(0), ub = Array(n).fill(n);
+export function nextGroup(graph: Graph, k: number): number[] {
+	const {rows: r, cols: c, vert, mat} = graph;
+	const n = c<<5;
+	const lb = Array(r).fill(0), ub = Array(r).fill(r);
 	vert.forEach(u => {
 		vert.forEach(v => {
 			const uv = u*n+v, vu = v*n+u;
-			lb[u] += (reachable[vu>>>5]>>>(vu&0x1f)) & 1;
-			ub[u] -= (reachable[uv>>>5]>>>(uv&0x1f)) & 1;
+			lb[u] += (mat[vu>>>5]>>>(vu&0x1f)) & 1;
+			ub[u] -= (mat[uv>>>5]>>>(uv&0x1f)) & 1;
 		});
 	});
 
@@ -82,7 +111,7 @@ export function nextGroup(reachable: Uint32Array, n: number, vert: number[], k: 
 	for (let i = 0; i < k; ++i) {
 		const cand = vert.filter(u => !group.some(v => {
 			const uv = u*n+v, vu = v*n+u;
-			return u == v || ((reachable[uv>>>5]>>>(uv&0x1f))&1) || ((reachable[vu>>>5]>>>(vu&0x1f))&1);
+			return u == v || (mat[uv>>>5] & (1 << (uv&0x1f))) || (mat[vu>>>5] & (1 << (vu&0x1f)));
 		}));
 		if (cand.length == 0) break;
 		group.push(cand.reduce(({best,v},u) => ub[u] - lb[u] > best ? {best: ub[u] - lb[u], v: u} : {best,v}, {best: 0, v: 0}).v);
@@ -90,14 +119,15 @@ export function nextGroup(reachable: Uint32Array, n: number, vert: number[], k: 
 	return group;
 }
 
-export function maxPaths(graph: Uint32Array, vert: number[]) {
-	const n = vert.length;
-	const dist = Array(n).fill(0);
-	for (let i = 0; i < n - 1; ++i) {
+export function maxPaths(graph: Graph): number[] {
+	const {rows: r, cols: c, vert, mat} = graph;
+	const n = c<<5;
+	const dist = Array(r).fill(0);
+	for (let i = 0; i < r - 1; ++i) {
 		vert.forEach(u => {
 			vert.forEach(v => {
 				const uv = u*n+v;
-				const e = (graph[uv>>>5]>>>(uv&0x1f)) & 1;
+				const e = mat[uv>>>5] & (1 << (uv&0x1f));
 				if (e && dist[u] - 1 < dist[v]) {
 					dist[v] = dist[u] - 1;
 				}
