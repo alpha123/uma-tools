@@ -95,15 +95,18 @@ function App(props) {
 	}
 
 	return (
-		<div>
+		<div id="sortProgress">
 			{order != null
 				? <ol>{final.map(id => <UmaTab key={'final-' + id} shortId={id} name={names[id]} />)}</ol>
-				: <ul id="sortlist" ref={sortlist}>
-					  {group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}
-				</ul>
+				: <div id="sortlistWrapper">
+					  <ul id="sortlistBg">{group.map(id => <li key={id} class="tabslot" />)}</ul>
+					  <ul id="sortlist" ref={sortlist}>
+						{group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}
+					  </ul>
+				  </div>
 			}
 			<div>{steps} steps</div>
-			<div style="display:flex">
+			<div id="buttonsRow">
 				<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
 				{order == null && <button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>}
 			</div>

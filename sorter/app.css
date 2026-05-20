@@ -1,25 +1,51 @@
+#sortProgress {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+#buttonsRow {
+	display: flex;
+	gap: 10px;
+}
+
+#sortlistWrapper {
+	position: relative;
+}
+
 #sortlist {
 	display: flex;
+	gap: 6px;
 	list-style-type: none;
 }
 
+#sortlistBg {
+	display: flex;
+	gap: 6px;
+	left: -2px;
+	list-style-type: none;
+	position: absolute;
+	z-index: -1;
+}
+
+.tabslot {
+	border: 2px solid rgb(170,221,154);
+	border-radius: 6px;
+	box-sizing: border-box;
+	height: 280px;
+	margin-left: -2px;
+	width: 252px;
+}
+
 .umatab {
-	border: 1px solid black;
-	display: block;
+	display: flex;
+	flex-direction: column;
 }
 
 .umatab > span {
+	color: #794016;
+	font-weight: bold;
 	text-align: center;
-}
-
-.gu-mirror {
-	margin: 0;
-	opacity: 0.8;
-	position: fixed;
-	z-index: 9999;
-}
-.gu-hide { display: none; }
-.gu-unselectable {
 	-webkit-user-select: none;
 	user-select: none;
 }
