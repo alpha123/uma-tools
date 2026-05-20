@@ -23,4 +23,6 @@
 	-webkit-user-select: none;
 	user-select: none;
 }
+
+.gu-mirror { opacity: 0.8; }
 .gu-transit { opacity: 0.2; }

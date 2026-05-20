@@ -1,7 +1,7 @@
 import { h, Fragment, render } from 'preact';
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 
-import { dragula } from './dragula';
+import Sortable from '../vendor/sortable';
 
 import { shuffle, makeGraph, updateEdges, close, nextGroup, maxPaths } from './sort';
 
@@ -28,7 +28,12 @@ function App(props) {
 
 	useEffect(function () {
 		if (sortlist.current == null) return;
-		const d = dragula([sortlist.current]);
+		const d = Sortable.create(sortlist.current, {
+			dataIdAttr: 'data-id',
+			ghostClass: 'gu-transit',
+			forceFallback: true,
+			fallbackClass: 'gu-mirror'
+		});
 		return () => d.destroy();
 	}, [sortlist.current]);
 
