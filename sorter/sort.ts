@@ -42,7 +42,7 @@ interface Graph {
 }
 
 export function makeGraph(vert: number[]): Graph {
-	let n = vert.length;
+	let n = vert.reduce((a,b) => Math.max(a,b), 0);
 	const r = n + 1;
 	const c = (r + 31) >>> 5;
 	const mat = new Uint32Array(r*c);
@@ -97,7 +97,7 @@ export function nextGroup(graph: Graph, k: number): number[] {
 			return u == v || (mat[uv>>>5] & (1 << (uv&0x1f))) || (mat[vu>>>5] & (1 << (vu&0x1f)));
 		}));
 		if (cand.length == 0) break;
-		group.push(cand.reduce(({best,v},u) => ub[u] - lb[u] > best ? {best: ub[u] - lb[u], v: u} : {best,v}, {best: 0, v: 0}).v);
+		group.push(cand.reduce(({best,v},u) => ub[u] - lb[u] > best ? {best: ub[u] - lb[u], v: u} : {best,v}, {best: -1, v: -1}).v);
 	}
 	return group;
 }
