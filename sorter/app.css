@@ -3,15 +3,13 @@
 	list-style-type: none;
 }
 
-#sortlist > li {
+.umatab {
 	border: 1px solid black;
 	display: block;
-	font-size: 1.2em;
-	font-weight: bold;
-	height: 50px;
-	line-height: 50px;
+}
+
+.umatab > span {
 	text-align: center;
-	width: 50px;
 }
 
 .gu-mirror {

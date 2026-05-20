@@ -12,6 +12,16 @@ import './app.css';
 
 const STEPSIZE = 3;
 
+function UmaTab(props) {
+	const id = props.shortId + 1000;
+	return (
+		<li class="umatab" data-id={props.shortId}>
+			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width="250" draggable="false" />
+			<span>{props.name}</span>
+		</li>
+	);
+}
+
 function App(props) {
 	const sortlist = useRef(null);
 	const [order, setOrder] = useState(null);
@@ -22,22 +32,41 @@ function App(props) {
 		return () => d.destroy();
 	}, [sortlist.current]);
 
-	const NNUM = 20;
-	const numbers = useMemo(() => { const n = Array.from({length: NNUM}, (_,i)=>i+1); shuffle(n); console.log(n); return n; }, []);
-	//const numbers = [ 2, 7, 9, 4, 3, 5, 6, 1, 8, 10 ];
-	//const numbers = [ 5, 6, 1, 4, 8, 3, 9, 2, 10, 7 ];
+	const [undoStack, setUndoStack] = useState(null);
 
-	const [graph, setGraph] = useState(() => makeGraph(NNUM));
-	const [group, setGroup] = useState(() => numbers.slice(0,STEPSIZE));
+	function pushUndo(mat) {
+		setUndoStack({car: mat, cdr: undoStack});
+	}
+
+	function popUndo() {
+		setUndoStack(undoStack.cdr);
+		return undoStack.car;
+	}
+
+	const [names, setNames] = useState([]);
+	const [graph, setGraph] = useState(null);
+	const [group, setGroup] = useState([]);
+	useEffect(function () {
+		fetch('../umas.json').then(resp => resp.json()).then(umas => {
+			const ids = Object.keys(umas).filter(id => +id < 2000).map(id => +id - 1000);
+			const names = [];
+			ids.forEach(id => names[id] = umas[id+1000].name[1]);
+			setNames(names);
+			shuffle(ids);
+			setGraph(makeGraph(ids));
+			setGroup(ids.slice(0,STEPSIZE));
+		});
+	}, []);
 
 	const [steps, setSteps] = useState(0);
 	function step() {
-		const order = Array.from(sortlist.current.children).map(el => +el.dataset.n);
-		const newGraph = [...graph];  // i don't think it matters that we don't actually do a deep copy here, but keep an eye on it
+		const order = Array.from(sortlist.current.children).map(el => +el.dataset.id);
+		pushUndo(graph.mat);
+		const newGraph = {...graph, mat: new Uint32Array(graph.mat)};
 		updateEdges(newGraph, order);
 		setGraph(newGraph);
-		const reachable = close(newGraph);
-		const next = nextGroup(reachable, STEPSIZE);
+		let next = nextGroup(newGraph, STEPSIZE);
+		next = next.filter(id => id != 0);
 		if (next.length == 1) {
 			const dist = maxPaths(newGraph);
 			setOrder(dist);
@@ -47,21 +76,32 @@ function App(props) {
 		setSteps(steps + 1);
 	}
 
+	function undo() {
+		setOrder(null);
+		const oldGraph = {...graph, mat: popUndo()};
+		setGroup(nextGroup(oldGraph, STEPSIZE));
+		setGraph(oldGraph);
+		setSteps(steps - 1);
+	}
+
 	let final = null;
 	if (order != null) {
-		final = numbers.sort((a,b) => order[b] - order[a]);
+		final = graph.vert.sort((a,b) => order[b] - order[a]);  // mutation whatever
 	}
 
 	return (
 		<div>
 			{order != null
-				? <ul>{final.map(n => <li key={'final-' + n}>{n}</li>)}</ul>
+				? <ol>{final.map(id => <UmaTab key={'final-' + id} shortId={id} name={names[id]} />)}</ol>
 				: <ul id="sortlist" ref={sortlist}>
-					  {group.map(n => <li key={n} data-n={n}>{n}</li>)}
+					  {group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}
 				</ul>
 			}
 			<div>{steps} steps</div>
-			{order == null && <button class="stdBtn btnType1" onClick={step}>Next</button>}
+			<div style="display:flex">
+				<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
+				{order == null && <button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>}
+			</div>
 		</div>
 	);
 }
