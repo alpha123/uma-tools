@@ -9,7 +9,7 @@ function detectCycles(graph: Graph) {
 	const pred = Array(r).fill(-1);
 	for (let k = 0; k < r - 1; ++k) {
 		mat.forEach((x,i) => {
-			while (x > 0) {
+			while (x != 0) {
 				const j = 31 - Math.clz32(x);
 				const u = (i/c)|0;
 				const v = (i%c << 5) + j;
@@ -24,7 +24,7 @@ function detectCycles(graph: Graph) {
 
 	for (let i = 0; i < mat.length; ++i) {
 		let x = mat[i];
-		while (x > 0) {
+		while (x != 0) {
 			const j = 31 - Math.clz32(x);
 			let u = (i/c)|0;
 			let v = (i%c << 5) + j;

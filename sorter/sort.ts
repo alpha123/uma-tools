@@ -108,7 +108,7 @@ export function maxPaths(graph: Graph): number[] {
 	const dist = Array(r).fill(0);
 	for (let k = 0; k < r - 1; ++k) {
 		mat.forEach((x,i) => {
-			while (x > 0) {
+			while (x != 0) {
 				const j = 31 - Math.clz32(x);
 				const u = (i/c)|0;
 				const v = (i%c << 5) + j;

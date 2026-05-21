@@ -100,8 +100,40 @@ function App(props) {
 	function undo() {
 		setFinal(null);
 		const oldGraph = {...graph, mat: popUndo()};
-		setGroup(nextGroup(oldGraph, STEPSIZE));
+		const c = graph.cols;
+		// recover the user's chosen sorting order as the topological sort of the difference between the old and new graphs
+		const changed = graph.mat.map((x,i) => x ^ oldGraph.mat[i]);
+		const indeg = [];
+		const qset = new Set();
+		changed.forEach((x,i) => {
+			while (x != 0) {
+				const j = 31 - Math.clz32(x);
+				const u = (i/c)|0;
+				const v = (i%c << 5) + j;
+				indeg[v] = (indeg[v] || 0) + 1;
+				qset.add(u);
+				x &= ~(1 << j);
+			}
+		});
+		const queue = Array.from(qset).filter(v => !(v in indeg));
+		const group = [];
+		while (queue.length > 0) {
+			const u = queue.pop();
+			group.push(u);
+			for (let i = u*c; i < (u+1)*c; ++i) {
+				let x = changed[i];
+				while (x != 0) {
+					const j = 31 - Math.clz32(x);
+					const v = (i%c << 5) + j;
+					if ((indeg[v] -= 1) == 0) {
+						queue.push(v);
+					}
+					x &= ~(1 << j);
+				}
+			}
+		}
 		setGraph(oldGraph);
+		setGroup(group);
 		setSteps(steps - 1);
 	}
 
