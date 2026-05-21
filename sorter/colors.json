@@ -1,0 +1,1185 @@
+{
+  "1001": {
+    "id": 1001,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "EE6DCB",
+    "ui_border_color": "F759CD"
+  },
+  "1002": {
+    "id": 1002,
+    "image_color_main": "8FE78D",
+    "image_color_sub": "FBFF3B",
+    "ui_color_main": "29BD70",
+    "ui_border_color": "27B36B"
+  },
+  "1003": {
+    "id": 1003,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "3376D2",
+    "ui_border_color": "2B75DD"
+  },
+  "1004": {
+    "id": 1004,
+    "image_color_main": "F84B40",
+    "image_color_sub": "FFCA3B",
+    "ui_color_main": "EA504A",
+    "ui_border_color": "EB654B"
+  },
+  "1005": {
+    "id": 1005,
+    "image_color_main": "6C6C6C",
+    "image_color_sub": "181818",
+    "ui_color_main": "444745",
+    "ui_border_color": "28A853"
+  },
+  "1006": {
+    "id": 1006,
+    "image_color_main": "7991EC",
+    "image_color_sub": "293CB2",
+    "ui_color_main": "3A7AD2",
+    "ui_border_color": "3B76C4"
+  },
+  "1007": {
+    "id": 1007,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "F84B40",
+    "ui_color_main": "DA3C57",
+    "ui_border_color": "DB4D65"
+  },
+  "1008": {
+    "id": 1008,
+    "image_color_main": "FFEF72",
+    "image_color_sub": "2CD9B4",
+    "ui_color_main": "D4C200",
+    "ui_border_color": "DCAB00"
+  },
+  "1009": {
+    "id": 1009,
+    "image_color_main": "8DA3E7",
+    "image_color_sub": "3B61FF",
+    "ui_color_main": "4F64D8",
+    "ui_border_color": "4D75E3"
+  },
+  "1010": {
+    "id": 1010,
+    "image_color_main": "CBFF9E",
+    "image_color_sub": "33B042",
+    "ui_color_main": "73C032",
+    "ui_border_color": "67BD1C"
+  },
+  "1011": {
+    "id": 1011,
+    "image_color_main": "A3B2D6",
+    "image_color_sub": "3357B0",
+    "ui_color_main": "3A34AC",
+    "ui_border_color": "736DED"
+  },
+  "1012": {
+    "id": 1012,
+    "image_color_main": "5BA5DD",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "2185D0",
+    "ui_border_color": "3e7dd6"
+  },
+  "1013": {
+    "id": 1013,
+    "image_color_main": "38BDC3",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "00B5BE",
+    "ui_border_color": "22B7BF"
+  },
+  "1014": {
+    "id": 1014,
+    "image_color_main": "D64F3E",
+    "image_color_sub": "FDCE46",
+    "ui_color_main": "DD4E31",
+    "ui_border_color": "F26A3D"
+  },
+  "1015": {
+    "id": 1015,
+    "image_color_main": "ECEB61",
+    "image_color_sub": "FF83DA",
+    "ui_color_main": "F271C4",
+    "ui_border_color": "ee55b7"
+  },
+  "1016": {
+    "id": 1016,
+    "image_color_main": "FFACE1",
+    "image_color_sub": "A037BE",
+    "ui_color_main": "75358C",
+    "ui_border_color": "bf39ef"
+  },
+  "1017": {
+    "id": 1017,
+    "image_color_main": "27B798",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "1C7763",
+    "ui_border_color": "2EB396"
+  },
+  "1018": {
+    "id": 1018,
+    "image_color_main": "27A1B7",
+    "image_color_sub": "FFE672",
+    "ui_color_main": "0092CB",
+    "ui_border_color": "34A5D1"
+  },
+  "1019": {
+    "id": 1019,
+    "image_color_main": "F7FFAC",
+    "image_color_sub": "F5D74B",
+    "ui_color_main": "F37F96",
+    "ui_border_color": "f75676"
+  },
+  "1020": {
+    "id": 1020,
+    "image_color_main": "BDE9C9",
+    "image_color_sub": "4CB9A8",
+    "ui_color_main": "65D283",
+    "ui_border_color": "3DB35E"
+  },
+  "1021": {
+    "id": 1021,
+    "image_color_main": "5DA9E2",
+    "image_color_sub": "AEFAFF",
+    "ui_color_main": "3290D6",
+    "ui_border_color": "2d8ad0"
+  },
+  "1022": {
+    "id": 1022,
+    "image_color_main": "71CC99",
+    "image_color_sub": "109F42",
+    "ui_color_main": "20A95C",
+    "ui_border_color": "18aa58"
+  },
+  "1023": {
+    "id": 1023,
+    "image_color_main": "D17F9B",
+    "image_color_sub": "C333A8",
+    "ui_color_main": "B03D81",
+    "ui_border_color": "D05CD6"
+  },
+  "1024": {
+    "id": 1024,
+    "image_color_main": "F3E67B",
+    "image_color_sub": "FF7770",
+    "ui_color_main": "F57D38",
+    "ui_border_color": "F27318"
+  },
+  "1025": {
+    "id": 1025,
+    "image_color_main": "3D3935",
+    "image_color_sub": "BBBE6C",
+    "ui_color_main": "494541",
+    "ui_border_color": "c79b00"
+  },
+  "1026": {
+    "id": 1026,
+    "image_color_main": "F177AF",
+    "image_color_sub": "E4E94C",
+    "ui_color_main": "EE60A1",
+    "ui_border_color": "ff3ed4"
+  },
+  "1027": {
+    "id": 1027,
+    "image_color_main": "62D9D1",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "14BAAE",
+    "ui_border_color": "33B8A6"
+  },
+  "1028": {
+    "id": 1028,
+    "image_color_main": "61AAD9",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "208BCD",
+    "ui_border_color": "0a81ca"
+  },
+  "1029": {
+    "id": 1029,
+    "image_color_main": "A7DDFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "AF7E51",
+    "ui_border_color": "5688c5"
+  },
+  "1030": {
+    "id": 1030,
+    "image_color_main": "304073",
+    "image_color_sub": "BC89B1",
+    "ui_color_main": "384A86",
+    "ui_border_color": "546DBF"
+  },
+  "1031": {
+    "id": 1031,
+    "image_color_main": "FD89D5",
+    "image_color_sub": "37D4A0",
+    "ui_color_main": "F078C5",
+    "ui_border_color": "c53b8c"
+  },
+  "1032": {
+    "id": 1032,
+    "image_color_main": "E9FD89",
+    "image_color_sub": "37D4CD",
+    "ui_color_main": "35B2B6",
+    "ui_border_color": "1DABB8"
+  },
+  "1033": {
+    "id": 1033,
+    "image_color_main": "6592CC",
+    "image_color_sub": "A3EAFF",
+    "ui_color_main": "3865A1",
+    "ui_border_color": "3865a1"
+  },
+  "1034": {
+    "id": 1034,
+    "image_color_main": "CC54BA",
+    "image_color_sub": "FF9BE6",
+    "ui_color_main": "AE419E",
+    "ui_border_color": "9741a9"
+  },
+  "1035": {
+    "id": 1035,
+    "image_color_main": "DB5E64",
+    "image_color_sub": "FFEA9B",
+    "ui_color_main": "DD3D5B",
+    "ui_border_color": "E65771"
+  },
+  "1036": {
+    "id": 1036,
+    "image_color_main": "D1D13E",
+    "image_color_sub": "679EF1",
+    "ui_color_main": "2459B4",
+    "ui_border_color": "2053a9"
+  },
+  "1037": {
+    "id": 1037,
+    "image_color_main": "413D39",
+    "image_color_sub": "F34178",
+    "ui_color_main": "3D3B3A",
+    "ui_border_color": "e52f67"
+  },
+  "1038": {
+    "id": 1038,
+    "image_color_main": "FF6D70",
+    "image_color_sub": "2E2E2E",
+    "ui_color_main": "F86669",
+    "ui_border_color": "FF5C5F"
+  },
+  "1039": {
+    "id": 1039,
+    "image_color_main": "EC77C0",
+    "image_color_sub": "4AD6C7",
+    "ui_color_main": "E146A7",
+    "ui_border_color": "f440b1"
+  },
+  "1040": {
+    "id": 1040,
+    "image_color_main": "688AD6",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "245099",
+    "ui_border_color": "356FCC"
+  },
+  "1041": {
+    "id": 1041,
+    "image_color_main": "F595C3",
+    "image_color_sub": "FFDFDF",
+    "ui_color_main": "EE6FAB",
+    "ui_border_color": "F2529D"
+  },
+  "1042": {
+    "id": 1042,
+    "image_color_main": "CC5A6B",
+    "image_color_sub": "70E1FA",
+    "ui_color_main": "B02D40",
+    "ui_border_color": "b61f3f"
+  },
+  "1043": {
+    "id": 1043,
+    "image_color_main": "676767",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "63666A",
+    "ui_border_color": "9b45ad"
+  },
+  "1044": {
+    "id": 1044,
+    "image_color_main": "957EC0",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "926DDA",
+    "ui_border_color": "7c55c6"
+  },
+  "1045": {
+    "id": 1045,
+    "image_color_main": "7FADE3",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "5693DA",
+    "ui_border_color": "408DE6"
+  },
+  "1046": {
+    "id": 1046,
+    "image_color_main": "E9748D",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "F8587B",
+    "ui_border_color": "fc587c"
+  },
+  "1047": {
+    "id": 1047,
+    "image_color_main": "639337",
+    "image_color_sub": "D9D15F",
+    "ui_color_main": "5F9B26",
+    "ui_border_color": "408f24"
+  },
+  "1048": {
+    "id": 1048,
+    "image_color_main": "3FB7AE",
+    "image_color_sub": "3686C0",
+    "ui_color_main": "25B8AE",
+    "ui_border_color": "0aaea3"
+  },
+  "1049": {
+    "id": 1049,
+    "image_color_main": "CF5E59",
+    "image_color_sub": "80A7C3",
+    "ui_color_main": "C0453F",
+    "ui_border_color": "be3d3d"
+  },
+  "1050": {
+    "id": 1050,
+    "image_color_main": "E3ACD6",
+    "image_color_sub": "F3DD6D",
+    "ui_color_main": "E575CE",
+    "ui_border_color": "ed55cf"
+  },
+  "1051": {
+    "id": 1051,
+    "image_color_main": "E0D773",
+    "image_color_sub": "E08ED0",
+    "ui_color_main": "E26ECB",
+    "ui_border_color": "dd50c1"
+  },
+  "1052": {
+    "id": 1052,
+    "image_color_main": "FAADC3",
+    "image_color_sub": "FFF040",
+    "ui_color_main": "FA7395",
+    "ui_border_color": "F25793"
+  },
+  "1053": {
+    "id": 1053,
+    "image_color_main": "29504D",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "366965",
+    "ui_border_color": "217873"
+  },
+  "1054": {
+    "id": 1054,
+    "image_color_main": "F20C46",
+    "image_color_sub": "F2C2E7",
+    "ui_color_main": "E7396F",
+    "ui_border_color": "d1275c"
+  },
+  "1055": {
+    "id": 1055,
+    "image_color_main": "A30083",
+    "image_color_sub": "FFF200",
+    "ui_color_main": "CA46B0",
+    "ui_border_color": "c434a8"
+  },
+  "1056": {
+    "id": 1056,
+    "image_color_main": "307FE2",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "3D89E9",
+    "ui_border_color": "3B7FD9"
+  },
+  "1057": {
+    "id": 1057,
+    "image_color_main": "77D64A",
+    "image_color_sub": "FFF6B2",
+    "ui_color_main": "6FC346",
+    "ui_border_color": "42a624"
+  },
+  "1058": {
+    "id": 1058,
+    "image_color_main": "06038D",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "46449B",
+    "ui_border_color": "4b5acb"
+  },
+  "1059": {
+    "id": 1059,
+    "image_color_main": "00B097",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "19B49E",
+    "ui_border_color": "20a895"
+  },
+  "1060": {
+    "id": 1060,
+    "image_color_main": "009639",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "28A959",
+    "ui_border_color": "3EA365"
+  },
+  "1061": {
+    "id": 1061,
+    "image_color_main": "007B3E",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "0E9451",
+    "ui_border_color": "43B04A"
+  },
+  "1062": {
+    "id": 1062,
+    "image_color_main": "0085CA",
+    "image_color_sub": "FF668C",
+    "ui_color_main": "0f8dce",
+    "ui_border_color": "1d76d1"
+  },
+  "1063": {
+    "id": 1063,
+    "image_color_main": "47A23F",
+    "image_color_sub": "C1C6C8",
+    "ui_color_main": "49b73f",
+    "ui_border_color": "49b73f"
+  },
+  "1064": {
+    "id": 1064,
+    "image_color_main": "00A499",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "27c79c",
+    "ui_border_color": "049989"
+  },
+  "1065": {
+    "id": 1065,
+    "image_color_main": "303AB2",
+    "image_color_sub": "FEDB00",
+    "ui_color_main": "5b64d5",
+    "ui_border_color": "3d4fce"
+  },
+  "1066": {
+    "id": 1066,
+    "image_color_main": "0050C8",
+    "image_color_sub": "FF5FCC",
+    "ui_color_main": "1985d2",
+    "ui_border_color": "2061b2"
+  },
+  "1067": {
+    "id": 1067,
+    "image_color_main": "90AA6B",
+    "image_color_sub": "FFF994",
+    "ui_color_main": "94bf01",
+    "ui_border_color": "6ca90b"
+  },
+  "1068": {
+    "id": 1068,
+    "image_color_main": "25282A",
+    "image_color_sub": "FC4C02",
+    "ui_color_main": "5a6065",
+    "ui_border_color": "e94e35"
+  },
+  "1069": {
+    "id": 1069,
+    "image_color_main": "FFA3B5",
+    "image_color_sub": "F5DADF",
+    "ui_color_main": "f9879d",
+    "ui_border_color": "e54c6d"
+  },
+  "1070": {
+    "id": 1070,
+    "image_color_main": "007763",
+    "image_color_sub": "A6093C",
+    "ui_color_main": "248379",
+    "ui_border_color": "1b756b"
+  },
+  "1071": {
+    "id": 1071,
+    "image_color_main": "269988",
+    "image_color_sub": "94ECFF",
+    "ui_color_main": "28baa5",
+    "ui_border_color": "27a4a0"
+  },
+  "1072": {
+    "id": 1072,
+    "image_color_main": "CB2819",
+    "image_color_sub": "FFC658",
+    "ui_color_main": "da483a",
+    "ui_border_color": "bd372a"
+  },
+  "1073": {
+    "id": 1073,
+    "image_color_main": "A743D1",
+    "image_color_sub": "FDD758",
+    "ui_color_main": "8F4DAC",
+    "ui_border_color": "8f4dac"
+  },
+  "1074": {
+    "id": 1074,
+    "image_color_main": "64CCC9",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "45C5C1",
+    "ui_border_color": "21abad"
+  },
+  "1075": {
+    "id": 1075,
+    "image_color_main": "B6F0FF",
+    "image_color_sub": "705F5B",
+    "ui_color_main": "79c6db",
+    "ui_border_color": "2B75DD"
+  },
+  "1076": {
+    "id": 1076,
+    "image_color_main": "ED7092",
+    "image_color_sub": "EBD3CF",
+    "ui_color_main": "f0638a",
+    "ui_border_color": "d45e85"
+  },
+  "1077": {
+    "id": 1077,
+    "image_color_main": "E280D2",
+    "image_color_sub": "863586",
+    "ui_color_main": "ea5bc0",
+    "ui_border_color": "cb4faf"
+  },
+  "1078": {
+    "id": 1078,
+    "image_color_main": "639CCC",
+    "image_color_sub": "FF3C3C",
+    "ui_color_main": "5192C1",
+    "ui_border_color": "347cce"
+  },
+  "1079": {
+    "id": 1079,
+    "image_color_main": "4E65DA",
+    "image_color_sub": "FF2A3C",
+    "ui_color_main": "3f54bf",
+    "ui_border_color": "435acc"
+  },
+  "1080": {
+    "id": 1080,
+    "image_color_main": "28F4FF",
+    "image_color_sub": "FF2A58",
+    "ui_color_main": "13a9b0",
+    "ui_border_color": "00abb3"
+  },
+  "1081": {
+    "id": 1081,
+    "image_color_main": "F2303B",
+    "image_color_sub": "1630DE",
+    "ui_color_main": "d93842",
+    "ui_border_color": "D5313B"
+  },
+  "1082": {
+    "id": 1082,
+    "image_color_main": "D82050",
+    "image_color_sub": "00ADD8",
+    "ui_color_main": "ca3b61",
+    "ui_border_color": "d3335e"
+  },
+  "1083": {
+    "id": 1083,
+    "image_color_main": "174C28",
+    "image_color_sub": "1D1F2B",
+    "ui_color_main": "12762f",
+    "ui_border_color": "428d5c"
+  },
+  "1084": {
+    "id": 1084,
+    "image_color_main": "F3E972",
+    "image_color_sub": "0A2966",
+    "ui_color_main": "dab610",
+    "ui_border_color": "c5963a"
+  },
+  "1085": {
+    "id": 1085,
+    "image_color_main": "E2435F",
+    "image_color_sub": "5F4876",
+    "ui_color_main": "d2445d",
+    "ui_border_color": "c14363"
+  },
+  "1086": {
+    "id": 1086,
+    "image_color_main": "2EB8B1",
+    "image_color_sub": "183548",
+    "ui_color_main": "4bb6af",
+    "ui_border_color": "229ba6"
+  },
+  "1087": {
+    "id": 1087,
+    "image_color_main": "CB3725",
+    "image_color_sub": "FFEC8C",
+    "ui_color_main": "CF4436",
+    "ui_border_color": "c02530"
+  },
+  "1088": {
+    "id": 1088,
+    "image_color_main": "225D39",
+    "image_color_sub": "F4F0A2",
+    "ui_color_main": "21713A",
+    "ui_border_color": "097a2c"
+  },
+  "1089": {
+    "id": 1089,
+    "image_color_main": "BFFFFE",
+    "image_color_sub": "030073",
+    "ui_color_main": "64C3C1",
+    "ui_border_color": "20abbc"
+  },
+  "1090": {
+    "id": 1090,
+    "image_color_main": "0000DD",
+    "image_color_sub": "66CCFF",
+    "ui_color_main": "4747cc",
+    "ui_border_color": "5151c9"
+  },
+  "1091": {
+    "id": 1091,
+    "image_color_main": "162ECC",
+    "image_color_sub": "8BD9E7",
+    "ui_color_main": "404fb1",
+    "ui_border_color": "4456cb"
+  },
+  "1092": {
+    "id": 1092,
+    "image_color_main": "FFABBF",
+    "image_color_sub": "00B783",
+    "ui_color_main": "e97d97",
+    "ui_border_color": "dc466a"
+  },
+  "1093": {
+    "id": 1093,
+    "image_color_main": "ADCBEF",
+    "image_color_sub": "FEF38A",
+    "ui_color_main": "85aae1",
+    "ui_border_color": "4d7cca"
+  },
+  "1094": {
+    "id": 1094,
+    "image_color_main": "F3EA5D",
+    "image_color_sub": "58D916",
+    "ui_color_main": "6ac43c",
+    "ui_border_color": "49ad15"
+  },
+  "1095": {
+    "id": 1095,
+    "image_color_main": "A7EAFF",
+    "image_color_sub": "FF4680",
+    "ui_color_main": "4baece",
+    "ui_border_color": "009aca"
+  },
+  "1096": {
+    "id": 1096,
+    "image_color_main": "E42947",
+    "image_color_sub": "A1DBFF",
+    "ui_color_main": "cb243e",
+    "ui_border_color": "b6263c"
+  },
+  "1097": {
+    "id": 1097,
+    "image_color_main": "D0383E",
+    "image_color_sub": "33CCFF",
+    "ui_color_main": "d83a43",
+    "ui_border_color": "d4323b"
+  },
+  "1098": {
+    "id": 1098,
+    "image_color_main": "FDDA26",
+    "image_color_sub": "ED2736",
+    "ui_color_main": "eeb42a",
+    "ui_border_color": "cf8b20"
+  },
+  "1099": {
+    "id": 1099,
+    "image_color_main": "DFF0F2",
+    "image_color_sub": "F0444D",
+    "ui_color_main": "d94149",
+    "ui_border_color": "c74545"
+  },
+  "1100": {
+    "id": 1100,
+    "image_color_main": "D792A9",
+    "image_color_sub": "E6E2E7",
+    "ui_color_main": "d85081",
+    "ui_border_color": "c53d77"
+  },
+  "1102": {
+    "id": 1102,
+    "image_color_main": "D12F29",
+    "image_color_sub": "003273",
+    "ui_color_main": "ca4640",
+    "ui_border_color": "c23b35"
+  },
+  "1103": {
+    "id": 1103,
+    "image_color_main": "FFC977",
+    "image_color_sub": "FF4436",
+    "ui_color_main": "e69a22",
+    "ui_border_color": "e88f00"
+  },
+  "1104": {
+    "id": 1104,
+    "image_color_main": "86C4F8",
+    "image_color_sub": "FC9BB3",
+    "ui_color_main": "7db0e0",
+    "ui_border_color": "377bbf"
+  },
+  "1105": {
+    "id": 1105,
+    "image_color_main": "FDF16C",
+    "image_color_sub": "6EC0E3",
+    "ui_color_main": "5abae6",
+    "ui_border_color": "1292cd"
+  },
+  "1106": {
+    "id": 1106,
+    "image_color_main": "487BCC",
+    "image_color_sub": "CFD9E5",
+    "ui_color_main": "4a71b2",
+    "ui_border_color": "416aae"
+  },
+  "1107": {
+    "id": 1107,
+    "image_color_main": "EF3340",
+    "image_color_sub": "10069F",
+    "ui_color_main": "d44853",
+    "ui_border_color": "cf2f3c"
+  },
+  "1108": {
+    "id": 1108,
+    "image_color_main": "A60014",
+    "image_color_sub": "0D0D0D",
+    "ui_color_main": "bf3344",
+    "ui_border_color": "c73143"
+  },
+  "1109": {
+    "id": 1109,
+    "image_color_main": "FFCBD4",
+    "image_color_sub": "3DCEA6",
+    "ui_color_main": "f15b75",
+    "ui_border_color": "e44460"
+  },
+  "1110": {
+    "id": 1110,
+    "image_color_main": "E7E4F2",
+    "image_color_sub": "004399",
+    "ui_color_main": "948eab",
+    "ui_border_color": "657193"
+  },
+  "1111": {
+    "id": 1111,
+    "image_color_main": "272AA4",
+    "image_color_sub": "FFFC61",
+    "ui_color_main": "2c2f9d",
+    "ui_border_color": "393cb6"
+  },
+  "1112": {
+    "id": 1112,
+    "image_color_main": "FFFA1C",
+    "image_color_sub": "3B3632",
+    "ui_color_main": "d0ba00",
+    "ui_border_color": "AF9D00"
+  },
+  "1113": {
+    "id": 1113,
+    "image_color_main": "FB637E",
+    "image_color_sub": "FFE085",
+    "ui_color_main": "fd637f",
+    "ui_border_color": "f8516f"
+  },
+  "1114": {
+    "id": 1114,
+    "image_color_main": "E5D77E",
+    "image_color_sub": "66292B",
+    "ui_color_main": "c0af3b",
+    "ui_border_color": "a99300"
+  },
+  "1115": {
+    "id": 1115,
+    "image_color_main": "CB3E38",
+    "image_color_sub": "FFEAA5",
+    "ui_color_main": "be4134",
+    "ui_border_color": "c94336"
+  },
+  "1116": {
+    "id": 1116,
+    "image_color_main": "C4352D",
+    "image_color_sub": "4C1E21",
+    "ui_color_main": "cf2f2b",
+    "ui_border_color": "cc3c37"
+  },
+  "1117": {
+    "id": 1117,
+    "image_color_main": "C10016",
+    "image_color_sub": "DDE5ED",
+    "ui_color_main": "c1213c",
+    "ui_border_color": "ca0c2d"
+  },
+  "1118": {
+    "id": 1118,
+    "image_color_main": "3954A7",
+    "image_color_sub": "76EEFF",
+    "ui_color_main": "344d99",
+    "ui_border_color": "455da6"
+  },
+  "1119": {
+    "id": 1119,
+    "image_color_main": "2E2E27",
+    "image_color_sub": "F2E649",
+    "ui_color_main": "332d1f",
+    "ui_border_color": "a49b11"
+  },
+  "1120": {
+    "id": 1120,
+    "image_color_main": "131B4C",
+    "image_color_sub": "FFEF1A",
+    "ui_color_main": "131b4c",
+    "ui_border_color": "2A3881"
+  },
+  "1121": {
+    "id": 1121,
+    "image_color_main": "F2B730",
+    "image_color_sub": "E60B17",
+    "ui_color_main": "efa605",
+    "ui_border_color": "de9118"
+  },
+  "1124": {
+    "id": 1124,
+    "image_color_main": "FEE600",
+    "image_color_sub": "0055FF",
+    "ui_color_main": "e5bd00",
+    "ui_border_color": "AC8E00"
+  },
+  "1126": {
+    "id": 1126,
+    "image_color_main": "FEB8E2",
+    "image_color_sub": "F1DFE9",
+    "ui_color_main": "fa83cb",
+    "ui_border_color": "2B75DD"
+  },
+  "1127": {
+    "id": 1127,
+    "image_color_main": "574B72",
+    "image_color_sub": "FFE652",
+    "ui_color_main": "574a74",
+    "ui_border_color": "5c478a"
+  },
+  "1128": {
+    "id": 1128,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "009cbd",
+    "ui_border_color": "2B75DD"
+  },
+  "1129": {
+    "id": 1129,
+    "image_color_main": "99ccff",
+    "image_color_sub": "cc3300",
+    "ui_color_main": "69a9e9",
+    "ui_border_color": "3084D7"
+  },
+  "1130": {
+    "id": 1130,
+    "image_color_main": "403C49",
+    "image_color_sub": "B492B9",
+    "ui_color_main": "454152",
+    "ui_border_color": "82518e"
+  },
+  "1131": {
+    "id": 1131,
+    "image_color_main": "5F6266",
+    "image_color_sub": "FF384F",
+    "ui_color_main": "53565a",
+    "ui_border_color": "eb3147"
+  },
+  "1132": {
+    "id": 1132,
+    "image_color_main": "373A37",
+    "image_color_sub": "399857",
+    "ui_color_main": "424840",
+    "ui_border_color": "278846"
+  },
+  "1133": {
+    "id": 1133,
+    "image_color_main": "464647",
+    "image_color_sub": "71E3E0",
+    "ui_color_main": "464647",
+    "ui_border_color": "409593"
+  },
+  "1134": {
+    "id": 1134,
+    "image_color_main": "E6E6E3",
+    "image_color_sub": "47443E",
+    "ui_color_main": "8e8180",
+    "ui_border_color": "2B75DD"
+  },
+  "1135": {
+    "id": 1135,
+    "image_color_main": "BFB876",
+    "image_color_sub": "4F72AA",
+    "ui_color_main": "bfb33e",
+    "ui_border_color": "9c8d00"
+  },
+  "1136": {
+    "id": 1136,
+    "image_color_main": "D32630",
+    "image_color_sub": "802F2D",
+    "ui_color_main": "cb3a43",
+    "ui_border_color": "FFFFFF"
+  },
+  "1137": {
+    "id": 1137,
+    "image_color_main": "2FA74B",
+    "image_color_sub": "EEF8FF",
+    "ui_color_main": "2c9c46",
+    "ui_border_color": "0F952E"
+  },
+  "1138": {
+    "id": 1138,
+    "image_color_main": "6F1F3C",
+    "image_color_sub": "EAE5E7",
+    "ui_color_main": "822b4a",
+    "ui_border_color": "9a254f"
+  },
+  "1139": {
+    "id": 1139,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "5198b0",
+    "ui_border_color": "FFFFFF"
+  },
+  "1140": {
+    "id": 1140,
+    "image_color_main": "8A1538",
+    "image_color_sub": "E9A2B2",
+    "ui_color_main": "8b1538",
+    "ui_border_color": "b21845"
+  },
+  "1141": {
+    "id": 1141,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "17af87",
+    "ui_border_color": "0c8666"
+  },
+  "1142": {
+    "id": 1142,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "7e2d40",
+    "ui_border_color": "FFFFFF"
+  },
+  "1143": {
+    "id": 1143,
+    "image_color_main": "1D23AB",
+    "image_color_sub": "F1EB9D",
+    "ui_color_main": "4146b8",
+    "ui_border_color": "3a40b8"
+  },
+  "1144": {
+    "id": 1144,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "cb363d",
+    "ui_border_color": "FFFFFF"
+  },
+  "1145": {
+    "id": 1145,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "beab08",
+    "ui_border_color": "FFFFFF"
+  },
+  "2001": {
+    "id": 2001,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "FFFFFF",
+    "ui_border_color": "FFFFFF"
+  },
+  "2002": {
+    "id": 2002,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "ed4f44",
+    "ui_border_color": "FFFFFF"
+  },
+  "2003": {
+    "id": 2003,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "6973ab",
+    "ui_border_color": "FFFFFF"
+  },
+  "2004": {
+    "id": 2004,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "da483a",
+    "ui_border_color": "2B75DD"
+  },
+  "2005": {
+    "id": 2005,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "215a95",
+    "ui_border_color": "2B75DD"
+  },
+  "2006": {
+    "id": 2006,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "da6642",
+    "ui_border_color": "2B75DD"
+  },
+  "2007": {
+    "id": 2007,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "f07736",
+    "ui_border_color": "2B75DD"
+  },
+  "2008": {
+    "id": 2008,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "FFFFFF",
+    "ui_border_color": "FFFFFF"
+  },
+  "9001": {
+    "id": 9001,
+    "image_color_main": "44A705",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "44A705",
+    "ui_border_color": "FFFFFF"
+  },
+  "9002": {
+    "id": 9002,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "FC8056",
+    "ui_border_color": "FFFFFF"
+  },
+  "9003": {
+    "id": 9003,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "FFFFFF",
+    "ui_border_color": "FFFFFF"
+  },
+  "9004": {
+    "id": 9004,
+    "image_color_main": "464ed2",
+    "image_color_sub": "e48cfa",
+    "ui_color_main": "464ed2",
+    "ui_border_color": "FFFFFF"
+  },
+  "9005": {
+    "id": 9005,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "df4945",
+    "ui_border_color": "FFFFFF"
+  },
+  "9006": {
+    "id": 9006,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "54498c",
+    "ui_border_color": "FFFFFF"
+  },
+  "9007": {
+    "id": 9007,
+    "image_color_main": "FFFFFF",
+    "image_color_sub": "FFFFFF",
+    "ui_color_main": "FFFFFF",
+    "ui_border_color": "F759CD"
+  },
+  "9008": {
+    "id": 9008,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "f482a2",
+    "ui_border_color": "F759CD"
+  },
+  "9040": {
+    "id": 9040,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "d84556",
+    "ui_border_color": "F759CD"
+  },
+  "9041": {
+    "id": 9041,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "3381d8",
+    "ui_border_color": "F759CD"
+  },
+  "9042": {
+    "id": 9042,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "bba61d",
+    "ui_border_color": "F759CD"
+  },
+  "9043": {
+    "id": 9043,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "e4ac34",
+    "ui_border_color": "2B75DD"
+  },
+  "9044": {
+    "id": 9044,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "b26fbd",
+    "ui_border_color": "2B75DD"
+  },
+  "9045": {
+    "id": 9045,
+    "image_color_main": "A8C6FD",
+    "image_color_sub": "5277D6",
+    "ui_color_main": "5cc0ad",
+    "ui_border_color": "FFFFFF"
+  },
+  "9046": {
+    "id": 9046,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "5bb1de",
+    "ui_border_color": "2B75DD"
+  },
+  "9047": {
+    "id": 9047,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "10a546",
+    "ui_border_color": "2B75DD"
+  },
+  "9048": {
+    "id": 9048,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "c23c94",
+    "ui_border_color": "2B75DD"
+  },
+  "9049": {
+    "id": 9049,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "c4b076",
+    "ui_border_color": "2B75DD"
+  },
+  "9050": {
+    "id": 9050,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "316757",
+    "ui_border_color": "2B75DD"
+  },
+  "9051": {
+    "id": 9051,
+    "image_color_main": "FCA7FF",
+    "image_color_sub": "FF58D9",
+    "ui_color_main": "da483a",
+    "ui_border_color": "2B75DD"
+  }
+}

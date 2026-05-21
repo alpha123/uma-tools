@@ -5,7 +5,7 @@ import Sortable from '../vendor/sortable';
 
 import { shuffle, makeGraph, updateEdges, close, nextGroup, maxPaths } from './sort';
 
-import umas from '../umas.json';
+import colors from './colors.json';
 
 import '../UmaUI.css';
 import './app.css';
@@ -15,7 +15,7 @@ const STEPSIZE = 3;
 function UmaTab(props) {
 	const id = props.shortId + 1000;
 	return (
-		<li class="umatab" data-id={props.shortId}>
+		<li class="umatab" data-id={props.shortId} style={`border-color:#${colors[id].ui_border_color}`}>
 			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width="250" draggable="false" />
 			<span>{props.name}</span>
 		</li>
@@ -26,7 +26,7 @@ function FinalUma(props) {
 	const i = props.i;
 	const id = props.shortId + 1000;
 	return (
-		<li class="umatab" data-id={props.shortId}>
+		<li class="umatab" data-id={props.shortId} style={`border-color:#${colors[id].ui_border_color}`}>
 			{i < 18 ? <img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} class="orderImg" width={i == 0 ? 150 : i < 3 ? 90 : i < 5 ? 80 : 70} /> : <span>#{i+1}</span>}
 			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width={i == 0 ? 300 : 250} loading="lazy" draggable="false" />
 			<span>{props.name}</span>
@@ -164,8 +164,8 @@ function App(props) {
 			<Fragment>
 				<h2 id="groupHead">Group #<span>{steps}</span></h2>
 				<div id="sortlistWrapper">
-					<ul id="sortlistBg">
-						{group.map((id,i) => <li key={id} class="tabslot"><img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width="40" /></li>)}
+					<ul id="sortlistIcons">
+						{group.map((id,i) => <li key={id}><img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width="40" /></li>)}
 					</ul>
 					<ul id="sortlist" ref={sortlist}>
 						{group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}

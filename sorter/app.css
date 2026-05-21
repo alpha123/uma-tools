@@ -27,25 +27,21 @@
 	margin: 0;
 }
 
-#sortlistBg {
+#sortlistIcons {
 	display: flex;
 	gap: 28px;
 	list-style-type: none;
 	margin: 0;
 	position: absolute;
 	top: -2px;
-	z-index: -1;
+	z-index: 1;
 }
 
-.tabslot {
-	border: 2px solid rgb(170,221,154);
-	border-radius: 6px;
-	height: 280px;
-	margin: 0 -2px;
+#sortlistIcons > li {
 	width: 250px;
 }
 
-.tabslot > img {
+#sortlistIcons img {
 	background: white;
 	border: 0 solid white;
 	border-width: 0 3px 3px 0;
@@ -56,6 +52,8 @@
 
 .umatab {
 	align-items: center;
+	border: 2px solid transparent;
+	border-radius: 6px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -68,8 +66,8 @@
 	user-select: none;
 }
 
-.gu-mirror { opacity: 0.8; }
-.gu-transit { opacity: 0.2; }
+.gu-mirror { border: none; opacity: 0.8; }
+.gu-transit > * { opacity: 0.2; }
 
 #results {
 	display: grid;
@@ -79,8 +77,6 @@
 }
 
 #results > li {
-	border: 2px solid rgb(224,214,204);
-	border-radius: 6px;
 	position: relative;
 }
 
