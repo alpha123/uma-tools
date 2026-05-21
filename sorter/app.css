@@ -81,6 +81,7 @@
 #results > li {
 	border: 2px solid rgb(224,214,204);
 	border-radius: 6px;
+	position: relative;
 }
 
 #results > li:nth-child(1) { grid-area: a; }
@@ -92,12 +93,15 @@
 }
 
 #results .orderImg {
+	bottom: 16px;
+	left: 16px;
 	position: absolute;
-	transform: translate(-110px, -80px);
 }
 
 #results > li:first-child > .orderImg {
-	transform: translate(-150px, -50px);
+	bottom: auto;
+	left: auto;
+	transform: translate(-150px, 90px);
 }
 
 #results > li:first-child > img:nth-child(2) {
