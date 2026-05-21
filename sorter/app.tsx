@@ -142,7 +142,9 @@ function App(props) {
 			{final != null
 				? <ol>{final.map(id => <UmaTab key={'final-' + id} shortId={id} name={names[id]} />)}</ol>
 				: <div id="sortlistWrapper">
-					  <ul id="sortlistBg">{group.map(id => <li key={id} class="tabslot" />)}</ul>
+					  <ul id="sortlistBg">
+						  {group.map((id,i) => <li key={id} class="tabslot"><img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width="40" /></li>)}
+					  </ul>
 					  <ul id="sortlist" ref={sortlist}>
 						{group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}
 					  </ul>

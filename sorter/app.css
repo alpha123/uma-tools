@@ -15,13 +15,13 @@
 
 #sortlist {
 	display: flex;
-	gap: 6px;
+	gap: 28px;
 	list-style-type: none;
 }
 
 #sortlistBg {
 	display: flex;
-	gap: 6px;
+	gap: 28px;
 	list-style-type: none;
 	position: absolute;
 	top: -2px;
@@ -34,6 +34,15 @@
 	height: 280px;
 	margin: 0 -2px;
 	width: 250px;
+}
+
+.tabslot > img {
+	background: white;
+	border: 0 solid white;
+	border-width: 0 3px 3px 0;
+	left: -20px;
+	position: relative;
+	top: -20px;
 }
 
 .umatab {
