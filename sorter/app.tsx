@@ -79,7 +79,7 @@ function App(props) {
 		});
 	}, []);
 
-	const [steps, setSteps] = useState(0);
+	const [steps, setSteps] = useState(1);
 	function step() {
 		const order = Array.from(sortlist.current.children).map(el => +el.dataset.id);
 		pushUndo(graph.mat);
@@ -137,28 +137,39 @@ function App(props) {
 		setSteps(steps - 1);
 	}
 
-	return (
-		<div id="sortProgress">
-			{final != null
-				? <ol>{final.map(id => <UmaTab key={'final-' + id} shortId={id} name={names[id]} />)}</ol>
-				: <div id="sortlistWrapper">
-					  <ul id="sortlistBg">
-						  {group.map((id,i) => <li key={id} class="tabslot"><img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width="40" /></li>)}
-					  </ul>
-					  <ul id="sortlist" ref={sortlist}>
+	function List(props) {
+		return (
+			<Fragment>
+				<ol id="results">{final.map((id,i) => <UmaTab key={id} shortId={id} name={names[id]} />)}</ol>
+				{undoStack != null && /* hide if state loaded from URL */
+					<button class="stdBtn btnType2" disabled={false} onClick={undo}>Undo</button>}
+			</Fragment>
+		);
+	}
+
+	function SortStep(props) {
+		return (
+			<Fragment>
+				<h2 id="groupHead">Group #<span>{steps}</span></h2>
+				<div id="sortlistWrapper">
+					<ul id="sortlistBg">
+						{group.map((id,i) => <li key={id} class="tabslot"><img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width="40" /></li>)}
+					</ul>
+					<ul id="sortlist" ref={sortlist}>
 						{group.map(id => <UmaTab key={id} shortId={id} name={names[id]} />)}
-					  </ul>
-				  </div>
-			}
-			{!(final != null && undoStack == null) /* ← if state loaded from URL */ &&
-				<Fragment>
-					<div>{steps} steps</div>
-					<div id="buttonsRow">
-						<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
-						{final == null && <button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>}
-					</div>
-				</Fragment>
-			}
+					</ul>
+				</div>
+				<div id="buttonsRow">
+					<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
+					<button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>
+				</div>
+			</Fragment>
+		);
+	}
+
+	return (
+		<div id="sorter">
+			{final != null ? <List /> : <SortStep />}
 		</div>
 	);
 }

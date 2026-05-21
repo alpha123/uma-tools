@@ -1,7 +1,13 @@
-#sortProgress {
+#sorter {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+	gap: 28px;
+}
+
+#groupHead {
+	color: #794016;
+	margin: 0;
 }
 
 #buttonsRow {
@@ -10,6 +16,7 @@
 }
 
 #sortlistWrapper {
+	padding-bottom: 6px;
 	position: relative;
 }
 
@@ -17,12 +24,14 @@
 	display: flex;
 	gap: 28px;
 	list-style-type: none;
+	margin: 0;
 }
 
 #sortlistBg {
 	display: flex;
 	gap: 28px;
 	list-style-type: none;
+	margin: 0;
 	position: absolute;
 	top: -2px;
 	z-index: -1;
