@@ -22,6 +22,18 @@ function UmaTab(props) {
 	);
 }
 
+function FinalUma(props) {
+	const i = props.i;
+	const id = props.shortId + 1000;
+	return (
+		<li class="umatab" data-id={props.shortId}>
+			{i < 18 ? <img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} class="orderImg" width={i == 0 ? 150 : i < 3 ? 90 : i < 5 ? 80 : 70} /> : <span>#{i+1}</span>}
+			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width={i == 0 ? 300 : 250} loading="lazy" draggable="false" />
+			<span>{props.name}</span>
+		</li>
+	);
+}
+
 function App(props) {
 	const sortlist = useRef(null);
 	useEffect(() => {
@@ -140,7 +152,7 @@ function App(props) {
 	function List(props) {
 		return (
 			<Fragment>
-				<ol id="results">{final.map((id,i) => <UmaTab key={id} shortId={id} name={names[id]} />)}</ol>
+				<ol id="results">{final.map((id,i) => <FinalUma key={id} i={i} shortId={id} name={names[id]} />)}</ol>
 				{undoStack != null && /* hide if state loaded from URL */
 					<button class="stdBtn btnType2" disabled={false} onClick={undo}>Undo</button>}
 			</Fragment>
