@@ -16,7 +16,7 @@ function UmaTab(props) {
 	const id = props.shortId + 1000;
 	return (
 		<li class="umatab" data-id={props.shortId} style={`border-color:#${colors[id].ui_border_color}`}>
-			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width="250" draggable="false" />
+			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width="250" draggable={false} />
 			<span>{props.name}</span>
 		</li>
 	);
@@ -27,8 +27,7 @@ function FinalUma(props) {
 	const id = props.shortId + 1000;
 	return (
 		<li class="umatab" data-id={props.shortId} style={`border-color:#${colors[id].ui_border_color}`}>
-			{i < 18 ? <img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} class="orderImg" width={i == 0 ? 150 : i < 3 ? 90 : i < 5 ? 80 : 70} /> : <span>#{i+1}</span>}
-			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} width={i == 0 ? 300 : 250} loading="lazy" draggable="false" />
+			<img src={`stand/chara_stand_${id}_${id*100+1}.png`} class="umaImg" loading="lazy" draggable={false} />
 			<span>{props.name}</span>
 		</li>
 	);
@@ -150,9 +149,32 @@ function App(props) {
 	}
 
 	function List(props) {
+		const finallist = useRef(null);
+		useEffect(() => {
+			if (finallist.current == null) return;
+			const d = Sortable.create(finallist.current, {
+				dataIdAttr: 'data-id',
+				ghostClass: 'gu-transit',
+				forceFallback: true,
+				fallbackClass: 'gu-mirror',
+				onSort: function () {
+					setFinal(d.toArray().map(id => +id));
+				}
+			});
+			return () => d.destroy();
+		}, [finallist.current]);
+
 		return (
 			<Fragment>
-				<ol id="results">{final.map((id,i) => <FinalUma key={id} i={i} shortId={id} name={names[id]} />)}</ol>
+				<ol id="orderIcons">
+					{final.map((_,i) =>
+						<li key={i}>
+							{i < 18 ? <img src={`order/utx_txt_order_${i.toString().padStart(2,'0')}.png`} width={i == 0 ? 150 : i < 3 ? 90 : i < 5 ? 80 : 70} /> : <span>#{i+1}</span>}
+						</li>)}
+				</ol>
+				<ol id="results" ref={finallist}>
+					{final.map((id,i) => <FinalUma key={id} i={i} shortId={id} name={names[id]} />)}
+				</ol>
 				{undoStack != null && /* hide if state loaded from URL */
 					<button class="stdBtn btnType2" disabled={false} onClick={undo}>Undo</button>}
 			</Fragment>
