@@ -24,9 +24,7 @@ function UmaTab(props) {
 
 function App(props) {
 	const sortlist = useRef(null);
-	const [order, setOrder] = useState(null);
-
-	useEffect(function () {
+	useEffect(() => {
 		if (sortlist.current == null) return;
 		const d = Sortable.create(sortlist.current, {
 			dataIdAttr: 'data-id',
@@ -37,12 +35,21 @@ function App(props) {
 		return () => d.destroy();
 	}, [sortlist.current]);
 
-	const [undoStack, setUndoStack] = useState(null);
+	const [final, setFinal] = useState(null);
+	const didChange = useRef(false);
+	useEffect(() => {
+		if (final != null) {
+			window.location.hash = new Uint8Array(final).toBase64({alphabet: 'base64url'});
+		} else if (didChange.current) {
+			window.history.replaceState(null, '', ' ');  // window.lcation.hash = ''; keeps the # marker
+		}
+		didChange.current = true;
+	}, [final]);
 
+	const [undoStack, setUndoStack] = useState(null);
 	function pushUndo(mat) {
 		setUndoStack({car: mat, cdr: undoStack});
 	}
-
 	function popUndo() {
 		setUndoStack(undoStack.cdr);
 		return undoStack.car;
@@ -51,7 +58,7 @@ function App(props) {
 	const [names, setNames] = useState([]);
 	const [graph, setGraph] = useState(null);
 	const [group, setGroup] = useState([]);
-	useEffect(function () {
+	useEffect(() => {
 		fetch('../umas.json').then(resp => resp.json()).then(umas => {
 			const ids = Object.keys(umas).filter(id => +id < 2000).map(id => +id - 1000);
 			const names = [];
@@ -60,6 +67,15 @@ function App(props) {
 			shuffle(ids);
 			setGraph(makeGraph(ids));
 			setGroup(ids.slice(0,STEPSIZE));
+
+			if (window.location.hash) {
+				try {
+					const loaded = Array.from(Uint8Array.fromBase64(window.location.hash.slice(1), {alphabet: 'base64url'}));
+					if (loaded.length > 0 && new Set(loaded).isSubsetOf(new Set(ids))) {
+						setFinal(loaded);
+					}
+				} catch (_) { }
+			}
 		});
 	}, []);
 
@@ -74,7 +90,7 @@ function App(props) {
 		next = next.filter(id => id != 0);
 		if (next.length == 1) {
 			const dist = maxPaths(newGraph);
-			setOrder(dist);
+			setFinal(graph.vert.toSorted((a,b) => dist[b] - dist[a]));
 		} else {
 			setGroup(next);
 		}
@@ -82,21 +98,16 @@ function App(props) {
 	}
 
 	function undo() {
-		setOrder(null);
+		setFinal(null);
 		const oldGraph = {...graph, mat: popUndo()};
 		setGroup(nextGroup(oldGraph, STEPSIZE));
 		setGraph(oldGraph);
 		setSteps(steps - 1);
 	}
 
-	let final = null;
-	if (order != null) {
-		final = graph.vert.sort((a,b) => order[b] - order[a]);  // mutation whatever
-	}
-
 	return (
 		<div id="sortProgress">
-			{order != null
+			{final != null
 				? <ol>{final.map(id => <UmaTab key={'final-' + id} shortId={id} name={names[id]} />)}</ol>
 				: <div id="sortlistWrapper">
 					  <ul id="sortlistBg">{group.map(id => <li key={id} class="tabslot" />)}</ul>
@@ -105,11 +116,15 @@ function App(props) {
 					  </ul>
 				  </div>
 			}
-			<div>{steps} steps</div>
-			<div id="buttonsRow">
-				<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
-				{order == null && <button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>}
-			</div>
+			{!(final != null && undoStack == null) /* ← if state loaded from URL */ &&
+				<Fragment>
+					<div>{steps} steps</div>
+					<div id="buttonsRow">
+						<button class="stdBtn btnType2" disabled={undoStack==null} onClick={undo}>Undo</button>
+						{final == null && <button class="stdBtn btnType1" disabled={graph==null} onClick={step}>Next</button>}
+					</div>
+				</Fragment>
+			}
 		</div>
 	);
 }
