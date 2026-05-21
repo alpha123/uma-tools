@@ -22,19 +22,18 @@
 #sortlistBg {
 	display: flex;
 	gap: 6px;
-	left: -2px;
 	list-style-type: none;
 	position: absolute;
+	top: -2px;
 	z-index: -1;
 }
 
 .tabslot {
 	border: 2px solid rgb(170,221,154);
 	border-radius: 6px;
-	box-sizing: border-box;
 	height: 280px;
-	margin-left: -2px;
-	width: 252px;
+	margin: 0 -2px;
+	width: 250px;
 }
 
 .umatab {
