@@ -75,12 +75,12 @@
 	display: grid;
 	gap: 16px;
 	grid-template-areas: ". a a b b ." ". a a c c .";
+	grid-template-columns: repeat(6, 254px);
 }
 
 #results > li {
 	border: 2px solid rgb(224,214,204);
 	border-radius: 6px;
-	width: 100%;
 }
 
 #results > li:nth-child(1) { grid-area: a; }
