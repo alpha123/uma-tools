@@ -47,14 +47,12 @@ function App(props) {
 	}, [sortlist.current]);
 
 	const [final, setFinal] = useState(null);
-	const didChange = useRef(false);
 	useEffect(() => {
 		if (final != null) {
 			window.location.hash = new Uint8Array(final).toBase64({alphabet: 'base64url'});
-		} else if (didChange.current) {
+		} else if (graph != null) {  // don't run on initial page load before we've  had the chance to load state from URL below
 			window.history.replaceState(null, '', ' ');  // window.lcation.hash = ''; keeps the # marker
 		}
-		didChange.current = true;
 	}, [final]);
 
 	const [undoStack, setUndoStack] = useState(null);
