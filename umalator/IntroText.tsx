@@ -34,6 +34,20 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-05-24</h2>
+					<ul>
+						<li>
+							<details>
+								<summary>Bug fixes</summary>
+								<ul>
+									<li>Fixed self HP debuff skills (e.g. Full Throttle, Risky Business) incorrectly counting toward the activate_count_heal condition</li>
+									<li>Fixed the target speed modifier when in downhill speed bonus mode being calculated incorrectly</li>
+								</ul>
+							</details>
+						</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-04-21</h2>
 					<ul>
 						<li>
