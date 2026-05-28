@@ -157,7 +157,7 @@ const colors = [
 function App(props) {
 	const [language, setLanguage] = useLanguageSelect();
 	const [courseId, setCourseId] = useState(() => +(/cid=(\d+)/.exec(window.location.hash) || [null, DefaultCourseId])[1]);
-	const [selectedSkills, setSelectedSkills] = useState(() => new Map((/sid=(\d+(?:,\d+)*)/.exec(window.location.hash) || [null, ''])[1].split(',').filter(Boolean).map(id => [skillmeta[id].groupId, id])));
+	const [selectedSkills, setSelectedSkills] = useState(() => new Map((/sid=(\d+(?:,\d+)*)/.exec(window.location.hash) || [null, ''])[1].split(',').filter(Boolean).map(id => [id, id])));
 	const [skillsOpen, setSkillsOpen] = useState(false);
 
 	useEffect(function () {
@@ -187,7 +187,7 @@ function App(props) {
 		e.stopPropagation();
 		const id = se.dataset.skillid;
 		const newSelected = new Map(selectedSkills);
-		newSelected.delete(skillmeta[id].groupId);
+		newSelected.delete(id);
 		setSelectedSkills(newSelected);
 	}
 
@@ -229,7 +229,7 @@ function App(props) {
 						</ul>
 					</div>
 					<div id="skillListWrapper" class={skillsOpen ? "skillListWrapper-open" : ""}>
-						<SkillList ids={Object.keys(skills)} selected={selectedSkills} setSelected={setSelectedSkillsAndClose} />
+						<SkillList ids={Object.keys(skills)} selectionMode="all" debuffMode="once" selected={selectedSkills} setSelected={setSelectedSkillsAndClose} />
 					</div>
 				</IntlProvider>
 			</Language.Provider>
