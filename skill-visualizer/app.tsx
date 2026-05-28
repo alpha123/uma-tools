@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import { useState, useMemo, useEffect } from 'preact/hooks';
+import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import { Text, IntlProvider } from 'preact-i18n';
 
 import { State, makeState } from '../optics';
@@ -160,16 +160,32 @@ const colors = [
 
 function App(props) {
 	const [language, setLanguage] = useLanguageSelect();
-	const [courseId, setCourseId] = useState(() => +(/cid=(\d+)/.exec(window.location.hash) || [null, DefaultCourseId])[1]);
-	const [selectedSkills, setSelectedSkills] = useState(() => new Map((/sid=(\d+(?:,\d+)*)/.exec(window.location.hash) || [null, ''])[1].split(',').filter(Boolean).map(id => [id, id])));
+	const [courseId, setCourseId] = useState(DefaultCourseId);
+	const [selectedSkills, setSelectedSkills] = useState(new Map());
 	const [skillsOpen, setSkillsOpen] = useState(false);
+
+	useEffect(function () {
+		function loadState() {
+			// i think not resetting cid on an sid-only string but resetting sid on a cid-only string is the most intuitive
+			// thing to do? not really sure but i think that's what i'd expect
+			const cid = /cid=(\d+)/.exec(window.location.hash);
+			if (cid != null) setCourseId(cid[1]);
+			const sid = /sid=(\d+(?:,\d+)*)/.exec(window.location.hash);
+			setSelectedSkills(sid != null ? new Map(sid[1].split(',').filter(Boolean).map(id => [id, id])) : new Map());
+		}
+		loadState();
+		window.addEventListener('hashchange', loadState);
+		return () => window.removeEventListener('hashchange', loadState);
+	}, []);
 
 	useEffect(function () {
 		document.title = UI_STRINGS[language].title;
 	}, [language]);
 
+	const nonfirst = useRef(false);
 	useEffect(function () {
-		window.location.replace(`#cid=${courseId}${selectedSkills.size == 0 ? "" : ",sid="}${Array.from(selectedSkills.values()).join(',')}`);
+		if (nonfirst.current) window.location.replace(`#cid=${courseId}${selectedSkills.size == 0 ? "" : ",sid="}${Array.from(selectedSkills.values()).join(',')}`);
+		nonfirst.current = true;
 	}, [courseId, selectedSkills]);
 
 	function setSelectedSkillsAndClose(ids) {
