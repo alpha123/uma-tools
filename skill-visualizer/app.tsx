@@ -17,9 +17,10 @@ import { Region, RegionList } from '../uma-skill-tools/Region';
 import { CourseData, CourseHelpers } from '../uma-skill-tools/CourseData';
 import { HorseParameters, Strategy, Aptitude } from '../uma-skill-tools/HorseTypes';
 import { getParser } from '../uma-skill-tools/ConditionParser';
-import { buildSkillData, conditionsWithActivateCountsAsRandom, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
+import { buildSkillData, Perspective } from '../uma-skill-tools/RaceSolverBuilder';
 import { ImmediatePolicy } from '../uma-skill-tools/ActivationSamplePolicy';
-import { immediate, noopImmediate } from '../uma-skill-tools/ActivationConditions';
+import { Conditions, immediate, noopImmediate, random, noopRandom } from '../uma-skill-tools/ActivationConditions';
+import type { RaceParameters } from '../uma-skill-tools/RaceParameters';
 
 import '../components/Tooltip.css';
 import './app.css';
@@ -70,9 +71,9 @@ function baseSpeed(distance: number) {
 	return 20.0 - (distance - 2000) / 1000.0;
 }
 
-const conditions = Object.freeze(Object.assign({}, conditionsWithActivateCountsAsRandom, {
+const conditions = Object.freeze(Object.assign({}, Conditions, {
 	accumulatetime: immediate({
-		filterGte(regions: RegionList, t: number, course: CourseData, _: HorseParameters) {
+		filterGte(regions: RegionList, t: number, course: CourseData, _: HorseParameters, extra: RaceParameters) {
 			// obviously we can't know this condition without actually running the race, and the actual distance traveled depends on the uma's strategy, power stat,
 			// skills (opening leg accel skills), and other things that aren't available in a static environment like this. so instead guess approximately how far we
 			// travel in t seconds by just using the course base speed.
@@ -80,6 +81,32 @@ const conditions = Object.freeze(Object.assign({}, conditionsWithActivateCountsA
 			// except for oonige in which case it could be a bit low since their phase 0 speed is so high
 			const estimate = new Region(baseSpeed(course.distance) * t, course.distance);
 			return regions.rmap(r => r.intersect(estimate));
+		}
+	}),
+	activate_count_all: noopRandom,
+	activate_count_end_after: random({
+		filterGte(regions: RegionList, _0: number, course: CourseData, _1: HorseParameters, extra: RaceParameters) {
+			const bounds = new Region(CourseHelpers.phaseStart(course.distance, 2), CourseHelpers.phaseEnd(course.distance, 3));
+			return regions.rmap(r => r.intersect(bounds));
+		}
+	}),
+	activate_count_heal: noopRandom,
+	activate_count_later_half: random({
+		filterGte(regions: RegionList, _0: number, course: CourseData, _1: HorseParameters, extra: RaceParameters) {
+			const bounds = new Region(course.distance / 2, course.distance);
+			return regions.rmap(r => r.intersect(bounds));
+		}
+	}),
+	activate_count_middle: random({
+		filterGte(regions: RegionList, n: number, course: CourseData, _1: HorseParameters, extra: RaceParameters) {
+			const bounds = new Region(CourseHelpers.phaseStart(course.distance, 1), CourseHelpers.phaseEnd(course.distance, 1));
+			return regions.rmap(r => r.intersect(bounds));
+		}
+	}),
+	activate_count_start: random({
+		filterGte(regions: RegionList, _0: number, course: CourseData, _1: HorseParameters, extra: RaceParameters) {
+			const bounds = new Region(CourseHelpers.phaseStart(course.distance, 0), CourseHelpers.phaseEnd(course.distance, 0));
+			return regions.rmap(r => r.intersect(bounds));
 		}
 	}),
 	grade: noopImmediate,
