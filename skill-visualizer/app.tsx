@@ -118,6 +118,10 @@ const conditions = Object.freeze(Object.assign({}, Conditions, {
 	motivation: noopImmediate,
 	popularity: noopImmediate,
 	running_style: noopImmediate,
+	running_style_count_nige_otherself: noopImmediate,
+	running_style_count_senko_otherself: noopImmediate,
+	running_style_count_sashi_otherself: noopImmediate,
+	running_style_count_oikomi_otherself: noopImmediate,
 	season: noopImmediate,
 	time: noopImmediate,
 	weather: noopImmediate
