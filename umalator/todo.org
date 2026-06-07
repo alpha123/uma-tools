@@ -14,6 +14,11 @@ probably should involve un-splitting sirius unique, try to come up with a soluti
 * TODO animations
 might be cool to animate e.g., the histogram bars popping up
 * TODO OCR to load umas from screenshots
+** DONE ocr finished uma screen
+** TODO ocr mid-run uma screen
+slightly different from above, stats could be hard
+** TODO ocr available hints list
+from video might provide the best user experience?
 * TODO implement stamina/hp consumption
 ** DONE implement in sim
 *** DONE also implement downhills
@@ -22,10 +27,17 @@ might be cool to animate e.g., the histogram bars popping up
 ** DONE show % max spurt rate, average excess hp, etc
 possibly presented as another "tab" underneath the chart (tabbed with min/max/mean/median basinn gain tab)
 ** DONE eventually, stamina calculator mode
-* TODO unique skill levels
+* DONE unique skill levels
 also implement unique scaling in sim
 * DONE run compare simulator in worker
 should probably not be run on the main UI thread
+* TODO select a portion of the track → what activates here?
+i.e. reverse lookup skills by proc location
+
+might be better suited to skill-visualizer?
+
+not quite sure what to do in the face of random skills or semi-random skills. maybe the correct solution is to display
+and sort by proc % chance.
 * TODO cleanup
 ** DONE build system
 convert non-global to use build.mjs. refactor shared parts (most of it except the plugins and defines) to a common file.
@@ -42,6 +54,8 @@ i.e. like CourseHelpers.assertIsPhase and stuff
 
 probably requires rewriting CourseHelpers.isSortedByStart to assertIsSortedByStart or something (I don't think that
 function is used in any non-assertion contexts anyway)
+** TODO fix layout to not be quite so 1080p dependent
+for example currently it doesnt work well with DPI scaling even on 1080p
 * miscellany
 ** DONE sort skills by disp_order from the db
 add to skill_meta.json
