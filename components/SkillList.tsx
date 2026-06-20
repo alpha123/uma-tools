@@ -707,6 +707,7 @@ export const SkillCost = memo(function SkillCost(props) {
 
 // they really just gave up with the ids for scenario pinks
 const iconIdPrefixes = Object.freeze({
+	'0000': ['0000'],
 	'1001': ['1001'],
 	'1002': ['1002', '2018'],
 	'1003': ['1003'],
@@ -729,7 +730,7 @@ const iconIdPrefixes = Object.freeze({
 
 const groups_filters = Object.freeze({
 	'rarity': ['white', 'gold', 'pink', 'unique', 'inherit'],
-	'icontype': ['1001', '1002', '1003', '1004', '1005', '1006', '4001', '2002', '2001', '2004', '2005', '2006', '2009', '3001', '3002', '3004', '3005', '3007'],
+	'icontype': ['1001', '1002', '1003', '1004', '1005', '1006', '4001', '2002', '2001', '2004', '2005', '2006', '2009', '3001', '3002', '3004', '3005', '3007', '0000'],
 	'strategy': ['nige', 'senkou', 'sasi', 'oikomi'],
 	'distance': ['short', 'mile', 'medium', 'long'],
 	'surface': ['turf', 'dirt'],
@@ -863,7 +864,7 @@ export function SkillList(props) {
 	}
 	
 	function IconFilterButton(props) {
-		return <button data-filter={props.type} class={`iconFilterButton ${active[props.group][props.type] ? 'active': ''}`} style={`background-image:url(/uma-tools/icons/skill/utx_ico_skill_${props.type == '4001' ? '40012' : props.type + '1'}.png)`}></button>
+		return <button data-filter={props.type} class={`iconFilterButton ${active[props.group][props.type] ? 'active': ''}`} style={`background-image:url(/uma-tools/icons/skill/utx_ico_skill_${props.type == '4001' ? '40012' : props.type == '0000' ? '00000' : props.type + '1'}.png)`}></button>
 	}
 
 	const items = useMemo(() => {

@@ -32,7 +32,8 @@ sub icon_base_for_type {
 	} elsif ($type == 31) {
 		return '2004';
 	} else {
-		die "unknown icon: unhandled ability type $type for skill id $id";
+		warn "unknown icon: unhandled ability type $type for skill id $id";
+		return '00000';
 	}
 }
 
