@@ -166,7 +166,8 @@ const enum EventType { CM, LOH }
 //  en: good yielding soft heavy
 // gbl: firm good     soft heavy
 const presets = (CC_GLOBAL ? [
-	{type: EventType.CM, name: 'Gemini Cup 2', date: '2026-05-31', courseId: 10602, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, name: 'Cancer Cup 2', date: '2026-06-24', courseId: 10906, season: Season.Summer, ground: GroundCondition.Yielding, weather: Weather.Cloudy, time: Time.Midday},
+	{type: EventType.CM, name: 'Gemini Cup 2', date: '2026-06-04', courseId: 10602, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Taurus Cup 2', date: '2026-05-10', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Aries Cup', date: '2026-04-23', courseId: 10504, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Pisces Cup', date: '2026-03-30', courseId: 10914, season: Season.Spring, ground: GroundCondition.Heavy, weather: Weather.Rainy, time: Time.Midday},
@@ -181,8 +182,10 @@ const presets = (CC_GLOBAL ? [
 	{type: EventType.CM, name: 'Gemini Cup', date: '2025-09-11', courseId: 10811, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Taurus Cup', date: '2025-08-21', courseId: 10606, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday}
 ] : [
-	{type: EventType.CM, date: '2026-07-31' /* TODO date */, courseId: 10507, season: Season.Summer, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
-	{type: EventType.CM, date: '2026-06-30' /* TODO date */, courseId: 10606, season: Season.Spring, ground: GroundCondition.Soft, weather: Weather.Cloudy, time: Time.Midday},
+	{type: EventType.CM, date: '2026-09-30' /* TODO date */, courseId: 10603, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.LOH, date: '2026-08-31' /* TODO date */, courseId: 10504, season: Season.Summer, time: Time.Midday},
+	{type: EventType.CM, date: '2026-07-24', courseId: 10507, season: Season.Summer, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
+	{type: EventType.CM, date: '2026-06-23', courseId: 10606, season: Season.Spring, ground: GroundCondition.Soft, weather: Weather.Cloudy, time: Time.Midday},
 	{type: EventType.LOH, date: '2026-05-22', courseId: 10801, season: Season.Spring, time: Time.Midday},
 	{type: EventType.CM, date: '2026-04-23', courseId: 11709, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, date: '2026-03-22', courseId: 11703, season: Season.Spring, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
