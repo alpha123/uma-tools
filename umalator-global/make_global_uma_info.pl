@@ -79,6 +79,7 @@ while ($select_umas->fetch) {
 			$select_outfit_data->execute($o_id);
 			$select_outfit_data->bind_columns(\my ($default_rarity, $running_style, $aptitudes, $awakenings));
 			$select_outfit_data->fetch;
+			if (!defined($default_rarity)) { next; }  # now for some reason they have unimplemented umas but with skills added
 			$outfits{$o_id} = {
 				epithet => Encode::decode('utf8', $epithet),
 				rarity => $default_rarity,
