@@ -9,7 +9,7 @@ import { CourseHelpers } from '../uma-skill-tools/CourseData';
 import { RaceParameters, Mood, GroundCondition, Weather, Season, Time, Grade } from '../uma-skill-tools/RaceParameters';
 import type { GameHpPolicy } from '../uma-skill-tools/HpPolicy';
 
-import { O, c, K, State, makeState, useLens, useGetter, useSetter } from '../optics';
+import { O, c, K, State, makeState, useLens, useGetter, useSetter, useInspectState } from '../optics';
 
 import { Language, LanguageSelect, useLanguageSelect } from '../components/Language';
 import { SkillList, ExpandedSkillDetails, skillGroups, isPurpleSkill } from '../components/SkillList';
@@ -449,7 +449,7 @@ function racedefToParams({ground, weather, season, time, grade}: RaceParams, inc
 	};
 }
 
-async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useCompeteTop: boolean, useIntChecks: boolean, racedef: RaceParams, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
+async function serialize(courseId: number, nsamples: number, seed: number, usePosKeep: boolean, useCompeteTop: boolean, useIntChecks: boolean, racedef: RaceParams, hintLevels: Map<string,number>, uma1: HorseState, uma2: HorseState, debufUma: HorseState, chartMode: string | null, chartSkills: string[] | null) {
 	const o = {
 		courseId,
 		nsamples,
@@ -458,6 +458,7 @@ async function serialize(courseId: number, nsamples: number, seed: number, usePo
 		useCompeteTop,
 		useIntChecks,
 		racedef,
+		hintLevels: Object.fromEntries([...hintLevels].filter(([_,l]) => l > 0)),
 		uma1: serializeUma(uma1),
 		uma2: serializeUma(uma2),
 	};
@@ -516,6 +517,7 @@ async function deserialize(hash) {
 					useCompeteTop: o.useCompeteTop ?? true,  // v9
 					useIntChecks: o.useIntChecks || false,  // v3
 					racedef: o.racedef,
+					hintLevels: new Map([...allZeroHints, ...(o.hintLevels ? Object.entries(o.hintLevels) : [])]),  // v10
 					uma1: deserializeUma(o.uma1),
 					uma2: deserializeUma(o.uma2),
 					debufUma: deserializeUma(o.debufUma || serializeUma(DEFAULT_HORSE_STATE)),  // v7
@@ -532,6 +534,7 @@ async function deserialize(hash) {
 					useCompeteTop: true,
 					useIntChecks: false,
 					racedef: DEFAULT_RACE_PARAMS,
+					hintLevels: new Map(allZeroHints),
 					uma1: DEFAULT_HORSE_STATE,
 					uma2: DEFAULT_HORSE_STATE,
 					debufUma: DEFAULT_HORSE_STATE,
@@ -571,6 +574,7 @@ const NOT_REAL_UNIQUES = ['1400011', '1400021'];  // ?? what are these
 const allSkills = Object.keys(skilldata).filter(id => NOT_REAL_UNIQUES.indexOf(id) == -1);
 const nonPurpleSkills = allSkills.filter(id => !isPurpleSkill(id));
 const baseSkillsToTest = nonPurpleSkills.filter(isGeneralSkill);
+const allZeroHints = new Map(allSkills.map(id => [id,0]));
 
 function getNullTableData(skills) {
 	const filler = new Map();
@@ -770,8 +774,10 @@ function Umalator(props) {
 
 	const copyLinkLink = useRef(null);
 
+	const hintLevels_GetCurrent = useInspectState(O.hintLevels);
 	function doSerialize() {
-		return serialize(courseId, nsamples, seed, usePosKeep, useCompeteTop, useIntChecks_, racedef, uma1, uma2, debufUma,
+		return serialize(courseId, nsamples, seed, usePosKeep, useCompeteTop, useIntChecks_,
+			racedef, hintLevels_GetCurrent(), uma1, uma2, debufUma,
 			mode == Mode.Chart ? chartMode : null, mode == Mode.Chart && chartMode == 'selected' ? chartSkills : null
 		);
 	}
@@ -1169,7 +1175,7 @@ function App(props) {
 		courseId: DEFAULT_COURSE_ID,
 		displayedRun: 'meanrun',
 		tableData: getNullTableData(baseSkillsToTest),
-		hintLevels: new Map(allSkills.map(id => [id,0])),
+		hintLevels: new Map(allZeroHints),
 		chartMode: 'all',
 		chartSkills: null
 	}));
