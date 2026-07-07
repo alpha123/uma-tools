@@ -111,10 +111,8 @@ export function runComparison(nsamples: number, course: CourseData, racedef: Rac
 	// TODO i don't really like this, this might just be masking some deeper underlying issue.
 	uma1.skills.forEach(id => compare.addSkill(id, Perspective.Other, id == u1id ? uma1.uniqueLv : 1, instantiateSamplePolicy(uma1.samplePolicies.get(id))));
 	uma2.skills.forEach(id => standard.addSkill(id, Perspective.Other, id == u2id ? uma2.uniqueLv : 1, instantiateSamplePolicy(uma2.samplePolicies.get(id))));
-	if (!CC_GLOBAL) {
-		standard.withAsiwotameru().withStaminaSyoubu();
-		compare.withAsiwotameru().withStaminaSyoubu();
-	}
+	standard.withAsiwotameru().withStaminaSyoubu();
+	compare.withAsiwotameru().withStaminaSyoubu();
 	if (options.usePosKeep) {
 		standard.useDefaultPacer(); compare.useDefaultPacer();
 	}
