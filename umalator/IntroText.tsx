@@ -34,6 +34,14 @@ export function IntroText(props) {
 			<details open={true}>
 				<summary>Changelog</summary>
 				<section>
+					<h2>2026-07-14</h2>
+					<ul>
+						<li>Update mechanics to match latest patch</li>
+						<li>Add new race tracks</li>
+						<li>Minor bug fixes</li>
+					</ul>
+				</section>
+				<section>
 					<h2>2026-05-24</h2>
 					<ul>
 						<li>
