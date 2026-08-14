@@ -25,7 +25,11 @@ sub icon_base_for_type {
 	my ($id, $type, $modifier) = @_;
 	die "probable scenario evolution with custom icon id (skill id $id)" if substr($id, 0, 1) == '4';
 	die "negative ability modifier probably indicates a debuff skill; icon not detected (skill id $id)" if $modifier < 0;
-	if ($type == 27 || $type == 22) {  # target speed / current speed
+	if ($type == 1) {  # speed green
+		return '1001';
+	} elsif ($type == 3) {  # power green
+		return '1003';
+	} elsif ($type == 27 || $type == 22) {  # target speed / current speed
 		return '2001';
 	} elsif ($type == 9) {  # recovery
 		return '2002';
