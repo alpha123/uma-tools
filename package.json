@@ -20,7 +20,7 @@
     "glpk.js": "^5.0.0",
     "idb": "^8.0.3",
     "posthog-js": "^1.257.0",
-    "preact": "^10.18.1",
+    "preact": "^10.28.2",
     "preact-i18n": "^2.4.0-preactx",
     "tesseract.js": "^5.1.1"
   }
