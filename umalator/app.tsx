@@ -166,6 +166,7 @@ const enum EventType { CM, LOH }
 //  en: good yielding soft heavy
 // gbl: firm good     soft heavy
 const presets = (CC_GLOBAL ? [
+	{type: EventType.CM, name: 'Scorpio Cup 2', date: '2026-09-15', courseId: 10808, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Libra Cup 2', date: '2026-08-25', courseId: 10903, season: Season.Autumn, ground: GroundCondition.Good, weather: Weather.Cloudy, time: Time.Midday},
 	{type: EventType.CM, name: 'Virgo Cup 2', date: '2026-08-05', courseId: 11103, season: Season.Autumn, ground: GroundCondition.Yielding, weather: Weather.Sunny, time: Time.Midday},
 	{type: EventType.CM, name: 'Leo Cup 2', date: '2026-07-25', courseId: 10501, season: Season.Summer, ground: GroundCondition.Good, weather: Weather.Sunny, time: Time.Midday},
