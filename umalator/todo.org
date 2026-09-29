@@ -113,3 +113,7 @@ as a result of no scaling being implemented
 this seems to be kind of weird since it does cause a fresh regression checkpoint to fail
 ** DONE seems like a skill desync bug
 https://alpha123.github.io/uma-tools/umalator-global/#H4sIAAAAAAAACr1PO2%2BDMBD%2BLzcz2LwS2KJOUZdKGasMFhzEAtvID6Eq4r%2F3DLRpI3Xt9t13d9%2FjDo0J1uG5hZqzkuUJaCfUNKKDumAsAYdIu7TkRVVkh6xKIDh8M%2B4VcYLa24Arc9b%2B5YbNQG%2BdGB2RVjTYYgf1HZQxUSOB3pqgCWYJzCj8De2KHQpn9Aq9VLifihZjKLaQgRI8CpngO%2BljWOAsYywFep7WhDxd03qhpBZQH%2BM0mTk6kAYNffDu62yWrjWKDLcfKzz2HyR6QT2YQKKtJCXd4Gny0ocYBC7RK9hO%2FGJP8BB4pgc5jmT5DjyG5URVjPFvkEVAcYpyB4eNobg5h%2BtWO32q%2FWfhbdwbHx%2BF859983%2Fpe12WT4W4rP5YAgAA
+** TODO skills that have alternatives that differ only in a dynamic condition will never activate the second alternative
+for example this means ny opera unique will never activate the activate_count_all<=6 branch.
+
+not entirely sure how to fix this
